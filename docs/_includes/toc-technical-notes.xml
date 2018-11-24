@@ -6,6 +6,16 @@
     <span class="toc-accordion">▼</span>
     <ul>
       <li>
+        <span>IDE</span>
+        <span class="toc-accordion">▼</span>
+        <ul class="toc-hidden">
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/IDE/intellij">IntelliJ
+</a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <span>Language</span>
         <span class="toc-accordion">▼</span>
         <ul class="toc-hidden">
@@ -58,6 +68,36 @@
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Language/Java/runtime_options">(WIP) 実行時オプション
 </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span>JavaScript</span>
+            <span class="toc-accordion">▼</span>
+            <ul class="toc-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/JavaScript/vue.js">Vue.js
+</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span>Python</span>
+            <span class="toc-accordion">▼</span>
+            <ul class="toc-hidden">
+              <li>
+                <span>Library</span>
+                <span class="toc-accordion">▼</span>
+                <ul class="toc-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/fabric">Fabric
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/flask">Flask
+</a>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
