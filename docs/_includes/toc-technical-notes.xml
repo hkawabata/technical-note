@@ -14,8 +14,42 @@
             <span class="toc-accordion">▼</span>
             <ul class="toc-hidden">
               <li>
-                <a href="https://hkawabata.github.io/technical-note/note/Language/Java/junit">JUnit
+                <a href="https://hkawabata.github.io/technical-note/note/Language/Java/jmx">JMX
 </a>
+              </li>
+              <li>
+                <span>Library</span>
+                <span class="toc-accordion">▼</span>
+                <ul class="toc-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Java/Library/http_client">HttpClient
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Java/Library/jackson">Jackson
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Java/Library/jersey">Jersey
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Java/Library/junit">JUnit
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Java/Library/log4j">Log4J
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Java/Library/mockito">Mockito
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Java/Library/quartz">Quartz
+</a>
+                  </li>
+                </ul>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Language/Java/modifier">(WIP) 修飾子
