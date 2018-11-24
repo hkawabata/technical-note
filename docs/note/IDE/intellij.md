@@ -134,24 +134,23 @@ Live Edit というリアルタイムビューアがあるが、**有料版限�
 
 - Chrome に機能拡張（JetBrains IDE Support）をインストール
 
-![Alt text](./20180301_IntelliJ.png)
+![](https://user-images.githubusercontent.com/13412823/48967305-bf5e1080-f021-11e8-8819-20e1ababde72.png)
 
 - プラグインを有効化
 
-![Alt text](./20180301_IntelliJ_LiveEdit.png)
+![](https://user-images.githubusercontent.com/13412823/48967307-bf5e1080-f021-11e8-8e50-c71dfd410127.png)
 
 - IntelliJ 上で対象ファイルを右クリック >「Debug <ファイル名>」
 	- これで自動で Chrome が立ち上がる
 
-![Alt text](./20180301_IntelliJ_LiveEdit2.png)
+![](https://user-images.githubusercontent.com/13412823/48967308-bff6a700-f021-11e8-9c3f-aeec79d8aaa5.png)
 
 
 ### JS ライブラリのダウンロード
 
 Preference > Languages & Frameworks > JavaScript > Libraries > Download
 
-![Alt text](./20180301_IntelliJ_js_libraries.png)
-
+![](https://user-images.githubusercontent.com/13412823/48967310-bff6a700-f021-11e8-92d2-8c9000afabee.png)
 
 
 # トラブルシューティング
