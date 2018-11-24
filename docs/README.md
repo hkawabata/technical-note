@@ -1,16 +1,16 @@
-# technical-note
+# GitHub Pages
+https://hkawabata.github.io
 
 ## ドキュメントツリーの生成
 
-目次生成のため、以下のコマンドを叩く。
+技術ノートの目次生成のため、以下のコマンドを叩く。
 
-```
-$ bin/path_tree_generator.py > docs/_includes/toc-technical-notes.xml
+```bash
+$ bin/path_tree_generator.py technical-notes > _includes/toc-technical-notes.xml
 ```
 
 参考：生成される XML
-
-```
+```xml
 <?xml version="1.0" ?>
 <ul>
   <li>

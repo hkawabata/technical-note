@@ -1,0 +1,11 @@
+highlighter: pygments
+linenos: true
+highlight:
+  linenos: true
+highlight_options:
+  linenos: true
+
+markdown: kramdown
+
+plugins:
+  - jekyll-sitemap
