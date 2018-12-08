@@ -43,7 +43,6 @@ org.openqa.selenium.StaleElementReferenceException: stale element reference: ele
 `WebElement`をクリックしようとしたときに発生（Chrome で確認）。
 
 ```java
-Actions action = new Actions(driver);
 WebElement elem = driver.findElement(By.id("hoge"));
 elem.click();
 ```
