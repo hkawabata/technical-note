@@ -29,6 +29,8 @@ title: selenium-java
 
 ### element is not attached to the page document
 
+`WebElement`をクリックしようとしたときに発生。
+
 ```
 org.openqa.selenium.StaleElementReferenceException: stale element reference: element is not attached to the page document
 ```
@@ -38,6 +40,30 @@ org.openqa.selenium.StaleElementReferenceException: stale element reference: ele
 
 ### element is not clickable at point ...
 
+`WebElement`をクリックしようとしたときに発生（Chrome で確認）。
+
+```java
+Actions action = new Actions(driver);
+WebElement elem = driver.findElement(By.id("hoge"));
+elem.click();
+```
+
 ```
 java.lang.Exception: org.openqa.selenium.WebDriverException: unknown error: Element <a name="..." id="...">...</a> is not clickable at point (382, 572). Other element would receive the click: <div id="..."></div>
 ```
+
+【原因】
+
+クリック対象の要素が、ブラウザの表示領域に入っていない。
+
+【対策】
+
+`org.openqa.selenium.interactions.Actions`のインスタンスを作るだけで OK。
+
+```java
+Actions action = new Actions(driver);
+WebElement elem = driver.findElement(By.id("hoge"));
+elem.click();
+```
+
+こうすると表示対象の要素がある場所までスクロールしてくれるようになる。
