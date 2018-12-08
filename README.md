@@ -1,5 +1,7 @@
 # technical-note
 
+https://hkawabata.github.io/technical-note/
+
 ## ドキュメントツリーの生成
 
 目次生成のため、以下のコマンドを叩く。
