@@ -1,5 +1,5 @@
 ---
-title: selenium-java
+title: Selenium
 ---
 
 # pom.xml の設定
