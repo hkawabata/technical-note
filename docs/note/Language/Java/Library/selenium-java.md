@@ -67,3 +67,13 @@ elem.click();
 ```
 
 こうすると表示対象の要素がある場所までスクロールしてくれるようになる。
+
+### session not created exception
+
+もう一度実行すると成功した。セッションがちゃんと張られるまで待つ必要がある？
+
+```
+Exception in thread "main" java.lang.ExceptionInInitializerError
+Caused by: org.openqa.selenium.SessionNotCreatedException: session not created exception
+from disconnected: received Inspector.detached event
+```
