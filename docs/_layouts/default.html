@@ -18,17 +18,19 @@
 
     {% include header.html %}
 
-    {% include sidebar.html %}
+    <div id='not-header'>
+      {% include sidebar.html %}
 
-    <div id='content'>
-      <div class="container">
-        <section id="main_content">
-	  {{ content }}
-        </section>
+      <div id='content'>
+        <div class="container">
+          <section id="main_content">
+	    {{ content }}
+          </section>
+        </div>
       </div>
-    </div>
 
-    {% include footer.html %}
+      {% include footer.html %}
+    </div>
 
   </body>
 </html>
