@@ -116,15 +116,16 @@ body {
 #sidebar {
     float: right;
     width: 260px;
-    margin: 40px 10px 10px 10px;
+    margin: 40px 10px 0px 10px;
     padding: 10px 10px 10px 10px;
     border-left: solid 0.5px gray;
 }
 #content {
-    margin: 40px 310px 10px 10px;
+    margin: 40px 310px 0px 10px;
     padding: 10px 10px 10px 10px;
 }
 #footer {
     text-align: center;
-    width: 100%;    
+    width: 100%;
+    background-color: white;
 }
