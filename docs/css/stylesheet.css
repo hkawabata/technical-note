@@ -1,3 +1,9 @@
+* {
+    /*ブラウザが勝手に設定する余白を排除*/
+    margin: 0px;
+    padding: 0px;
+}
+
 html {
     font-family: Helvetica, Quicksand, 游ゴシック体, "Yu Gothic", YuGothic, "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", メイリオ, Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 }
