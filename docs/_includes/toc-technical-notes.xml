@@ -32,7 +32,7 @@
                 <span class="toc-accordion">▼</span>
                 <ul class="toc-hidden">
                   <li>
-                    <a href="https://hkawabata.github.io/technical-note/note/Language/Java/Library/http_client">HttpClient
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Java/Library/http-client">HttpClient
 </a>
                   </li>
                   <li>
@@ -60,7 +60,7 @@
 </a>
                   </li>
                   <li>
-                    <a href="https://hkawabata.github.io/technical-note/note/Language/Java/Library/selenium-java">selenium-java
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Java/Library/selenium-java">Selenium
 </a>
                   </li>
                 </ul>
@@ -147,6 +147,18 @@
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/OSS/gatling">Gatling
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/OSS/grafana">Grafana
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/OSS/influxdb">InfluxDB
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/OSS/prometheus">Prometheus
 </a>
           </li>
           <li>
