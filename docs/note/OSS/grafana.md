@@ -5,7 +5,7 @@ logo: https://user-images.githubusercontent.com/13412823/50382776-65b53880-06ea-
 
 ![ebfd35c0-d2db-4ef9-97e8-c7ee32d0894e](https://user-images.githubusercontent.com/13412823/50382776-65b53880-06ea-11e9-97ab-07d993619f0c.jpg)
 
-### インストール・起動
+# インストール・起動
 
 ```bash
 $ wget https://grafanarel.s3.amazonaws.com/builds/grafana-4.1.2-1486989747.linux-x64.tar.gz
@@ -26,13 +26,13 @@ http://hostname:3000 にアクセスしてログイン。初期ID/Password は a
 
 ![2018-12-23 19 13 03](https://user-images.githubusercontent.com/13412823/50382603-d9554680-06e6-11e9-9790-5d640879d1d9.png)
 
-### データソースの設定
+# データソースの設定
 
 「Add data source」に飛び、InfluxDB などのデータベースをデータソースとして登録する。以下は予めローカルに立てておいた InfluxDB の例。
 
 ![2018-12-23 19 17 00](https://user-images.githubusercontent.com/13412823/50382625-5f718d00-06e7-11e9-9f96-fdb94e6778ed.png)
 
-### ダッシュボード作成
+# ダッシュボード作成
 
 1. 「New dashboard」>「Graph」で空のグラフパネルが追加される
 2. パネルをクリック >「Edit」>「Metrics」で可視化したいデータの設定を行う
