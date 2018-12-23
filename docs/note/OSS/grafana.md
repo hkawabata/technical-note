@@ -36,6 +36,7 @@ http://hostname:3000 にアクセスしてログイン。初期ID/Password は a
 
 1. 「New dashboard」>「Graph」で空のグラフパネルが追加される
 2. パネルをクリック >「Edit」>「Metrics」で可視化したいデータの設定を行う
+3. 「Back to dashboard」>「Save dashboard」
 
 ![2018-12-23 20 44 47](https://user-images.githubusercontent.com/13412823/50383279-a5cce900-06f3-11e9-8bd2-e9919d7d3e0e.png)
 
