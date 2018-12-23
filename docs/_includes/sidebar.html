@@ -1,4 +1,8 @@
 <div id='sidebar'>
+  {% if page.logo %}
+    <img src="{{ page.logo }}">
+  {% endif %}
+
   <h2>Tech Notes</h2>
   {% include toc-technical-notes.xml %}
 
