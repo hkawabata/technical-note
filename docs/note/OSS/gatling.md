@@ -1,8 +1,7 @@
 ---
 title: Gatling
+logo: https://user-images.githubusercontent.com/13412823/43997632-cd415278-9e1b-11e8-8ad2-bf135d1270d3.png
 ---
-
-![20170916_gatling_logo](https://user-images.githubusercontent.com/13412823/43997632-cd415278-9e1b-11e8-8ad2-bf135d1270d3.png)
 
 Ver 2.3
 http://gatling.io
