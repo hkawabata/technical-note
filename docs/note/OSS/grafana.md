@@ -3,8 +3,6 @@ title: Grafana
 logo: https://user-images.githubusercontent.com/13412823/50382776-65b53880-06ea-11e9-97ab-07d993619f0c.jpg
 ---
 
-![ebfd35c0-d2db-4ef9-97e8-c7ee32d0894e](https://user-images.githubusercontent.com/13412823/50382776-65b53880-06ea-11e9-97ab-07d993619f0c.jpg)
-
 # インストール・起動
 
 ```bash
