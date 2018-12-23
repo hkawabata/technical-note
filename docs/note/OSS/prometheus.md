@@ -104,3 +104,12 @@ ex. 1分ごとの平均受信データ量[Bytes]：`rate(node_network_receive_by
 
 ![2018-12-23 22 53 48](https://user-images.githubusercontent.com/13412823/50384239-b25a3d00-0705-11e9-8821-19cc5346d73b.png)
 
+# Graphana で可視化
+
+データソース追加：
+
+![2018-12-23 23 06 38](https://user-images.githubusercontent.com/13412823/50384376-6e683780-0707-11e9-98cd-ea4f9ff9051d.png)
+
+グラフ作成：
+
+![2018-12-23 23 04 33](https://user-images.githubusercontent.com/13412823/50384359-382ab800-0707-11e9-9229-519df9867e3b.png)
