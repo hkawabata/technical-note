@@ -119,6 +119,7 @@ body {
     margin: 40px 10px 0px 10px;
     padding: 10px 10px 10px 10px;
     border-left: solid 0.5px gray;
+    text-align: center;
 }
 #content {
     margin: 40px 310px 0px 10px;
