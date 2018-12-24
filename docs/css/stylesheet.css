@@ -70,7 +70,7 @@ th, td {
 table {
     max-width: 90%;
     border-collapse: collapse;
-    margin-left: 5%
+    margin-left: 5%;
 }
 table, th, td {
     border: 1px solid black;
@@ -85,6 +85,10 @@ code.highlighter-rouge {
     overflow: auto;
     white-space: pre-wrap;
     word-wrap: break-word
+}
+div.highlighter-rouge {
+    max-width: 90%;
+    margin-left: 5%;
 }
 code {
     font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
