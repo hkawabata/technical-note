@@ -22,14 +22,14 @@
     <div id='not-header'>
       {% include sidebar.html %}
 
-      <div id='toc-content'></div>
-      <script type="text/javascript">
-        $(document).ready(function(){
-          $("#toc-content").toc(3);
-        });
-      </script>
-
       <div id='content'>
+        <div id='toc-content'></div>
+        <script type="text/javascript">
+          $(document).ready(function(){
+            $("#toc-content").toc(3);
+          });
+        </script>
+
         <div class="container">
           <section id="main_content">
 	    {{ content }}
