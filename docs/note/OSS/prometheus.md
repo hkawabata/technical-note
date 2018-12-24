@@ -47,6 +47,8 @@ http://hostname:9090 で Web UI にアクセスできる。
 
 ![2018-12-23 21 21 11](https://user-images.githubusercontent.com/13412823/50383520-b7fd5600-06f8-11e9-8372-18c802d9efd1.png)
 
+![2018-12-24 18 28 19](https://user-images.githubusercontent.com/13412823/50395980-4b429400-07aa-11e9-9d8d-7f82a58248a6.png)
+
 
 ### Node Exporter
 
