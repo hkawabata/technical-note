@@ -8,6 +8,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="/technical-note/js/smoothscroll.js"></script>
+    <script type="text/javascript" src="/technical-note/js/toc.js"></script>
     <link rel="stylesheet" type="text/css" href="/technical-note/css/accordion.css" media="screen">
     <!-- ページツリーのアコーディオン表示のための設定 -->
     <script type="text/javascript" src="/technical-note/js/accordion.js"></script>
@@ -20,6 +21,13 @@
 
     <div id='not-header'>
       {% include sidebar.html %}
+
+      <div id='toc-content'></div>
+      <script type="text/javascript">
+        $(document).ready(function(){
+          $("#toc-content").toc(3);
+        });
+      </script>
 
       <div id='content'>
         <div class="container">
