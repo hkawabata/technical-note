@@ -188,3 +188,72 @@ Range Vector のイメージ:
 
 ## jmx_exporter
 
+### jmx_prometheus_httpserver
+
+exporter 専用のプロセスを立ち上げる。
+
+```bash
+$ git clone git@github.com:prometheus/jmx_exporter.git
+$ cd jmx_exporter
+$ mvn package
+...
+```
+
+必要なファイルは、
+- ビルド生成物の`jmx_prometheus_httpserver/target/jmx_prometheus_httpserver-${version}-jar-with-dependencies.jar`
+- 設定ファイル`example_configs/httpserver_sample_config.yml`
+
+httpserver_sample_config.yml の`hostPort`設定はデフォルトで`localhost:5555`となっている（これは jmx_prometheus_httpserver プロセス自身の jmx ポート）。
+
+これを監視したいプロセスの情報に書き換える。
+
+例：
+
+```
+---
+hostPort: localhost:1099
+username: 
+password: 
+
+rules:
+- pattern: ".*"
+```
+
+jmx_prometheus_httpserver 起動：
+
+```bash
+$ version=$(sed -n -e 's#.*<version>\(.*-SNAPSHOT\)</version>#\1#p' pom.xml)
+$ jar_file=jmx_prometheus_httpserver/target/jmx_prometheus_httpserver-${version}-jar-with-dependencies.jar
+$ exporter_jmx_port=5555     # jmx_prometheus_httpserver プロセス自身の jmx ポート
+$ exporter_port=5556         # prometheus からのリクエストを待ち受けるポート
+$ config_file=example_configs/httpserver_sample_config.yml
+
+$ java -Dcom.sun.management.jmxremote.ssl=false \
+    -Dcom.sun.management.jmxremote.authenticate=false \
+    -Dcom.sun.management.jmxremote.port=${exporter_jmx_port} \
+    -jar ${jar_file} \
+    ${exporter_port} \
+    ${config_file}
+```
+
+以下は監視対象プロセス（jetty, jmx を1099ポートで有効化）と jmx_prometheus_httpserver を同じサーバで動かし、jconsole で眺めた様子。
+
+![2018-12-24 18 10 07](https://user-images.githubusercontent.com/13412823/50395423-37496300-07a7-11e9-8590-a8f337395a27.png)
+
+prometheus.yml に以下のように追記して Prometheus を再起動。
+
+```yaml
+scrape_configs:
+  ...
+  - job_name: 'jmx_jetty'
+    static_configs:
+    - targets: ['localhost:5556']
+```
+
+Graphana で可視化：
+
+![2018-12-24 18 27 07](https://user-images.githubusercontent.com/13412823/50395864-c48db700-07a9-11e9-92d3-60ebbcb15e92.png)
+
+
+
+### jmx_prometheus_javaagent
