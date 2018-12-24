@@ -180,3 +180,11 @@ Range Vector のイメージ:
 | `delta` | 期間の始点と終点の差分（終点-始点） | `delta(node_memory_MemFree_bytes[1h])`<br>（空きメモリの変化） |
 | `changes` | 期間中に値の変化が何回起こったかをカウント |  |
 | `max`,`min`,`sum`,`avg` |  |  |
+
+
+# Exporter
+
+## node_exporter
+
+## jmx_exporter
+
