@@ -42,10 +42,15 @@ img {
 }
 #content h3 {
     font-size: 16px;
-    border-bottom: solid 3px black;
+    background: linear-gradient(transparent 70%, lightpink 70%);
     display: inline-block; /* 文字列の長さに応じて要素の大きさを変える */
 }
 #content h4 {
+    font-size: 16px;
+    border-bottom: solid 3px black;
+    display: inline-block; /* 文字列の長さに応じて要素の大きさを変える */
+}
+#content h5 {
     font-size: 16px;
     border-style: solid;
     border-color: black;
