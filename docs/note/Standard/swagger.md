@@ -1,8 +1,7 @@
 ---
 title: Swagger
+logo: https://user-images.githubusercontent.com/13412823/48452739-c69c4780-e7f3-11e8-83ad-3454d0ce2c7d.png
 ---
-
-![swagger_logo2](https://user-images.githubusercontent.com/13412823/48452739-c69c4780-e7f3-11e8-83ad-3454d0ce2c7d.png)
 
 # Swagger とは
 
