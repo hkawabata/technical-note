@@ -259,3 +259,17 @@ Graphana で可視化：
 
 
 ### jmx_prometheus_javaagent
+
+
+## Java クライアントで exporter を自作
+
+（メモ）この辺りを参考にした：
+
+- https://github.com/prometheus/client_java
+- https://povilasv.me/prometheus-tracking-request-duration/
+- https://prometheus.io/docs/practices/histograms/
+- http://sylnsr.blogspot.com/2015/12/using-prometheus-with-java-in-jersey.html
+
+サンプルコード：
+
+https://github.com/hkawabata/WebApp/blob/master/jersey-practice/src/main/java/jp/hkawabata/webapp/sample/jersey/prometheus/MonitoredResource.java
