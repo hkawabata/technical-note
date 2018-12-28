@@ -1,3 +1,4 @@
+![](https://img.shields.io/github/last-commit/hkawabata/technical-note.svg)
 ![](https://img.shields.io/github/repo-size/hkawabata/technical-note.svg)
 
 # technical-note
