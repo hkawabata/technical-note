@@ -1,6 +1,6 @@
 ---
 title: Prometheus
-logo: https://user-images.githubusercontent.com/13412823/50383404-4fad7500-06f6-11e9-98b5-622b8b85f16b.png
+main_image: https://user-images.githubusercontent.com/13412823/50383404-4fad7500-06f6-11e9-98b5-622b8b85f16b.png
 ---
 
 https://prometheus.io/
