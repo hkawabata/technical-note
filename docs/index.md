@@ -2,6 +2,6 @@
 title: Technical Notes
 ---
 
-# Technical Notes
+# Page Tree
 
-toc:
+{% include toc-technical-notes.xml %}
