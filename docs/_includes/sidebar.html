@@ -4,6 +4,11 @@
       <img src="{{ page.logo }}">
     </div>
   {% endif %}
+  {% if page.main_image %}
+    <div class='center'>
+      <img src="{{ page.main_image }}">
+    </div>
+  {% endif %}
 
   <!--h2>Page Tree</h2-->
   {% include toc-technical-notes.xml %}
