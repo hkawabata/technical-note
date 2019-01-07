@@ -1,6 +1,6 @@
 ---
 title: エンジニアのための時間管理術
-logo: https://user-images.githubusercontent.com/13412823/47614712-4d101400-dae7-11e8-9149-720cec5519bf.jpg
+main_image: https://user-images.githubusercontent.com/13412823/47614712-4d101400-dae7-11e8-9149-720cec5519bf.jpg
 ---
 
 # 1章 タイムマネジメントの原則
