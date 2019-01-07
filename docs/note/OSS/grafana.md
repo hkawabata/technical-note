@@ -1,6 +1,6 @@
 ---
 title: Grafana
-logo: https://user-images.githubusercontent.com/13412823/50382776-65b53880-06ea-11e9-97ab-07d993619f0c.jpg
+main_image: https://user-images.githubusercontent.com/13412823/50382776-65b53880-06ea-11e9-97ab-07d993619f0c.jpg
 ---
 
 # インストール・起動
