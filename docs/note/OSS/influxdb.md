@@ -1,6 +1,6 @@
 ---
 title: InfluxDB
-logo: https://user-images.githubusercontent.com/13412823/50383336-e11be780-06f4-11e9-9b0a-68aa96eb0ee0.png
+main_image: https://user-images.githubusercontent.com/13412823/50383336-e11be780-06f4-11e9-9b0a-68aa96eb0ee0.png
 ---
 
 # インストール・起動
