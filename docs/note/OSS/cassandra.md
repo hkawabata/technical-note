@@ -1,6 +1,6 @@
 ---
 title: Cassandra
-logo: https://user-images.githubusercontent.com/13412823/50384705-c9039280-070b-11e9-90c9-6048de2a4307.jpg
+main_image: https://user-images.githubusercontent.com/13412823/50384705-c9039280-070b-11e9-90c9-6048de2a4307.jpg
 ---
 
 # 0. いろいろ
