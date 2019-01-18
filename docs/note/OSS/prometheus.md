@@ -95,6 +95,22 @@ INFO[0000] Listening on :9100                            source="node_exporter.g
 
 http://hostname:9100/metrics にアクセスするとメトリクス一覧が参照できる。
 
+```
+# HELP go_gc_duration_seconds A summary of the GC invocation durations.
+# TYPE go_gc_duration_seconds summary
+go_gc_duration_seconds{quantile="0"} 3.8055e-05
+go_gc_duration_seconds{quantile="0.25"} 6.3551e-05
+go_gc_duration_seconds{quantile="0.5"} 7.7478e-05
+...
+# HELP node_cpu_guest_seconds_total Seconds the cpus spent in guests (VMs) for each mode.
+# TYPE node_cpu_guest_seconds_total counter
+node_cpu_guest_seconds_total{cpu="0",mode="nice"} 0
+node_cpu_guest_seconds_total{cpu="0",mode="user"} 0
+node_cpu_guest_seconds_total{cpu="1",mode="nice"} 0
+node_cpu_guest_seconds_total{cpu="1",mode="user"} 0
+...
+```
+
 
 ## Prometheus から exporter を監視
 
@@ -104,6 +120,8 @@ prometheus.yml を以下のように設定する。
 scrape_configs:
   ...
   - job_name: 'node'
+    # Prometheus 用メトリクスデータを取得するパス。デフォルトは /metrics
+    # metrics_path: /path/to/metrics
     static_configs:
     - targets: ['node001.hkawabata.jp:9100']
 ```
