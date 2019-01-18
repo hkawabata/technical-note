@@ -282,6 +282,8 @@ requests_latency_seconds_summary{quantile="0.3",} NaN
 requests_latency_seconds_summary{quantile="0.5",} NaN
 requests_latency_seconds_summary{quantile="0.7",} NaN
 requests_latency_seconds_summary{quantile="0.9",} NaN
+requests_latency_seconds_summary_count 125.0
+requests_latency_seconds_summary_sum 61.848624543999996
 ```
 
 > ageBuckets(int): Set the number of buckets used to implement the sliding time window. If your time window is 10 minutes, and you have ageBuckets=5,
