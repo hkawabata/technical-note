@@ -261,7 +261,35 @@ Graphana で可視化：
 ### jmx_prometheus_javaagent
 
 
-## Java クライアントで exporter を自作
+## Java クライアントで exporter を自作（雑多なメモ、整理中）
+
+### quantile の計算
+
+99%ile などの計算に関して、`Summary`は監視対象のアプリケーション側で計算コストがかかるが正確、`Histoguram`は Prometheus サーバ側で計算するためコストは低いが正確性が犠牲になる。
+
+[ここ](https://prometheus.github.io/client_java/src-html/io/prometheus/client/Summary.Builder.html)に`Summary`を使うときに役立ちそうな説明がある。
+
+> maxAgeSeconds(long): Set the duration of the time window is, i.e. how long observations are kept before they are discarded.
+  Default is 10 minutes.
+
+この保持期間は`Summary`のビルダーで設定可能で、これを過ぎると以下のような表記になる。
+
+```
+# HELP requests_latency_seconds_summary Request latency in seconds (Summary).
+# TYPE requests_latency_seconds_summary summary
+requests_latency_seconds_summary{quantile="0.1",} NaN
+requests_latency_seconds_summary{quantile="0.3",} NaN
+requests_latency_seconds_summary{quantile="0.5",} NaN
+requests_latency_seconds_summary{quantile="0.7",} NaN
+requests_latency_seconds_summary{quantile="0.9",} NaN
+```
+
+> ageBuckets(int): Set the number of buckets used to implement the sliding time window. If your time window is 10 minutes, and you have ageBuckets=5,
+  buckets will be switched every 2 minutes. The value is a trade-off between resources (memory and cpu for maintaining the bucket)
+  and how smooth the time window is moved. Default value is 5.
+
+
+### その他メモ
 
 （メモ）この辺りを参考にした：
 
