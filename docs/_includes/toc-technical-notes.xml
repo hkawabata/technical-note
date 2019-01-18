@@ -66,11 +66,11 @@
                 </ul>
               </li>
               <li>
-                <a href="https://hkawabata.github.io/technical-note/note/Language/Java/modifier">(WIP) 修飾子
+                <a href="https://hkawabata.github.io/technical-note/note/Language/Java/modifier">修飾子
 </a>
               </li>
               <li>
-                <a href="https://hkawabata.github.io/technical-note/note/Language/Java/runtime_options">(WIP) 実行時オプション
+                <a href="https://hkawabata.github.io/technical-note/note/Language/Java/runtime_options">実行時オプション
 </a>
               </li>
             </ul>
@@ -123,6 +123,10 @@
                 <a href="https://hkawabata.github.io/technical-note/note/Linux/Command/nice">nice
 </a>
               </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Linux/Command/screen">screen
+</a>
+              </li>
             </ul>
           </li>
           <li>
@@ -142,7 +146,11 @@
         <span class="toc-accordion">▼</span>
         <ul class="toc-hidden">
           <li>
-            <a href="https://hkawabata.github.io/technical-note/note/OSS/cassandra">(WIP) Cassandra
+            <a href="https://hkawabata.github.io/technical-note/note/OSS/cassandra">Cassandra
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/OSS/fluentd">fluentd
 </a>
           </li>
           <li>
@@ -155,6 +163,10 @@
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/OSS/influxdb">InfluxDB
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/OSS/jmeter">JMeter
 </a>
           </li>
           <li>
@@ -232,7 +244,15 @@
         <span class="toc-accordion">▼</span>
         <ul class="toc-hidden">
           <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/The-Agile-Samurai">アジャイルサムライ
+</a>
+          </li>
+          <li>
             <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/Time-Management-for-System-Administrators">エンジニアのための時間管理術
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/Web-API-The-Good-Parts">&quot;Web API: The Good Parts&quot;
 </a>
           </li>
         </ul>
