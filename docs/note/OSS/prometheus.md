@@ -124,7 +124,7 @@ ex. 1分ごとの平均受信データ量[Bytes]：`rate(node_network_receive_by
 
 ![2018-12-23 23 04 33](https://user-images.githubusercontent.com/13412823/50384359-382ab800-0707-11e9-9229-519df9867e3b.png)
 
-「Legend Format」欄には、{%raw%}`{{instance}} ({{device}})`{%endraw%}.のように Prometheus のラベルを埋め込める。
+「Legend Format」欄には、{%raw%}`{{instance}} ({{device}})`{%endraw%}のように Prometheus のラベルを埋め込める。
 
 # PromQL
 
