@@ -150,6 +150,7 @@ body {
 /*ページ上部の目次用の設定*/
 #toc-content {
     margin-top: 40px;
+    margin-left: 15%;
     max-width: 70%;
     border: solid 3px #000000;
     font-weight: bold;
