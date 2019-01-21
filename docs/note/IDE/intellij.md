@@ -190,13 +190,19 @@ compiler-interface.jar は、sbt コマンド実行時に作成されるらし�
 pom.xml の dependencies に追加したライブラリをインポートすると IntelliJ 上で "cannot resolve symbol" と出て import できない。無視してコンパイルすると通る。
 → IntelliJ が認識できていない
 
-解決：
+**【解決】**
+
 まず、調べて出てきた File > Invalidate Caches/Restart を実行。
+
 これでは解決しなかったが、restart した直後のフローティングウィンドウに **"unmanaged pom.xml"** という文言が。pom.xml が認識されない状態になってた？ そこの "add project" を押すと解決した。
+
+これでもダメだったときは、.idea ディレクトリを削除してから Invalidate Caches/Restart で解決した。
 
 
 ## src/test ディレクトリが作られない
 
 maven プロジェクトを開いた際、src/test ディレクトリが作られない。手動で作っても test ディレクトリとは認識されないのか、「new package」がメニューから選択できない。
 
-解決：File > Project Structure > Modules の Sources タブで、「このディレクトリがテストディレクトリだ」と登録できる。src/test ディレクトリ自体は自分で作る必要があるっぽい。
+**【解決】**
+
+File > Project Structure > Modules の Sources タブで、「このディレクトリがテストディレクトリだ」と登録できる。src/test ディレクトリ自体は自分で作る必要があるっぽい。
