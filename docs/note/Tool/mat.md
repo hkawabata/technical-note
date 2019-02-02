@@ -58,7 +58,7 @@ Heap dump file created
 
 **【注2】**`jmap`に`-F`をつけないと`well-known file is not secure`とか言われて失敗した。
 
-**【注3】**アプリケーションの実行ユーザ（上の例では hoge）で実行しないと`cannot open binary file`とか言われて失敗した。`sudo -u hoge`をつけると通った。
+**【注3】** アプリケーションの実行ユーザ（上の例では hoge）で実行しないと`cannot open binary file`とか言われて失敗した。`sudo -u hoge`をつけると通った。
 
 
 # ダンプの解析
