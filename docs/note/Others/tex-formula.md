@@ -88,3 +88,215 @@ title: Tex 数式
 
 ## ベクトル・行列・連立方程式など
 
+### ベクトル
+
+`\left(`, `\right)`, `array`を使う。
+
+```
+$\vec x = \left( \begin{array}{c} x_1 \\ x_2 \\ x_3 \\ \vdots \\ x_n \end{array} \right)$
+```
+
+$$\vec x = \left( \begin{array}{c} x_1 \\ x_2 \\ x_3 \\ \vdots \\ x_n \end{array} \right)$$
+
+### 行列
+
+`pmatrix`を使う。
+
+```
+$A = \begin{pmatrix} a & b & c \\ p & q & r \\ x & y & z \end{pmatrix}$
+```
+
+$$A = \begin{pmatrix} a & b & c \\ p & q & r \\ x & y & z \end{pmatrix}$$
+
+### 連立方程式・場合分け
+
+`cases`を使う。
+
+#### 連立方程式
+
+```
+$\begin{cases} x + 2y + 4z &= 5 \\ 3x - y &= 1 \\ 4x + 2y -5z &= 0 \end{cases}$
+```
+
+$$\begin{cases} x + 2y + 4z &= 5 \\ 3x - y &= 1 \\ 4x + 2y -5z &= 0 \end{cases}$$
+
+#### 場合分け
+
+```
+$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\mbox{ is odd} \end{cases}$
+```
+
+$$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\mbox{ is odd} \end{cases}$$
+
+
+## アクセント・修飾
+
+### アクセント
+
+| 記法 | 表示 | 記法 | 表示 | 記法 | 表示 |
+| :--- | :---: | :--- | :---: | :--- | :---: |
+| `\hat X` | $$\hat X$$ | `\check X` | $$\check X$$ | `\breve X` | $$\breve X$$ |
+| `\acute X` | $$\acute X$$ | `\grave X` | $$\grave X$$ |
+| `\tilde X` | $$\tilde X$$ | `\bar X` | $$\bar X$$ |
+
+
+### 修飾
+
+| 記法 | 表示 | 記法 | 表示 |
+| :--- | :---: | :--- | :---: |
+| `\overline{x + y}` | $$\overline{x + y}$$ | `\underline{x + y}` | $$\underline{x + y}$$ |
+| `\widehat{xyz}` | $$\widehat{xyz}$$ | `\widetilde{xyz}` | $$\widetilde{xyz}$$ |
+| `\overbrace{x + y}` | $$\overbrace{x + y}$$ | `\underbrace{x + y}` | $$\underbrace{x + y}$$ |
+| `\overbrace{a + \cdots + z}^{26}` | $$\overbrace{a + \cdots + z}^{26}$$ | `\underbrace{a + \cdots + z}_{26}` | $$\underbrace{a + \cdots + z}_{26}$$ |
+
+
+
+## 整形
+
+### 文字サイズ
+
+| 記法 | サイズ（%） |
+|:---|:---:|
+| `\tiny` | 50 |
+| `\scriptsize` | 70 |
+| `\footnotesize` | 80 |
+| `\small` | 90 |
+| `\normalsize` | 100 |
+| `\large` | 120 |
+| `\Large` | 140 |
+| `\LARGE` | 170 |
+| `\huge` | 200 |
+| `\HUGE` | 250 |
+
+### 分数の整式
+
+#### 分母・分子を見やすいサイズに
+
+`\frac`を使って分数を表示できるが、環境によっては分母・分子が小さく表示されることがある。
+
+> **例）**
+> 
+> `$f(x) = \frac{x}{1 + x^2}$`
+> 
+> $$f(x) = \frac{x}{1 + x^2}$$
+
+`\displaystyle`を前につける、あるいは`\frac`の代わりに`\cfrac`を使うと、この問題が解決できる。
+
+> **例）**
+> 
+> `$\displaystyle f(x) = \frac{x}{1 + x^2}$`
+> 
+> $$\displaystyle f(x) = \frac{x}{1 + x^2}$$
+> 
+> `$f(x) = \cfrac{x}{1 + x^2}$`
+> 
+> $$f(x) = \cfrac{x}{1 + x^2}$$
+
+#### 連分数
+
+連分数を表示したい場合、`\frac`を入れ子にすれば良いが、入れ子にした分数はサイズが小さくなる。`\displaystyle`を使ってもまだ小さい。
+
+> **例）**
+> 
+> `$\frac{x}{1 + \frac{x^2}{1 + x}}$`
+> 
+> $$\frac{x}{1 + \frac{x^2}{1 + x}}$$
+> 
+> `$\displaystyle \frac{x}{1 + \frac{x^2}{1 + x}}$`
+> 
+> $$\displaystyle \frac{x}{1 + \frac{x^2}{1 + x}}$$
+
+入れ子の分数も通常サイズにしたい場合、`\cfrac`を入れ子にすると良い。また、入れ子にする分数の直前にも`\displaystyle`を入れることでもうまくいく。
+
+> **例）**
+> 
+> `$\cfrac{x}{1 + \cfrac{x^2}{1 + x}}$`
+> 
+> $$\cfrac{x}{1 + \cfrac{x^2}{1 + x}}$$
+> 
+> `$\frac{x}{1 + \frac{x^2}{1 + x}}$`
+> 
+> $$\displaystyle \frac{x}{1 + \displaystyle \frac{x^2}{1 + x}}$$
+
+
+### 括弧のサイズ
+
+単に`()`, `{}`, `[]`, `||`とすると、サイズ（高さ）が1文字分に固定され、分数などを表示するときに汚くなる。
+
+> **例）**
+> 
+> `$y = 3(x + \cfrac{x^2}{1 + x})$`
+> 
+> $$y = 3(x + \cfrac{x^2}{1 + x})$$
+
+`\left(`, `\right)`などとすることでこれを解決できる。
+
+> **例）**
+> 
+> `$y = 3\left(x + \cfrac{x^2}{1 + x}\right)$`
+> 
+> $$y = 3\left(x + \cfrac{x^2}{1 + x}\right)$$
+
+
+### 真下・真上の添え字
+
+`\underset{}{}`, `\overset{}{}`で真下・真上に添え字がつけられる。
+
+> **例）**
+> 
+> `$\underset{x}{minimize}(f(x))$`
+> 
+> $$\underset{x}{minimize}(f(x))$$
+> 
+> `$\overset{x}{minimize}(f(x))$`
+> 
+> $$\overset{x}{minimize}(f(x))$$
+
+
+### 空白
+
+|内容|記法|表示|
+|:--|:--|:--|
+|倍角スペース|`a \qquad b`|$$a \qquad b$$|
+|全角スペース|`a \quad b`|$$a \quad b$$|
+|半角スペース|`a\ b`|$$a\ b$$|
+|大スペース|`a\;b`|$$a\;b$$|
+|中スペース|`a\>b`|$$a\>b$$|
+|小スペース|`a\,b`|$$a\,b$$|
+|負の小スペース|`a\!b`|$$a\!b$$|
+
+## Tips
+
+### 数式の色
+
+`$\color{tomato}{\exp\left(\cfrac{-x^2}{2}\right)}$`などのようにして、数式の色を変えられる：
+
+$$\color{tomato}{\exp\left(\cfrac{-x^2}{2}\right)}$$
+
+
+### 数式中にローマン体の文字を表示
+
+数式中の文字は基本的に変数と見なされ、イタリック体（斜体）で表示される。
+
+`\rm`あるいは`\mbox`を使うと、ローマン体の文字を表示できる。
+
+> **例）**
+> 
+> `$n_{\rm total} = n_{\rm even} + n_{\rm odd}$`
+> 
+> $$n_{\rm total} = n_{\rm even} + n_{\rm odd}$$
+> 
+> `$\mbox{if } n \mbox{ is even}$`
+> 
+> $$\mbox{if } n \mbox{ is even}$$
+
+添え字などをローマン体にしたい場合、`\mbox`を使うとサイズが普通の文字と同じになってしまうので注意。
+
+> **例）**
+> 
+> `$n_\mbox{total} = n_\mbox{even} + n_\mbox{odd}$`
+> 
+> $$n_\mbox{total} = n_\mbox{even} + n_\mbox{odd}$$
+
+
+
