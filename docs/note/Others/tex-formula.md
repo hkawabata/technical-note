@@ -4,6 +4,7 @@ title: Tex 数式
 
 
 ## 特殊文字・記号
+
 ### ギリシャ文字
 
 | 読み | 記法 | 表示 | 読み | 記法 | 表示 |
@@ -214,7 +215,7 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 > 
 > $$\cfrac{x}{1 + \cfrac{x^2}{1 + x}}$$
 > 
-> `$\frac{x}{1 + \frac{x^2}{1 + x}}$`
+> `$\displaystyle \frac{x}{1 + \displaystyle \frac{x^2}{1 + x}}$`
 > 
 > $$\displaystyle \frac{x}{1 + \displaystyle \frac{x^2}{1 + x}}$$
 
