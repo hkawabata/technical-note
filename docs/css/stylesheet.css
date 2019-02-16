@@ -77,9 +77,13 @@ table {
     border-collapse: collapse;
     margin-left: 5%;
 }
-:not(.gist) table, :not(.gist) th, :not(.gist) td {
+table, th, td {
     border: 1px solid black;
 }
+td.js-line-number {
+    border: none;
+}
+
 code.highlighter-rouge {
     padding: 0px 4px;
 }
