@@ -43,9 +43,9 @@ def search(path, display_depth = 0):
             files.remove('index.md')
         else:
             res += '<span>{}</span>'.format(dirname)
-        res += '<span class="toc-accordion">▼</span>'
+        res += '<span class="pagetree-accordion">▼</span>'
         if len(files) > 0:
-            res += '<ul>' if display_depth > 0 else '<ul class="toc-hidden">'
+            res += '<ul>' if display_depth > 0 else '<ul class="pagetree-hidden">'
             for file in files:
                 res += search(path + '/' + file, display_depth - 1)
             res += '</ul>'
@@ -59,7 +59,7 @@ def search(path, display_depth = 0):
 
 if __name__ == '__main__':
     os.chdir(page_root_path)
-    xml_string = '<ul class="toc">{}</ul>'.format(search(note_path, 1))
+    xml_string = '<ul class="pagetree">{}</ul>'.format(search(note_path, 1))
     xml_dom = xml.dom.minidom.parseString(xml_string)
     print xml_dom.toprettyxml(" " * indent_width)
 

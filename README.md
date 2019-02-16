@@ -10,7 +10,7 @@ https://hkawabata.github.io/technical-note/
 目次生成のため、以下のコマンドを叩く。
 
 ```
-$ bin/path_tree_generator.py > docs/_includes/toc-technical-notes.xml
+$ bin/path_tree_generator.py > docs/_includes/pagetree.xml
 ```
 
 参考：生成される XML
