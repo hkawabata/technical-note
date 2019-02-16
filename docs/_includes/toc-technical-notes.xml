@@ -240,9 +240,49 @@
         </ul>
       </li>
       <li>
+        <span>Others</span>
+        <span class="toc-accordion">▼</span>
+        <ul class="toc-hidden">
+          <li>
+            <span>Software</span>
+            <span class="toc-accordion">▼</span>
+            <ul class="toc-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Others/Software/slack">Slack
+</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Others/tex-formula">Tex 数式
+</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span>Principle</span>
+        <span class="toc-accordion">▼</span>
+        <ul class="toc-hidden">
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Principle/7-Principles-of-Software-Test">ソフトウェアテストの7原則
+</a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <span>Reading-Notes</span>
         <span class="toc-accordion">▼</span>
         <ul class="toc-hidden">
+          <li>
+            <span>software-design</span>
+            <span class="toc-accordion">▼</span>
+            <ul class="toc-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/software-design/2016-09-log">2016/09 ログ出力のベストプラクティス
+</a>
+              </li>
+            </ul>
+          </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/The-Agile-Samurai">アジャイルサムライ
 </a>
