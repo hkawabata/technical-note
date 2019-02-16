@@ -5,7 +5,7 @@ main_image: https://user-images.githubusercontent.com/13412823/52898457-a4b2c680
 
 # Jekyll とは
 
-静的サイトジェネレータ。
+Ruby 製の静的サイトジェネレータ。
 
 - Markdown や HTML/CSS を利用してウェブサイトを生成
 - ブログのような形態を意識しており、テンプレートを用いて簡単にウェブページが作成できる
