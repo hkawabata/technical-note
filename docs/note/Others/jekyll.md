@@ -63,10 +63,14 @@ gist のコードスニペットを埋め込める。
 
 ## jekyll-sitemap
 
+https://github.com/jekyll/jekyll-sitemap
+
 サイトのルートに sitemap.xml を自動生成する。
 
 
 ## jekyll-seo-tag
+
+https://github.com/jekyll/jekyll-seo-tag
 
 検索エンジン向けのメタタグを生成する。
 
@@ -75,6 +79,9 @@ gist のコードスニペットを埋め込める。
 ```yaml
 plugins:
   - jekyll-seo-tag
+
+webmaster_verifications:
+  google: ...
 ```
 
 `_layouts/default.html`:
