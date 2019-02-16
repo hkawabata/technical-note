@@ -1,6 +1,6 @@
 ---
 title: Technical Notes
-redirect_from: "/foo/"
+redirect_from: "/note/"
 ---
 
 # 概要
