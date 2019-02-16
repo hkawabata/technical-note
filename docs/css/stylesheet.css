@@ -152,6 +152,8 @@ body {
     margin-top: 40px;
     margin-left: 15%;
     max-width: 70%;
-    border: solid 3px #000000;
     font-weight: bold;
+    background: #cde4ff;
+    border-top: solid 5px #5989cf;
+    border-bottom: solid 5px #5989cf;
 }
