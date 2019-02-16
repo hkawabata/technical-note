@@ -9,7 +9,7 @@ main_image: https://user-images.githubusercontent.com/13412823/52898457-a4b2c680
 
 - Markdown や HTML/CSS を利用してウェブサイトを生成
 - ブログのような形態を意識しており、テンプレートを用いて簡単にウェブページが作成できる
-- 
+- GitHub Pages はコレで動いている
 
 # 基本的な使い方
 
