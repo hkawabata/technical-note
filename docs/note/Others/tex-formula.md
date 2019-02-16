@@ -2,10 +2,9 @@
 title: Tex 数式
 ---
 
+# 特殊文字・記号
 
-## 特殊文字・記号
-
-### ギリシャ文字
+## ギリシャ文字
 
 | 読み | 記法 | 表示 | 読み | 記法 | 表示 |
 | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -22,7 +21,7 @@ title: Tex 数式
 | ラムダ | `\lambda`, `\Lambda` | $$\lambda$$, $$\Lambda$$ | プサイ | `\psi`, `\Psi` | $$\psi$$, $$\Psi$$ |
 | ミュー | `\mu` | $$\mu$$ | オメガ | `\omega`, `\Omega` | $$\omega$$, $$\Omega$$ |
 
-### その他の文字・記号
+## その他の文字・記号
 
 | 記法 | 表示 |
 | :--- | :---: |
@@ -40,9 +39,9 @@ title: Tex 数式
 | `\` | $$ $$ |
 | `\` | $$ $$ |
 
-## 数学記号
+# 数学記号
 
-### 大きな記号
+## 大きな記号
 
 | 内容 | 記法 | 表示 | 備考 |
 |:---:|:---|:---:|:---|
@@ -67,7 +66,7 @@ title: Tex 数式
 |  | `\` | $$ $$ |  |
 
 
-### 二項演算
+## 二項演算
 
 | 記法 | 表示 | 記法 | 表示 | 記法 | 表示 | 記法 | 表示 |
 |:---|:---:|:---|:---:|:---|:---:|:---|:---:|
@@ -87,9 +86,9 @@ title: Tex 数式
 | `\nearrow` | $$\nearrow$$ | `\searrow` | $$\searrow$$ | `\nwarrow` | $$\nwarrow$$ | `\swarrow` | $$\swarrow$$ |
 | `\parallel` | $$\parallel$$ | `\bot` | $$\bot$$ |
 
-## ベクトル・行列・連立方程式など
+# ベクトル・行列・連立方程式など
 
-### ベクトル
+## ベクトル
 
 `\left(`, `\right)`, `array`を使う。
 
@@ -99,7 +98,7 @@ $\vec x = \left( \begin{array}{c} x_1 \\ x_2 \\ x_3 \\ \vdots \\ x_n \end{array}
 
 $$\vec x = \left( \begin{array}{c} x_1 \\ x_2 \\ x_3 \\ \vdots \\ x_n \end{array} \right)$$
 
-### 行列
+## 行列
 
 `pmatrix`を使う。
 
@@ -109,11 +108,11 @@ $A = \begin{pmatrix} a & b & c \\ p & q & r \\ x & y & z \end{pmatrix}$
 
 $$A = \begin{pmatrix} a & b & c \\ p & q & r \\ x & y & z \end{pmatrix}$$
 
-### 連立方程式・場合分け
+## 連立方程式・場合分け
 
 `cases`を使う。
 
-#### 連立方程式
+### 連立方程式
 
 ```
 $\begin{cases} x + 2y + 4z &= 5 \\ 3x - y &= 1 \\ 4x + 2y -5z &= 0 \end{cases}$
@@ -121,7 +120,7 @@ $\begin{cases} x + 2y + 4z &= 5 \\ 3x - y &= 1 \\ 4x + 2y -5z &= 0 \end{cases}$
 
 $$\begin{cases} x + 2y + 4z &= 5 \\ 3x - y &= 1 \\ 4x + 2y -5z &= 0 \end{cases}$$
 
-#### 場合分け
+### 場合分け
 
 ```
 $f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\mbox{ is odd} \end{cases}$
@@ -130,9 +129,9 @@ $f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\m
 $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\mbox{ is odd} \end{cases}$$
 
 
-## アクセント・修飾
+# アクセント・修飾
 
-### アクセント
+## アクセント
 
 | 記法 | 表示 | 記法 | 表示 | 記法 | 表示 |
 | :--- | :---: | :--- | :---: | :--- | :---: |
@@ -141,7 +140,7 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 | `\tilde X` | $$\tilde X$$ | `\bar X` | $$\bar X$$ |
 
 
-### 修飾
+## 修飾
 
 | 記法 | 表示 | 記法 | 表示 |
 | :--- | :---: | :--- | :---: |
@@ -152,9 +151,9 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 
 
 
-## 整形
+# 整形
 
-### 文字サイズ
+## 文字サイズ
 
 | 記法 | サイズ（%） |
 |:---|:---:|
@@ -169,9 +168,9 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 | `\huge` | 200 |
 | `\HUGE` | 250 |
 
-### 分数の整式
+## 分数の整式
 
-#### 分母・分子を見やすいサイズに
+### 分母・分子を見やすいサイズに
 
 `\frac`を使って分数を表示できるが、環境によっては分母・分子が小さく表示されることがある。
 
@@ -193,7 +192,7 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 > 
 > $$f(x) = \cfrac{x}{1 + x^2}$$
 
-#### 連分数
+### 連分数
 
 連分数を表示したい場合、`\frac`を入れ子にすれば良いが、入れ子にした分数はサイズが小さくなる。`\displaystyle`を使ってもまだ小さい。
 
@@ -220,7 +219,7 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 > $$\displaystyle \frac{x}{1 + \displaystyle \frac{x^2}{1 + x}}$$
 
 
-### 括弧のサイズ
+## 括弧のサイズ
 
 単に`()`, `{}`, `[]`, `||`とすると、サイズ（高さ）が1文字分に固定され、分数などを表示するときに汚くなる。
 
@@ -239,7 +238,7 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 > $$y = 3\left(x + \cfrac{x^2}{1 + x}\right)$$
 
 
-### 真下・真上の添え字
+## 真下・真上の添え字
 
 `\underset{}{}`, `\overset{}{}`で真下・真上に添え字がつけられる。
 
@@ -254,7 +253,7 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 > $$\overset{x}{minimize}(f(x))$$
 
 
-### 空白
+## 空白
 
 |内容|記法|表示|
 |:--|:--|:--|
@@ -266,16 +265,16 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 |小スペース|`a\,b`|$$a\,b$$|
 |負の小スペース|`a\!b`|$$a\!b$$|
 
-## Tips
+# Tips
 
-### 数式の色
+## 数式の色
 
 `$\color{tomato}{\exp\left(\cfrac{-x^2}{2}\right)}$`などのようにして、数式の色を変えられる：
 
 $$\color{tomato}{\exp\left(\cfrac{-x^2}{2}\right)}$$
 
 
-### 数式中にローマン体の文字を表示
+## 数式中にローマン体の文字を表示
 
 数式中の文字は基本的に変数と見なされ、イタリック体（斜体）で表示される。
 
