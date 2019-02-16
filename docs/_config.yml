@@ -10,3 +10,7 @@ markdown: kramdown
 plugins:
   - jekyll-sitemap
   - jekyll-octicons
+  - jekyll-seo-tag
+
+webmaster_verifications:
+  google: pwPztJ8mLIFCyqUhQTXZ8OoeaVx9CL3mXqQkVWlQsgY
