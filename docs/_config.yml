@@ -8,6 +8,7 @@ highlight_options:
 markdown: kramdown
 
 plugins:
+  - jekyll-redirect-from
   - jekyll-sitemap
   - jekyll-octicons
   - jekyll-seo-tag
