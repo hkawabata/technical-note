@@ -6,6 +6,10 @@ highlight_options:
   linenos: true
 
 markdown: kramdown
+kramdown:
+  input: GFM
+  extensions:
+    - autolink
 
 plugins:
   - jekyll-redirect-from
