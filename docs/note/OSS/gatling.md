@@ -516,6 +516,57 @@ $ bin/gatling.sh -ro ${MY_SIMULATION_LOG_DIR}
 - 方法2: シナリオにウォームアップも含め、テスト後 simulation.log からウォームアップ中のレコードを削除してからレポートを作成する
 
 
+# トラブルシューティング
+
+## Unexpected character '"'
+
+feeder を使って tsv ファイルを読んだときのエラー。
+
+```
+Exception in thread "main" java.lang.RuntimeException: Unexpected character ('"' (code 34)): Expected separator ('"' (code 34)) or end-of-line
+```
+
+tsv でダブルクオートがカラムの両端以外に来るとエラーになる？
+
+vim で一括エスケープ（`:%s/\"/\\\"/g`）すると解消した。
+
+## Cannot assign requested address
+
+リクエストがほとんど全てエラーになる。
+
+投げる側のエラー。
+
+```
+================================================================================
+2019-03-18 17:05:39                                         140s elapsed
+---- Access with param 'hoge' ------------------------------------
+[####                                                                      ]  6%
+          waiting: 12099  / active: 0      / done:801   
+---- Access with param 'q' -----------------------------------------------------
+[##-                                                                       ]  3%
+          waiting: 5817945 / active: 505    / done:240650
+---- Access with param 'q', 'all' -------------------------------------
+[####-                                                                     ]  6%
+          waiting: 12099  / active: 1      / done:800   
+---- Requests ------------------------------------------------------------------
+> Global                                                   (OK=28535  KO=213774)
+> hoge                                                     (OK=359    KO=442   )
+> q                                                        (OK=27818  KO=212890)
+> q, all                                                   (OK=358    KO=442   )
+---- Errors --------------------------------------------------------------------
+> j.n.ConnectException: Cannot assign requested address: pfmtest 213522 (99.88%)
+-api.example.jp/xxx.xxx.xxx.xxx:8080
+> status.find.is(200), but actually found 500                       252 ( 0.12%)
+================================================================================
+```
+
+デフォルトだとユーザごとにコネクションプールを持つ設定になっているらしく、コネクションが枯渇している模様。
+
+`HttpProtocolBuilder`に`.shareConnections`を設定すると解決。
+
+```scala
+val httpConf: HttpProtocolBuilder = http.baseURLs(hosts.map(host => s"http://$host:$port")).shareConnections
+```
 
 # 読むと良いかもしれないページ
 
