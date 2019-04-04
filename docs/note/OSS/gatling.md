@@ -499,9 +499,9 @@ $ bin/gatling.sh -ro ${MY_SIMULATION_LOG_DIR}
 
 # 各種設定
 
-conf/gatling.conf に記述する設定項目
+## conf/gatling.conf
 
-## レスポンスタイムの区切り境界値
+### レスポンスタイムの区切り境界値
 
 `lowerBound`,`higherBound`に記述する（ms 単位）。
 
@@ -521,6 +521,9 @@ gatling {
   ...
 }
 ```
+
+## conf/gatling-akka.conf
+
 
 
 # Tips
