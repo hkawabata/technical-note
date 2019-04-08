@@ -44,12 +44,45 @@ $ uptime
 
 ## ネットワークコネクション数
 
-- Too many open files
-  - ファイルディスクリプタの不足
-  - `cat /proc/1234/limits`のようにプロセスが開けるファイル数上限を調べられる
-- Ephemeral port の不足
-- SYNs to LISTEN sockets dropped
-  - 接続が多すぎて受けきれていない
-  - `netstat -s`で確認できる
+### Too many open files
+
+- ファイルディスクリプタの不足
+- `cat /proc/1234/limits`のようにプロセスが開けるファイル数上限を調べられる
+
+### Ephemeral port の不足
+
+```bash
+$ cat /proc/sys/net/ipv4/ip_local_port_range
+32768	60999
+```
+
+→ 32768〜60999の約28,000のポートが通信に使えるという意味。
+
+```
+$ netstat | grep tcp | wc -l
+27194
+```
+
+→ 枯渇しかけてる？
+
+このうち、`TIME_WAIT`（= 接続終了の最終信号を送った後、待機しているポート）が多数を占めるのであれば`tcp_tw_reuse`のフラグを設定することで回避できる可能性あり。
+
+```bash
+$ netstat | grep tcp
+...
+tcp        0      0 example.client.:49334 example.server.:2379 TIME_WAIT
+...
+```
+
+```
+$ cat /proc/sys/net/ipv4/tcp_tw_reuse
+0
+```
+
+
+### SYNs to LISTEN sockets dropped
+
+- 接続が多すぎて受けきれていない
+- `netstat -s`で確認できる
 
 
