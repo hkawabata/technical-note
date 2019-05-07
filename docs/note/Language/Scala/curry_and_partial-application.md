@@ -4,7 +4,7 @@ title: カリー化・部分適用
 
 # カリー化
 
-複数の引数を取る関数を、1つの引数を取る関数のチェーンとして扱う
+複数の引数を取る関数を、1つの引数を取る関数のチェーンとして扱う。
 
 ```scala
 def func(x: Int)(y: Int)(z: Int) = 100 * x + 10 * y + z
@@ -62,6 +62,27 @@ val funcCurried3_2 = funcCurried2(2)
 
 # 部分適用
 
-```scala
+複数の引数を取る関数に対して、一部の引数に値を束縛した関数を返す。
 
+```scala
+def func(x: Int, y: Int, z: Int) = 100 * x + 10 * y + z
+// func: (x: Int, y: Int, z: Int)Int
+
+val funcPartialApplied1 = func(_, _, 3)
+// funcPartialApplied1: (Int, Int) => Int = $$Lambda$1051/662409124@6cd64ee8
+
+val funcPartialApplied2 = func(1, _, 3)
+// funcPartialApplied2: Int => Int = $$Lambda$1052/1223213866@20a7953c
+
+val funcPartialApplied3 = func _
+// funcPartialApplied3: (Int, Int, Int) => Int = $$Lambda$1074/1947378744@1e3ff233
+
+funcPartialApplied1(4, 5)
+// res0: Int = 453
+
+funcPartialApplied2(6)
+// res1: Int = 163
+
+funcPartialApplied3(7, 8, 9)
+// res2: Int = 789
 ```
