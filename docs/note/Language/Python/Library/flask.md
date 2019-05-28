@@ -2,21 +2,6 @@
 title: Flask
 ---
 
-# リクエストを送信
-
-クエリの受け取りなど？
-```python
-from flask import Flask, request
-# アクセス元で指定されたパラメータ（ここでは'query'）を取得
-query  = request.arg.get('query', '')
- 
-# アクセス元の情報を取得（OS, ブラウザなど）
-ua = request.headers.get('User-Agent')
- 
-# アクセス元が求める返り値の型を取得
-accept = request.headers.get('Accept')
-```
-
 # REST API サーバ
 
 ```
@@ -67,26 +52,21 @@ def say_hello():
     return 'Hello World'
 ```
 
-# 変数ルール
-
-URL に変数をあてることもできる。
+# リクエスト情報の取得
 
 ```python
-@app.route('/user/<username>')
-def show_user_profile(username):
-	return "User {0}".format(username)
-
-# 引数型指定
-@app.route('/post/<int:post_id>')
-def show_post(post_id):
-	return "post {0}".format(post_id)
+from flask import Flask, request
+# アクセス元で指定されたパラメータ（ここでは'query'）を取得
+query  = request.arg.get('query', '')
+ 
+# アクセス元の情報を取得（OS, ブラウザなど）
+ua = request.headers.get('User-Agent')
+ 
+# アクセス元が求める返り値の型を取得
+accept = request.headers.get('Accept')
 ```
-引数型指定は
-- int: 整数
-- float: 浮動小数点
-- path: スラッシュも受け取る
 
-# クエリパラメータを受け取る
+## リクエストパラメータ
 
 サーバ側のコード(server_template.py)：
 
@@ -197,7 +177,7 @@ def application():
 あとは GET のときと同様。
 
 
-# パスパラメータを受け取る
+## パスパラメータ
 
 ```python
 @app.route('/hoge/<int:status>')
