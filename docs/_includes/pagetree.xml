@@ -20,6 +20,16 @@
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
           <li>
+            <span>Assembly</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/Assembly/register">レジスタ
+</a>
+              </li>
+            </ul>
+          </li>
+          <li>
             <span>Java</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
@@ -105,6 +115,20 @@
               </li>
             </ul>
           </li>
+          <li>
+            <span>Scala</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/Scala/curry_and_partial-application">カリー化・部分適用
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/Scala/regular-expression">正規表現
+</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </li>
       <li>
@@ -138,6 +162,16 @@
 </a>
               </li>
             </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span>Management</span>
+        <span class="pagetree-accordion">▼</span>
+        <ul class="pagetree-hidden">
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Management/seven-tools-for-quality-control">QC 7つ道具
+</a>
           </li>
         </ul>
       </li>
@@ -278,6 +312,14 @@
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
           <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/Building-Evolutionary-Architectures">進化的アーキテクチャ
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/HIGH-OUTPUT-MANAGEMENT">HIGH-OUTPUT-MANAGEMENT
+</a>
+          </li>
+          <li>
             <span>software-design</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
@@ -296,7 +338,7 @@
 </a>
           </li>
           <li>
-            <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/Web-API-The-Good-Parts">&quot;Web API: The Good Parts&quot;
+            <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/Web-API-The-Good-Parts">Web API The Good Parts
 </a>
           </li>
         </ul>
@@ -316,11 +358,19 @@
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
           <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Tool/gnuplot">gnuplot
+</a>
+          </li>
+          <li>
             <a href="https://hkawabata.github.io/technical-note/note/Tool/kSar">kSar
 </a>
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/Tool/mat">mat - Eclipse Memory Analyzer
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Tool/plantuml">PlantUML
 </a>
           </li>
         </ul>
