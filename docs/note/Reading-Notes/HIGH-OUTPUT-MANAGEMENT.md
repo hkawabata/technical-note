@@ -1,5 +1,5 @@
 ---
-title: HIGH-OUTPUT-MANAGEMENT
+title: HIGH OUTPUT MANAGEMENT
 ---
 
 # イントロダクション
