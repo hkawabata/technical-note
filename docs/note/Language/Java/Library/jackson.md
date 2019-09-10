@@ -255,3 +255,69 @@ public class Hoge {
 ```json
 {"@class":"Hoge","id":10,"name":"hoge"}
 ```
+
+## Map 型のフィールドをフラットに展開する
+
+```java
+public class Hoge {
+    private String name;
+
+    private Map<String, String> props = new HashMap<>();
+    
+    private Map<String, String> props2 = new HashMap<>();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Map<String, String> getProps() {
+        return props;
+    }
+
+    public void setProps(Map<String, String> props) {
+        this.props = props;
+    }
+
+    @JsonAnyGetter
+    public Map<String, String> getProps2() {
+        return props2;
+    }
+
+    public void setProps2(Map<String, String> props2) {
+        this.props2 = props2;
+    }
+}
+```
+
+```java
+Hoge h = new Hoge();
+h.setName("bean");
+h.getProps().put("key1", "value1");
+h.getProps().put("key2", "value2");
+h.getProps2().put("key3", "value3");
+h.getProps2().put("key4", "value4");
+
+ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+String json = objectMapper.writeValueAsString(h);
+System.out.println(json);
+```
+
+```json
+{
+  "name" : "hoge",
+  "props" : {
+    "key1" : "value1",
+    "key2" : "value2"
+  },
+  "key3": "value3",
+  "key4": "value4"
+}
+```
+
+Scala の case class では動かないらしく、通常のクラスを使う必要がある（2019/9/10時点）。
+
+https://github.com/FasterXML/jackson-module-scala/issues/308
