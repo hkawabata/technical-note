@@ -20,11 +20,12 @@ $$\begin{cases} \displaystyle \sum_{j=1}^N a_{ij} x_j \lesseqqgtr b_i, & i = 1, 
 
 ## シンプレックス法 (Simplex method)
 
-### 標準形への変換
+### 1. 標準形への変換
 
 - 以下のような問題に落とし込みたい
 	- 目的関数の最小化問題
-	- 制約は全て上限制約の不等式
+	- 多項式の制約は全て上限制約を課す不等式
+	- 変数 $$x_i$$ は全て非負
 
 $$min \left( z \right)$$
 
@@ -32,19 +33,19 @@ $$\begin{cases} \displaystyle \sum_{j=1}^N a_{ij} x_j \le b_i, & i = 1, ..., M \
 
 #### 最大化問題であるとき
 
-符号を反転させ、$$z' = -z$$ の最小化問題として扱えば良いだけ。
+符号を反転させ、$$z' = -z$$ の最小化問題として扱う。
 
-#### 下限制約の不等式があるとき
+#### 下限制約を課す不等式があるとき
 
-上限制約の不等式
+下限制約を課す不等式
 
 $$\displaystyle \sum_{j=1}^N a_{ij} x_j \ge b_i$$
 
-は下限制約の不等式
+は上限制約を課す不等式
 
 $$\displaystyle \sum_{j=1}^N \left( -a_{ij} x_j \right) \le -b_i$$
 
-に変換できる。
+に変換する。
 
 #### 等式の制約があるとき
 
@@ -52,14 +53,17 @@ $$\displaystyle \sum_{j=1}^N a_{ij} x_j = b_i$$
 
 は、
 
-$$\displaystyle \sum_{j=1}^N a_{ij} x_j \ge b_i$$
-
-$$\displaystyle \sum_{j=1}^N a_{ij} x_j \le b_i$$
+$$\begin{cases} \displaystyle \sum_{j=1}^N a_{ij} x_j \ge b_i$$ \\ \displaystyle \sum_{j=1}^N a_{ij} x_j \le b_i \end{cases}$$
 
 に分解する。
 
 #### 変数の値として負の数も許容されるとき
 
-$$x_i$$
+特定の変数 $$x_i$$ に非負条件がない場合、
 
-### スラック形への変換
+$$\begin{cases} x_i = x_{i_1} - x_{i_2} \\ x_{i_1}, x_{i_2} \ge 0 \end{cases}$$
+
+のように定義し、$$x_i$$ を $$x_{i_1} - x_{i_2}$$ に置き換えて処理を行う（変数は1つ増えることになる）。
+
+
+### 2. スラック形への変換
