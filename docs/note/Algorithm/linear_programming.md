@@ -94,6 +94,6 @@ $$\begin{cases} x_i = x_{i_1} - x_{i_2} \\ x_{i_1}, x_{i_2} \ge 0 \end{cases}$$
 
 コンセプト：非負条件以外の不等式制約を等式制約に変換
 
-$$\displaystyle \sum_{j=1}^N a_{ij} x_j \le b_i, & i = 1, ..., M$$
+$$\displaystyle \sum_{j=1}^N a_{ij} x_j \le b_i$$
 
 $$\Longleftrightarrow \begin{cases} \displaystyle s_i = b_i - \sum_{j=1}^N a_{ij} x_j, & i = 1, ..., M \\ s_i \ge 0 \end{cases}$$
