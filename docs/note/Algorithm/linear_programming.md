@@ -143,7 +143,7 @@ $$x_1, ..., x_N = 0$$ とおくと非負条件を満たさない変数が存在�
 
 新たなスラック変数 $$x^{\prime}_i$$ を導入し、以下の補助最小化問題を解く。
 
-$$\begin{cases}z_2 = \sum_i x^{\prime}_i \\ \displaystyle x_{N+i} = b_i - \sum_{j=1}^N a_{ij} x_j, & \mbox{if} b_i \ge 0 \\ \displaystyle x_{N+i} = b_i - \sum_{j=1}^N a_{ij} x_j + x^{\prime}_i, & \mbox{if} b_i \lt 0 \\ x_1, ..., x_{N+2M} \ge 0 \end{cases}$$
+$$\begin{cases}z_2 = \sum_i x^{\prime}_i \\ \displaystyle x_{N+i} = \begin{cases} b_i - \sum_{j=1}^N a_{ij} x_j, & \mbox{if } b_i \ge 0 \\ \displaystyle x_{N+i} = b_i - \sum_{j=1}^N a_{ij} x_j + x^{\prime}_i, & \mbox{if } b_i \lt 0 \end{cases} \\ x_1, ..., x_{N+2M} \ge 0 \end{cases}$$
 
 この補助問題をシンプレックス法で解く（必ず解ける）。
 
