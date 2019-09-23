@@ -16,6 +16,28 @@ $$max \left( z \right) \mbox{ or } min \left( z \right)$$
 
 $$\begin{cases} \displaystyle \sum_{j=1}^N a_{ij} x_j \lesseqqgtr b_i, & i = 1, ..., M \\ x_j \ge 0, & j = 1, ..., N \end{cases}$$
 
+## 例
+
+- 以下の条件で、売上を最大にするには製品A, Bをそれぞれいくつ作れば良いか？
+	- ある工場で部品1, 2, 3の在庫がそれぞれ18000, 21000, 21000個
+	- 製品A, Bそれぞれの販売単価、および作るのに必要な部品は下表の通り
+
+|  | 部品1 | 部品2 | 部品3 | 単価 |
+| :-- | :-- | :-- | :-- | :-- |
+| 製品A | 1 | 2 | 3 | 20000 |
+| 製品B | 3 | 3 | 1 | 10000 |
+
+$$z = 20000x_1 + 10000x_2$$
+
+$$max \left( z \right)$$
+
+$$\begin{cases} x_1 + 3x_2 \le 18000 \\ 2x_1 + 3x_2 \le 21000 \\ 3x_1 + x_2 \le 21000 \\ x_1, x_2 \ge 0 \end{cases}$$
+
+このケースであれば、変数が2つしかないためグラフを利用して解ける。
+
+![LP](https://user-images.githubusercontent.com/13412823/65401522-9d7d1800-de03-11e9-98ba-075557da52c6.png)
+
+
 # 解法
 
 ## シンプレックス法 (Simplex method)
