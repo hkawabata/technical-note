@@ -52,7 +52,8 @@ title: Tex 数式
 |  | `\ln{x}` | $$\ln{x}$$ |
 | 微分 | `\dot{x}`,`\ddot{x}` | $$\dot{x}$$, $$\ddot{x}$$ | `\ddddot`（4階微分）まで |
 |  | `\cfrac{dy}{dx}` | $$\cfrac{dy}{dx}$$ |
-|  | `\cfrac{\partial^2 f}{\partial x \partial y}` | $$\cfrac{\partial y}{\partial x}$$ |
+|  | `\cfrac{\partial y}{\partial x}` | $$\cfrac{\partial y}{\partial x}$$ |
+|  | `\cfrac{\partial^2 f}{\partial x \partial y}` | $$\cfrac{\partial^2 f}{\partial x \partial y}$$ |
 |  | `\nabla f` | $$\nabla f$$ |
 | 積分 | `\int\limits_{a}^{b}y\,dx` | $$\int\limits_{a}^{b}y\,dx$$ ||
 |  | `\int_{a}^{b}y\,dx` | $$\int_{a}^{b}y\,dx$$ |  |
@@ -175,21 +176,21 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 `\frac`を使って分数を表示できるが、環境によっては分母・分子が小さく表示されることがある。
 
 > **例）**
-> 
+>
 > `$f(x) = \frac{x}{1 + x^2}$`
-> 
+>
 > $$f(x) = \frac{x}{1 + x^2}$$
 
 `\displaystyle`を前につける、あるいは`\frac`の代わりに`\cfrac`を使うと、この問題が解決できる。
 
 > **例）**
-> 
+>
 > `$\displaystyle f(x) = \frac{x}{1 + x^2}$`
-> 
+>
 > $$\displaystyle f(x) = \frac{x}{1 + x^2}$$
-> 
+>
 > `$f(x) = \cfrac{x}{1 + x^2}$`
-> 
+>
 > $$f(x) = \cfrac{x}{1 + x^2}$$
 
 ### 連分数
@@ -197,25 +198,25 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 連分数を表示したい場合、`\frac`を入れ子にすれば良いが、入れ子にした分数はサイズが小さくなる。`\displaystyle`を使ってもまだ小さい。
 
 > **例）**
-> 
+>
 > `$\frac{x}{1 + \frac{x^2}{1 + x}}$`
-> 
+>
 > $$\frac{x}{1 + \frac{x^2}{1 + x}}$$
-> 
+>
 > `$\displaystyle \frac{x}{1 + \frac{x^2}{1 + x}}$`
-> 
+>
 > $$\displaystyle \frac{x}{1 + \frac{x^2}{1 + x}}$$
 
 入れ子の分数も通常サイズにしたい場合、`\cfrac`を入れ子にすると良い。また、入れ子にする分数の直前にも`\displaystyle`を入れることでもうまくいく。
 
 > **例）**
-> 
+>
 > `$\cfrac{x}{1 + \cfrac{x^2}{1 + x}}$`
-> 
+>
 > $$\cfrac{x}{1 + \cfrac{x^2}{1 + x}}$$
-> 
+>
 > `$\displaystyle \frac{x}{1 + \displaystyle \frac{x^2}{1 + x}}$`
-> 
+>
 > $$\displaystyle \frac{x}{1 + \displaystyle \frac{x^2}{1 + x}}$$
 
 
@@ -224,17 +225,17 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 単に`()`, `{}`, `[]`, `||`とすると、サイズ（高さ）が1文字分に固定され、分数などを表示するときに汚くなる。
 
 > **例）**
-> 
+>
 > `$y = 3(x + \cfrac{x^2}{1 + x})$`
-> 
+>
 > $$y = 3(x + \cfrac{x^2}{1 + x})$$
 
 `\left(`, `\right)`などとすることでこれを解決できる。
 
 > **例）**
-> 
+>
 > `$y = 3\left(x + \cfrac{x^2}{1 + x}\right)$`
-> 
+>
 > $$y = 3\left(x + \cfrac{x^2}{1 + x}\right)$$
 
 
@@ -243,13 +244,13 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 `\underset{}{}`, `\overset{}{}`で真下・真上に添え字がつけられる。
 
 > **例）**
-> 
+>
 > `$\underset{x}{minimize}(f(x))$`
-> 
+>
 > $$\underset{x}{minimize}(f(x))$$
-> 
+>
 > `$\overset{x}{minimize}(f(x))$`
-> 
+>
 > $$\overset{x}{minimize}(f(x))$$
 
 
@@ -281,22 +282,19 @@ $$\color{tomato}{\exp\left(\cfrac{-x^2}{2}\right)}$$
 `\rm`あるいは`\mbox`を使うと、ローマン体の文字を表示できる。
 
 > **例）**
-> 
+>
 > `$n_{\rm total} = n_{\rm even} + n_{\rm odd}$`
-> 
+>
 > $$n_{\rm total} = n_{\rm even} + n_{\rm odd}$$
-> 
+>
 > `$\mbox{if } n \mbox{ is even}$`
-> 
+>
 > $$\mbox{if } n \mbox{ is even}$$
 
 添え字などをローマン体にしたい場合、`\mbox`を使うとサイズが普通の文字と同じになってしまうので注意。
 
 > **例）**
-> 
+>
 > `$n_\mbox{total} = n_\mbox{even} + n_\mbox{odd}$`
-> 
+>
 > $$n_\mbox{total} = n_\mbox{even} + n_\mbox{odd}$$
-
-
-
