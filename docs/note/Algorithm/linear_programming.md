@@ -53,7 +53,7 @@ $$\displaystyle \sum_{j=1}^N a_{ij} x_j = b_i$$
 
 は、
 
-$$\begin{cases} \displaystyle \sum_{j=1}^N a_{ij} x_j \ge b_i$$ \\ \displaystyle \sum_{j=1}^N a_{ij} x_j \le b_i \end{cases}$$
+$$\begin{cases} \displaystyle \sum_{j=1}^N a_{ij} x_j \ge b_i \\ \displaystyle \sum_{j=1}^N a_{ij} x_j \le b_i \end{cases}$$
 
 に分解する。
 
