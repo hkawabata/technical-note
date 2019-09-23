@@ -92,8 +92,16 @@ $$\begin{cases} x_i = x_{i_1} - x_{i_2} \\ x_{i_1}, x_{i_2} \ge 0 \end{cases}$$
 
 ### 2. スラック形への変換
 
-コンセプト：非負条件以外の不等式制約を等式制約に変換
+- 非負条件以外の不等式制約を等式制約に変換したい
 
 $$\displaystyle \sum_{j=1}^N a_{ij} x_j \le b_i$$
 
 $$\Longleftrightarrow \begin{cases} \displaystyle s_i = b_i - \sum_{j=1}^N a_{ij} x_j, & i = 1, ..., M \\ s_i \ge 0 \end{cases}$$
+
+$$s_i$$ は不等式の余裕（= slack）を埋める変数であり、**スラック変数** と呼ばれる。
+
+スラック変数をその他の変数と同様に扱い、$$s_i = x_{N+i}$$ と置く。
+
+スラック形：
+
+$$\begin{cases}z = \sum_{j=1}^N c_j x_j \\ \displaystyle x_{n+i} = b_i - \sum_{j=1}^N a_{ij} x_j, & i = 1, ..., M \\ x_1, ..., x_{N+M} \ge 0 \end{cases}$$
