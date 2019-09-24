@@ -28,7 +28,7 @@ $$\cfrac{\partial S}{\partial a_k} = \displaystyle -2 \sum_{i=1}^N x_i^k \left(y
 
 なので、M+1 元一次連立方程式
 
-$$\sum_{i=1}^N x_i^k y_i = \sum_{j=0}^M \left\{ a_j \sum_{i=1}^N x_i^{j+k} \right\}$$
+$$\sum_{i=1}^N x_i^k y_i = \sum_{j=0}^M \left( a_j \sum_{i=1}^N x_i^{j+k} \right)$$
 
 $$
 \Longleftrightarrow

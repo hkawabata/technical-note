@@ -6,6 +6,20 @@
     <span class="pagetree-accordion">▼</span>
     <ul>
       <li>
+        <span>Algorithm</span>
+        <span class="pagetree-accordion">▼</span>
+        <ul class="pagetree-hidden">
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Algorithm/least_square">最小二乗法
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Algorithm/linear_programming">線形計画法
+</a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <span>IDE</span>
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
@@ -316,7 +330,7 @@
 </a>
           </li>
           <li>
-            <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/HIGH-OUTPUT-MANAGEMENT">HIGH-OUTPUT-MANAGEMENT
+            <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/HIGH-OUTPUT-MANAGEMENT">HIGH OUTPUT MANAGEMENT
 </a>
           </li>
           <li>
