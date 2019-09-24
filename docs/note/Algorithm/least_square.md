@@ -24,9 +24,25 @@ $$\cfrac{\partial S}{\partial a_k} = \displaystyle -2 \sum_{i=1}^N x_i^k \left(y
 
 なので、M 元一次連立方程式
 
+1
+
 $$\sum_{i=1}^N x_i^k y_i = \sum_{j=0}^M \left( a_j \sum_{i=1}^N x_i^{j+k} \right)$$
 
-$$\sum_{i=1}^N x_i^k y_i = \sum_{j=0}^M \left{ a_j \sum_{i=1}^N x_i^{j+k} \right}$$
+2
+
+$$\sum_{i=1}^N x_i^k y_i = \sum_{j=0}^M \left\{ a_j \sum_{i=1}^N x_i^{j+k} \right\}$$
+
+3
+
+$$\sum_{i=1}^N x_i^k y_i = \sum_{j=0}^M \left\\{ a_j \sum_{i=1}^N x_i^{j+k} \right\\}$$
+
+4
+
+$$\sum_{i=1}^N x_i^k y_i = \sum_{j=0}^M \\left\{ a_j \sum_{i=1}^N x_i^{j+k} \\right\}$$
+
+5
+
+$$\sum_{i=1}^N x_i^k y_i = \sum_{j=0}^M \\left{ a_j \sum_{i=1}^N x_i^{j+k} \\right}$$
 
 $$\Longleftrightarrow
 \begin{pmatrix} a & b & c \\ p & q & r \\ x & y & z \end{pmatrix}$$
