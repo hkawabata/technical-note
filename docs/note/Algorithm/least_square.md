@@ -50,6 +50,8 @@ a_M
 \end{pmatrix}
 $$
 
-$$\left( s_k = \displaystyle \sum_{i=1}^N x_i^k, t_k = \displaystyle \sum_{i=1}^N x_i^k y_i \right)$$
+$$\mbox{where } s_k = \sum_{i=1}^N x_i^k, t_k = \sum_{i=1}^N x_i^k y_i$$
 
 を解くことに等しい。
+
+係数行列は対角行列であり、共通の要素も多いので、計算量は節約できる。
