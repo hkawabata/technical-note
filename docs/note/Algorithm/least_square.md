@@ -32,6 +32,8 @@ $$\sum_{i=1}^N x_i^k y_i = \sum_{j=0}^M \left\{ a_j \sum_{i=1}^N x_i^{j+k} \righ
 
 $$
 \Longleftrightarrow
+
+\begin{cases}
 \begin{pmatrix}
 t_0    \\
 \vdots \\
@@ -41,13 +43,16 @@ t_M
 \begin{pmatrix}
 s_0    & \cdots & s_M    \\
 \vdots & \ddots & \vdots \\
-s_M    & \cdots & s_2M
+s_M    & \cdots & s_{2M}
 \end{pmatrix}
 \begin{pmatrix}
-a_0 \\
+a_0    \\
 \vdots \\
 a_M
-\end{pmatrix}
+\end{pmatrix} \\
+s_k = \displaystyle \sum_{i=1}^N x_i^k \\
+t_k = \displaystyle \sum_{i=1}^N x_i^k y_i
+\end{cases}
 $$
 
 を解くことに等しい。
