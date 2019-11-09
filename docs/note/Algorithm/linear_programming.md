@@ -254,10 +254,10 @@ $$-x + 8 + s_1 = 8 \Leftrightarrow -x + s_1 = 0$$
 
 $$
 \begin{cases}
-  & -\frac{1}{2}x & + y & + \frac{1}{2}s_1 &       &       & = 4  & \qquad & \text{(A')} \\
-  &  \frac{3}{2}x &     & - \frac{1}{2}s_1 & + s_2 &       & = 3  & \qquad & \text{(B')} \\
-  &  \frac{7}{2}x &     & - \frac{1}{2}s_1 &       & + s_3 & = 11 & \qquad & \text{(C')} \\
-z & -2x           &     & + s_1            &       &       & = 8  & \qquad & \text{(Z')} \\
+\displaystyle   & -\frac{1}{2}x & + y & + \frac{1}{2}s_1 &       &       & = 4  & \qquad & \text{(A')} \\
+\displaystyle   &  \frac{3}{2}x &     & - \frac{1}{2}s_1 & + s_2 &       & = 3  & \qquad & \text{(B')} \\
+\displaystyle   &  \frac{7}{2}x &     & - \frac{1}{2}s_1 &       & + s_3 & = 11 & \qquad & \text{(C')} \\
+\displaystyle z & -2x           &     & + s_1            &       &       & = 8  & \qquad & \text{(Z')} \\
 \end{cases}
 $$
 
@@ -281,7 +281,7 @@ $$z = 8 + 2x - s_1$$ と $$x, s_1 \ge 0$$ より、係数が正である $$x$$ �
 
 x をゼロから増やしていったとき、$$x = 2$$ で (B') が非負条件の限界に達する：
 
-$3 - \frac{1}{2}s_1 + s_2 = 3 \Leftrightarrow - \frac{1}{2}s_1 + s_2 = 0$$
+$\displaystyle 3 - \frac{1}{2}s_1 + s_2 = 3 \Leftrightarrow - \frac{1}{2}s_1 + s_2 = 0$$
 
 よって、$$x$$ は2まで増やせる。
 
@@ -289,10 +289,10 @@ $3 - \frac{1}{2}s_1 + s_2 = 3 \Leftrightarrow - \frac{1}{2}s_1 + s_2 = 0$$
 
 $$
 \begin{cases}
-  &   & + y & + \frac{1}{3}s_1 & + \frac{1}{2}s_2 &       & = 5  & \qquad & \text{(A'')} \\
-  & x &     & - \frac{1}{3}s_1 & + \frac{2}{3}s_2 &       & = 2  & \qquad & \text{(B'')} \\
-  &   &     & - \frac{2}{3}s_1 & + 9s_2           & + s_3 & = 4  & \qquad & \text{(C'')} \\
-z &   &     & + \frac{1}{3}s_1 & + \frac{4}{3}s_2 &       & = 12 & \qquad & \text{(Z'')} \\
+\displaystyle   &   & + y & + \frac{1}{3}s_1 & + \frac{1}{2}s_2 &       & = 5  & \qquad & \text{(A'')} \\
+\displaystyle   & x &     & - \frac{1}{3}s_1 & + \frac{2}{3}s_2 &       & = 2  & \qquad & \text{(B'')} \\
+\displaystyle   &   &     & - \frac{2}{3}s_1 & + 9s_2           & + s_3 & = 4  & \qquad & \text{(C'')} \\
+\displaystyle z &   &     & + \frac{1}{3}s_1 & + \frac{4}{3}s_2 &       & = 12 & \qquad & \text{(Z'')} \\
 \end{cases}
 $$
 
@@ -307,7 +307,7 @@ $$
 
 **【値の収束】**
 
-$$z = 12 - \frac{1}{3}s_1 & - \frac{4}{3}s_2$$ と $$s_1, s_2 \ge 0$$ より、$$s_1, s_2$$ を増やしても $$z は12以上にならない$$（収束）。
+$$\displaystyle z = 12 - \frac{1}{3}s_1 - \frac{4}{3}s_2$$ と $$s_1, s_2 \ge 0$$ より、$$s_1, s_2$$ を増やしても $$z は12以上にならない$$（収束）。
 
 よって、$$(x, y) = 2, 5$$ のとき $$z$$ は最大値12を取る。
 
