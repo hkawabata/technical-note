@@ -209,8 +209,8 @@ $$z = x + 2y$$
 
 $$
 \begin{cases}
--x + y \le 1 \\
-x + 3y \le 9 \\
+-x & + y  & \le 1 \\
+x  & + 3y & \le 9 \\
 x, y \ge 0
 \end{cases}
 $$
