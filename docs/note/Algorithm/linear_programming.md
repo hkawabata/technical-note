@@ -182,9 +182,9 @@ $$\begin{cases} \displaystyle z_2 = - \sum_i x^{\prime}_i \\ x_{N+i} = \begin{ca
 ![](https://user-images.githubusercontent.com/13412823/68520289-bc633b00-02d9-11ea-8669-6893e903374c.png)
 
 
-## 具体例
+## 例題と解法
 
-### 原点が実行可能解であり、かつ有界
+### 原点が実行可能解、かつ領域が有界
 
 #### 問題
 
@@ -307,12 +307,14 @@ $$
 
 **【値の収束】**
 
-$$\displaystyle z = 12 - \frac{1}{3}s_1 - \frac{4}{3}s_2$$ と $$s_1, s_2 \ge 0$$ より、$$s_1, s_2$$ を増やしても $$z は12以上にならない$$（収束）。
+$$\displaystyle z = 12 - \frac{1}{3}s_1 - \frac{4}{3}s_2$$ と $$s_1, s_2 \ge 0$$ より、$$s_1, s_2$$ を増やしても $$z$$ は12以上にならない（収束）。
 
 よって、$$(x, y) = 2, 5$$ のとき $$z$$ は最大値12を取る。
 
+![探索経路](https://user-images.githubusercontent.com/13412823/68525364-049f4f00-0314-11ea-8d26-ed7788750ca3.png)
 
-### 原点が実行可能解であり、かつ非有界
+
+### 原点が実行可能解、かつ領域が非有界
 
 #### 問題
 
@@ -341,6 +343,8 @@ z & -x & - 2y &       &       & = 0 \\
 \end{cases}
 $$
 
+
+![探索経路](https://user-images.githubusercontent.com/13412823/68525362-049f4f00-0314-11ea-9ba0-c5e9a3891252.png)
 
 
 ### 原点が実行可能解でない
@@ -392,5 +396,7 @@ maximize $$z' = - t_1$$
 この最適解が $$z' = 0$$、即ち $$t_1 = 0$$ であれば、これを実現する解（= 実行可能解） $$x, y, s_1, s_2, s_3$$ が存在する。
 
 
+
+![探索経路](https://user-images.githubusercontent.com/13412823/68525363-049f4f00-0314-11ea-8bdf-baf82af4dddc.png)
 
 
