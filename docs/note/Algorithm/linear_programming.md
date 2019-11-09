@@ -190,12 +190,13 @@ $$\begin{cases} \displaystyle z_2 = - \sum_i x^{\prime}_i \\ x_{N+i} = \begin{ca
 
 $$
 \begin{cases}
--x + 2y \le 8 \\
-x + y \le 7 \\
-3x + y \le 15 \\
-x, y \ge 0
+-x & + 2y & \le 8 \\
+x  & + y  & \le 7 \\
+3x & + y  & \le 15 \\
 \end{cases}
 $$
+
+$$x, y \ge 0$$
 
 $$z = x + 2y$$
 
@@ -211,9 +212,10 @@ $$
 \begin{cases}
 -x & + y  & \le 1 \\
 x  & + 3y & \le 9 \\
-x, y \ge 0
 \end{cases}
 $$
+
+$$x, y \ge 0$$
 
 $$z = x + 2y$$
 
@@ -226,12 +228,13 @@ $$z = x + 2y$$
 
 $$
 \begin{cases}
-x + 4y \le 22 \\
-2x + y \le 9 \\
-x - 2y \le -4 \\
-x, y \ge 0
+x  & + 4y & \le 22 \\
+2x & + y  & \le 9 \\
+x  & - 2y & \le -4 \\
 \end{cases}
 $$
+
+$$x, y \ge 0$$
 
 $$z = x + 2y$$
 
