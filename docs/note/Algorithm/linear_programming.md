@@ -255,10 +255,10 @@ $$-0 + 2 \times (4 + \delta) + s_1 = 8 \Leftrightarrow s_1 + 2\delta = 0$$
 
 $$
 \begin{cases}
-\displaystyle   & -\frac{1}{2}x & + y & + \frac{1}{2}s_1 &       &       & = 4  & \qquad & \text{(A')} \\
-\displaystyle   &  \frac{3}{2}x &     & - \frac{1}{2}s_1 & + s_2 &       & = 3  & \qquad & \text{(B')} \\
-\displaystyle   &  \frac{7}{2}x &     & - \frac{1}{2}s_1 &       & + s_3 & = 11 & \qquad & \text{(C')} \\
-\displaystyle z & -2x           &     & + s_1            &       &       & = 8  & \qquad & \text{(Z')} \\
+  & -\dfrac{1}{2}x & + y & + \dfrac{1}{2}s_1 &       &       & = 4  & \qquad & \text{(A')} \\
+  &  \dfrac{3}{2}x &     & - \dfrac{1}{2}s_1 & + s_2 &       & = 3  & \qquad & \text{(B')} \\
+  &  \dfrac{7}{2}x &     & - \dfrac{1}{2}s_1 &       & + s_3 & = 11 & \qquad & \text{(C')} \\
+z & -2x            &     & + s_1             &       &       & = 8  & \qquad & \text{(Z')} \\
 \end{cases}
 $$
 
@@ -282,7 +282,7 @@ $$z = 8 + 2x - s_1$$ と $$x, s_1 \ge 0$$ より、係数が正である $$x$$ �
 
 $$s_1 \ (= 0)$$ を固定して $$x$$ をゼロから増やしていったとき、$$x = 2 + \delta$$ で (B') の非負条件が破れる：
 
-$$\displaystyle \frac{3}{2} \times (2 + \delta) - \frac{1}{2} \times 0 + s_2 = 3 \Leftrightarrow \frac{3}{2} \delta + s_2 = 0$$
+$$\dfrac{3}{2} \times (2 + \delta) - \dfrac{1}{2} \times 0 + s_2 = 3 \Leftrightarrow \dfrac{3}{2} \delta + s_2 = 0$$
 
 よって、$$x$$ は2まで増やせる。
 
@@ -290,10 +290,10 @@ $$\displaystyle \frac{3}{2} \times (2 + \delta) - \frac{1}{2} \times 0 + s_2 = 3
 
 $$
 \begin{cases}
-\displaystyle   &   & + y & + \frac{1}{3}s_1 & + \frac{1}{2}s_2 &       & = 5  & \qquad & \text{(A'')} \\
-\displaystyle   & x &     & - \frac{1}{3}s_1 & + \frac{2}{3}s_2 &       & = 2  & \qquad & \text{(B'')} \\
-\displaystyle   &   &     & - \frac{2}{3}s_1 & + 9s_2           & + s_3 & = 4  & \qquad & \text{(C'')} \\
-\displaystyle z &   &     & + \frac{1}{3}s_1 & + \frac{4}{3}s_2 &       & = 12 & \qquad & \text{(Z'')} \\
+  &   & + y & + \dfrac{1}{3}s_1 & + \dfrac{1}{2}s_2 &       & = 5  & \qquad & \text{(A'')} \\
+  & x &     & - \dfrac{1}{3}s_1 & + \dfrac{2}{3}s_2 &       & = 2  & \qquad & \text{(B'')} \\
+  &   &     & - \dfrac{2}{3}s_1 & + 9s_2            & + s_3 & = 4  & \qquad & \text{(C'')} \\
+z &   &     & + \dfrac{1}{3}s_1 & + \dfrac{4}{3}s_2 &       & = 12 & \qquad & \text{(Z'')} \\
 \end{cases}
 $$
 
@@ -308,7 +308,7 @@ $$
 
 **【値の収束】**
 
-$$\displaystyle z = 12 - \frac{1}{3}s_1 - \frac{4}{3}s_2$$ と $$s_1, s_2 \ge 0$$ より、$$s_1, s_2$$ を増やしても $$z$$ は12以上にならない（収束）。
+$$z = 12 - \dfrac{1}{3}s_1 - \dfrac{4}{3}s_2$$ と $$s_1, s_2 \ge 0$$ より、$$s_1, s_2$$ を増やしても $$z$$ は12以上にならない（収束）。
 
 よって、$$(x, y) = 2, 5$$ のとき $$z$$ は最大値12を取る。
 
@@ -400,7 +400,7 @@ $$
 
 変換3回目： 
 
-1. $$z = 11 + \dfrac{5}{2}s_1 & - \dfrac{3}{2}s_2$$ の係数を見ると $$s_1$$ を増やせば $$z$$ は増える
+1. $$z = 11 + \dfrac{5}{2}s_1 - \dfrac{3}{2}s_2$$ の係数を見ると $$s_1$$ を増やせば $$z$$ は増える
 2. $$s_2 \ (= 0)$$ を固定し、$$s_1$$ をゼロから増やしていく
 3. $$s_1$$ をどれだけ増やしても (A'), (B') の左辺は小さくなる一方で、$$x, y$$ の非負条件は破れない（$$s_1$$ はいくらでも増やせる）
 
