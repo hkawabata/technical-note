@@ -379,7 +379,7 @@ $$z = 12 - \dfrac{1}{3}s_1 - \dfrac{4}{3}s_2$$ と $$s_1, s_2 \ge 0$$ より、$
 
 よって、$$(x, y) = 2, 5$$ のとき $$z$$ は最大値12を取る。
 
-![探索経路](https://user-images.githubusercontent.com/13412823/68525364-049f4f00-0314-11ea-8d26-ed7788750ca3.png)
+![探索経路](https://user-images.githubusercontent.com/13412823/68921595-9b5c8780-07bc-11ea-9e64-41e100e09159.png)
 
 
 ### 原点が実行可能解、かつ領域が非有界
@@ -475,7 +475,7 @@ $$
 
 $$s_1$$ をいくらでも増やせるので、$$z$$ の最大値は無限大に発散する。
 
-![探索経路](https://user-images.githubusercontent.com/13412823/68525362-049f4f00-0314-11ea-9ba0-c5e9a3891252.png)
+![探索経路](https://user-images.githubusercontent.com/13412823/68921599-9bf51e00-07bc-11ea-810b-f1067c83940b.png)
 
 
 ### 原点が実行可能解でない
@@ -676,5 +676,5 @@ $$z = 12 - \dfrac{3}{7}s_1 - \dfrac{2}{7}s_2$$ と $$s_1, s_2 \ge 0$$ より、$
 
 よって、$$(x, y) = 2, 5$$ のとき $$z$$ は最大値12を取る。
 
-![探索経路](https://user-images.githubusercontent.com/13412823/68525363-049f4f00-0314-11ea-8bdf-baf82af4dddc.png)
+![探索経路](https://user-images.githubusercontent.com/13412823/68921597-9b5c8780-07bc-11ea-8ef3-7af07c5cdba0.png)
 
