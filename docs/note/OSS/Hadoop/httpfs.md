@@ -59,7 +59,7 @@ drwxr-xr-x   - hkawabata2 hkawabata2          0 2019-12-03 17:48 /user/hkawabata
 HDFS を停止：
 
 ```bash
-$ sbin/start-dfs.sh
+$ sbin/stop-dfs.sh
 ```
 
 etc/hadoop/core-site.xml を編集：
