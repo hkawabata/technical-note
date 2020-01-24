@@ -11,7 +11,7 @@ title: Suffix Array
 | パターンマッチ方法 | 文字列 S（長さ $$n$$）中にあるパターン P（長さ $$m$$）を全て見つける計算量 |
 | :-- | :-- |
 | 逐次走査 | $$O(mn)$$ |
-| Suffix Array | $$O(m log{n})$$ |
+| Suffix Array | $$O(m \log{n})$$ |
 
 例えば文字列`ABAAACBBAACC`には以下の12の suffix がある。
 
