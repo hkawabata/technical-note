@@ -2,188 +2,245 @@
 title: Flask
 ---
 
-# REST API サーバ
+# Flask 概要
+
+Python 用のウェブアプリケーションフレームワーク。
+
+
+# ディレクトリ構成
+
+単純な例。
 
 ```
-#!/usr/bin/env python2.7
+/
++-- myapp.py
++-- static/
+      +-- ...
+      +-- ...
++-- templates/
+      +-- ...
+      +-- ...
+```
+
+# 基本的な使い方
+
+## 単純な REST API
+
+```python
+#!/usr/bin/env python3
 
 from flask import Flask, jsonify
 
 # インスタンス生成
 app = Flask(__name__)
 
+# http://localhost:5000/
 @app.route('/')
-def return_json():
+def hello():
+    """
+    単純な文字列を返す
+    """
+    return 'Hello, world!'
+
+# http://localhost:5000/json
+@app.route('/json')
+def json():
+    """
+    JSON を返す
+    """
     result = {
-        "a": "aiueo",
-        "b": 12345
+        'a': 'aiueo',
+        'b': 12345
     }
     return jsonify(ResultSet=result)
 
 if __name__ == '__main__':
-	# デバッグを有効にして起動
-	# コードが修正された時、自動でコードをリロードしてくれる
-    app.run(debug=True)
-    
-    # 上の起動ではネットワークの他のホストからはアクセスできない仕様になっている
-    # デバッグモードだと元ファイルを編集するだけで任意のコードを実行できて危険
-    # 以下のように host を設定すると外部からも接続可能に
-    # デバッグは無効にすることを推奨
-    #app.run(host='0.0.0.0')
+    # リモートからのアクセスを許可して起動
+    app.run(host='0.0.0.0')
+```
 
-	# デフォルトの5000以外のポートを指定することもできる
-	#app.run(port='1234')
+## パラメータの受け取り
+
+### クエリパラメータ
+
+```python
+from flask import jsonify, request
+
+@app.route('/user')
+def func():
+    user_id = request.args.get("id", type=int)
+    user_name = request.args.get("name", type=str)
+    result = {
+        'name': user_name,
+        'id': user_id
+    }
+    return jsonify(ResultSet=result)
+```
+
+### パスパラメータ
+
+#### 任意のフォーマットのパラメータを受け取る
+
+（`/`を含まない）任意のパスパラメータを変数として受け付ける。
+
+```python
+@app.route('/user/<username>')
+def func(username):
+    return 'your user-name is ' + username
+```
+
+#### ルールでフォーマットを制限する
+
+```python
+@app.route('/user/<int:user_id>')
+def func(user_id):
+    return 'your user-id is ' + user_id
+```
+
+`<コンバータ:変数名>`という記法で変数書式に制限をかけられる
+
+| コンバータ | 説明 | 備考 |
+| :-- | :-- | :-- |
+| `int` | 整数 |  |
+| `float` | 浮動小数 | `int`とは排他で整数は受け付けない模様（`3.0`は OK だが`3`はダメだった） |
+| `path` | `/`を含んでも OK |  |
+
+
+## 静的ファイル・テンプレートファイルの使用
+
+(TODO)
+
+# Tips
+
+## app.run() の引数
+
+### 待ち受けポート指定
+
+```python
+app.run(port=80)
+```
+
+### デバッグモード
+
+```python
+app.run(debug=True)
+```
+
+- 元のコードに変更があると自動でリロード
+- エラー時のデバッガー機能
+
+
+### リモートからのアクセスを許可
+
+```python
+app.run(host='0.0.0.0')
+```
+
+デフォルトでは`127.0.0.1`（ローカルループバックアドレス）で待ち受けており、外からのアクセスを受け付けない。
+
+
+## GET 以外のメソッドを受け付ける
+
+```python
+@app.route('/path', methods=['POST'])
+def func():
+    pass
 ```
 
 
-# ルーティング
+## ルーティング URL が重複したときの優先順位
 
-叩く URL によって挙動を変える
+実験してみた。
+
+- 直接 URL を指定 > コンバータ付きパスパラメータ > コンバータなしパスパラメータ
+- パス、コンバータが重複する複数のルートが定義されている場合、先に定義した方が優先
 
 ```python
-# http://localhost:5000/hi
-@app.route('/hi')
-def say_hi():
-    return 'Hi World'
-
-# http://localhost:5000/hello
 @app.route('/hello')
-def say_hello():
-    return 'Hello World'
+def func1a():
+    return 'route 1a'
+
+@app.route('/hello')
+def func1b():
+    return 'route 1b'
+
+@app.route('/<int:param>')
+def func2a(param):
+    return 'route 2a'
+
+@app.route('/<int:param>')
+def func2b(param):
+    return 'route 2b'
+
+@app.route('/<param>')
+def func4a(param):
+    return 'route 4a'
+
+@app.route('/<param>')
+def func4b(param):
+    return 'route 4b'
+
+@app.route('/<float:param>')
+def func3(param):
+    return 'route 3'
 ```
 
-# リクエスト情報の取得
+```bash
+$ curl http://localhost:5000/hello
+route 1
+$ curl http://localhost:5000/helloworld
+route 4a
+$ curl http://localhost:5000/3
+route 2a
+$ curl http://localhost:5000/3.1
+route 3
+$ curl http://localhost:5000/3.0
+route 3
+$ curl http://localhost:5000/
+# 404 Not Found
+```
+
+## メソッド名から URL をビルド
+
+(TODO)
 
 ```python
-from flask import Flask, request
-# アクセス元で指定されたパラメータ（ここでは'query'）を取得
-query  = request.arg.get('query', '')
- 
-# アクセス元の情報を取得（OS, ブラウザなど）
-ua = request.headers.get('User-Agent')
- 
-# アクセス元が求める返り値の型を取得
-accept = request.headers.get('Accept')
+url_for
 ```
 
-## リクエストパラメータ
+## URL 末尾のスラッシュの有無
 
-サーバ側のコード(server_template.py)：
-
-```
-# -*- coding: utf-8 -*-
-
-from flask import Flask, jsonify, request
-import json
-
-app = Flask(__name__)
-
-@app.route('/hoge', methods=['GET'])
-def application_get():
-    """GET リクエストを受け取った時"""
-    p_int = request.args.get("param1", type=int)
-    p_str = request.args.get("param2", type=str)
-    if p_int == None or p_str == None:
-        res_error = {"msg": "invalid parameter(s)."}
-        return jsonify(ResultSet=res_error)
-    else:
-        # 処理を記述
-
-        # json を返す
-        res_sample = {"p1": p_int + 1, "p2": p_str + "a"}
-        return jsonify(ResultSet=res_sample)
-
-
-@app.route('/fuga', methods=['POST'])
-def application_post():
-    """POST リクエストを受け取った時"""
-    parameters = json.loads(request.get_data())
-    if not parameters.has_key("param1") or not parameters.has_key("param2"):
-        res_error = {"msg": "invalid parameter(s)."}
-        return jsonify(ResultSet=res_error)
-    else:
-        p_int = parameters["param1"]
-        p_str = parameters["param2"]
-
-        # 処理を記述
-
-        # json を返す
-        res_sample = {"p1": p_int + 1, "p2": p_str + "a"}
-        return jsonify(ResultSet=res_sample)
-
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
-```
-
-リクエストする側のコード(request_template.py)：
-
-```
-# -*- coding: utf-8 -*-
-"""
-使い方
-
-server_template.py を起動し、別ウインドウでこのスクリプトを叩く
-
-[window 1]
-$ python server_template.py
-
-[window 2]
-$ python request_template.py
-GET リクエスト実行結果：
-{u'ResultSet': {u'p2': u'abcda', u'p1': 1235}}
-POST リクエスト実行結果：
-{u'ResultSet': {u'p2': u'abcda', u'p1': 1235}}
-"""
-
-
-import requests, json
-
-request_parameters = {"param1": 1234, "param2": "abcd"}
-
-
-def get_request():
-    """GET リクエストを投げる"""
-    s = requests.Session()
-    url = "http://localhost:5000/hoge"
-    result = s.get(url, params=request_parameters).json()
-    print "GET リクエスト実行結果："
-    print result
-
-
-def post_request():
-    """POST リクエストを投げる"""
-    s = requests.Session()
-    url = "http://localhost:5000/fuga"
-    result = s.post(url, data=json.dumps(request_parameters)).json()
-    print "POST リクエスト実行結果："
-    print result
-
-
-if __name__ == '__main__':
-    get_request()
-    post_request()
-```
-
-**デフォルトでは POST は許可されていないっぽい**。POST でリクエストを投げると 405 エラーが返ってくる。GET は大丈夫。
-そこで、以下のように明示的に POST を許可する。
+| \ | 末尾に`/`をつけてリクエスト | 末尾に`/`をつけずリクエスト |
+| :-- | :-- | :-- |
+| URL 定義末尾に`/`あり | `200 OK` | `308 PERMANENT REDIRECT` |
+| URL 定義末尾に`/`なし | `404 NOT FOUND` | `200 OK` |
 
 ```python
-@app.route('/hoge', methods=['GET', 'POST'])
-def application():
-	...
+@app.route('/hello')
+def no_slash():
+    return 'slash not in definition'
+
+@app.route('/hi/')
+def slash():
+    return 'slash in definition'
 ```
 
-あとは GET のときと同様。
+```
+$ curl http://localhost:5000/hello
+slash not in definition
 
+$ curl http://localhost:5000/hello/
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
 
-## パスパラメータ
+$ curl http://localhost:5000/hi
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<title>Redirecting...</title>
+<h1>Redirecting...</h1>
+<p>You should be redirected automatically to target URL: <a href="http://localhost:5000/hi/">http://localhost:5000/hi/</a>.  If not click the link.
 
-```python
-@app.route('/hoge/<int:status>')
-def return_status(status):
-    result = {
-        "status": status
-    }
-    return jsonify(ResultSet=result)
+$ curl http://localhost:5000/hi/
+slash in definition
 ```
