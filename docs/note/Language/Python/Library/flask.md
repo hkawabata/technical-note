@@ -108,7 +108,75 @@ def func(user_id):
 
 ## 静的ファイル・テンプレートファイルの使用
 
-(TODO)
+### 静的ファイルをそのまま返す
+
+静的ファイルを static/ に配置（ここでは static/index.html）
+
+```html
+<html>
+  <body>
+    This is static file.
+  </body>
+</html>
+```
+
+```python
+@app.route('/staticfile')
+def static_file():
+    return app.send_static_file('index.html')
+```
+
+```html
+$ curl http://127.0.0.1:5000/staticfile
+<html>
+  <body>
+    This is static file.
+  </body>
+</html>
+```
+
+### テンプレートファイルを変数の値でレンダリングして返す
+
+テンプレートファイルを templates/ に配置（ここでは templates/index.html）
+
+```html
+<html>
+  <body>
+    {{ message }}
+    <ul>
+      {% for user in users %}
+      <li><a href="/user/{{ users[user] }}">{{ user }}</a></li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
+```
+
+```python
+from flask import render_template
+
+users = {'Taro': 1, 'Jiro': 2, 'Saburo': 3}
+
+@app.route('/userinfo')
+def render():
+    message = 'There are {} users.'.format(len(users))
+    return render_template('index.html', message=message, users=users)
+```
+
+```html
+$ curl http://localhost:5000/userinfo
+<html>
+  <body>
+    There are 3 users.
+    <ul>
+      <li><a href="/user/1">Taro</a></li>
+      <li><a href="/user/2">Jiro</a></li>
+      <li><a href="/user/3">Saburo</a></li>
+    </ul>
+  </body>
+</html>
+```
+
 
 # Tips
 
@@ -200,13 +268,6 @@ $ curl http://localhost:5000/
 # 404 Not Found
 ```
 
-## メソッド名から URL をビルド
-
-(TODO)
-
-```python
-url_for
-```
 
 ## URL 末尾のスラッシュの有無
 
