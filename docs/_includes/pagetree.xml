@@ -72,6 +72,10 @@
                 <span class="pagetree-accordion">▼</span>
                 <ul class="pagetree-hidden">
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/pyaudio">PyAudio
+</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/fabric">Fabric
 </a>
                   </li>
@@ -182,6 +186,20 @@
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/Algorithm/linear_programming">線形計画法
 </a>
+          </li>
+          <li>
+            <span>graph</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/graph/max_flow">最大フロー
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/graph/scc">強連結成分（SCC）
+</a>
+              </li>
+            </ul>
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/Algorithm/fft">高速フーリエ変換（作成中）
