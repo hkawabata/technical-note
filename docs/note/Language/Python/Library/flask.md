@@ -188,6 +188,12 @@ $ curl http://localhost:5000/userinfo
 app.run(port=80)
 ```
 
+### 複数リクエストの並列処理
+
+```python
+app.run(threaded=True)
+```
+
 ### デバッグモード
 
 ```python
@@ -213,6 +219,182 @@ app.run(host='0.0.0.0')
 @app.route('/path', methods=['POST'])
 def func():
     pass
+```
+
+
+## エラーハンドル
+
+エラー発生時処理をカスタマイズできる。
+
+```python
+from flask import abort
+
+# 強制的に例外を発生させる
+@app.route('/exception')
+def exception():
+    raise Exception('hoge')
+
+# 強制的に500ステータスを返す
+@app.route('/500')
+def internal_server_error():
+    abort(500)
+
+# 例外をハンドル
+@app.errorhandler(Exception)
+def handle_exception(e):
+    return '----- [handled] Exception -----\n{}'.format(e), 500
+
+# 500をハンドル
+@app.errorhandler(500)
+def internal_error(error):
+    return '----- [handled] Internal Server Error -----\n{}'.format(error), 500
+
+# 404 をハンドル
+@app.errorhandler(404)
+def not_found(error):
+    return '----- [handled] Not Found -----\n{}'.format(error), 404
+```
+
+```bash
+$ curl --dump-header - http://localhost:5000/exception
+HTTP/1.0 500 INTERNAL SERVER ERROR
+Content-Type: text/html; charset=utf-8
+Content-Length: 36
+Server: Werkzeug/0.16.0 Python/3.7.6
+Date: Sat, 01 Feb 2020 07:36:57 GMT
+
+----- [handled] Exception -----
+hoge
+
+$ curl --dump-header - http://localhost:5000/500
+HTTP/1.0 500 INTERNAL SERVER ERROR
+Content-Type: text/html; charset=utf-8
+Content-Length: 225
+Server: Werkzeug/0.16.0 Python/3.7.6
+Date: Sat, 01 Feb 2020 07:36:59 GMT
+
+----- [handled] Internal Server Error -----
+500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+
+$ curl --dump-header - http://localhost:5000/abc
+HTTP/1.0 404 NOT FOUND
+Content-Type: text/html; charset=utf-8
+Content-Length: 167
+Server: Werkzeug/0.16.0 Python/3.7.6
+Date: Sat, 01 Feb 2020 07:37:00 GMT
+
+----- [handled] Not Found -----
+404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+```
+
+
+## リダイレクト
+
+```python
+from flask import redirect, url_for
+
+@app.route('/hello')
+def func1():
+    return 'Hello!'
+
+@app.route('/hi')
+def func2():
+    return redirect(url_for('func1'))
+```
+
+```bash
+$ curl --dump-header - http://localhost:5000/hello
+HTTP/1.0 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 6
+Server: Werkzeug/0.16.0 Python/3.7.6
+Date: Sat, 01 Feb 2020 07:00:30 GMT
+
+Hello!
+
+$ curl --dump-header - http://localhost:5000/hi
+HTTP/1.0 302 FOUND
+Content-Type: text/html; charset=utf-8
+Content-Length: 219
+Location: http://localhost:5000/hello
+Server: Werkzeug/0.16.0 Python/3.7.6
+Date: Sat, 01 Feb 2020 07:00:34 GMT
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<title>Redirecting...</title>
+<h1>Redirecting...</h1>
+<p>You should be redirected automatically to target URL: <a href="/hello">/hello</a>.  If not click the link.
+```
+
+
+## セッション
+
+ログイン・ログアウト処理を行う例を示す。
+
+static/login.html
+
+```html
+<html>
+  <body>
+    <form action="/login" method="post">
+      <p><input type="text" name="username">
+      <p><input type="submit" value="ログイン">
+    </form>
+  </body>
+</html>
+```
+
+```python
+from flask import Flask, session, redirect, request
+import os
+
+app = Flask(__name__)
+# 秘密鍵の登録
+app.secret_key = os.urandom(24)
+
+@app.route('/home')
+def home():
+    return 'Your name: {}'.format(session['username'])
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        return redirect('/home')
+    else:
+        return app.send_static_file('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect('/home')
+```
+
+localhost:5000/home
+
+![スクリーンショット 2020-02-01 17 33 54](https://user-images.githubusercontent.com/13412823/73589390-25450280-4519-11ea-8c25-7ea91a4e9a81.png)
+
+localhost:5000/login
+
+![スクリーンショット 2020-02-01 17 34 27](https://user-images.githubusercontent.com/13412823/73589392-25dd9900-4519-11ea-885b-ea5fdd6c46ab.png)
+
+localhost:5000/home
+
+![スクリーンショット 2020-02-01 17 34 15](https://user-images.githubusercontent.com/13412823/73589391-25dd9900-4519-11ea-8742-8ffc1ecb81b3.png)
+
+localhost:5000/logout
+
+![スクリーンショット 2020-02-01 17 33 54](https://user-images.githubusercontent.com/13412823/73589390-25450280-4519-11ea-8c25-7ea91a4e9a81.png)
+
+
+
+## ロギング
+
+```python
+app.logger.debug('Debug log.')
+app.logger.info('Info log.')
+app.logger.warning('Warning log.')
+app.logger.error('Error log.')
 ```
 
 
@@ -268,6 +450,59 @@ $ curl http://localhost:5000/
 # 404 Not Found
 ```
 
+
+## ファイルのアップロード
+
+static/upload.html
+
+```html
+<html>
+  <body>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="uploaded_file"/>
+      <input type="submit" value="アップロード">
+    </form>
+  </body>
+</html>
+```
+
+```python
+from flask import request
+from werkzeug import secure_filename
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        if 'uploaded_file' not in request.files:
+            return 'no file'
+        else:
+            file = request.files['uploaded_file']
+            filename = secure_filename(file.filename)
+            size = len(file.read())
+            res = {'file_name': filename, 'size': size}
+            return jsonify(ResultSet=res)
+    else:
+        return app.send_static_file('upload.html')
+```
+
+ページアクセス時：
+
+![スクリーンショット 2020-02-01 15 36 42](https://user-images.githubusercontent.com/13412823/73588156-d42d1280-4508-11ea-8c23-c532b993e1ca.png)
+
+ファイル選択後：
+
+![スクリーンショット 2020-02-01 15 37 10](https://user-images.githubusercontent.com/13412823/73588155-d42d1280-4508-11ea-94d4-ef8a9394669b.png)
+
+「アップロード」結果：
+
+```json
+{
+  "ResultSet": {
+    "file_name": "hoge.json",
+    "size": 21
+  }
+}
+```
 
 ## URL 末尾のスラッシュの有無
 
