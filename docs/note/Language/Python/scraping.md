@@ -41,9 +41,12 @@ from html.parser import HTMLParser
 
 class MyHTMLParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
-        print('[Encountered a start tag] {}, attributes = {}]'.format(tag, ', '.join(['({}: {})'.format(a[0], a[1]) for a in attrs])))
+        attrs_str = '' if len(attrs) == 0 else ', '.join(['({}: {})'.format(a[0], a[1]) for a in attrs])
+        print('[Encountered a start tag] {}'.format(tag if len(attrs) == 0 else tag + ', attributes = ' + attrs_str))
+
     def handle_endtag(self, tag):
         print('[Encountered a end tag] {}'.format(tag))
+
     def handle_data(self, data):
         print('[Encountered a data] {}'.format(data))
 
@@ -76,13 +79,13 @@ my_parser.close()
 ```
 [Encountered a data] 
 
-[Encountered a start tag] html, attributes = ]
+[Encountered a start tag] html
 [Encountered a data] 
   
-[Encountered a start tag] head, attributes = ]
+[Encountered a start tag] head
 [Encountered a data] 
     
-[Encountered a start tag] title, attributes = ]
+[Encountered a start tag] title
 [Encountered a data] タイトル
 [Encountered a end tag] title
 [Encountered a data] 
@@ -90,28 +93,28 @@ my_parser.close()
 [Encountered a end tag] head
 [Encountered a data] 
   
-[Encountered a start tag] body, attributes = ]
+[Encountered a start tag] body
 [Encountered a data] 
     
-[Encountered a start tag] h1, attributes = (class: c1)]
+[Encountered a start tag] h1, attributes = (class: c1)
 [Encountered a data] 見出し
 [Encountered a end tag] h1
 [Encountered a data] 
     body本文1
     
-[Encountered a start tag] img, attributes = (src: http://example.hkawabata.jp/img.png), (alt: 画像)]
+[Encountered a start tag] img, attributes = (src: http://example.hkawabata.jp/img.png), (alt: 画像)
 [Encountered a data] 
     
-[Encountered a start tag] ul, attributes = ]
+[Encountered a start tag] ul
 [Encountered a data] 
       
-[Encountered a start tag] li, attributes = ]
+[Encountered a start tag] li
 [Encountered a data] 箇条書き（テキスト）
 [Encountered a end tag] li
 [Encountered a data] 
       
-[Encountered a start tag] li, attributes = ]
-[Encountered a start tag] a, attributes = (href: http://example.hkawabata.jp)]
+[Encountered a start tag] li
+[Encountered a start tag] a, attributes = (href: http://example.hkawabata.jp)
 [Encountered a data] 箇条書き（リンク）
 [Encountered a end tag] a
 [Encountered a end tag] li
@@ -126,4 +129,5 @@ my_parser.close()
 
 [Encountered a end tag] html
 [Encountered a data] 
+
 ```
