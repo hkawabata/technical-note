@@ -68,7 +68,7 @@ html = """
 my_parser = MyHTMLParser()
 my_parser.feed(html)
 
-parser.close()
+my_parser.close()
 ```
 
 出力結果：
