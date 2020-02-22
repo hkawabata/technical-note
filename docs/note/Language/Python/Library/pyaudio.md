@@ -49,7 +49,7 @@ def play_sound(output_stream, sound):
 
 # 半音上がる際の周波数変化割合
 r_semitone = math.pow(2, 1.0/12)
-# ドレミの周波数
+# ド〜ドの12+1音階の周波数
 scale_hz = [261.625]
 for _ in range(12):
     scale_hz.append(scale_hz[-1] * r_semitone)
