@@ -28,7 +28,7 @@ RATE = 44100  # サンプリングレート [Hz]
 
 def tone(freq, length, gain):
     """
-		指定した周波数の定常波を作成
+    指定した周波数の定常波を作成
 
     Parametes
     ---------
@@ -42,10 +42,10 @@ def tone(freq, length, gain):
 
 
 def play_sound(output_stream, sound):
-		"""
-		音を鳴らす
-		"""
-		output_stream.write(sound)
+    """
+    音を鳴らす
+    """
+    output_stream.write(sound)
 
 
 # 半音上がる際の周波数変化割合
