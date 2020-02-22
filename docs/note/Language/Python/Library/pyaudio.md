@@ -8,6 +8,12 @@ title: PyAudio
 $ pip install pyaudio
 ```
 
+以下のようなエラーが出てインストールできない場合は`brew install portaudio`を先に実行する。
+
+```bash
+src/_portaudiomodule.c:29:10: fatal error: 'portaudio.h' file not found
+```
+
 # 使い方
 
 ## 適当な音階の音を鳴らす
