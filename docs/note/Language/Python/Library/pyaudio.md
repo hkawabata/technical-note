@@ -36,9 +36,8 @@ def tone(freq, length, gain):
     length : 長さ [s]
     gain : 大きさ
     """
-    slen = int(length * RATE)
-    t = float(freq) * np.pi * 2 / RATE
-    return np.sin(np.arange(slen) * t) * gain
+    t = np.arange(int(length * RATE)) / RATE
+    return np.sin(t * float(freq) * np.pi * 2) * gain
 
 
 def play_sound(output_stream, sound):
