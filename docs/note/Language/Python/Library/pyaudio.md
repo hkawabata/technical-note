@@ -108,6 +108,43 @@ sound = chord([scale_hz[0], scale_hz[4], scale_hz[7]], 2, 1.0).astype(np.float32
 play_sound(stream_out, sound)
 ```
 
+和音を可視化してみる：
+
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+
+LENGTH = 1.0
+t = np.arange(int(LENGTH * RATE)) / RATE
+
+plt.title('Monophone')
+plt.xlim([0, 0.015])
+plt.grid()
+plt.xlabel('Time [second]')
+plt.ylabel('Amplitude')
+plt.plot(x, tone(scale_hz[0], LENGTH, 1.0), color='blue', linewidth=1.0, label='C')
+plt.plot(x, tone(scale_hz[4], LENGTH, 1.0), color='green', linewidth=1.0, label='E')
+plt.plot(x, tone(scale_hz[7], LENGTH, 1.0), color='red', linewidth=1.0, label='G')
+plt.legend(loc='upper right')
+plt.show()
+
+plt.title('Chord (C major = C + E + G)')
+plt.xlim([0, 0.05])
+plt.grid()
+plt.xlabel('Time [second]')
+plt.ylabel('Amplitude')
+plt.plot(x, chord([scale_hz[0], scale_hz[4], scale_hz[7]], LENGTH, 1.0), color='black', linewidth=1.0)
+plt.show()
+
+plt.title('Chord (C major = C + E + G)')
+plt.xlim([0, 0.5])
+plt.grid()
+plt.xlabel('Time [second]')
+plt.ylabel('Amplitude')
+plt.plot(x, chord([scale_hz[0], scale_hz[4], scale_hz[7]], LENGTH, 1.0), color='black', linewidth=0.5)
+plt.show()
+```
+
 ![Unknown](https://user-images.githubusercontent.com/13412823/75091648-2d8ddc00-55b3-11ea-95cc-614a8dbd2072.png)
 
 ![Unknown-1](https://user-images.githubusercontent.com/13412823/75091647-2cf54580-55b3-11ea-877e-b2af722daa0f.png)
