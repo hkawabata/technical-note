@@ -30,11 +30,11 @@ def tone(freq, length, gain):
     """
     指定した周波数の定常波を作成
 
-    Parametes
-    ---------
-    freq : 周波数 [Hz]
+    Parameters
+    ----------
+    freq   : 周波数 [Hz]
     length : 長さ [s]
-    gain : 大きさ
+    gain   : 大きさ
     """
     t = np.arange(int(length * RATE)) / RATE
     return np.sin(t * float(freq) * np.pi * 2) * gain
@@ -83,6 +83,36 @@ for i in [0, 2, 4, 5, 7, 9, 11, 12]:
 stream_out.close()
 p.terminate()
 ```
+
+## 和音を鳴らす
+
+```python
+def chord(freqs, length, gain):
+    """
+    和音を作成
+    
+    Parameters
+    ---------
+    freqs  : 組み合わせたい周波数のリスト
+    length : 長さ [s]
+    gain   : 大きさ
+    """
+    slen = int(length * RATE)
+    result = np.zeros(slen)
+    for freq in freqs:
+        t = float(freq) * np.pi * 2 / RATE
+        result += np.sin(np.arange(slen) * t) * gain
+    return result
+
+sound = chord([scale_hz[0], scale_hz[4], scale_hz[7]], 2, 1.0).astype(np.float32).tostring()
+play_sound(stream_out, sound)
+```
+
+![Unknown](https://user-images.githubusercontent.com/13412823/75091648-2d8ddc00-55b3-11ea-95cc-614a8dbd2072.png)
+
+![Unknown-1](https://user-images.githubusercontent.com/13412823/75091647-2cf54580-55b3-11ea-877e-b2af722daa0f.png)
+
+![Unknown-2](https://user-images.githubusercontent.com/13412823/75091645-2a92eb80-55b3-11ea-892b-573d3b9cce8c.png)
 
 
 ## 入力した音声を取り込む
