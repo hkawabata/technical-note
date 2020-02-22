@@ -8,7 +8,7 @@ title: PyAudio
 $ pip install pyaudio
 ```
 
-以下のようなエラーが出てインストールできない場合は`brew install portaudio`を先に実行する。
+以下のようなエラーが出てインストールできない場合は`brew install portaudio`を先に実行する（Mac）。
 
 ```bash
 src/_portaudiomodule.c:29:10: fatal error: 'portaudio.h' file not found
