@@ -234,3 +234,7 @@ plt.show()
 ![Unknown-5](https://user-images.githubusercontent.com/13412823/75104308-231f2100-564b-11ea-8b51-521e5998644f.png)
 
 ![Unknown-6](https://user-images.githubusercontent.com/13412823/75104307-21555d80-564b-11ea-976b-e122bb6003cc.png)
+
+ノイズらしき音：
+
+![Unknown-7](https://user-images.githubusercontent.com/13412823/75104750-10f3b180-5650-11ea-92d5-a357587cc007.png)
