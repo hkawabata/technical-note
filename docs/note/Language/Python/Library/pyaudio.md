@@ -101,7 +101,7 @@ sound = chord([scale_hz[0], scale_hz[4], scale_hz[7]], 2, 1.0).astype(np.float32
 stream_out.write(sound)
 ```
 
-和音を可視化してみる：
+可視化：
 
 ```python
 from matplotlib import pyplot as plt
@@ -149,75 +149,90 @@ plt.show()
 
 ```python
 import pyaudio
-import time
 import numpy as np
 import math
 
-SECONDS = 5
-CHUNK = 4096
-RATE = 44100  # Hz
-r = math.pow(2, 1.0/12)
-r12 = r * r * r * r
+SECONDS = 10  # 録音する秒数
+CHUNK = 1024  # 音源から1回読み込むときのデータサイズ
+RATE = 44100  # サンプリング周波数
+FORMAT = pyaudio.paInt16  # int だと質が低い？ 他に paFloat32 なども
 
-
-def play_sound(output_stream, sound):
-    output_stream.write(sound)
-
+# 半音上げるための周波数の変換倍率
+R12 = math.pow(2, 1.0/12)
 
 p = pyaudio.PyAudio()
 stream_in = p.open(
-    format = pyaudio.paInt16,
-    channels = 1,
+    format = FORMAT,
+    channels = 1,  # モノラル
     rate = RATE,
     frames_per_buffer = CHUNK,
-    input = True,
-    output = True
+    input = True
 )
 stream_out = p.open(
-    format = pyaudio.paInt16,  # int だと質が悪い？ paFloat32 にするとキレイな音に
+    format = FORMAT,
     channels = 1,
-    #rate = RATE  # そのままの高さ
-    rate = int(RATE*r12),  # 高くする
-    #rate = int(RATE/r12),  # 低くする
+    rate = RATE,  # そのままの高さ
+    #rate = int(RATE*R12),  # 高くする
+    #rate = int(RATE/R12),  # 低くする
     frames_per_buffer = CHUNK,
-    input = True,
     output = True
 )
 
-# 一定秒数、マイク入力の音声を繰り返す
-start = time.time()
-while stream_in.is_active() and time.time()-start < SECONDS:
-    input_ = stream_in.read(CHUNK)
-    play_sound(stream_out, input_)
+print('----- Start recording -----')
 
+frames = []
+for i in range(0, int(RATE / CHUNK * SECONDS)):
+    data = stream_in.read(CHUNK, exception_on_overflow = False)
+    frames.append(data)
+
+print('----- Finish recording -----')
 stream_in.stop_stream()
 stream_in.close()
+
+len(frames)
+# 430
+len(frames[0])
+# 2048
+len(np.frombuffer(frames[0], dtype=np.int16))
+# 1024
+
+result = np.frombuffer(b''.join(frames), dtype=np.int16)
+len(result)
+# 440320
+
+# 取り込んだ音声を再生
+stream_out.write(result.tostring())
+
 stream_out.stop_stream()
 stream_out.close()
 p.terminate()
 ```
 
-
-## 減衰させてみる（TODO）
+可視化：
 
 ```python
-def tone_attenuated(freq, length):
-    """
-    指定した周波数の定常波を作成
+from matplotlib import pyplot as plt
+t = np.arange(len(result)) / RATE
 
-    Parametes
-    ---------
-    freq : 周波数 [Hz]
-    length : 長さ [s]
-    gain : 大きさ
-    """
-    slen = int(length * RATE)
-    t = float(freq) * np.pi * 2 / RATE
-    x = np.arange(slen)
-    return np.sin(x * t) / x
+plt.title('Input from Microphone (ALL)')
+plt.grid()
+plt.xlabel('Time [second]')
+plt.ylabel('Amplitude')
+plt.xlim([t[0], t[-1]])
+plt.plot(t, result, color='black', linewidth=0.2)
+plt.show()
 
-
-for i in [0, 2, 4, 5, 7, 9, 11, 12]:
-    sound = tone_attenuated(scale_hz[i], 0.5).astype(np.float32).tostring()
-    play_sound(stream_out, sound)
+plt.title('Input from Microphone (Expanded)')
+plt.grid()
+plt.xlabel('Time [second]')
+plt.ylabel('Amplitude')
+plt.xlim([0.61, 0.66])
+plt.plot(t, result, color='black', linewidth=0.5)
+plt.show()
 ```
+
+![Figure_1](https://user-images.githubusercontent.com/13412823/75104235-00d8d380-564a-11ea-8e20-bc3431a143ea.png)
+
+![Figure_2](https://user-images.githubusercontent.com/13412823/75104234-fddde300-5649-11ea-83e0-0fc57e73f2e6.png)
+
+
