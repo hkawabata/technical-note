@@ -208,7 +208,7 @@ stream_out.close()
 p.terminate()
 ```
 
-可視化：
+取り込んだ音（口笛）可視化：
 
 ```python
 from matplotlib import pyplot as plt
@@ -231,8 +231,6 @@ plt.plot(t, result, color='black', linewidth=0.5)
 plt.show()
 ```
 
-![Figure_1](https://user-images.githubusercontent.com/13412823/75104235-00d8d380-564a-11ea-8e20-bc3431a143ea.png)
+![Unknown-5](https://user-images.githubusercontent.com/13412823/75104308-231f2100-564b-11ea-8b51-521e5998644f.png)
 
-![Figure_2](https://user-images.githubusercontent.com/13412823/75104234-fddde300-5649-11ea-83e0-0fc57e73f2e6.png)
-
-
+![Unknown-6](https://user-images.githubusercontent.com/13412823/75104307-21555d80-564b-11ea-976b-e122bb6003cc.png)
