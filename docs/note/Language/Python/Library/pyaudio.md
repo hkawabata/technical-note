@@ -40,13 +40,6 @@ def tone(freq, length, gain):
     return np.sin(t * float(freq) * np.pi * 2) * gain
 
 
-def play_sound(output_stream, sound):
-    """
-    音を鳴らす
-    """
-    output_stream.write(sound)
-
-
 # 半音上がる際の周波数変化割合
 r_semitone = math.pow(2, 1.0/12)
 # ド〜ドの12+1音階の周波数
@@ -68,17 +61,17 @@ stream_out = p.open(
 # ドレミファソラシド
 for i in [0, 2, 4, 5, 7, 9, 11, 12]:
     sound = tone(scale_hz[i], 0.5, 1.0).astype(np.float32).tostring()
-    play_sound(stream_out, sound)
+    stream_out.write(sound)
 
 # 小さい音で
 for i in [0, 2, 4, 5, 7, 9, 11, 12]:
     sound = tone(scale_hz[i], 0.5, 0.2).astype(np.float32).tostring()
-    play_sound(stream_out, sound)
+    stream_out.write(sound)
 
 # 鳴らす時間を短く
 for i in [0, 2, 4, 5, 7, 9, 11, 12]:
     sound = tone(scale_hz[i], 0.2, 1.0).astype(np.float32).tostring()
-    play_sound(stream_out, sound)
+    stream_out.write(sound)
 
 stream_out.close()
 p.terminate()
@@ -105,7 +98,7 @@ def chord(freqs, length, gain):
     return result
 
 sound = chord([scale_hz[0], scale_hz[4], scale_hz[7]], 2, 1.0).astype(np.float32).tostring()
-play_sound(stream_out, sound)
+stream_out.write(sound)
 ```
 
 和音を可視化してみる：
