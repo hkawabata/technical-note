@@ -8,7 +8,7 @@ title: 高速フーリエ変換（FFT）
 
 数学的な証明は除く。
 
-周期関数に限らず、任意の関数 $$f(t)$$ は、正弦波（$$A \sin {\omega t}$$や$$A cos {\omega t}$$。$$A$$, $$\omega$$ は定数）の和で表現できる。  
+周期関数に限らず、任意の関数 $$f(t)$$ は、正弦波（$$A \sin{\omega t}$$や$$A \cos{\omega t}$$。$$A$$, $$\omega$$ は定数）の和で表現できる。  
 $$t$$ を時間 [s] とすれば
 - $$\omega$$ は波の角周波数 [rad/s]（周波数 $$f$$ [Hz] との関係は $$\omega = 2\pi f$$）
 - $$A$$ は波の振幅に当たる。
@@ -18,10 +18,10 @@ $$t$$ を時間 [s] とすれば
 **【フーリエ変換公式】**
 
 フーリエ変換：  
-$$F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-i\omega t} \,dt$$
+$$F(\omega) = \displaystyle \int_{-\infty}^{\infty} f(t) e^{-i\omega t} \,dt$$
 
 フーリエ逆変換：  
-$$f(t) = \cfrac{1}{2\pi} \int_{-\infty}^{\infty} F(\omega) e^{-i\omega t} \,d\omega$$
+$$f(t) = \displaystyle \cfrac{1}{2\pi} \int_{-\infty}^{\infty} F(\omega) e^{i\omega t} \,d\omega$$
 
 **【例】**
 
@@ -75,8 +75,8 @@ $$
 
 **【問題点】**  
 素直に方程式を解くと、データの規模が大きくなるにつれて時間計算量・空間計算量が飛躍的に増大
-- 時間計算量 $$\O(N^3)$$
-- 空間計算量 $$\O(N^2)$$
+- 時間計算量 $$O(N^3)$$
+- 空間計算量 $$O(N^2)$$
 
 
 # 高速フーリエ変換
