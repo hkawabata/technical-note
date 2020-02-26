@@ -57,10 +57,10 @@ $$f(t) = \displaystyle \sum_{i=1}^N (a_i \sin{\omega_i t} + b_i \cos{\omega_i t}
 
 $$
 \begin{pmatrix}
-\sin{\omega_1 t_1} & \cdots & \sin{\omega_N t_1} & \cos{\omega_1 t_1} & \cdots & \cos{\omega_N t_1}\\
+\sin{\omega_1 t_1} & \cdots & \sin{\omega_N t_1} & \cos{\omega_1 t_1} & \cdots & \cos{\omega_N t_1} \\
 \vdots & & & & & \vdots \\
-\sin{\omega_1 t_N} & \cdots & \sin{\omega_N t_N} & \cos{\omega_1 t_N} & \cdots & \cos{\omega_N t_N}\\
-\sin{\omega_1 t_{N+1}} & \cdots & \sin{\omega_N t_{N+1}} & \cos{\omega_1 t_{N+1}} & \cdots & \cos{\omega_N t_{N+1}}
+\sin{\omega_1 t_N} & \cdots & \sin{\omega_N t_N} & \cos{\omega_1 t_N} & \cdots & \cos{\omega_N t_N} \\
+\sin{\omega_1 t_{N+1}} & \cdots & \sin{\omega_N t_{N+1}} & \cos{\omega_1 t_{N+1}} & \cdots & \cos{\omega_N t_{N+1}} \\
 \vdots & & & & & \vdots \\
 \sin{\omega_1 t_{2N}} & \cdots & \sin{\omega_N t_{2N}} & \cos{\omega_1 t_{2N}} & \cdots & \cos{\omega_N t_{2N}}
 \end{pmatrix}
