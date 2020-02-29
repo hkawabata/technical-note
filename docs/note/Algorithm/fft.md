@@ -58,20 +58,17 @@ $$\Delta t = \cfrac{T}{N}$$
 $$f(t)$$ のフーリエ変換は
 
 $$
-\begin{eqnarray}
-F(\omega) &=& \displaystyle \int_{-\infty}^{\infty} f(t) e^{-i\omega t} \,dt \\
- &=& \displaystyle \sum_{n=0}^{N-1} f_n e^{-i \omega t_n} \Delta t \\
- &=& \displaystyle \cfrac{T}{N} \sum_{n=0}^{N-1} f_n e^{-i \omega \frac{nT}{N}}
-\end{eqnarray}
+F(\omega) = \displaystyle \int_{-\infty}^{\infty} f(t) e^{-i\omega t} \,dt
+ = \displaystyle \sum_{n=0}^{N-1} f_n e^{-i \omega t_n} \Delta t
+ = \displaystyle \cfrac{T}{N} \sum_{n=0}^{N-1} f_n e^{-i \omega \frac{nT}{N}}
 $$
 
 強度を求めたい周波数も等間隔に取り、$$\omega = k \Delta \omega = 2 \pi k \Delta f = \cfrac{2 \pi k}{T}$$（$$k = 0, \cdots, N-1$$）と置くと、
 
 $$
-\begin{eqnarray}
-F_k &=& F(\omega) = F(2 \pi k \Delta f) \\
- &=& \displaystyle \cfrac{T}{N} \sum_{n=0}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk}
-\end{eqnarray}
+F_k = F(\omega)
+ = F(2 \pi k \Delta f)
+ = \displaystyle \cfrac{T}{N} \sum_{n=0}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk}
 $$
 
 各周波数の強度（スペクトル密度）は、これを計測時間長 $$T$$ で割って
@@ -87,7 +84,7 @@ $$
 
 という対応になっている。この複素数の絶対値を取ることでスペクトル密度が得られる。
 
-1つの $$k$$ についてフーリエ係数を計算するのに $$N$$ 回の和を取っているので、全ての $$k$$ について係数を得るための計算量は $$O(N^2)$$。
+1つの $$k$$ についてフーリエ係数を計算するのに $$N$$ 回の和を取るので、全ての $$k$$ について係数を得るための計算量は $$O(N^2)$$。
 
 # 高速フーリエ変換
 
