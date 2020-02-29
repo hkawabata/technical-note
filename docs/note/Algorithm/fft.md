@@ -60,24 +60,24 @@ $$f(t)$$ のフーリエ変換は
 $$
 \begin{eqnarray}
 F(\omega) &=& \displaystyle \int_{-\infty}^{\infty} f(t) e^{-i\omega t} \,dt \\
- &=& \displaystyle \sum_{n=1}^{N-1} f_n e^{-i \omega t_n} \Delta t \\
- &=& \displaystyle \cfrac{T}{N} \sum_{n=1}^{N-1} f_n e^{-i \omega \frac{nT}{N}}
+ &=& \displaystyle \sum_{n=0}^{N-1} f_n e^{-i \omega t_n} \Delta t \\
+ &=& \displaystyle \cfrac{T}{N} \sum_{n=0}^{N-1} f_n e^{-i \omega \frac{nT}{N}}
 \end{eqnarray}
 $$
 
-強度を求めたい周波数も等間隔に取り、$$\omega = k \Delta \omega = 2 \pi k \Delta f = \cfrac{2 \pi k}{T}$$ と置くと、
+強度を求めたい周波数も等間隔に取り、$$\omega = k \Delta \omega = 2 \pi k \Delta f = \cfrac{2 \pi k}{T}$$（$$k = 0, \cdots, N-1$$）と置くと、
 
 $$
 \begin{eqnarray}
 F_k &=& F(\omega) = F(2 \pi k \Delta f) \\
- &=& \displaystyle \cfrac{T}{N} \sum_{n=1}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk}
+ &=& \displaystyle \cfrac{T}{N} \sum_{n=0}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk}
 \end{eqnarray}
 $$
 
 各周波数の強度（スペクトル密度）は、これを計測時間長 $$T$$ で割って
 
 $$
-\displaystyle \cfrac{1}{N} \sum_{n=1}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk}
+\displaystyle \cfrac{1}{N} \sum_{n=0}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk}
 $$
 
 これは複素数であり、
