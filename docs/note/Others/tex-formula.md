@@ -36,8 +36,10 @@ title: Tex 数式
 | `\hbar` | $$\hbar$$ |
 | `\exists` | $$\exists$$ |
 | `\mid` | $$\mid$$ |
-| `\` | $$ $$ |
-| `\` | $$ $$ |
+| `\cdot` | $$\cdot$$ |
+| `\cdots` | $$\cdots$$ |
+| `\vdots` | $$\vdots$$ |
+| `\ddots` | $$\ddots$$ |
 
 # 数学記号
 
@@ -237,6 +239,24 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 > `$y = 3\left(x + \cfrac{x^2}{1 + x}\right)$`
 >
 > $$y = 3\left(x + \cfrac{x^2}{1 + x}\right)$$
+
+## 複数行の数式
+
+```
+\begin{eqnarray}
+a = b &=& c \\
+  &=& d \\
+  &=& e
+\end{eqnarray}
+```
+
+$$
+\begin{eqnarray}
+a = b &=& c \\
+  &=& d \\
+  &=& e
+\end{eqnarray}
+$$
 
 
 ## 真下・真上の添え字
