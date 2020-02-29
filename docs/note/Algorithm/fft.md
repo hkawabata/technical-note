@@ -35,7 +35,9 @@ $$f(t) = \displaystyle \cfrac{1}{2\pi} \int_{-\infty}^{\infty} F(\omega) e^{i\om
 ![Unknown-11](https://user-images.githubusercontent.com/13412823/75129160-12ce7b00-570b-11ea-9300-3e9b341a6c6f.png)
 
 
-## 離散フーリエ変換
+## 離散フーリエ変換（DFT）
+
+**DFT = Discrete Fourier Transform**
 
 コンピュータで扱うデータとしての波は連続値ではなく離散値であり、無限個の処理はできない。  
 → 関数 $$f(t)$$ を、あらゆる（= 無限個の）周波数の波ではなく、有限個の異なる周波数 $$\omega_i\,(i = 1, \cdots , N)$$ の波に分解する。
@@ -45,7 +47,7 @@ $$f(t) = \displaystyle \cfrac{1}{2\pi} \int_{-\infty}^{\infty} F(\omega) e^{i\om
 - 各サンプルの計測時刻 $$t_n$$、計測値 $$f_n$$（$$n = 0, \cdots, N-1$$）
   - サンプルは等間隔に取得：$$t_n = n \Delta t$$
 
-に対して、離散フーリエ変換における周波数分解能は
+に対して、DFT における周波数分解能は
 
 $$\Delta f = \cfrac{1}{T}$$
 
@@ -55,7 +57,7 @@ $$\Delta t = \cfrac{T}{N}$$
 
 で与えられる。
 
-$$f(t)$$ のフーリエ変換は
+$$f(t)$$ の DFT は
 
 $$
 F(\omega) = \displaystyle \int_{-\infty}^{\infty} f(t) e^{-i\omega t} \,dt
@@ -86,7 +88,9 @@ $$
 
 1つの $$k$$ についてフーリエ係数を計算するのに $$N$$ 回の和を取るので、全ての $$k$$ について係数を得るための計算量は $$O(N^2)$$。
 
-# 高速フーリエ変換
+# 高速フーリエ変換（FFT）
+
+**FFT = Fast Fourier Transform**
 
 ## 基本的な考え方
 
