@@ -40,42 +40,52 @@ $$f(t) = \displaystyle \cfrac{1}{2\pi} \int_{-\infty}^{\infty} F(\omega) e^{i\om
 コンピュータで扱うデータとしての波は連続値ではなく離散値であり、無限個の処理はできない。  
 → 関数 $$f(t)$$ を、あらゆる（= 無限個の）周波数の波ではなく、有限個の異なる周波数 $$\omega_i\,(i = 1, \cdots , N)$$ の波に分解する。
 
-1つの周波数 $$\omega_i$$ の波は、振幅を $$A_i$$、位相ズレ（時間方向の平行移動）を $$\phi_i$$ として
+- データサンプルの計測時間長 $$T$$
+- サンプル総数 $$N$$
+- 各サンプルの計測時刻 $$t_n$$、計測値 $$f_n$$（$$n = 0, \cdots, N-1$$）
+  - サンプルは等間隔に取得：$$t_n = n \Delta t$$
 
-$$A_i \sin{(\omega_i t + \phi_i)} = A_i \cos{\phi_i} \sin{\omega_i t} + A_i \sin{\phi_i} \cos{\omega_i t} = a_i \sin{\omega_i t} + b_i \cos{\omega_i t}$$
+に対して、離散フーリエ変換における周波数分解能は
 
-$$a_i \equiv A_i \cos{\phi_i}, b_i \equiv A_i \sin{\phi_i}$$
+$$\Delta f = \cfrac{1}{T}$$
 
-と表現できる。  
+また、時間間隔は
 
-よって、$$f(t)$$ を $$N$$ 個の周波数の波に分解すると
+$$\Delta t = \cfrac{T}{N}$$
 
-$$f(t) = \displaystyle \sum_{i=1}^N (a_i \sin{\omega_i t} + b_i \cos{\omega_i t})$$
+で与えられる。
 
-波の決定のためには、$$2N$$ 個の定数 $$(a_1, \cdots , a_N, b_1, \cdots , b_N)$$ が求まれば良い。  
-以下の $$2N$$ 元1次連立方程式を解くことになるので、異なる $$2N$$ 個の時刻 $$t_j\,(j = 1, \cdots , 2N)$$ に対する $$f(t)$$ のデータサンプルが必要。
+$$f(t)$$ のフーリエ変換は
 
 $$
-\begin{pmatrix}
-\sin{\omega_1 t_1} & \cos{\omega_1 t_1} & \cdots & \sin{\omega_N t_1} & \cos{\omega_N t_1} \\
- & & & & \\
-\vdots & & \ddots & & \vdots \\
- & & & & \\
-\sin{\omega_1 t_{2N}} & \cos{\omega_1 t_{2N}} & \cdots & \sin{\omega_N t_{2N}} & \cos{\omega_N t_{2N}}
-\end{pmatrix}
-\left( \begin{array}
-{c} a_1 \\ b_1 \\ \vdots \\ a_N \\ b_N
-\end{array} \right)
-=
-\left( \begin{array}
-{c} f(t_1) \\ \\ \vdots \\ \\ f(t_{2N})
-\end{array} \right)
+\begin{eqnarray}
+F(\omega) &=& \displaystyle \int_{-\infty}^{\infty} f(t) e^{-i\omega t} \,dt \\
+ &=& \displaystyle \sum_{n=1}^{N-1} f_n e^{-i \omega t_n} \Delta t \\
+ &=& \displaystyle \cfrac{T}{N} \sum_{n=1}^{N-1} f_n e^{-i \omega \frac{nT}{N}}
+\end{eqnarray}
 $$
 
-**【問題点】**  
-素直に方程式を解くと、データの規模が大きくなるにつれて時間計算量・空間計算量が飛躍的に増大
-- 時間計算量 $$O(N^3)$$
-- 空間計算量 $$O(N^2)$$
+強度を求めたい周波数も等間隔に取り、$$\omega = k \Delta \omega = 2 \pi k \Delta f = \cfrac{2 \pi k}{T}$$ と置くと、
+
+$$
+\begin{eqnarray}
+F_k &=& F(\omega) = F(2 \pi k \Delta f) \\
+ &=& \displaystyle \cfrac{T}{N} \sum_{n=1}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk}
+\end{eqnarray}
+$$
+
+各周波数の強度（スペクトル密度）は、これを計測時間長 $$T$$ で割って
+
+$$
+\displaystyle \cfrac{1}{N} \sum_{n=1}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk}
+$$
+
+これは複素数であり、
+
+- 実部：波の偶関数成分（cos）
+- 虚部：波の奇関数成分（sin）
+
+という対応になっている。この複素数の絶対値を取ることでスペクトル密度が得られる。
 
 
 # 高速フーリエ変換
