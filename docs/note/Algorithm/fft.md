@@ -89,3 +89,37 @@ $$
 # 高速フーリエ変換
 
 （TODO）
+
+## サンプルコード
+
+```python
+import numpy as np
+
+def dft(f_):
+    """離散フーリエ変換（愚直に和を取る）"""
+    N_ = len(f_)
+    res = np.full(N_, 0j)
+    x = -1j*2*np.pi/N
+    for k in range(N_):
+        for n in range(N_):
+            res[k] += f_[n] * np.exp(x*k*n)
+    return res
+
+def fft(f_, start=0, d=1):
+    """高速フーリエ変換"""
+    N_ = len(f_) / d
+    if 1 < N_:
+        return fft(f_, start, d*2) + fft(f_, start+d, d*2) * np.exp(-1j*2*np.pi*np.arange(len(f_))/N_)
+    else:
+        return np.array([f_[start]])
+```
+
+## 速度の比較
+
+numpy の FFT が異常に速い。
+
+![Unknown](https://user-images.githubusercontent.com/13412823/75605321-04c29500-5b25-11ea-8321-8dbb41fad7fd.png)
+
+![Unknown-1](https://user-images.githubusercontent.com/13412823/75605320-0429fe80-5b25-11ea-9976-de03cf5dc76a.png)
+
+![Unknown-2](https://user-images.githubusercontent.com/13412823/75605318-01c7a480-5b25-11ea-82c7-0df498ac097d.png)
