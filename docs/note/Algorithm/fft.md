@@ -108,12 +108,12 @@ c_k &=& \displaystyle \sum_{n=0}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk} \\
 \end{eqnarray}
 $$
 
-$$w_N \equiv e^{-i \cfrac{2 \pi}{N}}$$ と置くと、
+$$w_N \equiv e^{-i \frac{2 \pi}{N}}$$ と置くと、
 
 $$
 \begin{eqnarray}
 c_k &=& \displaystyle \sum_{n=0}^{N-1} f_n w_N^{kn} \\
-  &=& \displaystyle \sum_{n=0}^{\frac{N}{2}-1} f_{2n} w_{N/2}^{nk} + w_{N}^{k} \sum_{n=0}^{\frac{N}{2}-1} f_{2n+1} w_{N/2}^{nk}}
+  &=& \displaystyle \sum_{n=0}^{\frac{N}{2}-1} f_{2n} w_{N/2}^{nk} + w_{N}^{k} \sum_{n=0}^{\frac{N}{2}-1} f_{2n+1} w_{N/2}^{nk}
 \end{eqnarray}
 $$
 
