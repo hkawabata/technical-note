@@ -88,7 +88,44 @@ $$
 
 # 高速フーリエ変換
 
-（TODO）
+## 基本的な考え方
+
+前提として、$$N$$ は2の冪乗となるように決める。
+
+$$F_k$$ の和の部分
+
+$$c_k \equiv \displaystyle \sum_{n=0}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk}$$
+
+を高速に求めたい。
+
+和の各要素を偶数番目と奇数番目に分けると、
+
+$$
+\begin{eqnarray}
+c_k &=& \displaystyle \sum_{n=0}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk} \\
+  &=& \displaystyle \sum_{n=0}^{\frac{N}{2}-1} f_{2n} e^{-i \frac{2 \pi}{N} 2nk} + \sum_{n=0}^{\frac{N}{2}-1} f_{2n+1} e^{-i \frac{2 \pi}{N} (2n+1)k} \\
+  &=& \displaystyle \sum_{n=0}^{\frac{N}{2}-1} f_{2n} e^{-i \frac{2 \pi}{N/2} nk} + e^{-i \frac{2 \pi}{N} k} \sum_{n=0}^{\frac{N}{2}-1} f_{2n+1} e^{-i \frac{2 \pi}{N/2} nk}
+\end{eqnarray}
+$$
+
+$$w_N \equiv e^{-i \cfrac{2 \pi}{N}}$$ と置くと、
+
+$$
+\begin{eqnarray}
+c_k &=& \displaystyle \sum_{n=0}^{N-1} f_n w_N^{kn} \\
+  &=& \displaystyle \sum_{n=0}^{\frac{N}{2}-1} f_{2n} w_{N/2}^{nk} + w_{N}^{k} \sum_{n=0}^{\frac{N}{2}-1} f_{2n+1} w_{N/2}^{nk}}
+\end{eqnarray}
+$$
+
+最後の式を見ると、
+
+- 第1項：要素数 $$N/2$$ の DFT
+- 第2項：要素数 $$N/2$$ の DFT に $$w_N^k$$ をかけたもの
+
+となっている。  
+即ち、**要素数 $$N$$ の DFT は、要素数 $$N/2$$ の DFT 2つに複素数 $$w_N^k$$ を掛けて和をとる処理に分解できる**。
+
+（TODO: 続き）
 
 ## サンプルコード
 
@@ -96,30 +133,66 @@ $$
 import numpy as np
 
 def dft(f_):
-    """離散フーリエ変換（愚直に和を取る）"""
     N_ = len(f_)
     res = np.full(N_, 0j)
-    x = -1j*2*np.pi/N
+    x = -1j*2*np.pi/N_
     for k in range(N_):
         for n in range(N_):
             res[k] += f_[n] * np.exp(x*k*n)
     return res
 
-def fft(f_, start=0, d=1):
-    """高速フーリエ変換"""
+def dft_better(f_, start=0, d=1):
+    """
+    各kのDFTを再帰的に2分割して効率化
+    FFTもどき
+    """
     N_ = len(f_) / d
     if 1 < N_:
         return fft(f_, start, d*2) + fft(f_, start+d, d*2) * np.exp(-1j*2*np.pi*np.arange(len(f_))/N_)
     else:
         return np.array([f_[start]])
+
+def fft(f_, start=0, d=1):
+    """
+    Cooley-Tukey Algorithm
+    """
+    N_ = len(f_)
+    b = int(np.log2(N_))
+    F_ = []
+    for i in range(N_):
+        F_.append(f_[reverse_bit(i, b)])
+    window = 1
+    while window < N_:
+        window <<= 1
+        j = 0
+        for i in range(N_):
+            if i%window < window/2:
+                k = int(i + window/2)
+                wi = np.exp(-1j * 2 * np.pi * (i%window) / window)
+                wk = np.exp(-1j * 2 * np.pi * (k%window) / window)
+                F_[i], F_[k] = F_[i] + wi * F_[k], F_[i] + wk * F_[k]
+    return F_
+
+def reverse_bit(num, b):
+    """
+    bビットの数値numのビットを逆順に変換
+    - ex. num=2, b=4 の場合、0010 => 0100 => 4
+    - ex. num=20, b=6 の場合、010100 => 001010 => 10
+    """
+    tmp = num
+    res = tmp & 1
+    for _ in range(b-1):
+        tmp >>= 1
+        res = (res << 1) | (tmp & 1)
+    return res
 ```
+
+関数 $$f(t) = \sin{60 \pi t} + 0.1 \sin{600 \pi t}$$ に FFT を適用：
+
+![Unknown-6](https://user-images.githubusercontent.com/13412823/75610477-c218b100-5b54-11ea-9539-7fddce19666e.png)
 
 ## 速度の比較
 
-numpy の FFT が異常に速い。
+numpy の FFT が非常に速い。
 
-![Unknown](https://user-images.githubusercontent.com/13412823/75605321-04c29500-5b25-11ea-8321-8dbb41fad7fd.png)
-
-![Unknown-1](https://user-images.githubusercontent.com/13412823/75605320-0429fe80-5b25-11ea-9976-de03cf5dc76a.png)
-
-![Unknown-2](https://user-images.githubusercontent.com/13412823/75605318-01c7a480-5b25-11ea-82c7-0df498ac097d.png)
+![Unknown-5](https://user-images.githubusercontent.com/13412823/75610479-c513a180-5b54-11ea-9a10-26c638ba094b.png)
