@@ -119,7 +119,6 @@ $$
 $$
 \begin{eqnarray}
 c_k &=& \displaystyle \sum_{n=0}^{N-1} f_n w_N^{kn} \\
-  &=& \displaystyle \sum_{n=0}^{N/2-1} f_{2n} w_{N/2}^{nk} + w_{N}^{k} \sum_{n=0}^{N/2-1} f_{2n+1} w_{N/2}^{nk} \\
   &=& \displaystyle \sum_{n=0}^{N/2-1} f_n^{\rm e} w_{N/2}^{nk} + w_{N}^{k} \sum_{n=0}^{N/2-1} f_n^{\rm o} w_{N/2}^{nk}
 \end{eqnarray}
 $$
