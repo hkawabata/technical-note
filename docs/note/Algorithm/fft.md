@@ -161,6 +161,9 @@ $$
 
 （TODO: 続き）
 
+![fft_butterfly](https://user-images.githubusercontent.com/13412823/75625084-f5634a80-5bfd-11ea-90dc-68eef15b2739.png)
+
+
 ## サンプルコード
 
 ```python
