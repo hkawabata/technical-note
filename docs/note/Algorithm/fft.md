@@ -114,12 +114,12 @@ c_k &=& \displaystyle \sum_{n=0}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk} \\
 \end{eqnarray}
 $$
 
-$$w_N \equiv e^{-i \frac{2 \pi}{N}}$$ と置くと、
+複素数空間の回転単位（回転子）$$w_N \equiv e^{-i \frac{2 \pi}{N}}$$、偶数番目・奇数番目成分 $$f_n^{\rm e} \equiv f_{2n},\,\, f_n^{\rm o} \equiv f_{2n+1}$$ と置くと、
 
 \begin{eqnarray}
 c_k &=& \displaystyle \sum_{n=0}^{N-1} f_n w_N^{kn} \\
   &=& \displaystyle \sum_{n=0}^{N/2-1} f_{2n} w_{N/2}^{nk} + w_{N}^{k} \sum_{n=0}^{N/2-1} f_{2n+1} w_{N/2}^{nk} \\
-  &=& \displaystyle \sum_{n=0}^{N/2-1} f_n^{\rm e} w_{N/2}^{nk} + w_{N}^{k} \sum_{n=0}^{N/2-1} f_n^{\rm o} w_{N/2}^{nk} \,\,\,\left( f_n^{\rm e} \equiv f_{2n},\,\, f_n^{\rm o} \equiv f_{2n+1} \right)
+  &=& \displaystyle \sum_{n=0}^{N/2-1} f_n^{\rm e} w_{N/2}^{nk} + w_{N}^{k} \sum_{n=0}^{N/2-1} f_n^{\rm o} w_{N/2}^{nk}
 \end{eqnarray}
 
 最後の式を見ると、
