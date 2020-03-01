@@ -109,8 +109,8 @@ $$c_k \equiv \displaystyle \sum_{n=0}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk}$$
 $$
 \begin{eqnarray}
 c_k &=& \displaystyle \sum_{n=0}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk} \\
-  &=& \displaystyle \sum_{n=0}^{\frac{N}{2}-1} f_{2n} e^{-i \frac{2 \pi}{N} 2nk} + \sum_{n=0}^{\frac{N}{2}-1} f_{2n+1} e^{-i \frac{2 \pi}{N} (2n+1)k} \\
-  &=& \displaystyle \sum_{n=0}^{\frac{N}{2}-1} f_{2n} e^{-i \frac{2 \pi}{N/2} nk} + e^{-i \frac{2 \pi}{N} k} \sum_{n=0}^{\frac{N}{2}-1} f_{2n+1} e^{-i \frac{2 \pi}{N/2} nk}
+  &=& \displaystyle \sum_{n=0}^{N/2-1} f_{2n} e^{-i \frac{2 \pi}{N} 2nk} + \sum_{n=0}^{N/2-1} f_{2n+1} e^{-i \frac{2 \pi}{N} (2n+1)k} \\
+  &=& \displaystyle \sum_{n=0}^{N/2-1} f_{2n} e^{-i \frac{2 \pi}{N/2} nk} + e^{-i \frac{2 \pi}{N} k} \sum_{n=0}^{N/2-1} f_{2n+1} e^{-i \frac{2 \pi}{N/2} nk}
 \end{eqnarray}
 $$
 
@@ -119,7 +119,7 @@ $$w_N \equiv e^{-i \frac{2 \pi}{N}}$$ と置くと、
 $$
 \begin{eqnarray}
 c_k &=& \displaystyle \sum_{n=0}^{N-1} f_n w_N^{kn} \\
-  &=& \displaystyle \sum_{n=0}^{\frac{N}{2}-1} f_{2n} w_{N/2}^{nk} + w_{N}^{k} \sum_{n=0}^{\frac{N}{2}-1} f_{2n+1} w_{N/2}^{nk}
+  &=& \displaystyle \sum_{n=0}^{N/2-1} f_{2n} w_{N/2}^{nk} + w_{N}^{k} \sum_{n=0}^{N/2-1} f_{2n+1} w_{N/2}^{nk}
 \end{eqnarray}
 $$
 
@@ -151,8 +151,8 @@ $$
 
 $$
 \begin{eqnarray}
-c_k       &=& \displaystyle \sum_{n=0}^{N/2-1} f_{2n} w_{N/2}^{nk} + w_N^{k} \sum_{n=0}^{\frac{N}{2}-1} f_{2n+1} w_{N/2}^{nk} \\
-c_{k+N/2} &=& \displaystyle \sum_{n=0}^{N/2-1} f_{2n} w_{N/2}^{nk} - w_N^{k} \sum_{n=0}^{\frac{N}{2}-1} f_{2n+1} w_{N/2}^{nk}
+c_k       &=& \displaystyle \sum_{n=0}^{N/2-1} f_{2n} w_{N/2}^{nk} + w_N^{k} \sum_{n=0}^{N/2-1} f_{2n+1} w_{N/2}^{nk} \\
+c_{k+N/2} &=& \displaystyle \sum_{n=0}^{N/2-1} f_{2n} w_{N/2}^{nk} - w_N^{k} \sum_{n=0}^{N/2-1} f_{2n+1} w_{N/2}^{nk}
 \end{eqnarray}
 $$
 
