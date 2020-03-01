@@ -102,6 +102,8 @@ $$c_k \equiv \displaystyle \sum_{n=0}^{N-1} f_n e^{-i \frac{2 \pi}{N} nk}$$
 
 を高速に求めたい。
 
+### 和を偶数番目と奇数番目に分解
+
 和の各要素を偶数番目と奇数番目に分けると、
 
 $$
@@ -129,6 +131,34 @@ $$
 となっている。  
 即ち、**要素数 $$N$$ の DFT は、要素数 $$N/2$$ の DFT 2つに複素数 $$w_N^k$$ を掛けて和をとる処理に分解できる**。
 
+2つの DFT はそれぞれ計算量 $$O\left(\left(\frac{N}{2}\right)^2\right) = O\left(\frac{N^2}{4}\right)$$ なので、この式変形により元の DFT の計算量は $$O\left(2 \cdot \frac{N^2}{4}\right) = O\left(\frac{N^2}{2}\right)$$ に下がる。
+
+再帰的に、分かれた2つの DFT もそれぞれ要素数半分の DFT の和に分解していけるので、最終的な計算量は $$O(N \log2{N})$$ になる。
+
+
+### $$k \lt N/2$$ かどうかで分解
+
+任意の $$k$$ について、
+
+$$
+\begin{eqnarray}
+w_N^{k+N/2}     &=& e^{-i\frac{2 \pi}{N}(k + N/2)}   = e^{-i\frac{2 \pi}{N}k}e^{-i\pi}    = - w_N^k \\
+w_{N/2}^{k+N/2} &=& e^{-i\frac{2 \pi}{N/2}(k + N/2)} = e^{-i\frac{2 \pi}{N/2}k}e^{-i2\pi} = w_{N/2}^k
+\end{eqnarray}
+$$
+
+であるから、$$k = 1, \cdots , \frac{N}{2}$$ に対して
+
+$$
+\begin{eqnarray}
+c_k       &=& \displaystyle \sum_{n=0}^{N/2-1} f_{2n} w_{N/2}^{nk} + w_N^{k} \sum_{n=0}^{\frac{N}{2}-1} f_{2n+1} w_{N/2}^{nk} \\
+c_{k+N/2} &=& \displaystyle \sum_{n=0}^{N/2-1} f_{2n} w_{N/2}^{nk} - w_N^{k} \sum_{n=0}^{\frac{N}{2}-1} f_{2n+1} w_{N/2}^{nk}
+\end{eqnarray}
+$$
+
+この式より、$$c_k$$ と $$c_{k+N/2}$$ の計算には同じ DFT、$$w_N^k$$ の値が使えることが分かる。  
+即ち、$$k = 1, \cdots , N$$ のそれぞれに対して個別に DFT 2つと $$w_N^k$$ の計算が必要だったところを半分にできる。
+
 （TODO: 続き）
 
 ## サンプルコード
@@ -137,28 +167,32 @@ $$
 import numpy as np
 
 def dft(f_):
+    """
+    愚直に和を取る
+    """
     N_ = len(f_)
-    res = np.full(N_, 0j)
+    F_ = np.full(N_, 0j)
     x = -1j*2*np.pi/N_
     for k in range(N_):
         for n in range(N_):
-            res[k] += f_[n] * np.exp(x*k*n)
-    return res
+            F_[k] += f_[n] * np.exp(x*k*n)
+    return F_
 
-def dft_better(f_, start=0, d=1):
+def fft_poor(f_, start=0, d=1):
     """
-    各kのDFTを再帰的に2分割して効率化
-    FFTもどき
+    各kのDFTを再帰的に2分割して高速化
+    - バタフライ演算非対応
+    - 配列を何度も作るのでコストがかかっていそう
     """
     N_ = len(f_) / d
     if 1 < N_:
-        return fft(f_, start, d*2) + fft(f_, start+d, d*2) * np.exp(-1j*2*np.pi*np.arange(len(f_))/N_)
+        return fft_poor(f_, start, d*2) + fft_poor(f_, start+d, d*2) * np.exp(-1j*2*np.pi*np.arange(len(f_))/N_)
     else:
         return np.array([f_[start]])
 
-def fft(f_, start=0, d=1):
+def fft(f_):
     """
-    Cooley-Tukey Algorithm
+    Cooley-Tukey アルゴリズム
     """
     N_ = len(f_)
     b = int(np.log2(N_))
@@ -197,6 +231,6 @@ def reverse_bit(num, b):
 
 ## 速度の比較
 
-numpy の FFT が非常に速い。
+![Unknown-1](https://user-images.githubusercontent.com/13412823/75618487-5f560280-5bb2-11ea-8769-e15b84a92315.png)
 
-![Unknown-5](https://user-images.githubusercontent.com/13412823/75610479-c513a180-5b54-11ea-9a10-26c638ba094b.png)
+
