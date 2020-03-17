@@ -141,13 +141,13 @@ drwxrwxrwx   - hkawabata hkawabata          0 2019-12-03 18:42 /user/hkawabata/t
 
 | op | HTTP メソッド | 説明 | 例 | hadoop コマンド操作 |
 | :-- | :-- | :-- | :-- | :-- |
-| `liststatus` | GET |  |  | `hdfs dfs -ls` |
-| `getstatus` | GET |  |  |  |
-| `rename` | PUT |  |  | `hdfs dfs -mv` |
-| `create` | PUT |  |  | `hdfs dfs -put` |
-| `open` | GET |  |  | `hdfs dfs -cat` |
-| `mkdirs` | PUT |  |  | `hdfs dfs -mkdir` |
-| `delete` | DELETE |  |  | `hdfs dfs -rm` |
+| `liststatus` | GET | ファイル/ディレクトリ一覧を表示 |  | `hdfs dfs -ls` |
+| `getfilestatus` | GET | ファイル情報を表示 |  |  |
+| `rename` | PUT | ファイル/ディレクトリ名変更 |  | `hdfs dfs -mv` |
+| `create` | PUT | ファイル作成 |  | `hdfs dfs -put` |
+| `open` | GET | ファイルの中身を表示 |  | `hdfs dfs -cat` |
+| `mkdirs` | PUT | ディレクトリ作成 |  | `hdfs dfs -mkdir` |
+| `delete` | DELETE | ファイル/ディレクトリ削除 |  | `hdfs dfs -rm -r` |
 
 # 設定
 
