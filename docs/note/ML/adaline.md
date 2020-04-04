@@ -4,7 +4,8 @@ title: ADALINE
 
 # ADALINE とは
 
-Adaptive Linear Neuron の略。パーセプトロンの改良のようなもの。
+Adaptive Linear Neuron の略。  
+分類問題を解くアルゴリズムで、パーセプトロンの改良のようなもの。
 
 # 問題設定
 
@@ -18,7 +19,9 @@ Adaptive Linear Neuron の略。パーセプトロンの改良のようなもの
 
 $$z = \displaystyle \sum_{j=1}^{m} w_j x_j$$
 
-を **総入力** と呼び、$$z$$ が閾値 $$\theta$$ 以上か否かで二値分類を行う。
+を **総入力** と呼び、$$z$$ が閾値 $$\theta$$ 以上か否かで二値分類を行う。  
+また、閾値 $$\theta$$ をゼロ番目の重み $$w_0 = - \theta$$ として挿入力に加える（$$x_0 = 1$$）ことで、ラベル判定の閾値を0にできる。  
+したがって、問題は重み $$w_0, \cdots, \w_m$$ の最適化問題に帰着する。
 
 ここまではパーセプトロンと同様。
 
@@ -56,14 +59,14 @@ $$
 $$J(\boldsymbol{w})$$ の勾配 $$\nabla J(\boldsymbol{w})$$ の各成分は、
 
 $$
-\cfrac{\partial J}{\partial w_j}
+\cfrac{\partial J(\boldsymbol{w})}{\partial w_j}
 = - \displaystyle \sum_i \left( y^{(i)} - \phi(z^{(i)}) \right) x_j^{(i)}
 $$
 
 よって、重み $$\boldsymbol{w}$$ の各成分を以下の式で更新するとコスト関数を小さくできる。
 
 $$
-w_j \longleftarrow w_j - \eta \cfrac{\partial J}{\partial w_j} = w_j + \eta \displaystyle \sum_i \left( y^{(i)} - \phi(z^{(i)}) \right) x_j^{(i)}
+w_j \longleftarrow w_j - \eta \cfrac{\partial J(\boldsymbol{w})}{\partial w_j} = w_j + \eta \displaystyle \sum_i \left( y^{(i)} - \phi(z^{(i)}) \right) x_j^{(i)}
 $$
 
 ここで $$\eta (0 \lt \eta \le 1)$$ は学習率であり、1度に重みを更新する大きさを表す。

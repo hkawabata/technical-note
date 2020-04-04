@@ -240,6 +240,10 @@
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
           <li>
+            <a href="https://hkawabata.github.io/technical-note/note/ML/logistic-regression">ロジスティック回帰
+</a>
+          </li>
+          <li>
             <a href="https://hkawabata.github.io/technical-note/note/ML/adaline">ADALINE
 </a>
           </li>
