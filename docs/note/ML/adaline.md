@@ -139,17 +139,6 @@ class Adaline:
         dw *= self.eta
         self.weight += dw
         return cnt_err
-
-        ids = np.array(range(len(self.data)))
-        np.random.shuffle(ids)
-        cnt_err = 0
-        for i in ids:
-            label_eval = 1 if np.dot(self.data[i], self.weight) > 0 else -1
-            if label_eval != self.labels[i]:
-                cnt_err += 1
-                for j in range(self.d + 1):
-                    self.weight[j] = self.weight[j] + self.eta * (self.labels[i] - label_eval) * self.data[i][j]
-        return cnt_err
 ```
 
 ```python
