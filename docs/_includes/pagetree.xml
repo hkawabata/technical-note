@@ -85,6 +85,10 @@
                   </li>
                 </ul>
               </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/Python/scraping">&quot;[Python] スクレイピング&quot;
+</a>
+              </li>
             </ul>
           </li>
           <li>
@@ -202,7 +206,7 @@
             </ul>
           </li>
           <li>
-            <a href="https://hkawabata.github.io/technical-note/note/Algorithm/fft">高速フーリエ変換（作成中）
+            <a href="https://hkawabata.github.io/technical-note/note/Algorithm/fft">高速フーリエ変換（FFT）
 </a>
           </li>
           <li>
@@ -227,6 +231,20 @@
         <ul class="pagetree-hidden">
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/Standard/swagger">Swagger
+</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <span>ML</span>
+        <span class="pagetree-accordion">▼</span>
+        <ul class="pagetree-hidden">
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/ML/adaline">ADALINE
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/ML/perceptron">パーセプトロン
 </a>
           </li>
         </ul>
@@ -385,6 +403,10 @@
             <span>Hadoop</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/OSS/Hadoop/hdfs">HDFS
+</a>
+              </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/OSS/Hadoop/httpfs">HttpFS
 </a>
