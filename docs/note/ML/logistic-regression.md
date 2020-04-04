@@ -10,9 +10,11 @@ title: ロジスティック回帰
   - 「1クラス vs その他クラス」の二値分類を繰り返すことで、他クラス分類にも拡張できる
 - 高い性能を発揮するのは線形分離可能な場合に限る
 
+
 # 問題設定
 
 入力値（特徴量） $$x_1, \cdots, x_m$$ に対し、分類ラベル $$y$$ を出力するモデルを作りたい。
+
 
 # 仕組み
 
@@ -52,6 +54,7 @@ $$\phi(z) = \cfrac{1}{1+e^{-z}}$$
 
 ![download-5](https://user-images.githubusercontent.com/13412823/78424505-0d206980-76a9-11ea-972f-542b319c571c.png)
 
+
 ### ロジスティック関数と総入力
 
 各入力値に重み $$w_1, \cdots, w_m$$ をかけて和を取った
@@ -64,6 +67,7 @@ $$z = \displaystyle \sum_{j=1}^{m} w_j x_j$$
 
 ここで、総入力 $$z$$ は重み $$w_0, \cdots, w_m$$ の線形関数であり、重みの値によってあらゆる実数値を取り得る。  
 → **「$$z$$ をロジスティック関数で射影したもの」=「サンプルがクラスラベル1に属する確率 $$p$$」とみなして重みを最適化する**
+
 
 ### 最適化すべき目的関数
 
@@ -95,6 +99,7 @@ l(\boldsymbol{w})
 = \displaystyle \sum_i y^{(i)} \log{\phi(z^{(i)})} + \sum_i (1-y^{(i)}) \log{(1-\phi(z^{(i)}))}
 $$
 
+
 ### 勾配降下法による重みの更新
 
 $$l(\boldsymbol{w})$$ の勾配 $$\nabla l(\boldsymbol{w})$$ の $$j$$ 成分は、
@@ -115,6 +120,29 @@ $$
 $$
 w_j \longleftarrow w_j - \eta \cfrac{\partial J}{\partial w_j} = w_j + \eta \displaystyle \sum_i \left( y^{(i)} - \phi(z^{(i)}) \right) x_j^{(i)}
 $$
+
+
+### 収束後のラベル判定
+
+総入力 $$z$$ のラベルが1となる確率はロジスティック関数 $$\phi(z)$$）で与えられる。  
+よって予測クラスラベル $$\hat y$$ は
+
+$$
+\hat y = \begin{cases}
+1  & (\phi(z) \ge 0.5 ) \\
+0 & (\phi(z) \lt 0.5 )
+\end{cases}
+$$
+
+$$\phi(z) = 0.5$$ は $$z = 0$$ に対応するので、ロジスティック関数を計算する必要はなく、
+
+$$
+\hat y = \begin{cases}
+1  & (z \ge 0 ) \\
+0 & (z \lt 0 )
+\end{cases}
+$$
+
 
 ## 学習規則
 
