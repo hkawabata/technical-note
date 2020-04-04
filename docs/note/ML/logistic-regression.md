@@ -106,7 +106,7 @@ $$
 &=& \displaystyle \left( \sum_i y^{(i)} (1+e^{-z^{(i)}}) - \sum_i (1-y^{(i)}) \frac{1+e^{-z^{(i)}}}{e^{-z^{(i)}}} \right) \cfrac{e^{-z^{(i)}}}{(1+e^{-z^{(i)}})^2}\ x_j^{(i)} \\
 &=& \displaystyle \left( \sum_i y^{(i)} \frac{e^{-z^{(i)}}}{1+e^{-z^{(i)}}} - \sum_i (1-y^{(i)}) \frac{1}{1+e^{-z^{(i)}}} \right) x_j^{(i)} \\
 &=& \displaystyle \left( \sum_i y^{(i)} (1-\phi(z^{(i)})) - \sum_i (1-y^{(i)}) \phi(z^{(i)}) \right) x_j^{(i)} \\
-&=& \displaystyle \sum_i (y^{(i)} - \phi(z^{(i)}) ) x_j^{(i)}
+&=& \displaystyle \sum_i \left(y^{(i)} - \phi(z^{(i)}) \right) x_j^{(i)}
 \end{eqnarray}
 $$
 
