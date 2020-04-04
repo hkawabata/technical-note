@@ -9,11 +9,13 @@ title: パーセプトロン
 - 二値分類
 - 単純パーセプトロンでは線形分離可能な問題しか解けない
 
-# 基本原理
-
-## 問題設定
+# 問題設定
 
 入力値（特徴量） $$x_1, \cdots, x_m$$ に対し、分類ラベル $$y$$ を出力するモデルを作りたい。
+
+# 仕組み
+
+## 基本原理
 
 各入力値に重み $$w_1, \cdots, w_m$$ をかけて和を取った
 
@@ -56,7 +58,7 @@ $$
 
 $$\hat y^{\ (i)} = x_0^{(i)} w_0 + \cdots + x_m^{(i)} w_m$$
 
-$$w_j \leftarrow w_j + \eta (y^{(i)} - \hat y^{\ (i)}) x_j^{(i)}$$
+$$w_j \longleftarrow w_j + \eta (y^{(i)} - \hat y^{\ (i)}) x_j^{(i)}$$
 
 ここで $$\eta (0 \lt \eta \le 1)$$ は学習率であり、1度に重みを更新する大きさを表す。
 
@@ -93,7 +95,7 @@ class Perceptron:
         self.epoch = epoch
         self.max_err = max_err
         self.weight = np.zeros(d+1)  # 閾値を重みと見做す分、1つ増える
-    
+
     def predict(self, x):
         """
         Parameters
@@ -101,7 +103,7 @@ class Perceptron:
         x : 分類したいデータ（d次元ベクトル）
         """
         return 1 if np.dot(x, self.weight[:-1]) + self.weight[-1] > 0 else -1
-    
+
     def fit(self, data, labels):
         """
         Parameters
@@ -115,11 +117,11 @@ class Perceptron:
             cnt_err = self.__cycle()
             if cnt_err <= self.max_err:
                 break
-        print('Converged in {} cycles.'.format(t))
-        
+        print('Converged in {} cycles.'.format(t+1))
+
     def __cycle(self):
         ids = np.array(range(len(self.data)))
-        np.random.shuffle(ids)
+        np.random.shuffle(ids)  # 毎回同じ順序でサンプルを使うことによる偏りを避けるためランダムソート
         cnt_err = 0
         for i in ids:
             label_eval = 1 if np.dot(self.data[i], self.weight) > 0 else -1
@@ -154,4 +156,3 @@ print(perceptron.predict([7, 2]))
 ![Unknown](https://user-images.githubusercontent.com/13412823/78036657-88320900-73a5-11ea-9c9d-c92c04350967.png)
 
 ![Unknown-1](https://user-images.githubusercontent.com/13412823/78036647-86684580-73a5-11ea-8466-a564e0d07e87.png)
-
