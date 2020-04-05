@@ -62,7 +62,7 @@ $$\phi(z) = \cfrac{1}{1+e^{-z}}$$
 $$z = \displaystyle \sum_{j=1}^{m} w_j x_j$$
 
 を **総入力** と呼び、$$z$$ が閾値 $$\theta$$ 以上か否かで二値分類を行う。  
-また、閾値 $$\theta$$ をゼロ番目の重み $$w_0 = - \theta$$ として挿入力に加える（$$x_0 = 1$$）ことで、ラベル判定の閾値を0にできる。  
+また、閾値 $$\theta$$ をゼロ番目の重み $$w_0 = - \theta$$ として総入力に加える（$$x_0 = 1$$）ことで、ラベル判定の閾値を0にできる。  
 したがって、問題は重み $$w_0, \cdots, w_m$$ の最適化問題に帰着する。
 
 ここで、総入力 $$z$$ は重み $$w_0, \cdots, w_m$$ の線形関数であり、重みの値によってあらゆる実数値を取り得る。  
@@ -72,14 +72,14 @@ $$z = \displaystyle \sum_{j=1}^{m} w_j x_j$$
 ### 最適化すべき目的関数
 
 実際に起こったこと（= データサンプルとそれに対する正解ラベル）を踏まえて、それが実現する確率が最も高いような重みを探す。  
-つまり、各データサンプル $$\boldsymbol{x^{(i)}}$$ が正解ラベル $$y^{(i)}$$（0 or 1）に属する確率（**尤度** $$L$$）を最大化すれば良い。
+つまり、各データサンプル $$\boldsymbol{x}^{(i)}$$ が正解ラベル $$y^{(i)}$$（0 or 1）に属する確率（**尤度** $$L$$）を最大化すれば良い。
 
 目的関数（尤度）は、
 
 $$
 \begin{eqnarray}
 L(\boldsymbol{w})
-&=& \displaystyle \prod_i p(y^{(i)} \mid \boldsymbol{x^{(i)}}, \boldsymbol{w}) \\
+&=& \displaystyle \prod_i p(y^{(i)} \mid \boldsymbol{x}^{(i)}, \boldsymbol{w}) \\
 &=& \displaystyle \prod_i p(y^{(i)} \mid z^{(i)}) \\
 &=& \displaystyle \prod_i \left( \phi(z^{(i)}) y^{(i)} + (1-\phi(z^{(i)})) (1 - y^{(i)}) \right) \\
 &=& \displaystyle \prod_i \left( \phi(z^{(i)}) \right)^{y^{(i)}} \left( 1-\phi(z^{(i)}) \right)^{1 - y^{(i)}}
