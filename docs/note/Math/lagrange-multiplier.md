@@ -24,12 +24,13 @@ $$
 \end{cases}
 $$
 
-を解くことで得られる（$$\nabla_{\boldsymbol{x}} = \frac{\partial}{\partial \boldsymbol{x}}$$）。
+を解くことで得られる（$$\nabla_{\boldsymbol{x}} = \frac{\partial}{\partial \boldsymbol{x}}$$）。  
+最後の式は束縛条件 $$g(\boldsymbol{x}) = 0$$ と同値。
 
-$$m$$ 個の束縛条件 $$g_i(\boldsymbol{x}) = 0$$ が存在する場合にも拡張でき、未定定数 $$\boldsymbol{\lambda} = (\lambda_1, \cdots, \lambda_m)$$ を用いて
+$$m$$ 個の束縛条件 $$g_i(\boldsymbol{x}) = 0$$（$$i = 1, \cdots, m$$）が存在する場合にも拡張でき、未定定数 $$\boldsymbol{\lambda} = (\lambda_1, \cdots, \lambda_m)$$ を用いて
 
 $$
-L(\boldsymbol{x}, \boldsymbol{\lambda}) = f(\boldsymbol{x}) - \displaystyle \sum_{i=1}^m \lambda_i g_i(\boldsymbol{x})
+L(\boldsymbol{x}, \boldsymbol{\lambda}) \equiv f(\boldsymbol{x}) - \displaystyle \sum_{i=1}^m \lambda_i g_i(\boldsymbol{x})
 $$
 
 と置き、
