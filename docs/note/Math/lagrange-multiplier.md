@@ -15,7 +15,8 @@ $$n$$ 変数 $$\boldsymbol{x} = (x_1, \cdots, x_n)$$ の関数 $$f(\boldsymbol{x
 
 $$L(\boldsymbol{x}, \lambda) \equiv f(\boldsymbol{x}) - \lambda g(\boldsymbol{x})$$
 
-で定義すると、条件 $$g(\boldsymbol{x}) = 0$$ 下での $$f(\boldsymbol{x})$$ の極値は（存在するならば）$$\boldsymbol{x}, \lambda$$ に関する連立方程式
+で定義する。  
+条件 $$g(\boldsymbol{x}) = 0$$ 下での $$f(\boldsymbol{x})$$ の極値は $$\boldsymbol{x}, \lambda$$ に関する連立方程式
 
 $$
 \begin{cases}
@@ -43,8 +44,6 @@ $$
 $$
 
 を解けば良い（$$\nabla_{\boldsymbol{\lambda}} = \frac{\partial}{\partial \boldsymbol{\lambda}} = (\frac{\partial}{\partial \lambda_1}, \cdots, \frac{\partial}{\partial \lambda_m})$$）。
-
-
 
 
 ### 直感的な理解
@@ -91,3 +90,24 @@ $$
 
 
 ## ラグランジュの未定乗数法：不等式制約
+
+### 定理：Karush-Kuhn-Tucker 条件（KKT 条件）
+
+$$n$$ 変数 $$\boldsymbol{x} = (x_1, \cdots, x_n)$$ の関数 $$f(\boldsymbol{x})$$ に関して、束縛条件 $$g(\boldsymbol{x}) \le 0$$ が課されているとする。  
+**ラグランジアン** $$L(\boldsymbol{x}, \lambda)$$ を
+
+$$L(\boldsymbol{x}, \lambda) \equiv f(\boldsymbol{x}) - \lambda g(\boldsymbol{x})$$
+
+で定義する。  
+条件 $$g(\boldsymbol{x}) \le 0$$ 下で $$f(\boldsymbol{x})$$ の極小値が存在するならば、極小値を取る $$\boldsymbol{x}$$ に対して以下を満たす $$\lambda$$ が存在する。
+
+$$
+\begin{cases}
+\nabla_{\boldsymbol{x}} L &= 0 \\
+\lambda g(\boldsymbol{x}) &= 0 \\
+g(\boldsymbol{x}) &\le 0 \\
+\lambda &\ge 0
+\end{cases}
+$$
+
+極大値の場合、最後の不等式が逆転する。
