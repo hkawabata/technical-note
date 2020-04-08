@@ -24,7 +24,7 @@ $$
 \end{cases}
 $$
 
-を解くことで得られる（$$\nabla_{\boldsymbol{x}} = \frac{\partial}{\partial \boldsymbol{x}}$$）。  
+を解くことで得られる（$$\nabla_{\boldsymbol{x}} = \frac{\partial}{\partial \boldsymbol{x}} = (\frac{\partial}{\partial x_1}, \cdots, \frac{\partial}{\partial x_n})$$）。  
 最後の式は束縛条件 $$g(\boldsymbol{x}) = 0$$ と同値。
 
 $$m$$ 個の束縛条件 $$g_i(\boldsymbol{x}) = 0$$（$$i = 1, \cdots, m$$）が存在する場合にも拡張でき、未定定数 $$\boldsymbol{\lambda} = (\lambda_1, \cdots, \lambda_m)$$ を用いて
@@ -42,7 +42,7 @@ $$
 \end{cases}
 $$
 
-を解けば良い（$$\nabla_{\boldsymbol{\lambda}} = \frac{\partial}{\partial \boldsymbol{\lambda}}$$）。
+を解けば良い（$$\nabla_{\boldsymbol{\lambda}} = \frac{\partial}{\partial \boldsymbol{\lambda}} = (\frac{\partial}{\partial \lambda_1}, \cdots, \frac{\partial}{\partial \lambda_m})$$）。
 
 
 
