@@ -82,10 +82,12 @@ $$
 >
 > 下図は $$f(x, y) = (x-1)^2 + (y-2)^2$$, $$g(x, y) = x^2 - y$$ の例。  
 > ラグランジュの未定乗数法による連立方程式の解として3つの接点  
-> $$(x, y) = (-1, 1), (\frac{1+\sqrt{3}}{2}, \frac{2+\sqrt{3}}{2}), (\frac{1-\sqrt{3}}{2}, \frac{2-\sqrt{3}}{2})$$  
+> $$(x, y) = (-1, 1), (\frac{1-\sqrt{3}}{2}, \frac{2-\sqrt{3}}{2}), (\frac{1+\sqrt{3}}{2}, \frac{2+\sqrt{3}}{2})$$  
 > が得られるが、$$f(x, y)$$ の最小値を与えるのは2番目の接点。
 >
-> ![Unknown-3](https://user-images.githubusercontent.com/13412823/78782838-98696a00-79dd-11ea-8186-4feb9527e242.png)
+> ![Unknown-4](https://user-images.githubusercontent.com/13412823/78902403-b524a100-7ab4-11ea-8d6f-b5b3d87f6300.png)
+>
+> ![Unknown-5](https://user-images.githubusercontent.com/13412823/78902450-c1a8f980-7ab4-11ea-96fa-81fba33f28d0.png)
 
 
 
@@ -117,4 +119,4 @@ $$
 等式制約では取りうる $$\boldsymbol{x}$$ が境界線上に限定されていたのが、境界で囲まれた領域内に広がった。
 
 - 領域内に極値が存在するとき：領域の境界は関係がない。つまり、制約条件なしの問題に等しい（$$\lambda = 0$$）
-- 領域内に極値が存在しないとき：極値は境界線上に存在する。解き方は（\lambda \neq 0）
+- 領域内に極値が存在しないとき：極値は境界線上に存在する。解き方は（$$\lambda \neq 0$$）
