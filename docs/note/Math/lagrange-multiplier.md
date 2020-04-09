@@ -137,7 +137,7 @@ $$
 
 ![Unknown](https://user-images.githubusercontent.com/13412823/78921800-70a6fe80-7ad0-11ea-87e0-8cb8d659c8a3.png)
 
-![Unknown-2](https://user-images.githubusercontent.com/13412823/78921810-73095880-7ad0-11ea-835b-3a91e798f45d.png)
+![Unknown-2](https://user-images.githubusercontent.com/13412823/78948862-ba114100-7b04-11ea-9d9c-5608725c2c28.png)
 
 また、上図を見れば分かる通り、
 - 境界の内側で $$g(x, y) \lt 0$$、領域境界で $$g(x, y) = 0$$ なので、$$g(x, y)$$ は下に凸
@@ -157,6 +157,9 @@ $$\lambda \lt 0$$
 >
 > $$f(x, y)$$ が上に凸であるときの最大値を求める場合、接点における $$f(x, y)$$ の勾配ベクトルは領域から出ていく向きになる。  
 > したがって、**$$f(x, y)$$ と $$g(x, y)$$ の勾配は同じ向き** なので、条件は $$\lambda \gt 0$$ となる。
+>
+> ![Unknown-3](https://user-images.githubusercontent.com/13412823/78948874-bed5f500-7b04-11ea-8635-8326300ef695.png)
+
 
 #### まとめ
 
