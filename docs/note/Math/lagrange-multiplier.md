@@ -49,19 +49,19 @@ $$
 ### 直感的な理解
 
 方程式 $$f(\boldsymbol{x}) = C$$（$$C$$ は定数）は、$$f(\boldsymbol{x})$$ の等高線を表す。  
-説明のため2次元空間を想定し、$$f(\boldsymbol{x}) = f(x, y)$$ は極大値を持つとする。
+簡単のため2次元空間を想定し、$$f(\boldsymbol{x}) = f(x, y)$$ は上に凸であるとして最大値を求める（下に凸な場合でも考え方は同じ）。
 
 下図のように、様々な $$C$$ の値に対して等高線を描いてみる。
 
 ![Unknown-2](https://user-images.githubusercontent.com/13412823/78782841-9a332d80-79dd-11ea-9bb4-a72dbb65cb15.png)
 
-- $$f(x, y) = C$$ と $$g(x, y) = 0$$ が交点を持つ場合、それよりも $$C$$ が大きい領域（図では楕円の内側）に、$$g(x, y) = 0$$ と交わるあるいは接する別の等高線が存在する。
-- $$f(x, y) = C$$ と $$g(x, y) = 0$$ が交点も接点も持たない場合、制約条件を満たす $$x$$, $$y$$ が等高線上に存在しない
+- 等高線 $$f(x, y) = C$$ と $$g(x, y) = 0$$ が交点を持つ場合、その等高線よりも $$C$$ が大きい領域（内側）に、$$g(x, y) = 0$$ と交わるあるいは接する別の等高線が存在する
+- 等高線 $$f(x, y) = C$$ と $$g(x, y) = 0$$ が交点も接点も持たない場合、制約条件を満たす $$x$$, $$y$$ が等高線上に存在しないため不適
 
 以上により、$$f(x, y)$$ が極大値をとり得るのは $$f(x, y) = C$$ と $$g(x, y) = 0$$ が接点を持つ場合であり、極大値を与えるのはその時の接点。
 
-曲線 $$f(x, y) = C$$, $$g(x, y) = 0$$ の接点では2曲線の接線が平行（傾きが等しい）。  
-それぞれの接線ベクトル $$\left( \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} \right)$$, $$\left( \frac{\partial g}{\partial x}, \frac{\partial g}{\partial y} \right)$$ が定数倍の関係にあれば良いから、
+曲線 $$f(x, y) = C$$, $$g(x, y) = 0$$ の接点では、2曲線の接線が平行。したがって曲線の法線（勾配）も平行。  
+それぞれの勾配 $$\left( \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} \right)$$, $$\left( \frac{\partial g}{\partial x}, \frac{\partial g}{\partial y} \right)$$ が定数倍の関係にあれば良いから、
 
 $$
 \left( \cfrac{\partial f}{\partial x}, \cfrac{\partial f}{\partial y} \right) = \lambda \left( \cfrac{\partial g}{\partial x}, \cfrac{\partial g}{\partial y} \right)
@@ -73,7 +73,7 @@ $$
 \nabla_{\boldsymbol{x}} \left( f - \lambda g \right) = 0
 $$
 
-これと元の制約条件 $$g(x, y) = 0$$ を合わせれば、定理の連立方程式を得る。
+これと元の制約条件 $$g(x, y) = 0$$ を合わせれば、上述の定理の連立方程式を得る。
 
 
 > **【NOTE】「接点 = 最大値 / 最小値」ではない**
@@ -108,15 +108,61 @@ $$
 \nabla_{\boldsymbol{x}} L &= 0 \\
 \lambda g(\boldsymbol{x}) &= 0 \\
 g(\boldsymbol{x}) &\le 0 \\
-\lambda &\ge 0
+\lambda &\le 0
 \end{cases}
 $$
 
-極大値の場合、最後の不等式が逆転する。
+極大値の場合、最後の不等号が逆転する。
+
 
 ### 直感的な理解
 
 等式制約では取りうる $$\boldsymbol{x}$$ が境界線上に限定されていたのが、境界で囲まれた領域内に広がった。
 
-- 領域内に極値が存在するとき：領域の境界は関係がない。つまり、制約条件なしの問題に等しい（$$\lambda = 0$$）
-- 領域内に極値が存在しないとき：極値は境界線上に存在する。解き方は（$$\lambda \neq 0$$）
+簡単のため2次元空間を想定し、$$f(\boldsymbol{x}) = f(x, y)$$ は下に凸であるとして最小値を考える（上に凸で最大値を求める場合も考え方は同じ）。
+
+#### 1. 制約がないときの極値が実行可能領域の内側に存在する時
+
+領域の境界は関係がなく、制約条件なしの問題に等しい（$$\lambda = 0$$）。
+
+![Unknown-1](https://user-images.githubusercontent.com/13412823/78921807-73095880-7ad0-11ea-8d60-d8ce016ec5fb.png)
+
+![Unknown-3](https://user-images.githubusercontent.com/13412823/78921812-73a1ef00-7ad0-11ea-9ad7-6c988daae932.png)
+
+
+#### 2. 制約がないときの極値が実行可能領域の外側に存在する時
+
+等式制約のときと同じく、極値は領域境界線上に存在し、$$f(x, y)$$ の等高線との接点で与えられる。  
+領域の境界では $$g(x, y) = 0$$ が成り立つ。
+
+![Unknown](https://user-images.githubusercontent.com/13412823/78921800-70a6fe80-7ad0-11ea-87e0-8cb8d659c8a3.png)
+
+![Unknown-2](https://user-images.githubusercontent.com/13412823/78921810-73095880-7ad0-11ea-835b-3a91e798f45d.png)
+
+また、
+- 境界の内側で $$g(x, y) \lt 0$$、領域境界で $$g(x, y) = 0$$ なので、$$g(x, y)$$ は下に凸
+  - よって接点における $$g(x, y)$$ の勾配ベクトルは、領域から出ていく向き
+- 仮定より、$$f(x, y)$$ は下に凸であり、制約なしの極値は領域の外側に存在
+  - よって接点における $$f(x, y)$$ の勾配ベクトルは、領域へ入っていく向き
+
+以上により、**$$f(x, y)$$ と $$g(x, y)$$ の勾配は逆向き**：
+
+$$
+\left( \cfrac{\partial f}{\partial x}, \cfrac{\partial f}{\partial y} \right) = \lambda \left( \cfrac{\partial g}{\partial x}, \cfrac{\partial g}{\partial y} \right)
+$$
+
+$$\lambda \lt 0$$
+
+> **【NOTE】**
+>
+> $$f(x, y)$$ が上に凸であるときの最大値を求める場合、接点における $$f(x, y)$$ の勾配ベクトルは領域から出ていく向きになる。  
+> したがって、**$$f(x, y)$$ と $$g(x, y)$$ の勾配は同じ向き** なので、条件は $$\lambda \gt 0$$ となる。
+
+#### まとめ
+
+1, 2は以下の2条件にまとめられる。
+
+- $$\lambda$$ または $$g(x, y)$$ がゼロ：$$\lambda g(x, y) = 0$$
+- $$\lambda$$ はゼロまたは負：$$\lambda \le 0$$
+
+これと元の制約 $$g(x, y) \le 0$$ を合わせて、上述の定理を得る。
