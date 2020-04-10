@@ -6,7 +6,15 @@ title: ラグランジュの未定乗数法
 
 束縛条件下で関数の極値を求めるための手法。
 
+
 ## ラグランジュの未定乗数法：等式制約
+
+制約が等式 $$g(\boldsymbol{x}) = 0$$ で表現されるときの関数 $$f(\boldsymbol{x})$$ の極値を求めたい。
+
+![Unknown](https://user-images.githubusercontent.com/13412823/78958628-98738200-7b23-11ea-838d-ab20bcb8ccd7.png)
+
+![Unknown-1](https://user-images.githubusercontent.com/13412823/78958625-96112800-7b23-11ea-978d-f469dd43a3dc.png)
+
 
 ### 定理
 
@@ -93,6 +101,8 @@ $$
 
 ## ラグランジュの未定乗数法：不等式制約
 
+制約が不等式 $$g(\boldsymbol{x}) \le 0$$ で表現されるときの関数 $$f(\boldsymbol{x})$$ の極値を求めたい。
+
 ### 定理：Karush-Kuhn-Tucker 条件（KKT 条件）
 
 $$n$$ 変数 $$\boldsymbol{x} = (x_1, \cdots, x_n)$$ の関数 $$f(\boldsymbol{x})$$ に関して、束縛条件 $$g(\boldsymbol{x}) \le 0$$ が課されているとする。  
@@ -140,7 +150,7 @@ $$
 ![Unknown-2](https://user-images.githubusercontent.com/13412823/78948862-ba114100-7b04-11ea-9d9c-5608725c2c28.png)
 
 また、上図を見れば分かる通り、
-- 境界の内側で $$g(x, y) \lt 0$$、領域境界で $$g(x, y) = 0$$ なので、$$g(x, y)$$ は下に凸
+- 境界の内側で $$g(x, y) \lt 0$$、領域境界で $$g(x, y) = 0$$ なので、$$g(x, y)$$ は境界近傍では内側に向かって凹んでいる
   - よって接点における $$g(x, y)$$ の勾配ベクトルは、領域から出ていく向き
 - 仮定より、$$f(x, y)$$ は下に凸であり、制約なしの極小値は領域の外側に存在
   - よって接点における $$f(x, y)$$ の勾配ベクトルは、領域へ入っていく向き
