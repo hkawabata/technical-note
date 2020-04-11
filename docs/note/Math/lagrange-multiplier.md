@@ -19,7 +19,7 @@ title: ラグランジュの未定乗数法
 ### 定理
 
 $$n$$ 変数 $$\boldsymbol{x} = (x_1, \cdots, x_n)$$ の関数 $$f(\boldsymbol{x})$$ に関して、束縛条件 $$g(\boldsymbol{x}) = 0$$ が課されているとする。  
-**ラグランジアン** $$L(\boldsymbol{x}, \lambda)$$ を
+**ラグランジュ関数** $$L(\boldsymbol{x}, \lambda)$$ を
 
 $$L(\boldsymbol{x}, \lambda) \equiv f(\boldsymbol{x}) - \lambda g(\boldsymbol{x})$$
 
@@ -106,12 +106,12 @@ $$
 ### 定理：Karush-Kuhn-Tucker 条件（KKT 条件）
 
 $$n$$ 変数 $$\boldsymbol{x} = (x_1, \cdots, x_n)$$ の関数 $$f(\boldsymbol{x})$$ に関して、束縛条件 $$g(\boldsymbol{x}) \le 0$$ が課されているとする。  
-**ラグランジアン** $$L(\boldsymbol{x}, \lambda)$$ を
+**ラグランジュ関数** $$L(\boldsymbol{x}, \lambda)$$ を
 
 $$L(\boldsymbol{x}, \lambda) \equiv f(\boldsymbol{x}) - \lambda g(\boldsymbol{x})$$
 
 で定義する。  
-条件 $$g(\boldsymbol{x}) \le 0$$ 下で $$f(\boldsymbol{x})$$ の極小値が存在するならば、極小値を取る $$\boldsymbol{x}$$ に対して以下を満たす $$\lambda$$ が存在する。
+条件 $$g(\boldsymbol{x}) \le 0$$ 下で $$f(\boldsymbol{x})$$ の極小値が存在するならば、極小値を与える $$\boldsymbol{x}$$ に対して以下を満たす $$\lambda$$ が存在する。
 
 $$
 \begin{cases}
@@ -179,3 +179,65 @@ $$\lambda \lt 0$$
 - $$\lambda$$ はゼロまたは負：$$\lambda \le 0$$
 
 これと元の制約 $$g(x, y) \le 0$$ を合わせて、上述の定理を得る。
+
+
+### 双対問題
+
+条件 $$g(\boldsymbol{x}) \le 0$$ の下で $$f(\boldsymbol{x})$$ 最小化問題を考える（最大化問題でも考え方は同じ）。
+
+#### 目的関数の下限値
+
+ラグランジュ関数 $$L(\boldsymbol{x}, \lambda) = f(\boldsymbol{x}) - \lambda g(\boldsymbol{x})$$ を KKT 条件 $$\lambda \le 0$$ に関して最大化してみる。
+
+- 実行可能領域（$$g(\boldsymbol{x}) \le 0$$）においては $$- \lambda g(\boldsymbol{x}) \le 0$$ なので、$$\lambda g(\boldsymbol{x}) = 0$$ で $$L(\boldsymbol{x}, \lambda)$$ 最大
+- 実行可能領域外（$$g(\boldsymbol{x}) > 0$$）においては $$- \lambda g(\boldsymbol{x}) \ge 0$$ でありいくらでも大きくできる
+
+よって
+
+$$
+\underset{\lambda \le 0}{\max} L(\boldsymbol{x}, \lambda) = \begin{cases}
+f(\boldsymbol{x}) & {\rm if} \ g(\boldsymbol{x}) \le 0 \\
+\infty & {\rm if} \ g(\boldsymbol{x}) > 0
+\end{cases}
+$$
+
+となるから、両辺で $$\boldsymbol{x}$$ に関する最小値を取ると
+
+$$
+\underset{\boldsymbol{x}}{\min} \left( \underset{\lambda \le 0}{\max} L(\boldsymbol{x}, \lambda) \right) = \underset{\boldsymbol{x}}{\min} f(\boldsymbol{x})
+$$
+
+よって、
+
+$$
+\underset{\boldsymbol{x}}{\min} f(\boldsymbol{x})
+= \underset{\boldsymbol{x}}{\min} \left( \underset{\lambda \le 0}{\max} L(\boldsymbol{x}, \lambda) \right)
+\ge \underset{\lambda \le 0}{\max} \left( \underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda) \right)
+$$
+
+したがって最後の式 $$\underset{\lambda \le 0}{\max} \left( \underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda) \right)$$ は、目的関数 $$f(\boldsymbol{x})$$ の下限値を与えることが分かる。
+
+> **【NOTE】「最大値の最小値」と「最小値の最大値」の関係**
+>
+> $$L(\boldsymbol{x}, \lambda) \ge \underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda)$$
+>
+> は明らかなので、両辺で $$\lambda \le 0$$ における最大を取って、
+>
+> $$\underset{\lambda \le 0}{\max} L(\boldsymbol{x}, \lambda) \ge \underset{\lambda \le 0}{\max} \left( \underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda) \right)$$
+>
+> 更に両辺で $$\boldsymbol{x}$$ に関する最小を取ると、右辺は既に $$\boldsymbol{x}$$ を含まない式であるから変わらず、
+>
+> $$\underset{\boldsymbol{x}}{\min} \left( \underset{\lambda \le 0}{\max} L(\boldsymbol{x}, \lambda) \right) \ge \underset{\lambda \le 0}{\max} \left( \underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda) \right)$$
+>
+> を得る。・
+
+
+#### 双対関数と双対問題
+
+前節より、$$f(\boldsymbol{x})$$ の最小化問題は $$\underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda)$$ の最大化問題（**ラグランジュ双対問題**）に変換できる。
+
+$$
+l(\lambda) \equiv \underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda)
+$$
+
+を **ラグランジュ双対関数** と呼ぶ。
