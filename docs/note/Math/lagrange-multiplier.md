@@ -234,10 +234,17 @@ $$
 
 #### 双対関数と双対問題
 
-前節より、$$f(\boldsymbol{x})$$ の最小化問題は $$\underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda)$$ の最大化問題（**ラグランジュ双対問題**）に変換できる。
+$$\underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda)$$ の最大化問題を **ラグランジュ双対問題** と呼び、
 
 $$
 l(\lambda) \equiv \underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda)
 $$
 
 を **ラグランジュ双対関数** と呼ぶ。
+
+多くの最適化問題においては、主問題の最小値と双対問題の最大値が一致する（**強双対性**）：
+
+$$
+\underset{\boldsymbol{x}}{\min} f(\boldsymbol{x})
+= \underset{\lambda \le 0}{\max} l(\lambda)
+$$
