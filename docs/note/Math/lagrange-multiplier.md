@@ -28,13 +28,13 @@ $$L(\boldsymbol{x}, \lambda) \equiv f(\boldsymbol{x}) - \lambda g(\boldsymbol{x}
 
 $$
 \begin{cases}
-\nabla_{\boldsymbol{x}} L &= 0 \\
-\cfrac{\partial L}{\partial \lambda} &= 0
+\nabla_{\boldsymbol{x}} L(\boldsymbol{x}, \lambda) &= 0 \\
+g(\boldsymbol{x}) &= 0
 \end{cases}
 $$
 
 を解くことで得られる（$$\nabla_{\boldsymbol{x}} = \frac{\partial}{\partial \boldsymbol{x}} = (\frac{\partial}{\partial x_1}, \cdots, \frac{\partial}{\partial x_n})$$）。  
-最後の式は束縛条件 $$g(\boldsymbol{x}) = 0$$ と同値。
+最後の式は $$ \frac{\partial L}{\partial \lambda}(\boldsymbol{x}, \lambda) = 0 $$ と書くこともできる。
 
 $$m$$ 個の束縛条件 $$g_i(\boldsymbol{x}) = 0$$（$$i = 1, \cdots, m$$）が存在する場合にも拡張でき、未定定数 $$\boldsymbol{\lambda} = (\lambda_1, \cdots, \lambda_m)$$ を用いて
 
@@ -46,12 +46,12 @@ $$
 
 $$
 \begin{cases}
-\nabla_{\boldsymbol{x}} L &= 0 \\
-\nabla_{\boldsymbol{\lambda}} L &= 0
+\nabla_{\boldsymbol{x}} L(\boldsymbol{x}, \lambda) &= 0 \\
+g_i(\boldsymbol{x}) &= 0 \ \ (i = 1, \cdots, m)
 \end{cases}
 $$
 
-を解けば良い（$$\nabla_{\boldsymbol{\lambda}} = \frac{\partial}{\partial \boldsymbol{\lambda}} = (\frac{\partial}{\partial \lambda_1}, \cdots, \frac{\partial}{\partial \lambda_m})$$）。
+を解けば良い。
 
 
 ### 直感的な理解
@@ -215,7 +215,7 @@ $$
 \ge \underset{\lambda \le 0}{\max} \left( \underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda) \right)
 $$
 
-したがって最後の式 $$\underset{\lambda \le 0}{\max} \left( \underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda) \right)$$ は、目的関数 $$f(\boldsymbol{x})$$ の下限値を与えることが分かる。
+したがって最後の式 $$\underset{\lambda \le 0}{\max} \left( \underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda) \right)$$ は、目的関数 $$f(\boldsymbol{x})$$ の最小値の下限値を与えることが分かる。
 
 > **【NOTE】「最大値の最小値」と「最小値の最大値」の関係**
 >
@@ -229,7 +229,7 @@ $$
 >
 > $$\underset{\boldsymbol{x}}{\min} \left( \underset{\lambda \le 0}{\max} L(\boldsymbol{x}, \lambda) \right) \ge \underset{\lambda \le 0}{\max} \left( \underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda) \right)$$
 >
-> を得る。・
+> を得る。
 
 
 #### 双対関数と双対問題
