@@ -234,6 +234,13 @@ $$
 
 #### 双対関数と双対問題
 
+前節最後の不等式に関して、多くの最適化問題においては統合が成立する（**強双対性**）。
+
+$$
+\underset{\boldsymbol{x}}{\min} f(\boldsymbol{x})
+= \underset{\lambda \le 0}{\max} l(\lambda)
+$$
+
 $$\underset{\boldsymbol{x}}{\min} L(\boldsymbol{x}, \lambda)$$ の最大化問題を **ラグランジュ双対問題** と呼び、
 
 $$
@@ -242,9 +249,12 @@ $$
 
 を **ラグランジュ双対関数** と呼ぶ。
 
-多くの最適化問題においては、主問題の最小値と双対問題の最大値が一致する（**強双対性**）：
+最適化問題が強双対性を持つ場合、下の問題よりも双対問題を解く方が簡単な場合がある。
 
-$$
-\underset{\boldsymbol{x}}{\min} f(\boldsymbol{x})
-= \underset{\lambda \le 0}{\max} l(\lambda)
-$$
+> **【NOTE】強双対性が成り立つ条件**
+>
+> 以下を満たせば強双対性が成り立つ（十分条件）。
+>
+> - 等式制約 $$h_i(\boldsymbol{x}) = 0$$ の左辺が全て線形関数
+> - 不等式制約 $$g_i(\boldsymbol{x}) \le 0$$ の左辺が全て凸関数
+> - 実行可能領域の内部に（$$g_i(\boldsymbol{x}) < 0$$）に、等式制約 $$h_i(\boldsymbol{x}) = 0$$ 満たす点 $$\boldsymbol{x}$$ が存在する（**スレーターの条件**）
