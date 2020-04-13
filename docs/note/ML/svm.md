@@ -68,7 +68,11 @@ $$
 
 ### 制約条件
 
-全ての学習サンプルは正・負の超平面よりも遠くに存在し、上述の調整により $$\underset{i}{\min} |\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b| = 1$$ であるから、制約条件として下式が課される。
+全ての学習サンプルは正・負の超平面よりも遠くに存在し、上述の調整により
+
+$$\underset{i}{\min} |\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b| = 1$$
+
+であるから、制約条件として下式が課される。
 
 $$
 | \boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b | \ge 1
