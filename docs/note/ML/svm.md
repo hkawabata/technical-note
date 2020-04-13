@@ -92,20 +92,20 @@ $$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \ge 1$$
 ### ラグランジュの未定乗数法による問題の書き換え
 
 不等式制約条件下のラグランジュの未定定数法を適用する（**ラグランジュの未定乗数法についてはそちらの技術ノートを参照**）。  
-未定定数 $$\boldsymbol{\lambda} = (\lambda^{(1)}, \cdots, \lambda^{(n)})$$ を用いて、ラグランジュ関数
+未定乗数 $$\boldsymbol{\lambda} = (\lambda^{(1)}, \cdots, \lambda^{(n)})$$ を用いて、ラグランジュ関数
 
 $$
-L(\boldsymbol{w}, b, \boldsymbol{\lambda}) = \cfrac{1}{2} \|\boldsymbol{w}\|^2 - \displaystyle \sum_{i=1}^{n} \lambda^{(i)} \{ 1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \}
+L(\boldsymbol{w}, b, \boldsymbol{\lambda}) \equiv \cfrac{1}{2} \|\boldsymbol{w}\|^2 - \displaystyle \sum_{i=1}^{n} \lambda^{(i)} \{ 1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \}
 $$
 
-とすると、KKT 条件により、
+を定義すると、KKT 条件により、最適解において
 
 $$
 \begin{cases}
 \cfrac{\partial L}{\partial b} (\boldsymbol{w}, b, \boldsymbol{\lambda}) = 0 \\
 \cfrac{\partial L}{\partial \boldsymbol{w}} (\boldsymbol{w}, b, \boldsymbol{\lambda}) = 0 \\
 \lambda^{(i)} \{ 1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \} = 0 \\
-\{ 1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \} \le 0 \\
+1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \le 0 \\
 \lambda^{(i)} \le 0
 \end{cases}
 $$
@@ -119,12 +119,12 @@ $$
 \end{cases}
 $$
 
-これらを $$L(\boldsymbol{w}, b, \boldsymbol{\lambda})$$ の展開式に代入すると、$$\boldsymbol{\lambda}$$ だけの式（ラグランジュ双対関数）にできる：
+これら最適解の条件を $$L(\boldsymbol{w}, b, \boldsymbol{\lambda})$$ の展開式に代入すると、$$\boldsymbol{\lambda}$$ だけの式（ラグランジュ双対関数）にできる：
 
 $$
 l(\boldsymbol{\lambda}) \equiv L(\boldsymbol{w}(\boldsymbol{\lambda}), b(\boldsymbol{\lambda}), \boldsymbol{\lambda}) =
-- \displaystyle \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda^{(i)} \lambda^{(j)} y^{(i)} y^{(j)} \boldsymbol{x}^{(i)} \cdot \boldsymbol{x}^{(j)}
 - \displaystyle \sum_{i=1}^{n} \lambda^{(i)}
+- \displaystyle \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda^{(i)} \lambda^{(j)} y^{(i)} y^{(j)} \boldsymbol{x}^{(i)} \cdot \boldsymbol{x}^{(j)}
 $$
 
 この問題では強双対性が成り立つため、$$\frac{1}{2} \|\boldsymbol{w}\|^2$$ の最小化問題の代わりに $$l(\boldsymbol{\lambda})$$ の最大化問題（双対問題）を解けば元問題の解が得られる。
@@ -136,7 +136,7 @@ $$
 
 $$
 \lambda^{(i)} \longleftarrow \lambda^{(i)} + \eta \cfrac{\partial l(\boldsymbol{\lambda})}{\partial \lambda^{(i)}}
-= \lambda^{(i)} + \eta \left( 1 - \displaystyle \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda^{(j)} y^{(i)} y^{(j)} \boldsymbol{x}^{(i)} \cdot \boldsymbol{x}^{(j)} \right)
+= \lambda^{(i)} - \eta \left( 1 + \displaystyle \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda^{(j)} y^{(i)} y^{(j)} \boldsymbol{x}^{(i)} \cdot \boldsymbol{x}^{(j)} \right)
 $$
 
 （TODO）
