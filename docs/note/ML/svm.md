@@ -156,8 +156,7 @@ $$
 $$
 \begin{eqnarray}
 \lambda^{(k)} &\longleftarrow& \lambda^{(k)} + \eta \cfrac{\partial l(\boldsymbol{\lambda})}{\partial \lambda^{(k)}} \\
-&=& \lambda^{(k)} - \eta \left( 1 + \displaystyle \sum_{j=1}^{n} \lambda^{(j)} y^{(k)} y^{(j)} \boldsymbol{x}^{(k)} \cdot \boldsymbol{x}^{(j)} \right) \\
-&=& \lambda^{(k)} - \eta \left( 1 + y^{(k)} \boldsymbol{x}^{(k)} \cdot \left( \displaystyle \sum_{j=1}^{n} \lambda^{(j)} y^{(j)} \boldsymbol{x}^{(j)} \right) \right)
+&=& \lambda^{(k)} - \eta \left( 1 + \displaystyle \sum_{j=1}^{n} \lambda^{(j)} y^{(k)} y^{(j)} \boldsymbol{x}^{(k)} \cdot \boldsymbol{x}^{(j)} \right)
 \end{eqnarray}
 $$
 
