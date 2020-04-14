@@ -130,13 +130,16 @@ $$
 この問題では強双対性が成り立つため、$$\frac{1}{2} \|\boldsymbol{w}\|^2$$ の最小化問題の代わりに $$l(\boldsymbol{\lambda})$$ の最大化問題（双対問題）を解けば元問題の解が得られる。
 
 
-## 双対問題を解く
+### 双対問題を解く
 
-最急降下法で解く。
+勾配降下法（最急降下法）で解く。  
+最大化問題なので、勾配ベクトルの向きに $$\lambda$$ を更新すれば良い。
 
 $$
-\lambda^{(i)} \longleftarrow \lambda^{(i)} + \eta \cfrac{\partial l(\boldsymbol{\lambda})}{\partial \lambda^{(i)}}
-= \lambda^{(i)} - \eta \left( 1 + \displaystyle \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda^{(j)} y^{(i)} y^{(j)} \boldsymbol{x}^{(i)} \cdot \boldsymbol{x}^{(j)} \right)
+\lambda^{(k)} \longleftarrow \lambda^{(k)} + \eta \cfrac{\partial l(\boldsymbol{\lambda})}{\partial \lambda^{(k)}}
+= \lambda^{(k)} - \eta \left( 1 + \displaystyle \sum_{j=1}^{n} \lambda^{(j)} y^{(k)} y^{(j)} \boldsymbol{x}^{(k)} \cdot \boldsymbol{x}^{(j)} \right)
 $$
 
-（TODO）
+（TODO：境界面を決定するまで）
+
+（TODO：求まった境界面による分類は、サポートベクトルだけを使えば良いため効率が良い）
