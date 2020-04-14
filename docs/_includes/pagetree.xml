@@ -226,6 +226,16 @@
         </ul>
       </li>
       <li>
+        <span>Math</span>
+        <span class="pagetree-accordion">▼</span>
+        <ul class="pagetree-hidden">
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Math/lagrange-multiplier">ラグランジュの未定乗数法
+</a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <span>Standard</span>
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
@@ -241,6 +251,10 @@
         <ul class="pagetree-hidden">
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/ML/logistic-regression">ロジスティック回帰
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/ML/svm">サポートベクトルマシン（SVM）
 </a>
           </li>
           <li>
