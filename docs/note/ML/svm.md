@@ -314,6 +314,8 @@ class SVM:
         return cnt_0_pos_, cnt_0_neg_
 ```
 
+機械的に生成したデータで学習させた結果：
+
 ```python
 # 学習データ作成
 N = 200
@@ -339,5 +341,8 @@ print('b: {}'.format(svm.b))
 w: [-1.96480834 -1.067739  ]
 b: 0.060744495623293426
 ```
+
+- 点：学習データ
+- 背景：モデルの決定領域
 
 ![Unknown-4](https://user-images.githubusercontent.com/13412823/79233520-f4336780-7ea3-11ea-9c82-4f183d27553e.png)
