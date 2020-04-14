@@ -99,25 +99,25 @@ $$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \ge 1 \qquad \text{(B)
 ### ラグランジュの未定乗数法による問題の書き換え
 
 不等式制約条件下のラグランジュの未定定数法を適用する（**ラグランジュの未定乗数法についてはそちらの技術ノートを参照**）。  
-未定乗数 $$\boldsymbol{\lambda} = (\lambda^{(1)}, \cdots, \lambda^{(n)})$$ を用いて、ラグランジュ関数
+未定乗数 $$\boldsymbol{\lambda} = (\lambda^{(1)}, \cdots, \lambda^{(n)})$$ を用いて、**ラグランジュ関数**
 
 $$
 L(\boldsymbol{w}, b, \boldsymbol{\lambda}) \equiv \cfrac{1}{2} \|\boldsymbol{w}\|^2 - \displaystyle \sum_{i=1}^{n} \lambda^{(i)} \{ 1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \}
 $$
 
-を定義すると、KKT 条件により、最適解において
+を定義すると、最適解において
 
 $$
 \begin{cases}
 \cfrac{\partial L}{\partial b} (\boldsymbol{w}, b, \boldsymbol{\lambda}) = 0 & \qquad & \text{(C-1)} \\
 \cfrac{\partial L}{\partial \boldsymbol{w}} (\boldsymbol{w}, b, \boldsymbol{\lambda}) = 0 & \qquad & \text{(C-2)} \\
-\lambda^{(i)} \{ 1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \} = 0 & \qquad & \text{(C-3)} \\
+\lambda^{(i)} = 0 \quad {\rm or} \quad 1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) = 0 & \qquad & \text{(C-3)} \\
 1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \le 0 & \qquad & \text{(C-4)} \\
 \lambda^{(i)} \le 0 & \qquad & \text{(C-5)}
 \end{cases}
 $$
 
-が成り立つ。1,2行目の偏微分方程式から
+が成り立つ（**KKT 条件**）。1,2行目の偏微分方程式から
 
 $$
 \begin{cases}
@@ -126,7 +126,7 @@ $$
 \end{cases}
 $$
 
-これら最適解の条件を $$L(\boldsymbol{w}, b, \boldsymbol{\lambda})$$ の展開式に代入すると、$$\boldsymbol{\lambda}$$ だけの式（ラグランジュ双対関数）にできる：
+これら最適解の条件を $$L(\boldsymbol{w}, b, \boldsymbol{\lambda})$$ の展開式に代入すると、$$\boldsymbol{\lambda}$$ だけの式（**ラグランジュ双対関数**）にできる：
 
 $$
 l(\boldsymbol{\lambda}) \equiv L(\boldsymbol{w}(\boldsymbol{\lambda}), b(\boldsymbol{\lambda}), \boldsymbol{\lambda}) =
@@ -134,7 +134,7 @@ l(\boldsymbol{\lambda}) \equiv L(\boldsymbol{w}(\boldsymbol{\lambda}), b(\boldsy
 - \displaystyle \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda^{(i)} \lambda^{(j)} y^{(i)} y^{(j)} \boldsymbol{x}^{(i)} \cdot \boldsymbol{x}^{(j)}
 $$
 
-この問題では強双対性が成り立つため、$$\frac{1}{2} \|\boldsymbol{w}\|^2$$ の最小化問題の代わりに $$l(\boldsymbol{\lambda})$$ の最大化問題（双対問題）を解けば元問題の解が得られる。
+この問題では **強双対性** が成り立つため、$$\frac{1}{2} \|\boldsymbol{w}\|^2$$ の最小化問題の代わりに $$l(\boldsymbol{\lambda})$$ の最大化問題（**双対問題**）を解けば元問題の解が得られる。
 
 
 ### 双対問題を解く
@@ -157,7 +157,15 @@ $$\eta$$ は学習率（$$0 \lt \eta \le 1$$）。
 
 ### 決定境界を求める
 
-#### \boldsymbol{w} の求め方
+#### サポートベクトルを求める
+
+後の計算のためにサポートベクトルを求めておく。
+
+$$\lambda^{(i)} \neq 0$$ となる $$i$$ を探す。  
+KKT 条件の $$\text{(C-3)}$$ より $$1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) = 0$$ が成り立つので、$$\boldsymbol{x}^{(i)}$$ がサポートベクトルとなる。
+
+
+#### \boldsymbol{w} を求める
 
 $$\boldsymbol{\lambda}$$ の最適解が求まっているので、$$\text{(C-2)'}$$ により $$\boldsymbol{w}$$ も求まる：
 
@@ -165,27 +173,38 @@ $$
 \boldsymbol{w} = - \displaystyle \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} \boldsymbol{x}^{(i)}
 $$
 
-#### $$b$$ の求め方
-
-制約条件 $$\text{(B)}$$ において、$$\boldsymbol{x}^{(i)}$$ がサポートベクトルの場合は等号が成立する。  
-したがって、サポートベクトル $$\boldsymbol{x}_s$$ が1つ求まれば $$b$$ も求まる。  
-実際には、誤差を小さくするため正・負のサポートベクトル $$\boldsymbol{x}_{s+}, \boldsymbol{x}_{s-}$$ で平均を取るのが良い。
+ここで $$\boldsymbol{x}^{(i)}$$ がサポートベクトルでない場合は $$1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \neq 0$$ なので、KKT 条件 $$\text{(C-3)}$$ より、$$\lambda^{(i)} = 0$  
+つまり、和を取るのはサポートベクトルだけで良い：
 
 $$
-b = \cfrac{b_{+} + b_{-}}{2}
+\boldsymbol{w} = - \displaystyle \sum_{\boldsymbol{x}^{(i)} \in V_s} \lambda^{(i)} y^{(i)} \boldsymbol{x}^{(i)}
 $$
 
+（$$V_s$$ はサポートベクトルの集合）
+
+サポートベクトルは一般に学習サンプル全体のごくわずかであるから、計算量の節約になる。
+
+
+#### $$b$$ を求める
+
+$$\boldsymbol{x}^{(i)}$$ がサポートベクトルの場合、$$1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) = 0$$  
+したがって、サポートベクトルが1つ求まれば $$b$$ も求まる。  
+実際には、誤差を小さくするため全てのサポートベクトルで平均を取るのが良い。
+
+添字 $$i$$ のサポートベクトル $$\boldsymbol{x}^{(i)}$$ から求まる $$b$$ の値は、
+
 $$
-\begin{cases}
-\boldsymbol{w} \cdot \boldsymbol{x}_{s+} + b_{+} = 1 \\
-\boldsymbol{w} \cdot \boldsymbol{x}_{s-} + b_{-} = -1
-\end{cases}
+b^{(i)} = \cfrac{1}{y^{(i)}} - \boldsymbol{w} \cdot \boldsymbol{x}^{(i)}
+= y^{(i)} - \boldsymbol{w} \cdot \boldsymbol{x}^{(i)}
 $$
 
-サポートベクトルは、
+最後に、$$y^{(i)} = 1, -1$$ なので $$\cfrac{1}{y^{(i)}} = y^{(i)}$$ であることを用いた。
 
+$$b^{(i)}$$ の平均を取ると、
 
+$$
+b = \cfrac{1}{|V_s|} \displaystyle \sum_{\boldsymbol{x}^{(i)} \in V_s} b^{(i)}
+= \cfrac{1}{|V_s|} \displaystyle \sum_{\boldsymbol{x}^{(i)} \in V_s} (y^{(i)} - \boldsymbol{w} \cdot \boldsymbol{x}^{(i)})
+$$
 
-（TODO：境界面を決定するまで）
-
-（TODO：求まった境界面による分類は、サポートベクトルだけを使えば良いため効率が良い）
+以上により $$\boldsymbol{w}, b$$ が求まり、決定境界となる平面が定まる。
