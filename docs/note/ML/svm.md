@@ -136,8 +136,11 @@ $$
 最大化問題なので、勾配ベクトルの向きに $$\lambda$$ を更新すれば良い。
 
 $$
-\lambda^{(k)} \longleftarrow \lambda^{(k)} + \eta \cfrac{\partial l(\boldsymbol{\lambda})}{\partial \lambda^{(k)}}
-= \lambda^{(k)} - \eta \left( 1 + \displaystyle \sum_{j=1}^{n} \lambda^{(j)} y^{(k)} y^{(j)} \boldsymbol{x}^{(k)} \cdot \boldsymbol{x}^{(j)} \right)
+\begin{eqnarray}
+\lambda^{(k)} &\longleftarrow& \lambda^{(k)} + \eta \cfrac{\partial l(\boldsymbol{\lambda})}{\partial \lambda^{(k)}} \\
+&=& \lambda^{(k)} - \eta \left( 1 + \displaystyle \sum_{j=1}^{n} \lambda^{(j)} y^{(k)} y^{(j)} \boldsymbol{x}^{(k)} \cdot \boldsymbol{x}^{(j)} \right) \\
+&=& \lambda^{(k)} - \eta \left( 1 + y^{(k)} \boldsymbol{x}^{(k)} \cdot \left( \displaystyle \sum_{j=1}^{n} \lambda^{(j)} y^{(j)} \boldsymbol{x}^{(j)} \right) \right)
+\end{eqnarray}
 $$
 
 （TODO：境界面を決定するまで）
