@@ -79,6 +79,8 @@ $$w_j \longleftarrow w_j + \eta (y^{(i)} - \hat y^{(i)}) x_j^{(i)}$$
 # 実装
 
 ```python
+# python3
+
 import numpy as np
 
 class Perceptron:

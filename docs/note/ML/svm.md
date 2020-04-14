@@ -226,6 +226,8 @@ $$
 ## 実装
 
 ```python
+# python3
+
 class SVM:
     def __init__(self, d, eta=0.001, epoch=100, max_err=10):
         """

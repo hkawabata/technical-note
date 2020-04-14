@@ -90,6 +90,8 @@ $$
 # 実装
 
 ```python
+# python3
+
 import numpy as np
 
 class Adaline:
