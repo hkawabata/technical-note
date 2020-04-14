@@ -136,6 +136,15 @@ $$
 
 この問題では **強双対性** が成り立つため、$$\frac{1}{2} \|\boldsymbol{w}\|^2$$ の最小化問題の代わりに $$l(\boldsymbol{\lambda})$$ の最大化問題（**双対問題**）を解けば元問題の解が得られる。
 
+双対問題には以下の制約がある。
+
+$$
+\begin{cases}
+\displaystyle \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} = 0 & \qquad & \text{(C-1)'} \\
+\lambda^{(i)} \le 0& \qquad & \text{(C-5)}
+\end{cases}
+$$
+
 
 ### 双対問題を解く
 
