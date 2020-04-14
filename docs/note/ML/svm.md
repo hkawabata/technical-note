@@ -12,11 +12,17 @@ title: サポートベクトルマシン（SVM）
 
 （上図において、いずれの決定境界を採用しても誤判定はゼロ）
 
-SVM では、**以下の平行な2平面間の距離（マージン）を最大化する**。
+SVM では、**以下の平行な2平面間の距離（マージン）を最大化し、その中間の平面を決定境界とする**。
 - **正の超平面**：正のラベルに属する点のうち、最も負のラベルの領域に近い点を通る超平面
 - **負の超平面**：負のラベルに属する点のうち、最も正のラベルの領域に近い点を通る超平面
 
 ※ 説明の便宜上、二値分類における一方のクラスラベルを「正のラベル」、もう一方を「負のラベル」と呼んでいる
+
+学習サンプルのうち、決定境界からの距離が一番近い点を **サポートベクトル** と呼び、SVM において重要な役割を果たす。
+
+> **【NOTE】サポートベクトル**
+> - サポートベクトルは正・負の超平面それぞれに存在する
+> - 決定境界から等距離に複数の点が存在しうるため、正・負1つずつとは限らない
 
 ![Unknown-1](https://user-images.githubusercontent.com/13412823/78503497-d8dca400-77a1-11ea-805e-e21d929e6be1.png)
 
@@ -70,7 +76,7 @@ $$
 
 全ての学習サンプルは正・負の超平面よりも遠くに存在し、上述の調整により
 
-$$\underset{i}{\min} |\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b| = 1$$
+$$\underset{i}{\min} |\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b| = 1 \qquad \text{(A)}$$
 
 であるから、制約条件として下式が課される。
 
@@ -84,9 +90,10 @@ $$
 
 2値分類のクラスラベルは計算の便宜上 1, -1 としてあり、これにより制約条件は
 
-$$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \ge 1$$
+$$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \ge 1 \qquad \text{(B)}$$
 
-とシンプルに記述できる。
+とシンプルに記述できる。  
+等号が成立するのは、データサンプル $$\boldsymbol{x}^{(i)}$$ がサポートベクトルであるとき。
 
 
 ### ラグランジュの未定乗数法による問題の書き換え
@@ -102,11 +109,11 @@ $$
 
 $$
 \begin{cases}
-\cfrac{\partial L}{\partial b} (\boldsymbol{w}, b, \boldsymbol{\lambda}) = 0 \\
-\cfrac{\partial L}{\partial \boldsymbol{w}} (\boldsymbol{w}, b, \boldsymbol{\lambda}) = 0 \\
-\lambda^{(i)} \{ 1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \} = 0 \\
-1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \le 0 \\
-\lambda^{(i)} \le 0
+\cfrac{\partial L}{\partial b} (\boldsymbol{w}, b, \boldsymbol{\lambda}) = 0 & \qquad & \text{(C-1)} \\
+\cfrac{\partial L}{\partial \boldsymbol{w}} (\boldsymbol{w}, b, \boldsymbol{\lambda}) = 0 & \qquad & \text{(C-2)} \\
+\lambda^{(i)} \{ 1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \} = 0 & \qquad & \text{(C-3)} \\
+1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \le 0 & \qquad & \text{(C-4)} \\
+\lambda^{(i)} \le 0 & \qquad & \text{(C-5)}
 \end{cases}
 $$
 
@@ -114,8 +121,8 @@ $$
 
 $$
 \begin{cases}
-\displaystyle \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} = 0 \\
-\boldsymbol{w} + \displaystyle \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} \boldsymbol{x}^{(i)} = 0
+\displaystyle \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} = 0 & \qquad & \text{(C-1)'} \\
+\boldsymbol{w} + \displaystyle \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} \boldsymbol{x}^{(i)} = 0 & \qquad & \text{(C-2)'}
 \end{cases}
 $$
 
@@ -142,6 +149,42 @@ $$
 &=& \lambda^{(k)} - \eta \left( 1 + y^{(k)} \boldsymbol{x}^{(k)} \cdot \left( \displaystyle \sum_{j=1}^{n} \lambda^{(j)} y^{(j)} \boldsymbol{x}^{(j)} \right) \right)
 \end{eqnarray}
 $$
+
+$$\eta$$ は学習率（$$0 \lt \eta \le 1$$）。
+
+この学習規則でトレーニングすることで、最適な $$\boldsymbol{\lambda}$$ が求まる。
+
+
+### 決定境界を求める
+
+#### \boldsymbol{w} の求め方
+
+$$\boldsymbol{\lambda}$$ の最適解が求まっているので、$$\text{(C-2)'}$$ により $$\boldsymbol{w}$$ も求まる：
+
+$$
+\boldsymbol{w} = - \displaystyle \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} \boldsymbol{x}^{(i)}
+$$
+
+#### $$b$$ の求め方
+
+制約条件 $$\text{(B)}$$ において、$$\boldsymbol{x}^{(i)}$$ がサポートベクトルの場合は等号が成立する。  
+したがって、サポートベクトル $$\boldsymbol{x}_s$$ が1つ求まれば $$b$$ も求まる。  
+実際には、誤差を小さくするため正・負のサポートベクトル $$\boldsymbol{x}_{s+}, \boldsymbol{x}_{s-}$$ で平均を取るのが良い。
+
+$$
+b = \cfrac{b_{+} + b_{-}}{2}
+$$
+
+$$
+\begin{cases}
+\boldsymbol{w} \cdot \boldsymbol{x}_{s+} + b_{+} = 1 \\
+\boldsymbol{w} \cdot \boldsymbol{x}_{s-} + b_{-} = -1
+\end{cases}
+$$
+
+サポートベクトルは、
+
+
 
 （TODO：境界面を決定するまで）
 
