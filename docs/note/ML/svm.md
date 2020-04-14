@@ -165,7 +165,7 @@ $$\lambda^{(i)} \neq 0$$ となる $$i$$ を探す。
 KKT 条件の $$\text{(C-3)}$$ より $$1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) = 0$$ が成り立つので、$$\boldsymbol{x}^{(i)}$$ がサポートベクトルとなる。
 
 
-#### \boldsymbol{w} を求める
+#### $$\boldsymbol{w}$$ を求める
 
 $$\boldsymbol{\lambda}$$ の最適解が求まっているので、$$\text{(C-2)'}$$ により $$\boldsymbol{w}$$ も求まる：
 
