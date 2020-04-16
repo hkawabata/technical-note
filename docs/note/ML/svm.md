@@ -387,3 +387,209 @@ b: 0.06028664085121046
 - 背景：モデルの決定領域
 
 ![Unknown-3](https://user-images.githubusercontent.com/13412823/79419008-e5a69680-7ff0-11ea-932e-a8156817db6a.png)
+
+
+# ソフトマージン SVM
+
+ハードマージン SVM は、学習データが完全に線形分離可能な場合しか収束しない。  
+また、線形分離可能な場合であっても、少数の外れ値の影響を強く受ける。  
+実際にはしばしば学習データにノイズが混ざるので、それを許容できるようにしたい。
+
+## 基本原理
+
+### 目的関数の導出
+
+ハードマージン SVM の制約
+
+$$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \ge 1 \qquad \text{(B)}$$
+
+に対して、正値の **スラック変数** $$\boldsymbol{\xi} = (\xi^{(1)}, \cdots, \xi^{(n)})$$ を導入して制約を緩和する：
+
+$$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \ge 1 - \xi^{(i)}$$
+
+データサンプル $$\boldsymbol{x}^{(i)}$$ が誤分類される時、データは決定境界 $$\boldsymbol{w} \cdot \boldsymbol{x} + b = 0$$ を超えて反対側にあるので、
+
+$$
+\xi^{(i)} \gt 1
+$$
+
+したがって、ある自然数 $$K$$ に対して
+
+$$\displaystyle \sum_{i=1}^{n} \xi^{(i)} \le K$$
+
+であるならば、誤分類は $$K$$ 個以下であることが保証できる。  
+→ **$$\xi^{(i)}$$ の和は誤分類の程度を表す**
+
+誤分類が多くなることをペナルティとして表現するため、最小化すべき $$\cfrac{1}{2}\|\boldsymbol{w}\|^2$$ にコスト関数として $$\xi^{(i)}$$ の和を加えた
+
+$$
+\cfrac{1}{2}\|\boldsymbol{w}\|^2 + C \displaystyle \sum_{i=1}^{n} \xi^{(i)}
+$$
+
+を目的関数として最小化する。
+
+ここで $$C \gt 0$$ は調整用のハイパーパラメータであり、
+- $$C$$ が大きい = 誤分類のコストが高い = 誤分類に不寛容
+- $$C$$ が小さい = 誤分類のコストが低い = 誤分類に寛容
+
+ということになる。
+
+![](https://user-images.githubusercontent.com/13412823/79444749-8f4c4e80-8016-11ea-9e72-6e0696128250.png)
+
+
+### 制約条件
+
+最小化に際してかかる制約は、
+
+$$
+\begin{cases}
+y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \ge 1 - \xi^{(i)} \\
+\xi^{(i)} \ge 0
+\end{cases}
+$$
+
+### ラグランジュの未定乗数法による問題の書き換え
+
+基本的にハードマージン SVM と同じ流れ。
+
+ラグランジュ関数：
+
+$$
+L(\boldsymbol{w}, b, \boldsymbol{\xi}, \boldsymbol{\lambda}) \equiv
+\cfrac{1}{2} \|\boldsymbol{w}\|^2
++ C \displaystyle \sum_{i=1}^{n} \xi^{(i)}
+- \displaystyle \sum_{i=1}^{n} \lambda^{(i)} \{ 1 - \xi^{(i)} - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \}
+$$
+
+（$$\lambda^{(i)}, \mu^{(i)}$$ は未定乗数）
+
+KKT 条件：
+
+$$
+\begin{cases}
+\cfrac{\partial L}{\partial b} (\boldsymbol{w}, b, \boldsymbol{\xi}, \boldsymbol{\lambda}) = \displaystyle \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} = 0 & \qquad & \text{(D-1)} \\
+\cfrac{\partial L}{\partial \boldsymbol{w}} (\boldsymbol{w}, b, \boldsymbol{\xi}, \boldsymbol{\lambda}) = \boldsymbol{w} + \displaystyle \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} \boldsymbol{x}^{(i)} = 0 & \qquad & \text{(D-2)} \\
+\cfrac{\partial L}{\partial \boldsymbol{\xi}} (\boldsymbol{w}, b, \boldsymbol{\xi}, \boldsymbol{\lambda}) = C \boldsymbol{1} + \boldsymbol{\lambda} + \boldsymbol{\mu} = 0 & \qquad & \text{(D-3)} \\
+\lambda^{(i)} = 0 \quad {\rm or} \quad 1 - \xi^{(i)} - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) = 0 & \qquad & \text{(D-4)} \\
+\mu^{(i)} = 0 \quad {\rm or} \quad \xi^{(i)} = 0 & \qquad & \text{(D-5)} \\
+1 - \xi^{(i)} - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \le 0 & \qquad & \text{(D-6)} \\
+\xi^{(i)} \ge 0 & \qquad & \text{(D-7)} \\
+\lambda^{(i)} \le 0 & \qquad & \text{(D-8)} \\
+\mu^{(i)} \le 0 & \qquad & \text{(D-9)}
+\end{cases}
+$$
+
+最適解の式 $$\text{(D-1)}, \text{(D-2)}, \text{(D-3)}$$ をラグランジュ関数に代入：
+
+$$
+\begin{eqnarray}
+L(\boldsymbol{w}, b, \boldsymbol{\xi}, \boldsymbol{\lambda})
+&=&
+\cfrac{1}{2} \|\boldsymbol{w}\|^2
++ \displaystyle \sum_{i=1}^{n} (C + \lambda^{(i)} + \mu^{(i)}) \xi^{(i)}
+- \displaystyle \sum_{i=1}^{n} \lambda^{(i)}
++ \displaystyle \boldsymbol{w} \cdot \left( \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} \boldsymbol{x}^{(i)} \right)
++ \displaystyle b \sum_{i=1}^{n} \lambda^{(i)} y^{(i)}
+\\
+&=&
+\cfrac{1}{2} \|\boldsymbol{w}\|^2 + 0
+- \displaystyle \sum_{i=1}^{n} \lambda^{(i)}
+- \|\boldsymbol{w}\|^2 + 0
+\\
+&=&
+- \displaystyle \sum_{i=1}^{n} \lambda^{(i)}
+- \cfrac{1}{2} \|\boldsymbol{w}\|^2
+\\
+&=&
+- \displaystyle \sum_{i=1}^{n} \lambda^{(i)}
+- \displaystyle \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda^{(i)} \lambda^{(j)} y^{(i)} y^{(j)} \boldsymbol{x}^{(i)} \cdot \boldsymbol{x}^{(j)}
+\\
+&\equiv& l(\boldsymbol{\lambda})
+\end{eqnarray}
+$$
+
+**→ ハードマージン SVM のときと全く同じラグランジュ双対関数が導かれる。**  
+これを最大化する。
+
+違いは制約条件。$$\text{(D-3)}, \text{(D-9)}$$ を使うと、
+
+$$
+0 \ge mu^{(i)} = - \lambda^{(i)} - C
+$$
+
+これと $$\text{(D-8)}$$ より、
+
+$$-C \le \lambda^{(i)} \le 0$$
+
+以上により、ソフトマージン SVM の双対問題の制約は
+
+$$
+\begin{cases}
+\displaystyle \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} = 0 & \qquad & \text{(D-1)} \\
+-C \le \lambda^{(i)} \le 0 & \qquad & \text{(E)}
+\end{cases}
+$$
+
+以後、ハードマージン SVM 同様に双対問題を解いて $$\boldsymbol{\lambda}$$ の最適解を求めれば良い。
+
+
+### $$\lambda^{(i)}$$ の値と解の性質
+
+$$\text{(D-3)}$$ を使って $$\text{(D-5)}$$ を書き換える。
+
+$$
+\begin{cases}
+\lambda^{(i)} = 0 \quad {\rm or} \quad 1 - \xi^{(i)} - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) = 0 & \qquad & \text{(D-4)} \\
+\lambda^{(i)} = -C \quad {\rm or} \quad \xi^{(i)} = 0 & \qquad & \text{(D-5)'} \\
+1 - \xi^{(i)} - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \le 0 & \qquad & \text{(D-6)}
+\end{cases}
+$$
+
+説明のため $$\text{(D-4)}, \text{(D-6)}$$ も再掲した。
+
+$$C \gt 0$$ なので、$$\lambda^{(i)} = 0$$ と $$\lambda^{(i)} = -C$$ を同時に満たすことはできない。  
+$$\lambda^{(i)}$$ の値による場合分けを行うと、
+
+| $$\lambda^{(i)}$$ | $$\text{(D-4)}, \text{(D-5)'}$$ より | $$\text{(D-6)}$$ より | 解の性質 |
+| :-- | :-- | :-- | :-- |
+| $$\lambda^{(i)} = -C$$ | $$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) = 1 - \xi^{(i)}$$ | - | 正/負の超平面より内側に存在 |
+| $$-C \lt \lambda^{(i)} \lt 0$$ | $$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) = 1$$ | - | 正/負の超平面上に存在（**= サポートベクトル**） |
+| $$\lambda^{(i)} = 0$$ | $$\xi^{(i)} = 0$$ | $$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \ge 1$$ | 正/負の超平面より外側に存在 |
+
+
+### 決定境界を求める
+
+双対問題の最適解を用いて、決定境界となる平面の方程式を求める。
+
+#### 超平面内側のベクトルを求める
+
+上述の通り、データサンプルは $$\lambda^{(i)}$$ の値によって3つに分類できる。  
+後の計算のため、以下の2つを求めておく。
+- $$\lambda^{(i)} = -C$$：超平面より内側の点の集合 $$V_{in}$$
+- $$-C \lt \lambda^{(i)} \lt 0$$：超平面上の点（サポートベクトル）の集合 $$V_s$$
+
+
+#### $$\boldsymbol{w}$$ を求める
+
+ハードマージン SVM 同様、
+
+$$
+\boldsymbol{w} = - \displaystyle \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} \boldsymbol{x}^{(i)}
+$$
+
+で求まる。$$\lambda^{(i)} = 0$$ なものは考えなくて良いので、$$V_s, V_{in}$$ の和を取って、
+
+$$
+\boldsymbol{w} = - \displaystyle \sum_{\boldsymbol{x}^{(i)} \in V_s, V_{in}} \lambda^{(i)} y^{(i)} \boldsymbol{x}^{(i)}
+$$
+
+
+#### $$b$$ を求める
+
+ハードマージン SVM 同様、全サポートベクトルについて求めた値を平均する。
+
+$$
+b = \cfrac{1}{|V_s|} \displaystyle \sum_{\boldsymbol{x}^{(i)} \in V_s} (y^{(i)} - \boldsymbol{w} \cdot \boldsymbol{x}^{(i)})
+$$
+
+以上により $$\boldsymbol{w}, b$$ が求まり、決定境界となる平面が定まる。
