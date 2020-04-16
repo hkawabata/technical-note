@@ -340,7 +340,7 @@ class HardMarginSVM:
         self.lambdas += np.array(dl)
         for i in range(len(self.lambdas)):
             if self.lambdas[i] > 0:
-                # lambda はゼロ以下の必要があるので正になったらゼロにする
+                # lambda はゼロ以下である必要があるので正になったらゼロにする
                 self.lambdas[i] = 0
                 if self.labels[i] == 1:
                     cnt_0_pos_ += 1
@@ -386,7 +386,7 @@ b: 0.06028664085121046
 - 点：学習データ
 - 背景：モデルの決定領域
 
-![Unknown-3](https://user-images.githubusercontent.com/13412823/79419008-e5a69680-7ff0-11ea-932e-a8156817db6a.png)
+![Hard Margin SVM](https://user-images.githubusercontent.com/13412823/79419008-e5a69680-7ff0-11ea-932e-a8156817db6a.png)
 
 
 # ソフトマージン SVM
@@ -459,6 +459,7 @@ L(\boldsymbol{w}, b, \boldsymbol{\xi}, \boldsymbol{\lambda}) \equiv
 \cfrac{1}{2} \|\boldsymbol{w}\|^2
 + C \displaystyle \sum_{i=1}^{n} \xi^{(i)}
 - \displaystyle \sum_{i=1}^{n} \lambda^{(i)} \{ 1 - \xi^{(i)} - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \}
++ \displaystyle \sum_{i=1}^{n} \mu^{(i)} \xi^{(i)}
 $$
 
 （$$\lambda^{(i)}, \mu^{(i)}$$ は未定乗数）
@@ -514,7 +515,7 @@ $$
 違いは制約条件。$$\text{(D-3)}, \text{(D-9)}$$ を使うと、
 
 $$
-0 \ge mu^{(i)} = - \lambda^{(i)} - C
+0 \ge \mu^{(i)} = - \lambda^{(i)} - C
 $$
 
 これと $$\text{(D-8)}$$ より、
@@ -593,3 +594,170 @@ b = \cfrac{1}{|V_s|} \displaystyle \sum_{\boldsymbol{x}^{(i)} \in V_s} (y^{(i)} 
 $$
 
 以上により $$\boldsymbol{w}, b$$ が求まり、決定境界となる平面が定まる。
+
+
+## 実装
+
+ハードマージン SVM のコードを少し修正。
+- 誤分類のべナルティ変数 $$C$$ を導入
+- サイクルの最中、$$\lambda^{(i)}$$ が $$-C$$ より小さくなったら $$-C$$ にする
+- $$\lambda^{(i)} \neq 0$$ をすべてサポートベクトルとみなすのではなく、超平面の内側に入る点（$$\lambda^{(i)} = -C$$）を区別
+
+```python
+# python3
+
+import numpy as np
+
+class SoftMarginSVM:
+    def __init__(self, d, eta=0.001, epoch=100, C=1):
+        """
+        Parameters
+        ----------
+        d : 次元（変数の数）
+        eta : 学習率
+        epoch : エポック
+        C : 誤分類に対するペナルティの大きさ
+        """
+        self.d = d
+        self.eta = eta
+        self.epoch = epoch
+        self.C = C
+        self.w = np.zeros(d)
+        self.b = 0
+        self.trained = False
+
+    def predict(self, x):
+        """
+        Parameters
+        ----------
+        x : 分類したいデータ（d次元ベクトル）
+        """
+        if self.trained:
+            x_st = self.__standardize(x)
+            return 1 if np.dot(self.w, x_st)+self.b > 0 else -1
+        else:
+            raise Exception('This model is not trained.')
+
+    def fit(self, data, labels):
+        """
+        Parameters
+        ----------
+        data : 学習データ
+        labels : 学習データの教師ラベル
+        """
+        self.labels = labels
+        self.m = np.mean(data, axis=0)
+        self.std = np.std(data, axis=0)
+        self.data = self.__standardize(data)
+        self.lambdas = np.zeros(len(data))
+        self.K = np.zeros([len(data), len(data)])
+        for i in range(len(data)):
+            for j in range(i, len(data)):
+                k_ = np.dot(self.data[i], self.data[j])
+                self.K[i][j] = k_
+                self.K[j][i] = k_
+
+        n_pos = np.count_nonzero(labels == 1)
+        n_neg = len(labels) - n_pos
+
+        # 双対問題を解く
+        for t in range(self.epoch):
+            cnt_0_pos, cnt_0_neg = self.__cycle()
+            if  n_pos-cnt_0_pos == 1 and n_neg-cnt_0_neg == 1:
+                break
+
+        # サポートベクトル / 超平面内部の点を抽出
+        i_sv = []
+        i_inner = []
+        for i in range(len(self.lambdas)):
+            if -self.C < self.lambdas[i] < 0:
+                i_sv.append(i)
+            elif self.lambdas[i] == -self.C:
+                i_inner.append(i)
+        # w を計算
+        for i in i_sv:
+            self.w -= self.lambdas[i] * self.labels[i] * self.data[i]
+        for i in i_inner:
+            self.w -= self.lambdas[i] * self.labels[i] * self.data[i]
+        # b を計算
+        for i in i_sv:
+            self.b += self.labels[i] - np.dot(self.w, self.data[i])
+        self.b /= len(i_sv)
+        # 学習完了のフラグを立てる
+        self.trained = True
+
+    def __cycle(self):
+        """
+        勾配降下法の1サイクル
+        """
+        dl = []
+        cnt_0_pos_ = 0
+        cnt_0_neg_ = 0
+        for i in range(len(self.data)):
+            dl_ = 1
+            for j in range(len(self.data)):
+                dl_ += self.lambdas[j] * self.labels[i] * self.labels[j] * self.K[i][j]
+            dl_ *= -self.eta
+            dl.append(dl_)
+        self.lambdas += np.array(dl)
+        for i in range(len(self.lambdas)):
+            if self.lambdas[i] > 0:
+                # lambda はゼロ以下である必要があるので正になったらゼロにする
+                self.lambdas[i] = 0
+                if self.labels[i] == 1:
+                    cnt_0_pos_ += 1
+                else:
+                    cnt_0_neg_ += 1
+            if self.lambdas[i] < -self.C:
+                # lambda は -C 以上である必要があるので -C を下回ったら -C にする
+                self.lambdas[i] = -self.C
+        return cnt_0_pos_, cnt_0_neg_
+
+    def __standardize(self, d):
+        """
+        データを標準化する
+        """
+        return (d - self.m) / self.std
+```
+
+機械的に生成したデータで学習させた結果：
+
+```python
+# 学習データ作成
+N = 100
+c1 = [0, 0]
+c2 = [-5, 3]
+r1 = 2.7*np.random.rand(N//2)
+r2 = 2.0*np.random.rand(N//2)
+theta1 = np.random.rand(N//2) * 2 * np.pi
+theta2 = np.random.rand(N//2) * 2 * np.pi
+data1 = np.array([r1 * np.sin(theta1) + c1[0], r1 * np.cos(theta1) + c1[1]]).T
+data2 = np.array([r2 * np.sin(theta2) + c2[0], r2 * np.cos(theta2) + c2[1]]).T
+data = np.concatenate([data1, data2])
+labels = np.array([1 if i < N//2 else -1 for i in range(N)])
+# 一部のデータを外れ値に
+data[0] = [-1.5, 4]
+
+# ソフトマージン SVM の学習
+for C in [0.1, 0.2, 0.4, 0.8, 1.6]:
+    svm = SoftMarginSVM(2, epoch=1000, eta=0.001, C=C)
+    svm.fit(data, labels)
+    print('w: {}'.format(svm.w))
+    print('b: {}'.format(svm.b))
+    # 決定領域をプロット
+    pass
+# ハードマージン SVM の学習（比較のため）
+svm = HardMarginSVM(2, epoch=1000, eta=0.001)
+svm.fit(data, labels)
+print('w: {}'.format(svm.w))
+print('b: {}'.format(svm.b))
+# 決定領域をプロット
+pass
+```
+
+- 点：学習データ
+- 背景：モデルの決定領域
+
+![Soft Margin SVM](https://user-images.githubusercontent.com/13412823/79465539-6dfb5a80-8036-11ea-84be-7e6bd0dbe1ce.gif)
+
+**→ $$C$$ が大きくなるほどハードマージン SVM に近付く。**
