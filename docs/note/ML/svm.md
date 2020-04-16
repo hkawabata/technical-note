@@ -107,7 +107,7 @@ $$
 L(\boldsymbol{w}, b, \boldsymbol{\lambda}) \equiv \cfrac{1}{2} \|\boldsymbol{w}\|^2 - \displaystyle \sum_{i=1}^{n} \lambda^{(i)} \{ 1 - y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \}
 $$
 
-を定義すると、最適解において
+を定義すると、最適解 $$\boldsymbol{w}$$ において
 
 $$
 \begin{cases}
@@ -128,12 +128,32 @@ $$
 \end{cases}
 $$
 
-これら最適解の条件を $$L(\boldsymbol{w}, b, \boldsymbol{\lambda})$$ の展開式に代入すると、$$\boldsymbol{\lambda}$$ だけの式（**ラグランジュ双対関数**）にできる：
+これら最適解の条件を $$L(\boldsymbol{w}, b, \boldsymbol{\lambda})$$ の式に代入すると、$$\boldsymbol{\lambda}$$ だけの式（**ラグランジュ双対関数**） $$l(\boldsymbol{\lambda})$$ が導かれる：
 
 $$
-l(\boldsymbol{\lambda}) \equiv L(\boldsymbol{w}(\boldsymbol{\lambda}), b(\boldsymbol{\lambda}), \boldsymbol{\lambda}) =
+\begin{eqnarray}
+L(\boldsymbol{w}, b, \boldsymbol{\lambda})
+&=&
+\cfrac{1}{2} \|\boldsymbol{w}\|^2
+- \displaystyle \sum_{i=1}^{n} \lambda^{(i)}
++ \displaystyle \boldsymbol{w} \cdot \left( \sum_{i=1}^{n} \lambda^{(i)} y^{(i)} \boldsymbol{x}^{(i)} \right)
++ \displaystyle b \sum_{i=1}^{n} \lambda^{(i)} y^{(i)}
+\\
+&=&
+\cfrac{1}{2} \|\boldsymbol{w}\|^2
+- \displaystyle \sum_{i=1}^{n} \lambda^{(i)}
+- \|\boldsymbol{w}\|^2 + 0
+\\
+&=&
+- \displaystyle \sum_{i=1}^{n} \lambda^{(i)}
+- \cfrac{1}{2} \|\boldsymbol{w}\|^2
+\\
+&=&
 - \displaystyle \sum_{i=1}^{n} \lambda^{(i)}
 - \displaystyle \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \lambda^{(i)} \lambda^{(j)} y^{(i)} y^{(j)} \boldsymbol{x}^{(i)} \cdot \boldsymbol{x}^{(j)}
+\\
+&\equiv& l(\boldsymbol{\lambda})
+\end{eqnarray}
 $$
 
 この問題では **強双対性** が成り立つため、$$\frac{1}{2} \|\boldsymbol{w}\|^2$$ の最小化問題の代わりに $$l(\boldsymbol{\lambda})$$ の最大化問題（**双対問題**）を解けば元問題の解が得られる。
@@ -227,22 +247,23 @@ $$
 ```python
 # python3
 
-class SVM:
-    def __init__(self, d, eta=0.001, epoch=100, max_err=10):
+import numpy as np
+
+class HardMarginSVM:
+    def __init__(self, d, eta=0.001, epoch=100):
         """
         Parameters
         ----------
         d : 次元（変数の数）
         eta : 学習率
         epoch : エポック
-        max_err : 許容する判定誤りの最大数
         """
         self.d = d
         self.eta = eta
         self.epoch = epoch
-        self.max_err = max_err
         self.w = np.zeros(d)
         self.b = 0
+        self.trained = False
 
     def predict(self, x):
         """
@@ -250,7 +271,11 @@ class SVM:
         ----------
         x : 分類したいデータ（d次元ベクトル）
         """
-        return 1 if np.dot(self.w, x)+self.b > 0 else -1
+        if self.trained:
+            x_st = self.__standardize(x)
+            return 1 if np.dot(self.w, x_st)+self.b > 0 else -1
+        else:
+            raise Exception('This model is not trained.')
 
     def fit(self, data, labels):
         """
@@ -260,7 +285,9 @@ class SVM:
         labels : 学習データの教師ラベル
         """
         self.labels = labels
-        self.data = data
+        self.m = np.mean(data, axis=0)
+        self.std = np.std(data, axis=0)
+        self.data = self.__standardize(data)
         self.lambdas = np.zeros(len(data))
         self.K = np.zeros([len(data), len(data)])
         for i in range(len(data)):
@@ -275,11 +302,12 @@ class SVM:
         # 双対問題を解く
         for t in range(self.epoch):
             cnt_0_pos, cnt_0_neg = self.__cycle()
-            if cnt_0_pos > n_pos-2 and cnt_0_neg > n_pos-2:
+            if  n_pos-cnt_0_pos == 1 and n_neg-cnt_0_neg == 1:
                 break
         if cnt_0_pos < n_pos*0.9 or cnt_0_neg < n_neg*0.9:
             # 繰り返しが足りない？ 1割以上で lambda != 0
-            raise Exception('not converged.')
+            print('[warn] Training not converged.')
+            print('The number of support vectors (negative, positive) = ({}, {})'.format(n_pos-cnt_0_pos, n_neg-cnt_0_neg))
 
         # サポートベクトルを抽出
         i_sv = []
@@ -292,8 +320,14 @@ class SVM:
         # b を計算
         for i in i_sv:
             self.b += self.labels[i] - np.dot(self.w, self.data[i])
+        self.b /= len(i_sv)
+        # 学習完了のフラグを立てる
+        self.trained = True
 
     def __cycle(self):
+        """
+        勾配降下法の1サイクル
+        """
         dl = []
         cnt_0_pos_ = 0
         cnt_0_neg_ = 0
@@ -313,17 +347,23 @@ class SVM:
                 else:
                     cnt_0_neg_ += 1
         return cnt_0_pos_, cnt_0_neg_
+
+    def __standardize(self, d):
+        """
+        データを標準化する
+        """
+        return (d - self.m) / self.std
 ```
 
 機械的に生成したデータで学習させた結果：
 
 ```python
 # 学習データ作成
-N = 200
-c1 = [-2, -1]
-c2 = [2, 2]
-r1 = 2.0*np.random.rand(N//2)
-r2 = 2.5*np.random.rand(N//2)
+N = 100
+c1 = [0, 0]
+c2 = [4, 3]
+r1 = 2.7*np.random.rand(N//2)
+r2 = 2.0*np.random.rand(N//2)
 theta1 = np.random.rand(N//2) * 2 * np.pi
 theta2 = np.random.rand(N//2) * 2 * np.pi
 data1 = np.array([r1 * np.sin(theta1) + c1[0], r1 * np.cos(theta1) + c1[1]]).T
@@ -332,18 +372,18 @@ data = np.concatenate([data1, data2])
 labels = np.array([1 if i < N//2 else -1 for i in range(N)])
 
 # 学習
-svm = SVM(2, max_err=N//10, epoch=1000, eta=0.01)
+svm = HardMarginSVM(2, epoch=1000, eta=0.001)
 svm.fit(data, labels)
 print('w: {}'.format(svm.w))
 print('b: {}'.format(svm.b))
 ```
 
 ```
-w: [-1.96480834 -1.067739  ]
-b: 0.060744495623293426
+w: [-1.69688572 -1.00906379]
+b: 0.06028664085121046
 ```
 
 - 点：学習データ
 - 背景：モデルの決定領域
 
-![Unknown-4](https://user-images.githubusercontent.com/13412823/79233520-f4336780-7ea3-11ea-9c82-4f183d27553e.png)
+![Unknown-3](https://user-images.githubusercontent.com/13412823/79419008-e5a69680-7ff0-11ea-932e-a8156817db6a.png)
