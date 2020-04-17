@@ -537,7 +537,7 @@ $$
 以後、ハードマージン SVM 同様に双対問題を解いて $$\boldsymbol{\lambda}$$ の最適解を求めれば良い。
 
 
-### $$\lambda^{(i)}$$ の値と解の性質
+### $$\lambda^{(i)}$$ の値とデータサンプルの位置
 
 $$\text{(D-3)}$$ を使って $$\text{(D-5)}$$ を書き換える。
 
@@ -554,11 +554,11 @@ $$
 $$C \gt 0$$ なので、$$\lambda^{(i)} = 0$$ と $$\lambda^{(i)} = -C$$ を同時に満たすことはできない。  
 $$\lambda^{(i)}$$ の値による場合分けを行うと、
 
-| $$\lambda^{(i)}$$ | $$\text{(D-4)}, \text{(D-5)'}$$ より | $$\text{(D-6)}$$ より | 解の性質 |
+| $$\lambda^{(i)}$$ | $$\text{(D-4)}, \text{(D-5)'}$$ より | $$\text{(D-6)}$$ より | データサンプルの位置 |
 | :-- | :-- | :-- | :-- |
-| $$\lambda^{(i)} = -C$$ | $$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) = 1 - \xi^{(i)}$$ | - | 正/負の超平面より内側に存在 |
-| $$-C \lt \lambda^{(i)} \lt 0$$ | $$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) = 1$$ | - | 正/負の超平面上に存在（**= サポートベクトル**） |
-| $$\lambda^{(i)} = 0$$ | $$\xi^{(i)} = 0$$ | $$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \ge 1$$ | 正/負の超平面より外側に存在 |
+| $$\lambda^{(i)} = -C$$ | $$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) = 1 - \xi^{(i)}$$ | - | 正/負の超平面より内側 |
+| $$-C \lt \lambda^{(i)} \lt 0$$ | $$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) = 1$$ | - | 正/負の超平面上（**= サポートベクトル**） |
+| $$\lambda^{(i)} = 0$$ | $$\xi^{(i)} = 0$$ | $$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \ge 1$$ | 正/負の超平面より外側 |
 
 
 ### 決定境界を求める
