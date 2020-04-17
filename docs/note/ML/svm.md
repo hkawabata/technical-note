@@ -830,9 +830,9 @@ $$
 だけをうまく定義して計算できないかを考える。
 
 当然、カーネル $$K(\boldsymbol{x}^{(k)}, \boldsymbol{x}^{(j)})$$ はどんな関数でも良いわけではなく、上のように内積の形で表現できる関数でなければならない。  
-具体的には、**マーサーの定理** を満たす関数であれば良い。
+具体的には、**Mercer の定理** を満たす関数であれば良い。
 
-> **【NOTE】マーサーの定理**
+> **【NOTE】Mercer の定理**
 >
 > 関数 $$k(\boldsymbol{x}, \boldsymbol{y})$$ が
 > - 対称関数：$$k(\boldsymbol{x}, \boldsymbol{y}) = k(\boldsymbol{y}, \boldsymbol{x})$$
