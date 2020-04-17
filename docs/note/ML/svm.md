@@ -100,7 +100,7 @@ $$y^{(i)} (\boldsymbol{w} \cdot \boldsymbol{x}^{(i)} + b) \ge 1 \qquad \text{(B)
 
 ### ラグランジュの未定乗数法による問題の書き換え
 
-不等式制約条件下のラグランジュの未定定数法を適用する（**ラグランジュの未定乗数法については[そちらの技術ノート]({% link note/Math/lagrange-multiplier.md %})を参照**）。  
+不等式制約条件下のラグランジュの未定定数法を適用する（**ラグランジュの未定乗数法については[そちらの技術ノート]({% link technical-note/note/Math/lagrange-multiplier.md %})を参照**）。  
 未定乗数 $$\boldsymbol{\lambda} = (\lambda^{(1)}, \cdots, \lambda^{(n)})$$ を用いて、**ラグランジュ関数**
 
 $$
