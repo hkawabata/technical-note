@@ -38,7 +38,7 @@ SVM では、**以下の平行な2平面間の距離（マージン）を最大�
 
 訓練サンプルが完全に線形分離可能である場合に使える手法。
 
-## 基本原理
+## 原理
 
 ### 目的関数（マージン）の導出
 
@@ -398,7 +398,7 @@ b: 0.10083610288436107
 また、線形分離可能な場合であっても、少数の外れ値の影響を強く受ける。  
 実際にはしばしば学習データにノイズが混ざるので、それを許容できるようにしたい。
 
-## 基本原理
+## 原理
 
 ### 目的関数の導出
 
@@ -760,3 +760,136 @@ pass
 ![SoftMarginSVM](https://user-images.githubusercontent.com/13412823/79535086-60d28000-80b7-11ea-85f7-15602c137625.gif)
 
 **→ $$C$$ が大きくなるほどハードマージン SVM に近付く。**
+
+
+# カーネルトリック
+
+ソフトマージン SVM により、外れ値や誤分類などが原因で完全には線形分離できないときにも分類が行えるようになった。  
+しかし、下図のようにそもそも線形分離が正解とならないようなケースには対応できない。
+
+![Unknown-3](https://user-images.githubusercontent.com/13412823/79540114-8a44d900-80c2-11ea-9d5a-a4892ac786ba.png)
+
+## 原理
+
+### 高次元空間への射影と線形分離
+
+上の例では $$\boldsymbol{x} = (x_1, x_2)$$ の二次元の特徴量を取り扱っている。  
+ここに第三の特徴量 $$x_3 \equiv x_1^2 + x_2^2$$ を導入し、$$\boldsymbol{x}' = (x_1, x_2, x_1^2 + x_2^2)$$ に SVM を適用すれば下図の通り線形分離できる。
+
+![Unknown-4](https://user-images.githubusercontent.com/13412823/79541142-44891000-80c4-11ea-9a97-380e4366d74a.png)
+
+このように、元の特徴量次元よりも高次元へとうまく射影することで、あらゆる学習サンプルを線形分離できるようになる。
+
+より一般的には、$$m$$ 次元特徴量 $$\boldsymbol{x} = (x_1, \cdots, x_m)$$ に $$M(\gt m)$$ 次元空間への射影
+
+$$
+\boldsymbol{x} = (x_1, \cdots, x_m) \longmapsto
+\boldsymbol{\phi}(\boldsymbol{x}) = (\phi_1(\boldsymbol{x}), \cdots, \phi_M(\boldsymbol{x}))
+$$
+
+を行い、$$M$$ 次元空間で SVM を適用すれば良い。
+
+ここで射影にかかるコストが問題になる。
+
+あらゆる変数に対して汎用的に線形分離可能となるように射影を行おうとすると、射影前に比べて射影後の次元数は非常に大きくなり（$$m \ll M$$）、計算量も膨大になる。  
+特に元から高次元の特徴量を扱う場合は顕著。  
+例：
+
+$$
+\boldsymbol{x} = (x_1, x_2, x_3, x_4) \longmapsto
+\boldsymbol{\phi}(\boldsymbol{x}) = (x_1, x_2, x_3, x_4, x_1^2, x_2^2, x_3^2, x_4^2, x_1 x_2, x_1 x_3, x_1 x_4, x_2 x_3, x_2 x_4, x_3 x_4)
+$$
+
+この問題をどうにかしたい。
+
+
+### 内積とカーネルトリック
+
+元の特徴量による双対問題の学習規則
+
+$$
+\lambda^{(k)} \longleftarrow \lambda^{(k)} - \eta \left( 1 + \displaystyle \sum_{j=1}^{n} \lambda^{(j)} y^{(k)} y^{(j)} \boldsymbol{x}^{(k)} \cdot \boldsymbol{x}^{(j)} \right)
+$$
+
+は、射影後の空間では下式に書き換えられる。
+
+$$
+\lambda^{(k)} \longleftarrow \lambda^{(k)} - \eta \left( 1 + \displaystyle \sum_{j=1}^{n} \lambda^{(j)} y^{(k)} y^{(j)} \boldsymbol{\phi}(\boldsymbol{x}^{(k)}) \cdot \boldsymbol{\phi}(\boldsymbol{x}^{(j)}) \right)
+$$
+
+重要なのは、**学習規則に現れる $$\boldsymbol{\phi}$$ が全て内積の形である** ということ。  
+つまり、**射影後の変数 $$\boldsymbol{\phi}$$ そのものではなく、その内積だけが大事**。
+
+なので、$$\boldsymbol{\phi}(\boldsymbol{x})$$ 自体を計算することなく、射影後の変数の内積（**カーネル** と呼ばれる）
+
+$$
+K(\boldsymbol{x}^{(k)}, \boldsymbol{x}^{(j)})
+\equiv \boldsymbol{\phi}(\boldsymbol{x}^{(k)}) \cdot \boldsymbol{\phi}(\boldsymbol{x}^{(j)})
+= \displaystyle \sum_{i=1}^{M} \phi_i(\boldsymbol{x}^{(k)}) \phi_i(\boldsymbol{x}^{(j)})
+$$
+
+だけをうまく定義して計算できないかを考える。
+
+当然、カーネル $$K(\boldsymbol{x}^{(k)}, \boldsymbol{x}^{(j)})$$ はどんな関数でも良いわけではなく、上のように内積の形で表現できる関数でなければならない。  
+具体的には、**マーサーの定理** を満たす関数であれば良い。
+
+> **【NOTE】マーサーの定理**
+>
+> 関数 $$k(\boldsymbol{x}, \boldsymbol{y})$$ が
+> - 対称関数である：$$k(\boldsymbol{x}, \boldsymbol{y}) = k(\boldsymbol{y}, \boldsymbol{x})$$
+> - 半正定値：任意の実数 $$c_i, c_j$$ に対して $$\displaystyle \sum_i \sum_j c_i c_j k(\boldsymbol{x}^{(i)}, \boldsymbol{x}^{(j)}) \ge 0$$
+>
+> の両方を満たす時、
+>
+> $$k(\boldsymbol{x}, \boldsymbol{y}) = \boldsymbol{\phi}(\boldsymbol{x}) \cdot \boldsymbol{\phi}(\boldsymbol{y})$$
+>
+> となるような関数 $$\boldsymbol{\phi}$$ が存在する。  
+> 逆も成り立つ。
+
+よく使われるカーネル：
+
+| 名称 | 定義 |
+| :-- | :-- |
+| 多項式カーネル | $$K(\boldsymbol{x}^{(k)}, \boldsymbol{x}^{(j)}) = (\boldsymbol{x}^{(k)} \cdot \boldsymbol{x}^{(j)} + c)^d$$ |
+| ガウシアンカーネル | $$K(\boldsymbol{x}^{(k)}, \boldsymbol{x}^{(j)}) = \exp \left( - \cfrac{\| \boldsymbol{x}^{(k)} - \boldsymbol{x}^{(j)} \|^2}{2 \sigma^2} \right)$$ |
+| シグモイドカーネル | $$K(\boldsymbol{x}^{(k)}, \boldsymbol{x}^{(j)}) = \tanh (a \boldsymbol{x}^{(k)} \cdot \boldsymbol{x}^{(j)} + b)$$ |
+
+採用するカーネルを決めれば、
+
+$$
+\lambda^{(k)} \longleftarrow \lambda^{(k)} - \eta \left( 1 + \displaystyle \sum_{j=1}^{n} \lambda^{(j)} y^{(k)} y^{(j)} K(\boldsymbol{x}^{(k)}, \boldsymbol{x}^{(j)}) \right)
+$$
+
+により $$\boldsymbol{\lambda}$$ を最適化できる。
+
+
+### 決定境界を求める
+
+$$\boldsymbol{\lambda}$$ の最適解に対して、これまでと全く同じ方法で
+
+$$
+\begin{eqnarray}
+\boldsymbol{w}_{\phi}
+&=& - \displaystyle \sum_{\boldsymbol{\phi}(\boldsymbol{x}^{(i)}) \in V_s, V_{in}} \lambda^{(i)} y^{(i)} \boldsymbol{\phi}(\boldsymbol{x}^{(i)}) \\
+b_{\phi}
+&=& \cfrac{1}{|V_s|} \displaystyle \sum_{\boldsymbol{\phi}(\boldsymbol{x}^{(i)}) \in V_s} \left( y^{(i)} - \boldsymbol{w}_{\phi} \cdot \boldsymbol{\phi}(\boldsymbol{x}^{(i)}) \right) \\
+&=& \cfrac{1}{|V_s|} \displaystyle \sum_{\boldsymbol{\phi}(\boldsymbol{x}^{(i)}) \in V_s} \left( y^{(i)} + \displaystyle \sum_{\boldsymbol{\phi}(\boldsymbol{x}^{(j)}) \in V_s, V_{in}} \lambda^{(j)} y^{(j)} \boldsymbol{\phi}(\boldsymbol{x}^{(j)}) \cdot \boldsymbol{\phi}(\boldsymbol{x}^{(i)}) \right) \\
+&=& \cfrac{1}{|V_s|} \displaystyle \sum_{\boldsymbol{\phi}(\boldsymbol{x}^{(i)}) \in V_s} \left( y^{(i)} + \displaystyle \sum_{\boldsymbol{\phi}(\boldsymbol{x}^{(j)}) \in V_s, V_{in}} \lambda^{(j)} y^{(j)} K(\boldsymbol{x}^{(j)}, \boldsymbol{x}^{(i)}) \right)
+\end{eqnarray}
+$$
+
+の表式を得る。  
+ここで以下の点に注意。
+- **この $$\boldsymbol{w}_{\phi}, b_{\phi}$$ は、元の $$m$$ 次元空間ではなく射影後の $$M$$ 次元空間における決定境界を表す**
+- **カーネルトリックを利用しているので、$$\boldsymbol{\phi}(\boldsymbol{x}^{(i)})$$ の値は計算されておらず、したがって $$\boldsymbol{\phi}(\boldsymbol{x}^{(i)})$$ の表式があらわに残る $$\boldsymbol{w}_{\phi}$$ の値も計算はできない**
+
+学習済みのモデルを使って入力 $$\boldsymbol{x}$$ のラベルを判別する際には、$$\boldsymbol{x}$$ を $$M$$ 次元空間へ射影して
+
+$$\boldsymbol{w}_{\phi} \cdot \boldsymbol{\phi}(\boldsymbol{x}) + b_{\phi}$$
+
+の正負を判定すれば良い。  
+$$\boldsymbol{w}_{\phi}$$ の表式を代入すれば
+
+$$- \displaystyle \sum_{\boldsymbol{\phi}(\boldsymbol{x}^{(i)}) \in V_s, V_{in}} \lambda^{(i)} y^{(i)} K(\boldsymbol{x}^{(i)}, \boldsymbol{x}) + b_{\phi}$$
+
+となるので、関数 $$\boldsymbol{\phi}$$ がどんな関数か分からなくても判別ができる。
