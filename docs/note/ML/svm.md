@@ -789,15 +789,14 @@ $$
 
 を行い、$$M$$ 次元空間で SVM を適用すれば良い。
 
-ここで射影にかかるコストが問題になる。
-
+ここで、**射影にかかるコストが問題になる**。  
 あらゆる変数に対して汎用的に線形分離可能となるように射影を行おうとすると、射影前に比べて射影後の次元数は非常に大きくなり（$$m \ll M$$）、計算量も膨大になる。  
 特に元から高次元の特徴量を扱う場合は顕著。  
 例：
 
 $$
 \boldsymbol{x} = (x_1, x_2, x_3, x_4) \longmapsto
-\boldsymbol{\phi}(\boldsymbol{x}) = (x_1, x_2, x_3, x_4, x_1^2, x_2^2, x_3^2, x_4^2, x_1 x_2, x_1 x_3, x_1 x_4, x_2 x_3, x_2 x_4, x_3 x_4)
+\boldsymbol{\phi}(\boldsymbol{x}) = (x_1^2, x_2^2, x_3^2, x_4^2, x_1 x_2, x_1 x_3, x_1 x_4, x_2 x_3, x_2 x_4, x_3 x_4)
 $$
 
 この問題をどうにかしたい。
@@ -836,7 +835,7 @@ $$
 > **【NOTE】マーサーの定理**
 >
 > 関数 $$k(\boldsymbol{x}, \boldsymbol{y})$$ が
-> - 対称関数である：$$k(\boldsymbol{x}, \boldsymbol{y}) = k(\boldsymbol{y}, \boldsymbol{x})$$
+> - 対称関数：$$k(\boldsymbol{x}, \boldsymbol{y}) = k(\boldsymbol{y}, \boldsymbol{x})$$
 > - 半正定値：任意の実数 $$c_i, c_j$$ に対して $$\displaystyle \sum_i \sum_j c_i c_j k(\boldsymbol{x}^{(i)}, \boldsymbol{x}^{(j)}) \ge 0$$
 >
 > の両方を満たす時、
@@ -865,7 +864,7 @@ $$
 
 ### 決定境界を求める
 
-$$\boldsymbol{\lambda}$$ の最適解に対して、これまでと全く同じ方法で
+$$\boldsymbol{\lambda}$$ の最適解に対して、これまでと同様の方法で
 
 $$
 \begin{eqnarray}
@@ -883,13 +882,20 @@ $$
 - **この $$\boldsymbol{w}_{\phi}, b_{\phi}$$ は、元の $$m$$ 次元空間ではなく射影後の $$M$$ 次元空間における決定境界を表す**
 - **カーネルトリックを利用しているので、$$\boldsymbol{\phi}(\boldsymbol{x}^{(i)})$$ の値は計算されておらず、したがって $$\boldsymbol{\phi}(\boldsymbol{x}^{(i)})$$ の表式があらわに残る $$\boldsymbol{w}_{\phi}$$ の値も計算はできない**
 
-学習済みのモデルを使って入力 $$\boldsymbol{x}$$ のラベルを判別する際には、$$\boldsymbol{x}$$ を $$M$$ 次元空間へ射影して
+学習済みのモデルを使って入力 $$\boldsymbol{x}$$ のラベルを判別する際の決定境界は、$$\boldsymbol{x}$$ を $$M$$ 次元空間へ射影して
 
-$$\boldsymbol{w}_{\phi} \cdot \boldsymbol{\phi}(\boldsymbol{x}) + b_{\phi}$$
+$$\boldsymbol{w}_{\phi} \cdot \boldsymbol{\phi}(\boldsymbol{x}) + b_{\phi} = 0$$
 
-の正負を判定すれば良い。  
 $$\boldsymbol{w}_{\phi}$$ の表式を代入すれば
 
-$$- \displaystyle \sum_{\boldsymbol{\phi}(\boldsymbol{x}^{(i)}) \in V_s, V_{in}} \lambda^{(i)} y^{(i)} K(\boldsymbol{x}^{(i)}, \boldsymbol{x}) + b_{\phi}$$
+$$- \displaystyle \sum_{\boldsymbol{\phi}(\boldsymbol{x}^{(i)}) \in V_s, V_{in}} \lambda^{(i)} y^{(i)} K(\boldsymbol{x}^{(i)}, \boldsymbol{x}) + b_{\phi} = 0$$
 
-となるので、関数 $$\boldsymbol{\phi}$$ がどんな関数か分からなくても判別ができる。
+となり $$\boldsymbol{\phi}$$ が消えるので、$$\boldsymbol{\phi}$$ がどんな関数か分からなくてもクラス判別ができる。
+
+> **【NOTE】**
+>
+> 決定境界の式を見れば分かる通り、判別を行うためにはモデル自身が
+> - $$V_s, V_{in}$$ に属するデータサンプルとその正解ラベル
+> - $$\boldsymbol{\lambda}$$ の最適解
+>
+> を保持しておく必要がある。
