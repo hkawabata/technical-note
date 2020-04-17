@@ -877,7 +877,7 @@ b_{\phi}
 \end{eqnarray}
 $$
 
-の表式を得る。  
+を得る。  
 ここで以下の点に注意。
 - **この $$\boldsymbol{w}_{\phi}, b_{\phi}$$ は、元の $$m$$ 次元空間ではなく射影後の $$M$$ 次元空間における決定境界を表す**
 - **カーネルトリックを利用しているので、$$\boldsymbol{\phi}(\boldsymbol{x}^{(i)})$$ の値は計算されておらず、したがって $$\boldsymbol{\phi}(\boldsymbol{x}^{(i)})$$ の表式があらわに残る $$\boldsymbol{w}_{\phi}$$ の値も計算はできない**
@@ -895,7 +895,172 @@ $$- \displaystyle \sum_{\boldsymbol{\phi}(\boldsymbol{x}^{(i)}) \in V_s, V_{in}}
 > **【NOTE】**
 >
 > 決定境界の式を見れば分かる通り、判別を行うためにはモデル自身が
-> - $$V_s, V_{in}$$ に属するデータサンプルとその正解ラベル
+> - $$V_s, V_{in}$$ に属するデータサンプル（= サポートベクトル, 正/負超平面内部の点）とその正解ラベル
 > - $$\boldsymbol{\lambda}$$ の最適解
 >
 > を保持しておく必要がある。
+
+
+## 実装
+
+```python
+# python3
+
+import numpy as np
+
+class KernelSVM():
+    def __init__(self, eta=0.001, epoch=100, C=1):
+        """
+        Parameters
+        ----------
+        eta : 学習率
+        epoch : エポック
+        C : 誤分類に対するペナルティの大きさ
+        """
+        self.eta = eta
+        self.epoch = epoch
+        self.C = C
+        self.b = 0
+        self.trained = False
+
+    def predict(self, x):
+        """
+        Parameters
+        ----------
+        x : 分類したいデータ（d次元ベクトル）
+        """
+        if self.trained:
+            x_st = self.__standardize(x)
+            det = self.b
+            for i in self.i_sv + self.i_inner:
+                det -= self.lambdas[i] * self.labels[i] * self.__kernel_gaussian(self.data[i], x_st)
+            return 1 if det > 0 else -1
+        else:
+            raise Exception('This model is not trained.')
+
+    def fit(self, data, labels):
+        """
+        Parameters
+        ----------
+        data : 学習データ
+        labels : 学習データの教師ラベル
+        """
+        self.labels = labels
+        self.m = np.mean(data, axis=0)
+        self.std = np.std(data, axis=0)
+        self.data = self.__standardize(data)
+        self.lambdas = np.zeros(len(data))
+        self.K = np.zeros([len(data), len(data)])
+        for i in range(len(data)):
+            for j in range(i, len(data)):
+                k_ = self.__kernel_gaussian(self.data[i], self.data[j])
+                self.K[i][j] = k_
+                self.K[j][i] = k_
+
+        n_pos = np.count_nonzero(labels == 1)
+        n_neg = len(labels) - n_pos
+
+        # 双対問題を解く
+        for t in range(self.epoch):
+            cnt_0_pos, cnt_0_neg = self.__cycle()
+            if  n_pos-cnt_0_pos == 1 and n_neg-cnt_0_neg == 1:
+                break
+
+        # サポートベクトル / 超平面内部の点を抽出
+        self.i_sv = []
+        self.i_inner = []
+        for i in range(len(self.lambdas)):
+            if -self.C < self.lambdas[i] < 0:
+                self.i_sv.append(i)
+            elif self.lambdas[i] == -self.C:
+                self.i_inner.append(i)
+
+        # b を計算
+        for i in self.i_sv:
+            self.b += self.labels[i]
+            for j in self.i_sv + self.i_inner:
+                self.b += self.lambdas[j] * self.labels[j] * self.K[j][i]
+        self.b /= len(self.i_sv)
+
+        # 学習完了のフラグを立てる
+        self.trained = True
+
+    def __cycle(self):
+        """
+        勾配降下法の1サイクル
+        """
+        dl = []
+        cnt_0_pos_ = 0
+        cnt_0_neg_ = 0
+        for i in range(len(self.data)):
+            dl_ = 1
+            for j in range(len(self.data)):
+                dl_ += self.lambdas[j] * self.labels[i] * self.labels[j] * self.K[i][j]
+            dl_ *= -self.eta
+            dl.append(dl_)
+        self.lambdas += np.array(dl)
+        for i in range(len(self.lambdas)):
+            if self.lambdas[i] > 0:
+                # lambda はゼロ以下である必要があるので正になったらゼロにする
+                self.lambdas[i] = 0
+                if self.labels[i] == 1:
+                    cnt_0_pos_ += 1
+                else:
+                    cnt_0_neg_ += 1
+            if self.lambdas[i] < -self.C:
+                # lambda は -C 以上である必要があるので -C を下回ったら -C にする
+                self.lambdas[i] = -self.C
+        return cnt_0_pos_, cnt_0_neg_
+
+    def __kernel_gaussian(self, x1, x2):
+        """
+        2つのデータサンプルのガウシアンカーネルを計算
+        """
+        return np.exp(- sum((x1-x2)**2) * 0.5)
+
+    def __standardize(self, d):
+        """
+        データを標準化する
+        """
+        return (d - self.m) / self.std
+```
+
+```python
+# 学習データ作成
+R1 = 2
+R2 = 4
+R_MARGIN = 1
+C = (1,1)
+N = 100
+r1 = R1*np.random.rand(N//2)
+r2 = (R2-R1-R_MARGIN)*np.random.rand(N//2) + R1 + R_MARGIN
+theta1 = np.random.rand(N//2) * 2 * np.pi
+theta2 = np.random.rand(N//2) * 2 * np.pi
+data1 = np.array([r1 * np.sin(theta1) + C[0], r1 * np.cos(theta1) + C[1]]).T
+data2 = np.array([r2 * np.sin(theta2) + C[0], r2 * np.cos(theta2) + C[1]]).T
+data = np.concatenate([data1, data2])
+labels = np.array([1 if i < N//2 else -1 for i in range(N)])
+
+# 学習
+svm = KernelSVM(epoch=3000, eta=0.01, C=10)
+svm.fit(data, labels)
+```
+
+![Unknown-5](https://user-images.githubusercontent.com/13412823/79570066-bb89cd00-80f3-11ea-9557-b6af06c5ea0c.png)
+
+```python
+# 学習データ作成
+N = 100
+A = 4*np.pi
+B = 4
+x = np.random.rand(N) * A
+y = np.random.rand(N) * B
+data = np.array([x, y]).T
+labels = np.array([1 if data[i][1]>np.sin(data[i][0])+B/2 else -1 for i in range(N)])
+
+# 学習
+svm = KernelSVM(epoch=3000, eta=0.01, C=10)
+svm.fit(data, labels)
+```
+
+![Unknown-6](https://user-images.githubusercontent.com/13412823/79570058-b9c00980-80f3-11ea-8072-755f93838d45.png)
