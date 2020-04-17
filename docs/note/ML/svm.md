@@ -739,21 +739,17 @@ data2 = np.array([r2 * np.sin(theta2) + c2[0], r2 * np.cos(theta2) + c2[1]]).T
 data = np.concatenate([data1, data2])
 labels = np.array([1 if i < N//2 else -1 for i in range(N)])
 # 一部のデータを外れ値に
-data[0] = [-1.5, 4]
+data[0] = [-6, 0]
 
 # ソフトマージン SVM の学習
-for C in [0.1, 0.2, 0.4, 0.8]:
+for C in [0.1, 0.2, 0.4, 0.8, 1.6]:
     svm = SoftMarginSVM(2, epoch=1000, eta=0.001, C=C)
     svm.fit(data, labels)
-    print('w: {}'.format(svm.w))
-    print('b: {}'.format(svm.b))
     # 決定領域を描画
     pass
 # ハードマージン SVM の学習（比較のため）
 svm = HardMarginSVM(2, epoch=1000, eta=0.001)
 svm.fit(data, labels)
-print('w: {}'.format(svm.w))
-print('b: {}'.format(svm.b))
 # 決定領域を描画
 pass
 ```
@@ -761,6 +757,6 @@ pass
 - 点：学習データ
 - 背景：モデルの決定領域
 
-![SoftMarginSVM](https://user-images.githubusercontent.com/13412823/79533690-72b22400-80b3-11ea-8734-4cb4410ba7bf.gif)
+![SoftMarginSVM](https://user-images.githubusercontent.com/13412823/79535086-60d28000-80b7-11ea-85f7-15602c137625.gif)
 
 **→ $$C$$ が大きくなるほどハードマージン SVM に近付く。**
