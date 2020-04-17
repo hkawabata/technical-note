@@ -361,7 +361,7 @@ class HardMarginSVM:
 # 学習データ作成
 N = 100
 c1 = [0, 0]
-c2 = [4, 3]
+c2 = [-4, 3]
 r1 = 2.7*np.random.rand(N//2)
 r2 = 2.0*np.random.rand(N//2)
 theta1 = np.random.rand(N//2) * 2 * np.pi
@@ -376,17 +376,20 @@ svm = HardMarginSVM(2, epoch=1000, eta=0.001)
 svm.fit(data, labels)
 print('w: {}'.format(svm.w))
 print('b: {}'.format(svm.b))
+
+# 決定領域を描画
+pass
 ```
 
 ```
-w: [-1.69688572 -1.00906379]
-b: 0.06028664085121046
+w: [ 1.54177416 -0.81642494]
+b: 0.10083610288436107
 ```
 
 - 点：学習データ
 - 背景：モデルの決定領域
 
-![Hard Margin SVM](https://user-images.githubusercontent.com/13412823/79419008-e5a69680-7ff0-11ea-932e-a8156817db6a.png)
+![HardMarginSVM](https://user-images.githubusercontent.com/13412823/79533295-7d1fee00-80b2-11ea-8b3b-932316b8ceb5.png)
 
 
 # ソフトマージン SVM
@@ -744,20 +747,20 @@ for C in [0.1, 0.2, 0.4, 0.8, 1.6]:
     svm.fit(data, labels)
     print('w: {}'.format(svm.w))
     print('b: {}'.format(svm.b))
-    # 決定領域をプロット
+    # 決定領域を描画
     pass
 # ハードマージン SVM の学習（比較のため）
 svm = HardMarginSVM(2, epoch=1000, eta=0.001)
 svm.fit(data, labels)
 print('w: {}'.format(svm.w))
 print('b: {}'.format(svm.b))
-# 決定領域をプロット
+# 決定領域を描画
 pass
 ```
 
 - 点：学習データ
 - 背景：モデルの決定領域
 
-![Soft Margin SVM](https://user-images.githubusercontent.com/13412823/79465539-6dfb5a80-8036-11ea-84be-7e6bd0dbe1ce.gif)
+![SoftMarginSVM](https://user-images.githubusercontent.com/13412823/79533690-72b22400-80b3-11ea-8734-4cb4410ba7bf.gif)
 
 **→ $$C$$ が大きくなるほどハードマージン SVM に近付く。**
