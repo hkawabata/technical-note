@@ -742,7 +742,7 @@ labels = np.array([1 if i < N//2 else -1 for i in range(N)])
 data[0] = [-1.5, 4]
 
 # ソフトマージン SVM の学習
-for C in [0.1, 0.2, 0.4, 0.8, 1.6]:
+for C in [0.1, 0.2, 0.4, 0.8]:
     svm = SoftMarginSVM(2, epoch=1000, eta=0.001, C=C)
     svm.fit(data, labels)
     print('w: {}'.format(svm.w))
