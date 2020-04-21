@@ -143,22 +143,24 @@ labels = np.array([get_label(data[i]) for i in range(N)])
 for i in range(N//50):
     labels[i] = -1 if labels[i] == 1 else 1
 
-# 学習（枝刈りなし）
+# 学習
 tree = DecisionTree(1)
 tree.fit(data, labels)
 # 決定領域の描画
 pass
 
-# 学習（枝刈りあり）
+# 学習（過学習回避）
 tree = DecisionTree(10)
 tree.fit(data, labels)
 # 決定領域・決定木の描画
 pass
 ```
 
-![枝刈りなし](https://user-images.githubusercontent.com/13412823/79865383-0a967180-8416-11ea-9329-bf1107272cb7.png)
+![過学習](https://user-images.githubusercontent.com/13412823/79865383-0a967180-8416-11ea-9329-bf1107272cb7.png)
 
-![枝刈りあり](https://user-images.githubusercontent.com/13412823/79865392-0d916200-8416-11ea-97a3-9171a5c84e3f.png)
+![過学習回避](https://user-images.githubusercontent.com/13412823/79865392-0d916200-8416-11ea-97a3-9171a5c84e3f.png)
+
+→ 葉を構成するサンプル数の最小値による制約で過学習が抑えられている
 
 ![決定木](https://user-images.githubusercontent.com/13412823/79865497-39ace300-8416-11ea-9bbe-0fdaeaddee73.png)
 
@@ -188,7 +190,7 @@ tree.fit(data, labels)
 pass
 ```
 
-![枝刈りあり・同心円](https://user-images.githubusercontent.com/13412823/79865396-0e29f880-8416-11ea-85a2-88c18628face.png)
+![過学習回避・同心円](https://user-images.githubusercontent.com/13412823/79865396-0e29f880-8416-11ea-85a2-88c18628face.png)
 
 ![決定木・同心円](https://user-images.githubusercontent.com/13412823/79865503-3c0f3d00-8416-11ea-97f6-8e252d56cd25.png)
 
