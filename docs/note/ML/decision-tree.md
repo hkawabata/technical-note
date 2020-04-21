@@ -142,7 +142,7 @@ for i in range(N//50):
 # 学習（枝刈りなし）
 tree = DecisionTree(1)
 tree.fit(data, labels)
-# 決定領域・決定木の描画
+# 決定領域の描画
 pass
 
 # 学習（枝刈りあり）
