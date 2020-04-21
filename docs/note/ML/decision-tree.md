@@ -7,6 +7,8 @@ title: 決定木（作成中）
 
 # 実装
 
+## コード
+
 ```python
 # python3
 
@@ -122,6 +124,8 @@ class DecisionTree:
         num_label1 = np.count_nonzero(labels == 1, axis=0)
         return 1 if num_label1*2 >= len(labels) else -1
 ```
+
+## 動作確認
 
 ```python
 # 学習データ作成
