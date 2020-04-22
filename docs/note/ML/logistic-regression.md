@@ -156,101 +156,13 @@ $$
 
 ## コード
 
-```python
-import numpy as np
-
-class LogisticRegression:
-    def __init__(self, d, eta=0.001, epoch=100, max_err=10):
-        """
-        Parameters
-        ----------
-        d : 次元（変数の数）
-        eta : 学習率
-        epoch : エポック
-        max_err : 許容する判定誤りの最大数
-        """
-        self.d = d
-        self.eta = eta
-        self.epoch = epoch
-        self.max_err = max_err
-        self.weight = np.zeros(d+1)  # 閾値を重みと見做す分、1つ増える
-
-    def predict(self, x):
-        """
-        Parameters
-        ----------
-        x : 分類したいデータ（d次元ベクトル）
-        """
-        x_st = self.__standardize(x)
-        return 1 if np.dot(x_st, self.weight[:-1]) + self.weight[-1] > 0 else 0
-
-    def fit(self, data, labels):
-        """
-        Parameters
-        ----------
-        data :
-        labels :
-        """
-        self.labels = labels
-        self.m = np.mean(data, axis=0)
-        self.std = np.std(data, axis=0)
-        self.data = np.append(self.__standardize(data), np.array([[1.0] for _ in range(len(data))]), axis=1)
-        for t in range(self.epoch):
-            cnt_err = self.__cycle()
-            if cnt_err <= self.max_err:
-                print('Converged in {} cycles ({} errors in {} samples).'.format(t+1, cnt_err, len(data)))
-                break
-
-    def __cycle(self):
-        """
-        学習の1サイクル
-        """
-        cnt_err = 0
-        dw = np.zeros(len(self.weight))
-        for i in range(len(self.data)):
-            z = np.dot(self.data[i], self.weight)
-            dw += (self.labels[i] - self.__logistic(z)) * self.data[i]
-            if (self.labels[i] == 0 and 0 < z) or (self.labels[i] == 1 and 0 >= z):
-                cnt_err += 1
-        dw *= self.eta
-        self.weight += dw
-        return cnt_err
-
-    def __logistic(self, z):
-        return 1 / (np.exp(-z) + 1)
-
-    def __standardize(self, d):
-        """
-        データを標準化する
-        """
-        return (d - self.m) / self.std
-```
+{% gist eee4ef465dade763b71f1a6c2432c92a logistic-regression.py %}
 
 ## 動作確認
 
 機械的に生成したデータで学習させた結果：
 
-```python
-# 学習データ作成
-N = 200
-c1 = [0, 0]
-c2 = [-3, 4]
-r1 = 2*np.random.rand(N//2)
-r2 = 2.5*np.random.rand(N//2)
-theta1 = np.random.rand(N//2) * 2 * np.pi
-theta2 = np.random.rand(N//2) * 2 * np.pi
-data1 = np.array([r1 * np.sin(theta1) + c1[0], r1 * np.cos(theta1) + c1[1]]).T
-data2 = np.array([r2 * np.sin(theta2) + c2[0], r2 * np.cos(theta2) + c2[1]]).T
-data = np.concatenate([data1, data2])
-labels = np.array([1 if i < N//2 else -1 for i in range(N)])
-
-# 学習
-max_err = N//100
-eta=1e-6
-epoch=1000
-lr = LogisticRegression(2, max_err=max_err, eta=eta, epoch=epoch)
-lr.fit(data, labels)
-```
+{% gist eee4ef465dade763b71f1a6c2432c92a ~fit.py %}
 
 - 点：学習データ
 - 背景：モデルの決定領域
