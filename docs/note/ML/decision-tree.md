@@ -20,7 +20,7 @@ title: 決定木（作成中）
 
 ![過学習回避](https://user-images.githubusercontent.com/13412823/79865392-0d916200-8416-11ea-97a3-9171a5c84e3f.png)
 
-→ 葉を構成するサンプル数の最小値による制約で過学習が抑えられている
+→ 葉が持つべきサンプル数の最小値設定で過学習が抑えられている
 
 ![決定木](https://user-images.githubusercontent.com/13412823/79865497-39ace300-8416-11ea-9bbe-0fdaeaddee73.png)
 

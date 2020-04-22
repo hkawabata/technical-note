@@ -162,3 +162,9 @@ body {
     border-top: solid 5px #5989cf;
     border-bottom: solid 5px #5989cf;
 }
+
+/*gist のコードスニペットの設定*/
+
+.gist {
+    margin: 0.5rem;
+}
