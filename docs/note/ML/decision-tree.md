@@ -9,6 +9,9 @@ title: 決定木（作成中）
 
 ## コード
 
+{% gist f48fc2b0f1adb9adc10ad8badecf1254 decision-tree.py %}
+
+
 ```python
 # python3
 
