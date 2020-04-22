@@ -89,84 +89,19 @@ $$
 
 # 実装
 
-```python
-# python3
+## コード
 
-import numpy as np
+{% gist 26b3f5d976390dc98e440ffade96fcbb adaline.py %}
 
-class Adaline:
-    def __init__(self, d, eta=0.001, epoch=100, max_err=10):
-        """
-        Parameters
-        ----------
-        d : 次元（変数の数）
-        eta : 学習率
-        epoch : エポック
-        max_err : 許容する判定誤りの最大数
-        """
-        self.d = d
-        self.eta = eta
-        self.epoch = epoch
-        self.max_err = max_err
-        self.weight = np.zeros(d+1)  # 閾値を重みと見做す分、1つ増える
-
-    def predict(self, x):
-        """
-        Parameters
-        ----------
-        x : 分類したいデータ（d次元ベクトル）
-        """
-        return 1 if np.dot(x, self.weight[:-1]) + self.weight[-1] > 0 else -1
-
-    def fit(self, data, labels):
-        """
-        Parameters
-        ----------
-        data :
-        labels :
-        """
-        self.labels = labels
-        self.data = np.append(data, np.array([[1.0] for _ in range(len(data))]), axis=1)
-        for t in range(self.epoch):
-            cnt_err = self.__cycle()
-            if cnt_err <= self.max_err:
-                break
-        print('Converged in {} cycles.'.format(t+1))
-
-    def __cycle(self):
-        cnt_err = 0
-        dw = np.zeros(len(self.weight))
-        for i in range(len(self.data)):
-            z = np.dot(self.data[i], self.weight)
-            dw += (self.labels[i] - z) * self.data[i]
-            if self.labels[i] < 0 <= z or z < 0 < self.labels[i]:
-                cnt_err += 1
-        dw *= self.eta
-        self.weight += dw
-        return cnt_err
-```
-
-```python
-data = np.array([
-    [0, 1], [1, 2], [2, 3], [3, 4], [4, 5],
-    [1, 0], [2, 1], [3, 2], [4, 3], [5, 4]
-])
-labels = [1, 1, 1, 1, 1, -1, -1, -1, -1, -1]
-
-adaline = Adaline(2, max_err=N//100)
-adaline.fit(data, labels)
-
-print(adaline.predict([1, 3]))
-# 1
-print(adaline.predict([7, 2]))
-# -1
-```
-
-機械的に生成したデータで学習させた結果：
+## 動作確認
 
 - 点：学習データ
 - 背景：モデルの決定領域
 
+{% gist 26b3f5d976390dc98e440ffade96fcbb ~fit1.py %}
+
 ![download-1](https://user-images.githubusercontent.com/13412823/78419765-ffa4b880-7683-11ea-82b5-a7b654b716fb.png)
+
+{% gist 26b3f5d976390dc98e440ffade96fcbb ~fit2.py %}
 
 ![download-2](https://user-images.githubusercontent.com/13412823/78419763-fddaf500-7683-11ea-9735-8383cfc7be7d.png)

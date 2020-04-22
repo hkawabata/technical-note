@@ -78,84 +78,19 @@ $$w_j \longleftarrow w_j + \eta (y^{(i)} - \hat y^{(i)}) x_j^{(i)}$$
 
 # 実装
 
-```python
-# python3
+## コード
 
-import numpy as np
+{% gist dfff991528637c68ee1287b4ea3db335 perceptron.py %}
 
-class Perceptron:
-    def __init__(self, d, eta=0.001, epoch=100, max_err=10):
-        """
-        Parameters
-        ----------
-        d : 次元（変数の数）
-        eta : 学習率
-        epoch : エポック
-        max_err : 許容する判定誤りの最大数
-        """
-        self.d = d
-        self.eta = eta
-        self.epoch = epoch
-        self.max_err = max_err
-        self.weight = np.zeros(d+1)  # 閾値を重みと見做す分、1つ増える
+## 動作確認
 
-    def predict(self, x):
-        """
-        Parameters
-        ----------
-        x : 分類したいデータ（d次元ベクトル）
-        """
-        return 1 if np.dot(x, self.weight[:-1]) + self.weight[-1] > 0 else -1
-
-    def fit(self, data, labels):
-        """
-        Parameters
-        ----------
-        data : 学習データの配列
-        labels : 正解ラベルの配列
-        """
-        self.labels = labels
-        self.data = np.append(data, np.array([[1.0] for _ in range(len(data))]), axis=1)
-        for t in range(self.epoch):
-            cnt_err = self.__cycle()
-            if cnt_err <= self.max_err:
-                break
-        print('Converged in {} cycles.'.format(t+1))
-
-    def __cycle(self):
-        ids = np.array(range(len(self.data)))
-        np.random.shuffle(ids)  # 毎回同じ順序でサンプルを使うことによる偏りを避けるためランダムソート
-        cnt_err = 0
-        for i in ids:
-            label_eval = 1 if np.dot(self.data[i], self.weight) > 0 else -1
-            if label_eval != self.labels[i]:
-                cnt_err += 1
-                for j in range(self.d + 1):
-                    self.weight[j] = self.weight[j] + self.eta * (self.labels[i] - label_eval) * self.data[i][j]
-        return cnt_err
-```
-
-```python
-data = np.array([
-    [0, 1], [1, 2], [2, 3], [3, 4], [4, 5],
-    [1, 0], [2, 1], [3, 2], [4, 3], [5, 4]
-])
-labels = [1, 1, 1, 1, 1, -1, -1, -1, -1, -1]
-
-perceptron = Perceptron(2, max_err=2)
-perceptron.fit(data, labels)
-
-print(perceptron.predict([1, 3]))
-# 1
-print(perceptron.predict([7, 2]))
-# -1
-```
-
-機械的に生成したデータで学習させた結果：
+{% gist dfff991528637c68ee1287b4ea3db335 ~fit1.py %}
 
 - 点：学習データ
 - 背景：モデルの決定領域
 
 ![Unknown](https://user-images.githubusercontent.com/13412823/78036657-88320900-73a5-11ea-9c9d-c92c04350967.png)
+
+{% gist dfff991528637c68ee1287b4ea3db335 ~fit2.py %}
 
 ![Unknown-1](https://user-images.githubusercontent.com/13412823/78036647-86684580-73a5-11ea-8466-a564e0d07e87.png)
