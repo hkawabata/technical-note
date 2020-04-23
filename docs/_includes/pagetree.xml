@@ -254,7 +254,11 @@
 </a>
           </li>
           <li>
-            <a href="https://hkawabata.github.io/technical-note/note/ML/decision-tree">決定木（作成中）
+            <a href="https://hkawabata.github.io/technical-note/note/ML/knn">k 近傍法（kNN）
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/ML/decision-tree">決定木
 </a>
           </li>
           <li>
