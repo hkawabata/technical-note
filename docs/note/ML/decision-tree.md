@@ -122,3 +122,20 @@ $$
 ## ラベル判定
 
 入力データに対して各決定木でラベル判定を行い、その多数決で最終的なラベルを決定する。
+
+## 実装
+
+### コード
+
+{% gist f48fc2b0f1adb9adc10ad8badecf1254 random-forest.py %}
+
+### 動作確認
+
+{% gist f48fc2b0f1adb9adc10ad8badecf1254 fit-rf.py %}
+
+![Unknown](https://user-images.githubusercontent.com/13412823/80094585-79540600-85a1-11ea-927f-963d7b2b5aef.png)
+
+![Unknown-1](https://user-images.githubusercontent.com/13412823/80094582-78bb6f80-85a1-11ea-90d4-38cd91bf6862.png)
+
+![Unknown-2](https://user-images.githubusercontent.com/13412823/80094579-778a4280-85a1-11ea-9831-a751edb7d307.png)
+
