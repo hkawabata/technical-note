@@ -46,4 +46,5 @@ $$
 
 {% gist fda2ceb4e8a90edd21a39400eeabaef3 ~fit.py %}
 
-![kNN](https://user-images.githubusercontent.com/13412823/80157472-37f34300-8601-11ea-8777-1c80e2ccb9dc.png)
+![kNN](https://user-images.githubusercontent.com/13412823/80159295-96babb80-8605-11ea-8984-6d7924be83ad.png)
+
