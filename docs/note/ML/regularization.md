@@ -1,0 +1,106 @@
+---
+title: 正則化
+---
+
+# 正則化とは
+
+統計や機械学習において、モデルの複雑さにペナルティを科す手法。
+
+最小化したい目的関数（コスト関数）$$J(\boldsymbol{w}) = f(\boldsymbol{w})$$ に、モデルが複雑であるほどコストが増すような **正則化項** $$R(\boldsymbol{w})$$ を加えて最小化問題を解く。
+
+$$
+J(\boldsymbol{w}) = f(\boldsymbol{w}) + \lambda R(\boldsymbol{w})
+$$
+
+$$\lambda \ge 0$$ は **正則化パラメータ** で、これが大きいほど、複雑なモデルに対して強いペナルティがかかる。
+
+
+# L2 正則化（Ridge 正則化）
+
+## 定義
+
+正則化項 $$R(\boldsymbol{w}) = \lambda \|\boldsymbol{w}\|^2 = \lambda \displaystyle \sum_j w_j^2$$：
+
+$$
+J(\boldsymbol{w}) = f(\boldsymbol{w}) + \lambda \displaystyle \sum_j w_j^2
+$$
+
+の最小化問題。
+
+## 特徴
+
+- **重みが大きくなりすぎるのを防ぐ効果がある**
+- $$w_j$$ で微分可能であるため、解析的に解ける
+
+## 直感的な理解
+
+L2 正則化は、以下の問題にラグランジュの未定乗数法を適用した場合と同じ。
+
+$$
+\begin{eqnarray}
+\min f(\boldsymbol{w}) \\
+{\rm subject\ to}\ \|\boldsymbol{w}\|^2 \le C = const.
+\end{eqnarray}
+$$
+
+したがって、重みに関する制約を示す領域 $$\|\boldsymbol{w}\|^2 \le C$$ から出ない範囲で $$f(\boldsymbol{w})$$ を最小化すれば良い。  
+最適解は、等高線 $$f(\boldsymbol{w}) = const.$$ が領域境界 $$\|\boldsymbol{w}\|^2 = C$$ と接するときに得られる。
+
+領域境界の方程式は原点を中心とする超球を表すから、最適解は以下のように図示できる。
+
+![L2-Reg](https://user-images.githubusercontent.com/13412823/80277536-910ac600-872a-11ea-8112-6d845e262101.png)
+
+
+# L1 正則化（Lasso 正則化）
+
+## 定義
+
+正則化項 $$R(\boldsymbol{w}) = \lambda \displaystyle \sum_j |w_j|$$：
+
+$$
+J(\boldsymbol{w}) = f(\boldsymbol{w}) + \lambda \displaystyle \sum_j |w_j|
+$$
+
+の最小化問題。
+
+## 特徴
+
+- 重み成分のいくつかがゼロであるような、**疎な解** が得られるので **次元削減に使える**
+  - 無関係な特徴量が多い高次元のデータを扱う時、特にデータサンプル数に比べて特徴量の数が大きい場合に有効
+- 正則化項は重みの絶対値の和であるから、L2 同様に **重みが大きくなりすぎるのを防ぐ効果がある**
+  - 過学習を防ぐ性能は一般的に L2 の方が高い
+- 絶対値が含まれ、$$w_j = 0$$ で微分できないため、解析的に解けない
+
+## 直感的な理解
+
+L1 正則化は、以下の問題にラグランジュの未定乗数法を適用した場合に等しい。
+
+$$
+\begin{eqnarray}
+\min f(\boldsymbol{w}) \\
+{\rm subject\ to}\ \displaystyle \sum_j |w_j| \le C = const.
+\end{eqnarray}
+$$
+
+したがって、重みに関する制約を示す領域 $$\displaystyle \sum_j |w_j| \le C$$ から出ない範囲で $$f(\boldsymbol{w})$$ を最小化すれば良い。  
+最適解は、等高線 $$f(\boldsymbol{w}) = const.$$ が領域境界 $$\displaystyle \sum_j |w_j| = C$$ と接するときに得られる。
+
+領域境界の方程式はすべての頂点が軸上にある超多面体（ex. 2次元で四角形, 3次元で8面体）を表すから、最適解は以下のように図示できる。
+
+![L1-Reg](https://user-images.githubusercontent.com/13412823/80277534-8f410280-872a-11ea-81a9-ce11162ceec4.png)
+
+領域の形状から、等高線は多面体の頂点に接する可能性が高い。  
+角は軸上にあるので、**この最適解においてはいずれかの特徴量の重みがゼロになる**。  
+→ **疎な解** が得られる
+
+> **【NOTE】最適解の位置と重みの疎性**
+>
+> - 二次元
+>   - 等高線が四角形の頂点と接する（例えば $$w_2$$ 軸上）→ $$w_1 = 0, w_2 \neq 0$$
+>   - 等高線が四角形の辺と接する → $$w_1 \neq 0, w_2 \neq 0$$
+> - 三次元
+>   - 等高線が多面体の頂点と接する（例えば $$w_3$$ 軸上）→ $$w_1 = 0, w_2 = 0, w_3 \neq 0$$
+>   - 等高線が多面体の辺と接する（例えば $$x_2-w_3$$ 平面内）→ $$w_1 = 0, w_2 \neq 0, w_3 \neq 0$$
+>   - 等高線が多面体の面と接する → $$w_1 \neq 0, w_2 \neq 0, w_3 \neq 0$$
+> - 四次元
+>   - ...
