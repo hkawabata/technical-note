@@ -1,8 +1,8 @@
 ---
-title: k 近傍法（kNN）
+title: k 近傍法
 ---
 
-# k 近傍法とは
+# k 近傍法（kNN）とは
 
 分類問題を解くアルゴリズムの1つ。k-Nearest Neighbor
 
@@ -49,4 +49,3 @@ $$
 {% gist fda2ceb4e8a90edd21a39400eeabaef3 ~fit.py %}
 
 ![kNN](https://user-images.githubusercontent.com/13412823/80159295-96babb80-8605-11ea-8984-6d7924be83ad.png)
-
