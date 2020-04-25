@@ -254,7 +254,7 @@
 </a>
           </li>
           <li>
-            <a href="https://hkawabata.github.io/technical-note/note/ML/knn">k 近傍法（kNN）
+            <a href="https://hkawabata.github.io/technical-note/note/ML/knn">k 近傍法
 </a>
           </li>
           <li>
@@ -266,11 +266,11 @@
 </a>
               </li>
               <li>
-                <a href="https://hkawabata.github.io/technical-note/note/ML/Preprocess/missing-data">前処理：欠損値
+                <a href="https://hkawabata.github.io/technical-note/note/ML/Preprocess/missing-data">欠損値
 </a>
               </li>
               <li>
-                <a href="https://hkawabata.github.io/technical-note/note/ML/Preprocess/category-value">前処理：カテゴリデータの変換
+                <a href="https://hkawabata.github.io/technical-note/note/ML/Preprocess/category-value">カテゴリデータの変換
 </a>
               </li>
             </ul>
@@ -280,7 +280,7 @@
 </a>
           </li>
           <li>
-            <a href="https://hkawabata.github.io/technical-note/note/ML/svm">サポートベクトルマシン（SVM）
+            <a href="https://hkawabata.github.io/technical-note/note/ML/svm">サポートベクトルマシン
 </a>
           </li>
           <li>
