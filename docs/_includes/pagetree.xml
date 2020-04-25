@@ -258,6 +258,24 @@
 </a>
           </li>
           <li>
+            <span>Preprocess</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/Preprocess/feature-scaling">特徴量のスケーリング
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/Preprocess/missing-data">前処理：欠損値
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/Preprocess/category-value">前処理：カテゴリデータの変換
+</a>
+              </li>
+            </ul>
+          </li>
+          <li>
             <a href="https://hkawabata.github.io/technical-note/note/ML/decision-tree">決定木
 </a>
           </li>
