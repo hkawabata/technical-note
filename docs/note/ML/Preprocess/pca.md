@@ -107,7 +107,7 @@ $$
 右辺は、
 
 $$
-\boldsymbol{a}^T \lambda \boldsymbol{a} = \lambda \| \boldsymbol{a} \|^2 = 1
+\boldsymbol{a}^T \lambda \boldsymbol{a} = \lambda \| \boldsymbol{a} \|^2 = \lambda
 $$
 
 左辺は、
