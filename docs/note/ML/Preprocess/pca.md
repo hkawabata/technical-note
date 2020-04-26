@@ -4,7 +4,8 @@ title: 主成分分析（PCA）
 
 # 主成分分析（PCA）とは
 
-Principal Component Analysis の略。
+Principal Component Analysis の略で、高次元データの特徴抽出（次元削減）の手法の1つ。  
+うまくデータのばらつきが大きくなるように、データをより低次元の空間へ射影する。
 
 ## 直感的な理解
 
@@ -95,7 +96,7 @@ C = \cfrac{1}{n-1} \begin{pmatrix}
 \end{pmatrix}
 $$
 
-を使い、全ての $$a_k$$ に関する偏微分方程式を1つの行列形式にまとめることができる。
+を使い、全ての $$a_k$$ に関する偏微分方程式を行列形式にまとめることができる。
 
 $$
 C \boldsymbol{a} = \lambda \boldsymbol{a}
