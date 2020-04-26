@@ -62,6 +62,8 @@ ex. 分類モデルによるクラスラベルの予測精度
 
 ### 実装
 
+各特徴量に偏った重み付けをした教師データを作り、重要度の計算結果に反映されるか確認する。
+
 {% gist 648081fc514d427fc57dde6603069810 random-forest-selector.py %}
 
 ```
@@ -70,3 +72,5 @@ ex. 分類モデルによるクラスラベルの予測精度
 ```
 
 ![RandomForestSelector](https://user-images.githubusercontent.com/13412823/80303319-75ff8b00-87ea-11ea-9adb-4b70a95888e9.png)
+
+期待通り、重みを大きくしたものほど重要度が高くなっている。
