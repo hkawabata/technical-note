@@ -12,6 +12,8 @@ Principal Component Analysis の略。
 
 ## 理論
 
+### 最大化問題の定式化
+
 学習サンプルを射影した際に最も分散が大きくなる方向ベクトル
 
 $$
@@ -93,7 +95,7 @@ C = \cfrac{1}{n-1} \begin{pmatrix}
 \end{pmatrix}
 $$
 
-を使い、全ての $$a_k$$ に関する偏微分方程式を1つのベクトル方程式にまとめることができる。
+を使い、全ての $$a_k$$ に関する偏微分方程式を1つの行列形式にまとめることができる。
 
 $$
 C \boldsymbol{a} = \lambda \boldsymbol{a}
@@ -101,9 +103,12 @@ $$
 
 これは、**共分散行列 $$C$$ の固有値 $$\lambda$$、固有ベクトル $$\boldsymbol{a}$$ を求める問題に等しい**。
 
-→ 固有値・固有ベクトルは $$m$$ 個求まる。どれを選べば良いのか？
 
-両辺に左から $$\boldsymbol{a}^T$$ をかけて、
+### 最適解の選択
+
+固有値問題の解（固有値・固有ベクトル）は $$m$$ 個求まるので、そのうちのどれを選べば良いのかを考える。
+
+固有値問題の式に左から $$\boldsymbol{a}^T$$ をかけて、
 
 $$
 \boldsymbol{a}^T C \boldsymbol{a} = \boldsymbol{a}^T \lambda \boldsymbol{a}
