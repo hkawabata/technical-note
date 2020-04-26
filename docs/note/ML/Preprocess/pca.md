@@ -15,7 +15,12 @@ Principal Component Analysis の略。
 学習サンプルを射影した際に最も分散が大きくなる方向ベクトル
 
 $$
-\boldsymbol{a} = (a_1, \cdots, a_m)
+\boldsymbol{a} =
+\begin{pmatrix}
+a_1 \\
+\vdots \\
+a_m
+\end{pmatrix}
 $$
 
 を求めたい。  
