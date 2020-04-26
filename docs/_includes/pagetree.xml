@@ -266,6 +266,10 @@
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
               <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/Preprocess/pca">主成分分析（PCA）
+</a>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/ML/Preprocess/feature-scaling">特徴量のスケーリング
 </a>
               </li>
