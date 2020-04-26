@@ -38,7 +38,9 @@ ex. 分類モデルによるクラスラベルの予測精度
 
 {% gist 0764897448aa08cca43f0d2e267e461b ~fit.py %}
 
-![SBS](https://user-images.githubusercontent.com/13412823/80298222-03c87f80-87c5-11ea-9c46-b6b02e49207e.png)
+![SBS](https://user-images.githubusercontent.com/13412823/80303845-ba405a80-87ed-11ea-88cb-8b20f04dc443.png)
+
+おおよそ、ラベル付けへの寄与（重み）が小さい特徴量から順に削除されていることが分かる。
 
 
 ## ランダムフォレストを利用した特徴選択
