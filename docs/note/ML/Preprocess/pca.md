@@ -245,7 +245,7 @@ C \boldsymbol{b} = \lambda \boldsymbol{b} + \cfrac{1}{2} \mu \boldsymbol{a}
 $$
 
 
-### 注意
+## 注意
 
 - PCA では分散を最大化するため、結果は変数のスケールに影響を受ける
   - **→ 事前に変数を標準化しておく**
