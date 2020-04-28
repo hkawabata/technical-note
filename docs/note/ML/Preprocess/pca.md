@@ -7,11 +7,65 @@ title: 主成分分析（PCA）
 Principal Component Analysis の略で、高次元データの特徴抽出（次元削減）の手法の1つ。  
 うまくデータのばらつきが大きくなるように、データをより低次元の空間へ射影する。
 
-## 直感的な理解
+## 直感的なイメージ
 
 （TODO）
 
-## 理論
+## 次元削減の方法
+
+$$m$$ 次元データ $$\boldsymbol{x} = (x_1, \cdots, x_m)$$ を、可能な限り特徴量の分散が大きくなるように $$l(\le m)$$ 次元空間へ圧縮する方法は以下の通り。
+
+### 1. 共分散行列の固有方程式を解く
+
+$$\boldsymbol{x}$$ の特徴量同士の **共分散**
+
+$$
+C_{jk} \equiv \cfrac{1}{n-1} \sum_{i=1}^n \left(x_k^{(i)} - \overline{x}_k \right) \left(x_j^{(i)} - \overline{x}_j \right)
+$$
+
+を並べた **共分散行列**
+
+$$
+C \equiv \cfrac{1}{n-1} \begin{pmatrix}
+\displaystyle \sum_{i=1}^n \left(x_1^{(i)} - \overline{x}_1 \right) \left(x_1^{(i)} - \overline{x}_1 \right) & \cdots & \displaystyle \sum_{i=1}^n \left(x_1^{(i)} - \overline{x}_1 \right) \left(x_m^{(i)} - \overline{x}_m \right) \\
+\vdots &  & \vdots \\
+\displaystyle \sum_{i=1}^n \left(x_m^{(i)} - \overline{x}_m \right) \left(x_1^{(i)} - \overline{x}_1 \right) & \cdots & \displaystyle \sum_{i=1}^n \left(x_m^{(i)} - \overline{x}_m \right) \left(x_m^{(i)} - \overline{x}_m \right)
+\end{pmatrix}
+$$
+
+を作り、これに対する固有方程式
+
+$$
+C \boldsymbol{a} = \lambda \boldsymbol{a}
+$$
+
+を解く（固有値 $$\lambda$$ と対応する固有ベクトル $$\boldsymbol{a}$$ を求める）。
+
+- $$x_j^{(i)}$$: $$i$$ 番目のデータサンプルの $$j$$ 番目の特徴量
+- $$\overline{x}_j$$: $$j$$ 番目の特徴量の全データサンプル平均
+
+
+### 2. 固有ベクトルを選択する
+
+固有値 $$\lambda$$ が大きい方から順に、$$l$$ 個の固有ベクトル $$\boldsymbol{a}_1, \cdots, \boldsymbol{a}_l$$ を選ぶ。  
+固有ベクトル $$\boldsymbol{a}_1, \cdots, \boldsymbol{a}_l$$ をそれぞれ **第1主成分、... 第 $$l$$ 主成分** と呼ぶ。
+
+### 3. 主成分により元データを射影する
+
+主成分 $$\boldsymbol{a}_i$$ による元データの射影
+
+$$
+\boldsymbol{X}^{(i)} = (X_1^{(i)}, \cdots, X_l^{(i)})
+$$
+
+$$
+X_j^{(i)} = \boldsymbol{x}^{(i)} \cdot \boldsymbol{a}_j
+$$
+
+を求め、新しい特徴量とする。
+
+
+## 導出
 
 ### 第1主成分を求めるための最大化問題
 
@@ -82,36 +136,20 @@ $$
 \end{eqnarray}
 $$
 
-最後の変形では、$$x_j, x_k$$ の **共分散** $$C_{jk}$$ の定義式（下式）を用いた。
-
-$$
-C_{jk} \equiv \cfrac{1}{n-1} \sum_{i=1}^n \left(x_k^{(i)} - \overline{x}_k \right) \left(x_j^{(i)} - \overline{x}_j \right)
-$$
-
-**共分散行列**
-
-$$
-C = \cfrac{1}{n-1} \begin{pmatrix}
-\displaystyle \sum_{i=1}^n \left(x_1^{(i)} - \overline{x}_1 \right) \left(x_1^{(i)} - \overline{x}_1 \right) & \cdots & \displaystyle \sum_{i=1}^n \left(x_1^{(i)} - \overline{x}_1 \right) \left(x_m^{(i)} - \overline{x}_m \right) \\
-\vdots &  & \vdots \\
-\displaystyle \sum_{i=1}^n \left(x_m^{(i)} - \overline{x}_m \right) \left(x_1^{(i)} - \overline{x}_1 \right) & \cdots & \displaystyle \sum_{i=1}^n \left(x_m^{(i)} - \overline{x}_m \right) \left(x_m^{(i)} - \overline{x}_m \right)
-\end{pmatrix}
-$$
-
-を使い、全ての $$a_k$$ に関する偏微分方程式を行列形式にまとめることができる。
+共分散行列 $$C$$ を使い、全ての $$a_k$$ に関する偏微分方程式を行列形式にまとめることができる。
 
 $$
 C \boldsymbol{a} = \lambda \boldsymbol{a}
 $$
 
-これは、**共分散行列 $$C$$ の固有値 $$\lambda$$、固有ベクトル $$\boldsymbol{a}$$ を求める問題に等しい**。
+これは、**共分散行列 $$C$$ の固有値 $$\lambda$$、固有ベクトル $$\boldsymbol{a}$$ を求める固有方程式**。
 
 
 ### 最適解の選択
 
-固有値問題の解（固有値・固有ベクトル）は $$m$$ 個求まるので、そのうちのどれを選べば良いのかを考える。
+固有方程式の解（固有値・固有ベクトル）は $$m$$ 個求まるので、そのうちのどれを選べば良いのかを考える。
 
-固有値問題の式に左から $$\boldsymbol{a}^T$$ をかけて、
+固有方程式に左から $$\boldsymbol{a}^T$$ をかけて、
 
 $$
 \boldsymbol{a}^T C \boldsymbol{a} = \boldsymbol{a}^T \lambda \boldsymbol{a}
@@ -238,17 +276,60 @@ $$
 \end{eqnarray}
 $$
 
-全ての $$b_k$$ をまとめて表記すると、
+全ての $$b_k$$ をまとめて行列形式で書くと、
 
 $$
 C \boldsymbol{b} = \lambda \boldsymbol{b} + \cfrac{1}{2} \mu \boldsymbol{a}
 $$
 
+両辺に左から $$\boldsymbol{a}^T$$ をかけると、
+
+$$
+\boldsymbol{a}^T C \boldsymbol{b} = \lambda \boldsymbol{a} \cdot \boldsymbol{b} + \cfrac{1}{2} \mu \| \boldsymbol{a} \|
+$$
+
+単位ベクトル条件、直交条件より
+
+$$
+\boldsymbol{a}^T C \boldsymbol{b} = \cfrac{1}{2} \mu
+$$
+
+ここで、共分散行列 $$C$$ は定義より明らかに対称行列（$$C_{ij} = C_{ji}, C^T = C$$）であるから、
+
+$$
+\begin{eqnarray}
+\cfrac{1}{2} \mu
+&=& \boldsymbol{a}^T C \boldsymbol{b} \\
+&=& (\boldsymbol{a}^T C \boldsymbol{b})^T \\
+&=& \boldsymbol{b}^T C^T \boldsymbol{a} \\
+&=& \boldsymbol{b}^T C \boldsymbol{a} \\
+&=& \boldsymbol{b}^T \lambda \boldsymbol{a} \\
+&=& \lambda \boldsymbol{b} \cdot \boldsymbol{a} \\
+&=& 0
+\end{eqnarray}
+$$
+
+つまり $$\mu = 0$$ なので
+
+$$
+C \boldsymbol{b} = \lambda \boldsymbol{b}
+$$
+
+第1主成分のときと同じ、$$C$$ の固有方程式が得られた。  
+したがって、$$\boldsymbol{b}$$ は $$C$$ の固有ベクトルのうち $$\boldsymbol{a}$$ 以外で固有値が最大となるもの（= **固有値が2番目に大きいもの**）を選べば良い。
+
+対称行列の性質として、**対称行列の固有ベクトルは互いに直行する** ので、$$\boldsymbol{a}$$ との直交条件を確認する必要はない。
+
+
+### 第3主成分以降
+
+第2成分同様に、「上位の成分と直交する」という制約を課してラグランジュの未定定数を適用すれば、やはり $$C$$ の固有方程式が得られる。
+
 
 ## 注意
 
-- PCA では分散を最大化するため、結果は変数のスケールに影響を受ける
-  - **→ 事前に変数を標準化しておく**
+- PCA では分散を最大化するため、結果は特徴量のスケールに影響を受ける
+  - **→ 事前に特徴量を標準化しておく**：$$x_j'^{(i)} = \cfrac{x_j^{(i)} - \overline{x}_j}{\sigma_j}$$
 
 
 ## 実装
