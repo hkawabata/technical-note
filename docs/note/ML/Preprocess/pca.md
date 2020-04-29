@@ -17,7 +17,7 @@ $$m$$ 次元データ $$\boldsymbol{x} = (x_1, \cdots, x_m)$$ を、可能な限
 $$\boldsymbol{x}$$ の特徴量同士の **共分散**
 
 $$
-C_{jk} \equiv \cfrac{1}{n-1} \sum_{i=1}^n \left(x_k^{(i)} - \overline{x}_k \right) \left(x_j^{(i)} - \overline{x}_j \right)
+C_{jk} \equiv \cfrac{1}{n-1} \sum_{i=1}^n \left(x_j^{(i)} - \overline{x}_j \right) \left(x_k^{(i)} - \overline{x}_k \right)
 $$
 
 を並べた **共分散行列**
