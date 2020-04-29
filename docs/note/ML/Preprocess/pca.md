@@ -337,3 +337,15 @@ $$
 
 
 ## 実装
+
+### コード
+
+{gist 2d65ecb7fce51816fd3a8bbedcad9ebe pca.py}
+
+### 動作確認
+
+{gist 2d65ecb7fce51816fd3a8bbedcad9ebe ~fit.py}
+
+![transformed](https://user-images.githubusercontent.com/13412823/80590257-959aeb80-8a56-11ea-8a7d-be65038f6326.png)
+
+![contribution](https://user-images.githubusercontent.com/13412823/80590253-93d12800-8a56-11ea-8447-0ccb1f2b3adc.png)
