@@ -7,9 +7,6 @@ title: 主成分分析（PCA）
 Principal Component Analysis の略で、高次元データの特徴抽出（次元削減）の手法の1つ。  
 うまくデータのばらつきが大きくなるように、データをより低次元の空間へ射影する。
 
-## 直感的なイメージ
-
-（TODO）
 
 ## 次元削減の方法
 
@@ -63,6 +60,13 @@ X_j^{(i)} = \boldsymbol{x}^{(i)} \cdot \boldsymbol{a}_j
 $$
 
 を求め、新しい特徴量とする。
+
+
+## 直感的なイメージ
+
+2次元空間のデータを1次元に射影する例。
+
+![PCA](https://user-images.githubusercontent.com/13412823/80565188-d3821a80-8a2a-11ea-84a7-1781d035c523.png)
 
 
 ## 導出
@@ -285,7 +289,7 @@ $$
 両辺に左から $$\boldsymbol{a}^T$$ をかけると、
 
 $$
-\boldsymbol{a}^T C \boldsymbol{b} = \lambda \boldsymbol{a} \cdot \boldsymbol{b} + \cfrac{1}{2} \mu \| \boldsymbol{a} \|
+\boldsymbol{a}^T C \boldsymbol{b} = \lambda \boldsymbol{a} \cdot \boldsymbol{b} + \cfrac{1}{2} \mu \| \boldsymbol{a} \|^2
 $$
 
 単位ベクトル条件、直交条件より
