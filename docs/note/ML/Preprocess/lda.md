@@ -4,6 +4,8 @@ title: 線形判別分析（LDA）
 
 # フィッシャーの線形判別
 
+LDA = Linear Discriminant Analysis.
+
 高次元データの教師あり特徴抽出（次元削減）の手法の1つ。  
 以下の条件がうまくバランスするようにデータを射影する。
 
@@ -219,3 +221,21 @@ $$
 固有値が $$J(\boldsymbol{w})$$ の値に一致するので、固有値が大きいものから順に $$k$$ 個の固有ベクトル $$\boldsymbol{w}_1, \cdots, \boldsymbol{w}_k$$ を選べば良い。
 
 行列 $$S_W^{-1} S_B$$ は対称行列であるから、固有ベクトルは互いに直交する（基底にできる）。
+
+## 注意
+
+異なるクラスラベルの個数が $$c$$ 個だとすると、ゼロでない固有値は最大でも $$c-1$$ 個しか存在しない。
+
+## 実装
+
+### コード
+
+{% gist 25bd274b9aacc7a023eeaece8920a540 lda.py %}
+
+### 動作確認
+
+{% gist 25bd274b9aacc7a023eeaece8920a540 ~fit.py %}
+
+![LDA-Projection](https://user-images.githubusercontent.com/13412823/80866685-04807a80-8ccb-11ea-9346-6274b5f223ff.png)
+
+![LDA-Contribution](https://user-images.githubusercontent.com/13412823/80866687-064a3e00-8ccb-11ea-9e19-685e75e8a487.png)
