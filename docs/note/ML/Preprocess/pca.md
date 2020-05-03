@@ -433,7 +433,7 @@ $$
 
 ### 4. データを射影する
 
-$$l$$ 個の主成分 $$\boldsymbol{\nu}_j = (\nu_{j, 1}, \cdots, \nu_{j, l})$$ による元データの射影
+次元削減したいデータ $$\boldsymbol{x}$$ に対して、$$l$$ 個の主成分 $$\boldsymbol{\nu}_j = (\nu_{j, 1}, \cdots, \nu_{j, l})$$ による元データの射影
 
 $$
 \begin{eqnarray}
