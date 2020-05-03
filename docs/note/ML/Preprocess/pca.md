@@ -646,5 +646,14 @@ $$
 
 ### コード
 
+{% gist 2d65ecb7fce51816fd3a8bbedcad9ebe pca-kernel.py %}
 
 ### 動作確認
+
+{% gist 2d65ecb7fce51816fd3a8bbedcad9ebe ~fit-pca-kernel.py %}
+
+![変換前](https://user-images.githubusercontent.com/13412823/80908671-b6b45280-8d5c-11ea-9329-21ca92bc463a.png)
+
+![変換後](https://user-images.githubusercontent.com/13412823/80908670-b5832580-8d5c-11ea-9708-10428623a31a.png)
+
+![寄与率](https://user-images.githubusercontent.com/13412823/80908669-b3b96200-8d5c-11ea-8608-302db855a4ef.png)
