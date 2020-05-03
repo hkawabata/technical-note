@@ -369,6 +369,82 @@ $$
 通常の主成分分析では、線形分離不可能なデータに対応できない。  
 そこで、まず高次元空間に射影して線形分離可能にした上で線形の主成分分析を適用する。
 
+## 次元削減の方法
+
+### 1. カーネル行列を計算する
+
+データサンプル $$\boldsymbol{x}$$ を高次元空間へ射影する関数を $$\boldsymbol{\phi} \left(\boldsymbol{x}\right)$$ とする。  
+**具体的に $$\boldsymbol{\phi} \left(\boldsymbol{x}\right)$$ を計算して求めることはしない。**
+
+高次元空間における内積を定義する **カーネル関数**
+
+$$
+k\left(\boldsymbol{x}^{(i)}, \boldsymbol{x}^{(j)}\right)
+\equiv \boldsymbol{\phi} \left(\boldsymbol{x}^{(i)}\right) \cdot \boldsymbol{\phi} \left(\boldsymbol{x}^{(j)}\right)
+$$
+
+を決め、$$n \times n$$ の **カーネル行列**
+
+$$
+\begin{eqnarray}
+K &\equiv& \begin{pmatrix}
+k\left(\boldsymbol{x}^{(1)}, \boldsymbol{x}^{(1)}\right)
+& \cdots &
+k\left(\boldsymbol{x}^{(1)}, \boldsymbol{x}^{(n)}\right)
+\\
+\vdots &  & \vdots \\
+k\left(\boldsymbol{x}^{(n)}, \boldsymbol{x}^{(1)}\right)
+& \cdots &
+k\left(\boldsymbol{x}^{(n)}, \boldsymbol{x}^{(n)}\right)
+\end{pmatrix}
+\end{eqnarray}
+$$
+
+を計算する。
+
+
+### 2. カーネル行列を中心化する
+
+カーネル行列を以下の式で標準化（**中心化**）しておく（平均がゼロであるという前提の手法であるため）。
+
+$$
+K \longleftarrow K - 1_n K - K 1_n + 1_n K 1_n
+$$
+
+$$1_n$$ はすべての要素が $$\frac{1}{n}$$ である $$n \times n$$ 行列：
+
+$$
+1_n \equiv \begin{pmatrix}
+\frac{1}{n} & \cdots & \frac{1}{n} \\
+\vdots &  & \vdots \\
+\frac{1}{n} & \cdots & \frac{1}{n}
+\end{pmatrix}
+$$
+
+### 3. カーネル行列の固有方程式を解く
+
+カーネル行列の固有方程式を解く。
+
+$$
+K \boldsymbol{\nu} = (n-1) \lambda \boldsymbol{\nu}
+$$
+
+固有値 $$(n-1) \lambda$$ が大きいものから順に $$l$$ 個の固有ベクトルを選び、主成分とする。
+
+### 4. データを射影する
+
+$$l$$ 個の主成分 $$\boldsymbol{\nu}_j = (\nu_{j, 1}, \cdots, \nu_{j, l})$$ による元データの射影
+
+$$
+\begin{eqnarray}
+\boldsymbol{X} &=& (X_1, \cdots, X_l) \\
+X_j &=& \displaystyle \sum_{i=1}^n k\left(\boldsymbol{x}, \boldsymbol{x}^{(i)}\right) \nu_{j, i}
+\end{eqnarray}
+$$
+
+を求め、新しい特徴量とする。
+
+
 ## 理論
 
 ### 標準化による共分散行列の書き換え
