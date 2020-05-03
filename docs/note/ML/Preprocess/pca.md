@@ -7,10 +7,23 @@ title: 主成分分析（PCA）
 Principal Component Analysis の略で、高次元データの特徴抽出（次元削減）の手法の1つ。  
 うまくデータのばらつきが大きくなるように、データをより低次元の空間へ射影する。
 
+## 問題設定
+
+$$n$$ 個の $$m$$ 次元データサンプル
+
+$$
+\boldsymbol{x}^{(i)} = \begin{pmatrix}
+x_1^{(i)} \\
+\vdots \\
+x_m^{(i)}
+\end{pmatrix}
+$$
+
+を $$l\ (\le m)$$ 次元空間へ射影する（$$i = 1, \cdots, n$$）。
+
+# 線形の主成分分析
 
 ## 次元削減の方法
-
-$$m$$ 次元データ $$\boldsymbol{x} = (x_1, \cdots, x_m)$$ を、可能な限り特徴量の分散が大きくなるように $$l(\le m)$$ 次元空間へ圧縮する方法は以下の通り。
 
 ### 1. 共分散行列の固有方程式を解く
 
@@ -69,7 +82,7 @@ $$
 ![PCA](https://user-images.githubusercontent.com/13412823/80565188-d3821a80-8a2a-11ea-84a7-1781d035c523.png)
 
 
-## 導出
+## 理論
 
 ### 第1主成分を求めるための最大化問題
 
@@ -349,3 +362,272 @@ $$
 ![transformed](https://user-images.githubusercontent.com/13412823/80590257-959aeb80-8a56-11ea-8a7d-be65038f6326.png)
 
 ![contribution](https://user-images.githubusercontent.com/13412823/80590253-93d12800-8a56-11ea-8447-0ccb1f2b3adc.png)
+
+
+# カーネル主成分分析
+
+通常の主成分分析では、線形分離不可能なデータに対応できない。  
+そこで、まず高次元空間に射影して線形分離可能にした上で線形の主成分分析を適用する。
+
+## 理論
+
+### 標準化による共分散行列の書き換え
+
+$$m$$ 次元データサンプル
+
+$$
+\boldsymbol{x} =
+\begin{pmatrix}
+x_1 \\
+\vdots \\
+x_m
+\end{pmatrix}
+$$
+
+を事前に標準化しておけば、各特徴量の平均がゼロになるので、共分散行列は、
+
+$$
+C = \cfrac{1}{n-1} \begin{pmatrix}
+\displaystyle \sum_{i=1}^n x_1^{(i)} x_1^{(i)} & \cdots & \displaystyle \sum_{i=1}^n x_1^{(i)} x_m^{(i)} \\
+\vdots &  & \vdots \\
+\displaystyle \sum_{i=1}^n x_m^{(i)} x_1^{(i)} & \cdots & \displaystyle \sum_{i=1}^n x_m^{(i)} x_m^{(i)}
+\end{pmatrix}
+= \cfrac{1}{n-1} \sum_{i=1}^n \boldsymbol{x} \boldsymbol{x}^T
+$$
+
+と書ける。$$n$$ 個の全データサンプル $$\boldsymbol{x}^{(1)}, \cdots, \boldsymbol{x}^{(n)}$$ を並べた $$m \times n$$ 行列
+
+$$
+D \equiv \left( \boldsymbol{x}^{(1)}, \cdots, \boldsymbol{x}^{(n)} \right)
+= \begin{pmatrix}
+x_1^{(1)} & \cdots & x_1^{(n)} \\
+\vdots &  & \vdots \\
+x_m^{(1)} & \cdots & x_m^{(n)}
+\end{pmatrix}
+$$
+
+を使えば、
+
+$$
+C = \cfrac{1}{n-1} DD^T
+$$
+
+となる。
+
+### 高次元空間への射影による共分散行列の置き換え
+
+関数 $$\boldsymbol{\phi} = (\phi_1, \cdots, \phi_M)$$ を用いて $$\boldsymbol{x}$$ を $$M\ (\gg m)$$ 次元空間に射影する：
+
+$$
+\boldsymbol{x} =
+\begin{pmatrix}
+x_1 \\
+\vdots \\
+x_m
+\end{pmatrix}
+\longmapsto
+\boldsymbol{\phi} (\boldsymbol{x}) =
+\begin{pmatrix}
+\phi_1(\boldsymbol{x}) \\
+\vdots \\
+\phi_M(\boldsymbol{x})
+\end{pmatrix}
+$$
+
+**高次元空間への射影を実際に計算して求めるのは計算コストが非常に大きい。**  
+**そのため、射影後のベクトルの「内積」だけを使って以後の全ての計算を行う（カーネルトリック。詳細はサポートベクトルマシンのノートを参照）**
+
+射影後の空間における共分散行列 $$C_{\phi}$$ は以下の式で書ける。
+
+$$
+C_{\phi} \equiv \cfrac{1}{n-1} \begin{pmatrix}
+\displaystyle \sum_{i=1}^n \phi_1 \left(\boldsymbol{x}^{(i)}\right) \phi_1 \left(\boldsymbol{x}^{(i)}\right) & \cdots &
+\displaystyle \sum_{i=1}^n \phi_1 \left(\boldsymbol{x}^{(i)}\right) \phi_M \left(\boldsymbol{x}^{(i)}\right) \\
+\vdots &  & \vdots \\
+\displaystyle \sum_{i=1}^n \phi_M \left(\boldsymbol{x}^{(i)}\right) \phi_1 \left(\boldsymbol{x}^{(i)}\right) & \cdots &
+\displaystyle \sum_{i=1}^n \phi_M \left(\boldsymbol{x}^{(i)}\right) \phi_M \left(\boldsymbol{x}^{(i)}\right)
+\end{pmatrix}
+= \cfrac{1}{n-1} D_{\phi} D_{\phi}^T
+$$
+
+**但し、射影後の空間でもデータサンプルの平均がゼロになるよう標準化されていることを仮定（後述）**。
+
+$$
+D_{\phi} \equiv \begin{pmatrix}
+\phi_1 \left(\boldsymbol{x}^{(1)} \right) & \cdots & \phi_1 \left(\boldsymbol{x}^{(n)} \right) \\
+\vdots &  & \vdots \\
+\phi_M \left(\boldsymbol{x}^{(1)} \right) & \cdots & \phi_M \left(\boldsymbol{x}^{(n)} \right)
+\end{pmatrix}
+$$
+
+### カーネル行列の定義
+
+高次元空間における内積を定義するカーネル関数
+
+$$
+k\left(\boldsymbol{x}^{(i)}, \boldsymbol{x}^{(j)}\right)
+\equiv \boldsymbol{\phi} \left(\boldsymbol{x}^{(i)}\right) \cdot \boldsymbol{\phi} \left(\boldsymbol{x}^{(j)}\right)
+$$
+
+を決め、カーネル行列
+
+$$
+\begin{eqnarray}
+K &\equiv& \begin{pmatrix}
+k\left(\boldsymbol{x}^{(1)}, \boldsymbol{x}^{(1)}\right)
+& \cdots &
+k\left(\boldsymbol{x}^{(1)}, \boldsymbol{x}^{(n)}\right)
+\\
+\vdots &  & \vdots \\
+k\left(\boldsymbol{x}^{(n)}, \boldsymbol{x}^{(1)}\right)
+& \cdots &
+k\left(\boldsymbol{x}^{(n)}, \boldsymbol{x}^{(n)}\right)
+\end{pmatrix} \\
+&=& \begin{pmatrix}
+\displaystyle \sum_{j=1}^M \phi_j \left(\boldsymbol{x}^{(1)}\right) \phi_j \left(\boldsymbol{x}^{(1)}\right)
+& \cdots &
+\displaystyle \sum_{j=1}^M \phi_j \left(\boldsymbol{x}^{(1)}\right) \phi_j \left(\boldsymbol{x}^{(n)}\right)
+\\
+\vdots &  & \vdots \\
+\displaystyle \sum_{j=1}^M \phi_j \left(\boldsymbol{x}^{(n)}\right) \phi_j \left(\boldsymbol{x}^{(1)}\right)
+& \cdots &
+\displaystyle \sum_{j=1}^M \phi_j \left(\boldsymbol{x}^{(n)}\right) \phi_j \left(\boldsymbol{x}^{(n)}\right)
+\end{pmatrix} \\
+&=& D_{\phi}^T D_{\phi}
+\end{eqnarray}
+$$
+
+を計算しておく。  
+カーネル関数の決め方についてはサポートベクトルマシンのノートを参照。
+
+$$K = D_{\phi}^T D_{\phi}$$ より
+
+$$
+K^T = (D_{\phi}^T D_{\phi})^T = D_{\phi}^T (D_{\phi}^T)^T = D_{\phi}^T D_{\phi} = K
+$$
+
+なので、$$K$$ は対称行列。
+
+
+### 固有方程式
+
+$$M$$ 次元空間における共分散行列の固有方程式は、
+
+$$
+C_{\phi} \boldsymbol{a}_{\phi} = \lambda \boldsymbol{a}_{\phi}
+$$
+
+$$C_{\phi} = \cfrac{1}{n-1} D_{\phi} D_{\phi}^T$$ を代入すれば、
+
+$$
+\cfrac{1}{n-1} D_{\phi} D_{\phi}^T \boldsymbol{a}_{\phi} = \lambda \boldsymbol{a}_{\phi}
+$$
+
+を得る。
+
+左から $$(n-1) D^T$$ をかけると、
+
+$$
+K D_{\phi}^T \boldsymbol{a}_{\phi} = (n-1) \lambda D_{\phi}^T \boldsymbol{a}_{\phi}
+$$
+
+ここで
+
+$$
+\boldsymbol{\nu} \equiv \cfrac{1}{(n-1) \lambda} D_{\phi}^T \boldsymbol{a}_{\phi}
+$$
+
+とおけば（係数 $$\cfrac{1}{(n-1) \lambda}$$ は後の計算を楽にするためにつけている）、
+
+$$
+K \boldsymbol{\nu} = (n-1) \lambda \boldsymbol{\nu}
+$$
+
+これは $$K$$ の固有方程式（固有値 $$(n-1) \lambda$$, 固有ベクトル $$\boldsymbol{\nu}$$）。
+
+> **【NOTE】**
+>
+> **内積の行列である $$K = D_{\phi}^T D_{\phi}$$ は計算してあるが $$D_{\phi}$$ の要素の値は計算しないので、$$\boldsymbol{\nu} = D_{\phi}^T \boldsymbol{a}_{\phi}$$ から $$\boldsymbol{a}_{\phi}$$ を求めることはできない。**
+
+
+### 最適解の選択
+
+$$K$$ の固有方程式を解き、$$n$$ 個数の固有値・固有ベクトルを求める。
+
+線形 PCA の節で見た通り、共分散行列の固有値 $$\lambda$$ は主成分空間における分散に一致する。  
+$$n-1$$ は定数なので、$$K$$ の固有値 $$(n-1) \lambda$$ が大きいほど分散 $$\lambda$$ も大きい。  
+よって線形 PCA と同様に、特徴抽出後の分散を大きくするには固有値が大きいものから順に固有ベクトルを $$l$$ 個選べば良い。
+
+
+### データサンプルの射影
+
+選択した $$K$$ の固有ベクトル $$\boldsymbol{\nu}_j =　\cfrac{1}{(n-1) \lambda_j} D_{\phi}^T \boldsymbol{a}_{\phi, j}\ (j = 1, \cdots, l)$$ に対応する $$\boldsymbol{a}_{\phi, j}$$ により、未知のデータサンプル $$\boldsymbol{x}$$ を新しい特徴量 $$X_j$$ に射影する：
+
+$$
+X_j = \boldsymbol{\phi} \left( \boldsymbol{x} \right) \cdot \boldsymbol{a}_{\phi, j}
+$$
+
+ここで
+
+$$
+\boldsymbol{\nu}_j = \cfrac{1}{(n-1) \lambda_j} D_{\phi}^T \boldsymbol{a}_{\phi, j}
+$$
+
+に左から $$D_{\phi}$$ をかけると、$$C_{\phi} = \cfrac{1}{n-1} D_{\phi} D_{\phi}^T$$ より
+
+$$
+D_{\phi} \boldsymbol{\nu}_j = \cfrac{1}{\lambda_j} C_{\phi} \boldsymbol{a}_{\phi, j}
+$$
+
+$$\boldsymbol{a}_{\phi, j}$$ は $$C_{\phi}$$ の固有ベクトル（$$C_{\phi} \boldsymbol{a}_{\phi, j} = \lambda_j \boldsymbol{a}_{\phi, j}$$）であるから、
+
+$$
+D_{\phi} \boldsymbol{\nu}_j = \boldsymbol{a}_{\phi, j}
+$$
+
+よって
+
+$$
+\begin{eqnarray}
+X_j
+&=& \boldsymbol{\phi} \left( \boldsymbol{x} \right) \cdot \boldsymbol{a}_{\phi, j} \\
+&=& \boldsymbol{\phi} \left( \boldsymbol{x} \right)^T D_{\phi} \boldsymbol{\nu}_j \\
+&=& \left( \phi_1\left(\boldsymbol{x}\right), \cdots, \phi_M\left(\boldsymbol{x}\right)\right)
+\begin{pmatrix}
+\phi_1 \left(\boldsymbol{x}^{(1)} \right) & \cdots & \phi_1 \left(\boldsymbol{x}^{(n)} \right) \\
+\vdots &  & \vdots \\
+\phi_M \left(\boldsymbol{x}^{(1)} \right) & \cdots & \phi_M \left(\boldsymbol{x}^{(n)} \right)
+\end{pmatrix}
+\begin{pmatrix}
+\nu_{j, 1} \\
+\vdots \\
+\nu_{j, n}
+\end{pmatrix}
+\\
+&=& \left( \boldsymbol{\phi}\left(\boldsymbol{x}\right) \cdot \boldsymbol{\phi}\left(\boldsymbol{x}^{(1)}\right), \cdots, \boldsymbol{\phi}\left(\boldsymbol{x}\right) \cdot \boldsymbol{\phi}\left(\boldsymbol{x}^{(n)}\right) \right)
+\begin{pmatrix}
+\nu_{j, 1} \\
+\vdots \\
+\nu_{j, n}
+\end{pmatrix}
+\\
+&=& \left( k\left(\boldsymbol{x}, \boldsymbol{x}^{(1)}\right), \cdots, k\left(\boldsymbol{x}, \boldsymbol{x}^{(n)}\right) \right)
+\begin{pmatrix}
+\nu_{j, 1} \\
+\vdots \\
+\nu_{j, n}
+\end{pmatrix}
+\\
+&=& \displaystyle \sum_{i=1}^n k\left(\boldsymbol{x}, \boldsymbol{x}^{(i)}\right) \nu_{j, i}
+\end{eqnarray}
+$$
+
+カーネル関数 $$k$$ は計算可能であり、$$\nu_{j, i}$$ も計算済みであるから、この式により次元削減後の特徴量 $$X_j$$ を求めることができる。
+
+
+## 実装
+
+### コード
+
+
+### 動作確認
