@@ -450,8 +450,6 @@ C_{\phi} \equiv \cfrac{1}{n-1} \begin{pmatrix}
 = \cfrac{1}{n-1} D_{\phi} D_{\phi}^T
 $$
 
-**但し、射影後の空間でもデータサンプルの平均がゼロになるよう標準化されていることを仮定（後述）**。
-
 $$
 D_{\phi} \equiv \begin{pmatrix}
 \phi_1 \left(\boldsymbol{x}^{(1)} \right) & \cdots & \phi_1 \left(\boldsymbol{x}^{(n)} \right) \\
@@ -459,6 +457,8 @@ D_{\phi} \equiv \begin{pmatrix}
 \phi_M \left(\boldsymbol{x}^{(1)} \right) & \cdots & \phi_M \left(\boldsymbol{x}^{(n)} \right)
 \end{pmatrix}
 $$
+
+**但し、射影後の空間でもデータサンプルの平均がゼロになるようサンプルが標準化されている必要がある（次節）**。
 
 ### カーネル行列の定義
 
@@ -469,7 +469,7 @@ k\left(\boldsymbol{x}^{(i)}, \boldsymbol{x}^{(j)}\right)
 \equiv \boldsymbol{\phi} \left(\boldsymbol{x}^{(i)}\right) \cdot \boldsymbol{\phi} \left(\boldsymbol{x}^{(j)}\right)
 $$
 
-を決め、カーネル行列
+を決め、$$n \times n$$ の **カーネル行列**
 
 $$
 \begin{eqnarray}
@@ -500,13 +500,30 @@ $$
 を計算しておく。  
 カーネル関数の決め方についてはサポートベクトルマシンのノートを参照。
 
-$$K = D_{\phi}^T D_{\phi}$$ より
+カーネル行列は、射影後の空間でもデータサンプルの平均がゼロになるよう標準化（**中心化**）しておく：
 
 $$
-K^T = (D_{\phi}^T D_{\phi})^T = D_{\phi}^T (D_{\phi}^T)^T = D_{\phi}^T D_{\phi} = K
+K \longleftarrow K - 1_n K - K 1_n + 1_n K 1_n
 $$
 
-なので、$$K$$ は対称行列。
+$$1_n$$ はすべての要素が $$\frac{1}{n}$$ である $$n \times n$$ 行列：
+
+$$
+1_n \equiv \begin{pmatrix}
+\frac{1}{n} & \cdots & \frac{1}{n} \\
+\vdots &  & \vdots \\
+\frac{1}{n} & \cdots & \frac{1}{n}
+\end{pmatrix}
+$$
+
+
+> **【NOTE】カーネル行列の対称性**
+>
+> $$K = D_{\phi}^T D_{\phi}$$ より
+>
+> $$K^T = (D_{\phi}^T D_{\phi})^T = D_{\phi}^T (D_{\phi}^T)^T = D_{\phi}^T D_{\phi} = K$$
+>
+> なので、$$K$$ は対称行列。
 
 
 ### 固有方程式
