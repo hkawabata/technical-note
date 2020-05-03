@@ -536,7 +536,7 @@ $$
 
 **但し、射影後の空間でもデータサンプルの平均がゼロになるようサンプルが標準化されている必要がある（次節）**。
 
-### カーネル行列の定義
+### カーネル行列の計算・中心化
 
 高次元空間における内積を定義するカーネル関数
 
@@ -568,8 +568,7 @@ k\left(\boldsymbol{x}^{(n)}, \boldsymbol{x}^{(n)}\right)
 \displaystyle \sum_{j=1}^M \phi_j \left(\boldsymbol{x}^{(n)}\right) \phi_j \left(\boldsymbol{x}^{(1)}\right)
 & \cdots &
 \displaystyle \sum_{j=1}^M \phi_j \left(\boldsymbol{x}^{(n)}\right) \phi_j \left(\boldsymbol{x}^{(n)}\right)
-\end{pmatrix} \\
-&=& D_{\phi}^T D_{\phi}
+\end{pmatrix}
 \end{eqnarray}
 $$
 
@@ -590,6 +589,12 @@ $$
 \vdots &  & \vdots \\
 \frac{1}{n} & \cdots & \frac{1}{n}
 \end{pmatrix}
+$$
+
+その表式から、カーネル行列は $$D_{\phi}$$ を使って書くこともできる：
+
+$$
+K = D_{\phi}^T D_{\phi}
 $$
 
 
