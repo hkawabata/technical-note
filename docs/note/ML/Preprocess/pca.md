@@ -405,7 +405,7 @@ $$
 
 ### 2. カーネル行列を中心化する
 
-カーネル行列を以下の式で標準化（**中心化**）しておく（平均がゼロであるという前提の手法であるため）。
+カーネル行列を以下の式で標準化（**中心化**）しておく（手法の前提として、平均がゼロである必要があるため）。
 
 $$
 K \longleftarrow K - 1_n K - K 1_n + 1_n K 1_n
@@ -534,7 +534,7 @@ D_{\phi} \equiv \begin{pmatrix}
 \end{pmatrix}
 $$
 
-**但し、射影後の空間でもデータサンプルの平均がゼロになるようサンプルが標準化されている必要がある（次節）**。
+**但し前提として、射影後の空間でもデータサンプルの平均がゼロになるようサンプルが標準化されている必要がある（次節）**。
 
 ### カーネル行列の計算・中心化
 
@@ -542,14 +542,14 @@ $$
 
 $$
 k\left(\boldsymbol{x}^{(i)}, \boldsymbol{x}^{(j)}\right)
-\equiv \boldsymbol{\phi} \left(\boldsymbol{x}^{(i)}\right) \cdot \boldsymbol{\phi} \left(\boldsymbol{x}^{(j)}\right)
+= \boldsymbol{\phi} \left(\boldsymbol{x}^{(i)}\right) \cdot \boldsymbol{\phi} \left(\boldsymbol{x}^{(j)}\right)
 $$
 
-を決め、$$n \times n$$ の **カーネル行列**
+を決めれば、$$n \times n$$ の **カーネル行列**
 
 $$
 \begin{eqnarray}
-K &\equiv& \begin{pmatrix}
+K &=& \begin{pmatrix}
 k\left(\boldsymbol{x}^{(1)}, \boldsymbol{x}^{(1)}\right)
 & \cdots &
 k\left(\boldsymbol{x}^{(1)}, \boldsymbol{x}^{(n)}\right)
@@ -572,31 +572,14 @@ k\left(\boldsymbol{x}^{(n)}, \boldsymbol{x}^{(n)}\right)
 \end{eqnarray}
 $$
 
-を計算しておく。  
+が計算できる。  
 カーネル関数の決め方についてはサポートベクトルマシンのノートを参照。
 
-カーネル行列は、射影後の空間でもデータサンプルの平均がゼロになるよう標準化（**中心化**）しておく：
-
-$$
-K \longleftarrow K - 1_n K - K 1_n + 1_n K 1_n
-$$
-
-$$1_n$$ はすべての要素が $$\frac{1}{n}$$ である $$n \times n$$ 行列：
-
-$$
-1_n \equiv \begin{pmatrix}
-\frac{1}{n} & \cdots & \frac{1}{n} \\
-\vdots &  & \vdots \\
-\frac{1}{n} & \cdots & \frac{1}{n}
-\end{pmatrix}
-$$
-
-その表式から、カーネル行列は $$D_{\phi}$$ を使って書くこともできる：
+また、その表式から、カーネル行列は $$D_{\phi}$$ を使って書くこともできる：
 
 $$
 K = D_{\phi}^T D_{\phi}
 $$
-
 
 > **【NOTE】カーネル行列の対称性**
 >
@@ -605,6 +588,13 @@ $$
 > $$K^T = (D_{\phi}^T D_{\phi})^T = D_{\phi}^T (D_{\phi}^T)^T = D_{\phi}^T D_{\phi} = K$$
 >
 > なので、$$K$$ は対称行列。
+
+
+カーネル行列は、射影後の空間でもデータサンプルの平均がゼロになるよう標準化（**中心化**）しておく：
+
+$$
+K \longleftarrow K - 1_n K - K 1_n + 1_n K 1_n
+$$
 
 
 ### 固有方程式
@@ -645,7 +635,7 @@ $$
 
 > **【NOTE】**
 >
-> **内積の行列である $$K = D_{\phi}^T D_{\phi}$$ は計算してあるが $$D_{\phi}$$ の要素の値は計算しないので、$$\boldsymbol{\nu} = D_{\phi}^T \boldsymbol{a}_{\phi}$$ から $$\boldsymbol{a}_{\phi}$$ を求めることはできない。**
+> 内積の行列である $$K = D_{\phi}^T D_{\phi}$$ は計算してあるが $$D_{\phi}$$ の要素の値は計算しないので、$$\boldsymbol{\nu} = D_{\phi}^T \boldsymbol{a}_{\phi}$$ から $$\boldsymbol{a}_{\phi}$$ を求めることはできない。
 
 
 ### 最適解の選択
