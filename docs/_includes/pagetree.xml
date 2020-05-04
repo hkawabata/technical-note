@@ -307,6 +307,16 @@
             <a href="https://hkawabata.github.io/technical-note/note/ML/perceptron">パーセプトロン
 </a>
           </li>
+          <li>
+            <span>Evaluation</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/Evaluation/roc-auc">ROC 曲線
+</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </li>
       <li>
