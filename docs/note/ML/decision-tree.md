@@ -109,7 +109,7 @@ $$
 
 # ランダムフォレスト
 
-アンサンブル学習の一種。  
+アンサンブル学習の1手法、**バギング** の一種。  
 複数の決定木で多数決を取ることにより、汎化性能を高める。
 
 ## 学習規則
@@ -138,4 +138,3 @@ $$
 ![Unknown-1](https://user-images.githubusercontent.com/13412823/80094582-78bb6f80-85a1-11ea-90d4-38cd91bf6862.png)
 
 ![Unknown-2](https://user-images.githubusercontent.com/13412823/80094579-778a4280-85a1-11ea-9831-a751edb7d307.png)
-
