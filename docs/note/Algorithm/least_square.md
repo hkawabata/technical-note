@@ -61,7 +61,11 @@ $$\mbox{where } s_k = \sum_{i=1}^N x_i^k, t_k = \sum_{i=1}^N x_i^k y_i$$
 
 ## コード
 
+{% gist fbb64ace37a9d5a68810439062166abf least-square.py %}
+
 ## 動作確認
+
+{% gist fbb64ace37a9d5a68810439062166abf ~fit.py %}
 
 ![LeastSquare](https://user-images.githubusercontent.com/13412823/81069197-87e4da80-8f1c-11ea-928b-73bb50c19ff6.png)
 
