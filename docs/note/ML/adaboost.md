@@ -2,7 +2,7 @@
 title: AdaBoost
 ---
 
-# AdaBoost
+# AdaBoost とは
 
 アンサンブル学習の手法、**ブースティング** の一種。
 
