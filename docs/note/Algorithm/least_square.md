@@ -55,3 +55,13 @@ $$\mbox{where } s_k = \sum_{i=1}^N x_i^k, t_k = \sum_{i=1}^N x_i^k y_i$$
 を解くことに等しい。
 
 係数行列は対角行列であり、共通の要素も多いので、計算量は節約できる。
+
+
+# 実装
+
+## コード
+
+## 動作確認
+
+![LeastSquare](https://user-images.githubusercontent.com/13412823/81069197-87e4da80-8f1c-11ea-928b-73bb50c19ff6.png)
+
