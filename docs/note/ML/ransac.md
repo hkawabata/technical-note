@@ -97,4 +97,4 @@ RANSAC：
 
 {% gist fbb64ace37a9d5a68810439062166abf ~fit-ransac.py %}
 
-![RANSAC](https://user-images.githubusercontent.com/13412823/81139837-2c5d3000-8fa2-11ea-98f1-c42c38c599b6.png)
+![RANSAC](https://user-images.githubusercontent.com/13412823/81169418-ca1d2300-8fd3-11ea-858a-5fc3750d1b76.png)
