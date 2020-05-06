@@ -35,7 +35,7 @@ $$m$$ がなるべく小さい方が、抽出したサンプルに外れ値が�
 
 $$
 \begin{eqnarray}
-\cfrac{{}_{n(1-r_{\rm out})} C_m}{{}_n C_m}
+\cfrac{ {}_{n(1-r_{\rm out})} C_m}{ {}_n C_m}
 &=& \cfrac{n(1-r_{\rm out}) \{n(1-r_{\rm out})-1\} \cdots \{n(1-r_{\rm out})-m+1)\}}{n (n-1) \cdots (n-m+1)} \\
 &\simeq& \cfrac{\{n(1-r_{\rm out})\}^m}{n^m} \\
 &=& (1 - r_{\rm out})^m
