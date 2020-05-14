@@ -4,7 +4,8 @@ title: k-means
 
 # k-means とは
 
-プロトタイプベースのクラスタリング手法の1つ。
+プロトタイプベースのクラスタリング手法の1つ。  
+通常の k-means は、各データサンプルに対して1つだけ所属クラスタを割り当てる **ハードクラスタリング**。
 
 ## 問題設定
 
@@ -30,6 +31,10 @@ title: k-means
 
 - ユークリッド距離を用いるため、変数のスケールを事前に揃えておく必要がある
 - はじめにハイパーパラメータ $$k$$ を指定する必要があり、適切な $$k$$ を選ばないと性能が悪くなる
+- 下図のように、乱数による初期化が不適切だとクラスタリングがうまくいかない場合がある
+  - 初期化方法を改善した k-means++ という手法がある
+
+![bad k-means](https://user-images.githubusercontent.com/13412823/81996885-3ad5d680-9689-11ea-834b-06be4d843a45.png)
 
 
 ## 実装
@@ -40,10 +45,27 @@ title: k-means
 
 ### 動作確認
 
+{% gist 205917c3a344ee1aaeb82ef37847bc97 ~plot-k-means.py %}
+
 {% gist 205917c3a344ee1aaeb82ef37847bc97 ~fit-k-means1.py %}
 
-![KMeans-Circle](https://user-images.githubusercontent.com/13412823/81466743-da6d1200-920e-11ea-857d-b2ce48cf3117.png)
+![KMeans-Square](https://user-images.githubusercontent.com/13412823/81466745-dc36d580-920e-11ea-9240-cbc8ffc8db5f.png)
 
 {% gist 205917c3a344ee1aaeb82ef37847bc97 ~fit-k-means2.py %}
 
-![KMeans-Square](https://user-images.githubusercontent.com/13412823/81466745-dc36d580-920e-11ea-9240-cbc8ffc8db5f.png)
+![KMeans-Circle](https://user-images.githubusercontent.com/13412823/81466743-da6d1200-920e-11ea-857d-b2ce48cf3117.png)
+
+
+# Fuzzy C-means (FCM)
+
+各データサンプルを複数のクラスタに割り当てる **ソフトクラスタリング** 手法で、k-means の改善版。  
+**Soft k-means** または **Fuzzy k-means** とも呼ばれる。
+
+## 処理の流れ
+
+
+## 実装
+
+### コード
+
+### 動作確認
