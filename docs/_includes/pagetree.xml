@@ -250,6 +250,10 @@
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
           <li>
+            <a href="https://hkawabata.github.io/technical-note/note/ML/k-means">k-means
+</a>
+          </li>
+          <li>
             <a href="https://hkawabata.github.io/technical-note/note/ML/logistic-regression">ロジスティック回帰
 </a>
           </li>
