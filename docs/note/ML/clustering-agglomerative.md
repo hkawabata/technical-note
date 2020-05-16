@@ -27,15 +27,15 @@ title: 凝集型クラスタリング
 
 $$
 \begin{eqnarray}
-SSD(C_1) &=& \displaystyle \sum_{\boldsymbol{x}^{(i)} \in C_1} \left( \boldsymbol{x}^{(i)} - \overline{\boldsymbol{x}}_{C_1} \right)^2 \\
-SSD(C_2) &=& \displaystyle \sum_{\boldsymbol{x}^{(i)} \in C_2} \left( \boldsymbol{x}^{(i)} - \overline{\boldsymbol{x}}_{C_2} \right)^2
+SSD(C_1) &=& \displaystyle \sum_{\boldsymbol{x}^{(i)} \in C_1} \left\| \boldsymbol{x}^{(i)} - \overline{\boldsymbol{x}}_{C_1} \right\|^2 \\
+SSD(C_2) &=& \displaystyle \sum_{\boldsymbol{x}^{(i)} \in C_2} \left\| \boldsymbol{x}^{(i)} - \overline{\boldsymbol{x}}_{C_2} \right\|^2
 \end{eqnarray}
 $$
 
 と、クラスタをマージした後の偏差平方和
 
 $$
-SSD(C_1 \cup C_2) = \displaystyle \sum_{\boldsymbol{x}^{(i)} \in C_1 \cup C_2} \left( \boldsymbol{x}^{(i)} - \overline{\boldsymbol{x}}_{C_1 \cup C_2} \right)^2
+SSD(C_1 \cup C_2) = \displaystyle \sum_{\boldsymbol{x}^{(i)} \in C_1 \cup C_2} \left\| \boldsymbol{x}^{(i)} - \overline{\boldsymbol{x}}_{C_1 \cup C_2} \right\|^2
 $$
 
 を計算する。
