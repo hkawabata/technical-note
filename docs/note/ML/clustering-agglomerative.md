@@ -13,13 +13,22 @@ title: 凝集型クラスタリング
 
 クラスタのペアに対し、クラスタ間をまたぐ **距離が最も近い** データサンプルのペアを見つけ、その距離をクラスタの近さとみなす。
 
+![Single Linkage](https://user-images.githubusercontent.com/13412823/82131573-7f8c7980-9811-11ea-959e-d4d236a1c315.png)
+
+
 ## 完全連結法（最長距離法）
 
 クラスタのペアに対し、クラスタ間をまたぐ **距離が最も遠い** データサンプルのペアを見つけ、その距離をクラスタの近さとみなす。
 
+![Complete Linkage](https://user-images.githubusercontent.com/13412823/82131571-7ef3e300-9811-11ea-9640-dbc936b368df.png)
+
+
 ## 群平均法
 
 クラスタのペアに対し、クラスタ間をまたぐデータサンプルの **全ペアの組み合わせの平均距離** をクラスタの近さとみなす。
+
+![Average](https://user-images.githubusercontent.com/13412823/82131570-7dc2b600-9811-11ea-8781-ca26b7039f52.png)
+
 
 ## ウォード法
 
@@ -47,6 +56,9 @@ SSD(C_1 \cup C_2) - SSD(C_1) - SSD(C_2)
 $$
 
 をクラスタの近さとする。
+
+![Ward](https://user-images.githubusercontent.com/13412823/82131569-7bf8f280-9811-11ea-8875-72ebbb4430db.png)
+
 
 # 実装
 
