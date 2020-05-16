@@ -323,11 +323,15 @@
                 <a href="https://hkawabata.github.io/technical-note/note/ML/Evaluation/roc-auc">ROC 曲線
 </a>
               </li>
-            </ul>
-          </li>
-          <li>
-            <a href="https://hkawabata.github.io/technical-note/note/ML/elbow-method">エルボー法
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/Evaluation/elbow-method">エルボー法
 </a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/Evaluation/silhouette-analysis">シルエット分析
+</a>
+              </li>
+            </ul>
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/ML/adaboost">AdaBoost
