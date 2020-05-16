@@ -13,21 +13,21 @@ title: 凝集型クラスタリング
 
 クラスタのペアに対し、クラスタ間をまたぐ **距離が最も近い** データサンプルのペアを見つけ、その距離をクラスタの近さとみなす。
 
-![Single Linkage](https://user-images.githubusercontent.com/13412823/82131573-7f8c7980-9811-11ea-959e-d4d236a1c315.png)
+![Single](https://user-images.githubusercontent.com/13412823/82132013-486c9700-9816-11ea-845c-15bc042f4de3.png)
 
 
 ## 完全連結法（最長距離法）
 
 クラスタのペアに対し、クラスタ間をまたぐ **距離が最も遠い** データサンプルのペアを見つけ、その距離をクラスタの近さとみなす。
 
-![Complete Linkage](https://user-images.githubusercontent.com/13412823/82131571-7ef3e300-9811-11ea-9640-dbc936b368df.png)
+![Complete](https://user-images.githubusercontent.com/13412823/82132014-4acef100-9816-11ea-8fbe-0392d41054de.png)
 
 
 ## 群平均法
 
 クラスタのペアに対し、クラスタ間をまたぐデータサンプルの **全ペアの組み合わせの平均距離** をクラスタの近さとみなす。
 
-![Average](https://user-images.githubusercontent.com/13412823/82131570-7dc2b600-9811-11ea-8781-ca26b7039f52.png)
+![Average](https://user-images.githubusercontent.com/13412823/82132015-4b678780-9816-11ea-84ad-5608600cc017.png)
 
 
 ## ウォード法
@@ -57,7 +57,7 @@ $$
 
 をクラスタの近さとする。
 
-![Ward](https://user-images.githubusercontent.com/13412823/82131569-7bf8f280-9811-11ea-8875-72ebbb4430db.png)
+![Ward](https://user-images.githubusercontent.com/13412823/82132017-4c001e00-9816-11ea-953f-990133f6ff5d.png)
 
 
 # 実装
