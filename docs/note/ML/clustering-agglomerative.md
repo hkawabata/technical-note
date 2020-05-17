@@ -70,4 +70,4 @@ $$
 
 {%gist e32d290b91b87078f223023e1282f75f ~fit.py %}
 
-![凝集型階層クラスタリング](https://user-images.githubusercontent.com/13412823/82121870-387b9580-97cb-11ea-9ed9-e0ae6603fa3f.png)
+![凝集型階層的クラスタリング](https://user-images.githubusercontent.com/13412823/82134580-04888a80-9834-11ea-9cb4-ed8f2f2f1ead.png)
