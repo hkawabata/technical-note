@@ -57,7 +57,7 @@ $$
 
 をクラスタ間の遠さとする。
 
-![Ward](https://user-images.githubusercontent.com/13412823/82132017-4c001e00-9816-11ea-953f-990133f6ff5d.png)
+![Ward](https://user-images.githubusercontent.com/13412823/82263967-8ae7be00-9953-11ea-80ca-3cb6cc4eeaad.png)
 
 
 # 実装
@@ -70,4 +70,4 @@ $$
 
 {%gist e32d290b91b87078f223023e1282f75f ~fit.py %}
 
-![凝集型階層的クラスタリング](https://user-images.githubusercontent.com/13412823/82134580-04888a80-9834-11ea-9cb4-ed8f2f2f1ead.png)
+![凝集型階層的クラスタリング](https://user-images.githubusercontent.com/13412823/82264074-c4202e00-9953-11ea-9b2e-8ae45c26e2ed.png)
