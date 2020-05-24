@@ -131,7 +131,15 @@ $$\eta$$ は学習率。
 
 # 実装
 
-3層パーセプトロンによる分類器を作ってみる。
+3層パーセプトロンによる多クラス分類器を作ってみる。
+
+- 活性化関数：シグモイド関数 $$\phi(z) = \cfrac{1}{1 + e^{-z}}$$
+  - $$\cfrac{\partial \phi(z)}{\partial z} = \cfrac{e^{-z}}{(1 + e^{-z})^2} = \phi(z)\left(1-\phi(z)\right)$$
+- ロジスティック回帰と同様に正解ラベルが実現する確率（尤度）、厳密には対数尤度にマイナスをかけたものをコスト関数とする
+  - $$J(W) = - \displaystyle \sum_i \sum_j y_j^{(i)} \log{\phi\left(z_j^{(L)(i)}\right)} - \sum_i \sum_j \left(1-y_j^{(i)}\right) \log{\left(1-\phi\left(z_j^{(L)(i)}\right)\right)}$$
+    - $$y_j^{(i)}$$: $$i$$ 番目のサンプルの正解ラベルベクトルの第 $$j$$ 成分
+    - $$z_j^{(L)(i)}$$: $$i$$ 番目のサンプルの出力層（第 $$L$$ 層）の全入力の第 $$j$$ 成分
+  - $$\cfrac{\partial J(W)}{\partial w_{i \rightarrow j}^{(L)}} = - \sum_k \left(y_j^{(k)} - a_j^{(L)(k)}\right) z_i^{(L)(k)}$$
 
 ## コード
 
