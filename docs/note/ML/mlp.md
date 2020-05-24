@@ -127,3 +127,18 @@ $$
 により重みを更新する。
 
 $$\eta$$ は学習率。
+
+
+# 実装
+
+3層パーセプトロンによる分類器を作ってみる。
+
+## コード
+
+{% gist 4da6cc3fc14a4ff65d7adef80c86e442 mlp3-classifier.py %}
+
+## 動作確認
+
+{% gist 4da6cc3fc14a4ff65d7adef80c86e442 ~fit-mlp3-classifier.py %}
+
+![MLP3 分類器](https://user-images.githubusercontent.com/13412823/82753237-23bc8480-9dff-11ea-8ad8-64207769349f.png)
