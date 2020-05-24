@@ -180,10 +180,10 @@ $$\eta$$ は学習率。
 
 ## コード
 
-{% gist 4da6cc3fc14a4ff65d7adef80c86e442 mlp3-classifier.py %}
+{% gist 4da6cc3fc14a4ff65d7adef80c86e442 mlp-classifier.py %}
 
 ## 動作確認
 
-{% gist 4da6cc3fc14a4ff65d7adef80c86e442 ~fit-mlp3-classifier.py %}
+{% gist 4da6cc3fc14a4ff65d7adef80c86e442 ~fit-mlp-classifier.py %}
 
-![MLP3 分類器](https://user-images.githubusercontent.com/13412823/82753237-23bc8480-9dff-11ea-8ad8-64207769349f.png)
+![MLP 分類器](https://user-images.githubusercontent.com/13412823/82766490-1dce9f80-9e0f-11ea-9770-0d9f3089b735.png)
