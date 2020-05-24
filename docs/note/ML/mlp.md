@@ -139,7 +139,7 @@ $$\eta$$ は学習率。
   - $$J(W) = - \displaystyle \sum_i \sum_j y_j^{(i)} \log{\phi\left(z_j^{(L)(i)}\right)} - \sum_i \sum_j \left(1-y_j^{(i)}\right) \log{\left(1-\phi\left(z_j^{(L)(i)}\right)\right)}$$
     - $$y_j^{(i)}$$: $$i$$ 番目のサンプルの正解ラベルベクトルの第 $$j$$ 成分
     - $$z_j^{(L)(i)}$$: $$i$$ 番目のサンプルの出力層（第 $$L$$ 層）の全入力の第 $$j$$ 成分
-  - $$\cfrac{\partial J(W)}{\partial w_{i \rightarrow j}^{(L)}} = - \sum_k \left(y_j^{(k)} - a_j^{(L)(k)}\right) z_i^{(L)(k)}$$
+  - $$\cfrac{\partial J(W)}{\partial w_{i \rightarrow j}^{(L)}} = - \sum_k \left(y_j^{(k)} - \phi\left(z_j^{(L)(k)}\right)\right) z_i^{(L)(k)}$$
 
 ## コード
 
