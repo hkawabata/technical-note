@@ -186,4 +186,4 @@ $$\eta$$ は学習率。
 
 {% gist 4da6cc3fc14a4ff65d7adef80c86e442 ~fit-mlp-classifier.py %}
 
-![MLP 分類器](https://user-images.githubusercontent.com/13412823/82805559-25e61800-9ebf-11ea-80bd-6fc759982655.png)
+![MLP 分類器](https://user-images.githubusercontent.com/13412823/82896026-c3375f80-9f44-11ea-8f37-d639d2b0dbff.png)
