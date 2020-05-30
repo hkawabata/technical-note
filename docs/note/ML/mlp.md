@@ -59,7 +59,7 @@ MLP の処理の流れは以下の通り。
 >
 > 隠れ層の出力値は、
 >
-> $$ a_j^{(1)} = \phi \left(z_j^{(1)}\right) = c\left(\sum_i w_{i \rightarrow j}^{(1)} a_i\right)$$
+> $$ a_j^{(1)} = \phi \left(z_j^{(1)}\right) = c \sum_i w_{i \rightarrow j}^{(1)} a_i + b$$
 >
 > 出力層の出力値は、
 >
