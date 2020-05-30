@@ -47,9 +47,34 @@ MLP の処理の流れは以下の通り。
 ## 1. 順伝播法（フォワードプロパゲーション）による出力計算
 
 1. モデルへの入力値 $$\boldsymbol{x} = (x_1, \cdots, x_m)$$ にバイアス $$x_0 = 1$$ を加え、最初の隠れ層の総入力 $$z_j^{(1)} = \sum_{i=0}^{n} w_{i \rightarrow j}^{(1)} x_i$$ を計算
-2. 活性化関数を適用し、活性化ユニット $$a_j^{(1)} = \phi\left(z_j^{(1)}\right)$$ を計算
+2. 活性化関数 $$\phi$$ を適用し、活性化ユニット $$a_j^{(1)} = \phi\left(z_j^{(1)}\right)$$ を計算
 3. 得られた $$a_j^{(1)}$$ + バイアス $$a_0^{(1)} = 1$$ を入力として次の隠れ層の総入力 $$z_j^{(2)} = \sum_{i=0}^{h} w_{i \rightarrow j}^{(2)} a_i^{(1)}$$ を計算（$$h$$ は1つの隠れ層が含むニューロン数）
 4. 2,3を繰り返し、出力層を計算
+
+> **【NOTE】活性化関数には非線形関数を使う**
+>
+> 隠れ層が1つであるような MLP を考え、活性化関数 $$\phi$$ が線形関数であるとする。
+>
+> $$\phi(z) = cz + b \ (c, b = const.)$$
+>
+> 隠れ層の出力値は、
+>
+> $$ a_j^{(1)} = \phi \left(z_j^{(1)}\right) = c\left(\sum_i w_{i \rightarrow j}^{(1)} a_i\right)$$
+>
+> 出力層の出力値は、
+>
+> $$
+\begin{eqnarray}
+a_j^{(2)}
+&=& \phi \left(z_j^{(2)}\right) \\
+&=& c \displaystyle \sum_i w_{i \rightarrow j}^{(2)} a_i^{(1)} + b \\
+&=& c \displaystyle \sum_i w_{i \rightarrow j}^{(2)} \left( c\left(\sum_k w_{k \rightarrow i}^{(1)} x_k\right) + b \right) + b \\
+&=& c^2 \displaystyle \sum_k \sum_i w_{k \rightarrow i}^{(1)} w_{i \rightarrow j}^{(2)} x_k + b\left( 1 + c \sum_i w_{i \rightarrow j}^{(2)} \right)
+\end{eqnarray}$$
+>
+> これは結局、入力層を一度線形変換したものに過ぎない。  
+> つまり隠れ層なしでも同じ計算を実現でき、**層を深くすることによる恩恵がない**。
+
 
 ## 2. 誤差逆伝播法（バックプロパゲーション）による重み更新
 
@@ -187,3 +212,22 @@ $$\eta$$ は学習率。
 {% gist 4da6cc3fc14a4ff65d7adef80c86e442 ~fit-mlp-classifier.py %}
 
 ![MLP 分類器](https://user-images.githubusercontent.com/13412823/82896026-c3375f80-9f44-11ea-8f37-d639d2b0dbff.png)
+
+
+# 活性化関数
+
+シグモイド関数（ロジスティック関数）
+
+$$\phi(z) = \cfrac{1}{1 + e^{-z}}$$
+
+双曲線正接関数（ハイパボリックタンジェント）
+
+$$\phi(z) = \tanh(z) = \cfrac{e^z - e^{-z}}{e^z + e^{-z}}$$
+
+ReLU 関数（Rectified Linear Unit）
+
+$$\phi(z) = \begin{cases}
+0 & (z \le 0) \\
+z & (z \gt 0)
+\end{cases}
+$$
