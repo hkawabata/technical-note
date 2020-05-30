@@ -231,3 +231,5 @@ $$\phi(z) = \begin{cases}
 z & (z \gt 0)
 \end{cases}
 $$
+
+![活性化関数](https://user-images.githubusercontent.com/13412823/82826101-6fe2f400-9ee7-11ea-8282-7940a05b8c8d.png)
