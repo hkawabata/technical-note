@@ -191,17 +191,117 @@ $$
 $$\eta$$ は学習率。
 
 
-# 実装
+# 活性化関数
+
+![活性化関数](https://user-images.githubusercontent.com/13412823/82826101-6fe2f400-9ee7-11ea-8282-7940a05b8c8d.png)
+
+## シグモイド関数（ロジスティック関数）
+
+$$
+\phi(z_j) = \cfrac{1}{1 + e^{-z_j}}
+$$
+
+$$
+\cfrac{\partial \phi(z_j)}{\partial z_j}
+= \cfrac{e^{-z_j}}{(1 + e^{-z_j})^2}
+= \phi(z_j)\left(1-\phi(z_j)\right)
+$$
+
+## 双曲線正接関数（ハイパボリックタンジェント）
+
+$$
+\phi(z_j) = \tanh(z_j) = \cfrac{e^{z_j} - e^{-z_j}}{e^{z_j} + e^{-z_j}}
+$$
+
+$$
+\cfrac{\partial \phi(z_j)}{\partial z_j} =
+$$
+
+## ReLU 関数（Rectified Linear Unit）
+
+$$
+\phi(z_j) = \begin{cases}
+0 & (z_j \le 0) \\
+z_j & (z_j \gt 0)
+\end{cases}
+$$
+
+$$
+\cfrac{\partial \phi(z_j)}{\partial z_j} = \begin{cases}
+0 & (z_j \le 0) \\
+1 & (z_j \gt 0)
+\end{cases}
+$$
+
+## ソフトマックス関数
+
+$$
+\phi(z_j) = \cfrac{e^{z_j}}{\displaystyle \sum_k e^{z_k}}
+$$
+
+$$
+\cfrac{\partial \phi(z_j)}{\partial z_j} = \begin{cases}
+\phi(z_j) \left( 1 - \phi(z_j) \right) & (i = j) \\
+- \phi(z_i) \phi(z_j) & (i \neq j)
+\end{cases}
+$$
+
+全ての $$j$$ で和を取ると1になることから、分類問題における各ラベルへの所属確率として、出力層の活性化関数に使うことが多い。
+
+
+# 実装・動作確認
 
 多層パーセプトロンによる多クラス分類器を作ってみる。
 
-- 活性化関数：シグモイド関数 $$\phi(z) = \cfrac{1}{1 + e^{-z}}$$
-  - $$\cfrac{\partial \phi(z)}{\partial z} = \cfrac{e^{-z}}{(1 + e^{-z})^2} = \phi(z)\left(1-\phi(z)\right)$$
-- ロジスティック回帰と同様に正解ラベルが実現する確率（尤度）、厳密には対数尤度にマイナスをかけたものをコスト関数とする
-  - $$J(W) = - \displaystyle \sum_i \sum_j y_j^{(i)} \log{\phi\left(z_j^{(L)(i)}\right)} - \sum_i \sum_j \left(1-y_j^{(i)}\right) \log{\left(1-\phi\left(z_j^{(L)(i)}\right)\right)}$$
-    - $$y_j^{(i)}$$: $$i$$ 番目のサンプルの正解ラベルベクトルの第 $$j$$ 成分
-    - $$z_j^{(L)(i)}$$: $$i$$ 番目のサンプルの出力層（第 $$L$$ 層）の全入力の第 $$j$$ 成分
-  - $$\cfrac{\partial J(W)}{\partial w_{i \rightarrow j}^{(L)}} = - \sum_k \left(y_j^{(k)} - \phi\left(z_j^{(L)(k)}\right)\right) z_i^{(L)(k)}$$
+## 準備
+
+ロジスティック回帰と同様に、最小化すべきコスト関数 $$J(W)$$ は教師データが与えられたときにそれが実現する尤度（対数尤度）にマイナスをかけたものとする：
+
+$$
+J(W) =
+- \displaystyle \sum_i \left\{
+\sum_j y_j^{(i)} \log{\phi\left(z_j^{(L)(i)}\right)}
++ \sum_i \sum_j \left(1-y_j^{(i)}\right) \log{\left(1-\phi\left(z_j^{(L)(i)}\right)\right)}
+\right\}
+$$
+
+- $$y_j^{(i)}$$: $$i$$ 番目のサンプルの正解ラベルベクトルの第 $$j$$ 成分
+- $$z_j^{(L)(i)}$$: $$i$$ 番目のサンプルの出力層（第 $$L$$ 層）の全入力の第 $$j$$ 成分
+
+隠れ層の活性化関数にはロジスティック関数 / 双曲線正接関数 / ReLU 関数を用い、出力層の活性化関数はソフトマックス関数を使う。
+
+誤差逆伝播の過程で、出力層の総入力に関するコスト関数の微分を使うので計算しておく。
+
+$$
+\begin{eqnarray}
+\delta_j^{(L)(i)} = \cfrac{\partial J(W)}{\partial z_j^{(L)(i)}}
+&=&
+- \cfrac{\partial}{\partial z_j^{(L)(i)}} \displaystyle \sum_k \left\{
+\sum_l y_l^{(k)} \log{\phi\left(z_l^{(L)(k)}\right)}
++ \sum_k \sum_l \left(1-y_l^{(k)}\right) \log{\left(1-\phi\left(z_l^{(L)(k)}\right)\right)}
+\right\}
+\\
+&=&
+- \displaystyle \left\{
+\sum_l y_l^{(i)} \cfrac{1}{\phi\left(z_l^{(L)(i)}\right)} \cfrac{\partial \phi\left(z_l^{(L)(i)}\right)}{\partial z_j^{(L)(i)}}
+- \sum_l \left(1-y_l^{(i)}\right) \cfrac{1}{1-\phi\left(z_l^{(L)(i)}\right)} \cfrac{\partial \phi\left(z_l^{(L)(i)}\right)}{\partial z_j^{(L)(i)}}
+\right\}
+\\
+&=&
+\displaystyle \sum_l \cfrac{\phi\left(z_l^{(L)(i)}\right)-y_l^{(i)}}{\phi\left(z_l^{(L)(i)}\right) \left(1-\phi\left(z_l^{(L)(i)}\right)\right)}
+\cfrac{\partial \phi\left(z_l^{(L)(i)}\right)}{\partial z_j^{(L)(i)}}
+\\
+&=&
+\cfrac{\phi\left(z_j^{(L)(i)}\right)-y_j^{(i)}}{1-\phi\left(z_j^{(L)(i)}\right)} \left(1-\phi\left(z_j^{(L)(i)}\right)\right)
+- \displaystyle \sum_{l \neq j} \cfrac{\phi\left(z_l^{(L)(i)}\right)-y_l^{(i)}}{1-\phi\left(z_l^{(L)(i)}\right)} \phi\left(z_j^{(L)(i)}\right)
+\\
+&=&
+\cfrac{\phi\left(z_j^{(L)(i)}\right)-y_j^{(i)}} {1 - \phi\left(z_j^{(L)(i)}\right)}
+- \phi\left(z_j^{(L)(i)}\right) \displaystyle \sum_l \cfrac{\phi\left(z_l^{(L)(i)}\right)-y_l^{(i)}}{1-\phi\left(z_l^{(L)(i)}\right)}
+\end{eqnarray}
+$$
+
+途中、ソフトマックス関数の微分の式を用いて和を $$i=j$$ と $$i \neq j$$ に分けた。
 
 ## コード
 
@@ -211,25 +311,4 @@ $$\eta$$ は学習率。
 
 {% gist 4da6cc3fc14a4ff65d7adef80c86e442 ~fit-mlp-classifier.py %}
 
-![MLP 分類器](https://user-images.githubusercontent.com/13412823/82896026-c3375f80-9f44-11ea-8f37-d639d2b0dbff.png)
-
-
-# 活性化関数
-
-シグモイド関数（ロジスティック関数）
-
-$$\phi(z) = \cfrac{1}{1 + e^{-z}}$$
-
-双曲線正接関数（ハイパボリックタンジェント）
-
-$$\phi(z) = \tanh(z) = \cfrac{e^z - e^{-z}}{e^z + e^{-z}}$$
-
-ReLU 関数（Rectified Linear Unit）
-
-$$\phi(z) = \begin{cases}
-0 & (z \le 0) \\
-z & (z \gt 0)
-\end{cases}
-$$
-
-![活性化関数](https://user-images.githubusercontent.com/13412823/82826101-6fe2f400-9ee7-11ea-8282-7940a05b8c8d.png)
+![MLP 分類器](https://user-images.githubusercontent.com/13412823/83343294-d7ce7b80-a2e7-11ea-9d7d-7131b16203f5.png)
