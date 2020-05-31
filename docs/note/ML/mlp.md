@@ -240,10 +240,17 @@ $$
 $$
 
 $$
-\cfrac{\partial \phi(z_j)}{\partial z_j} = \begin{cases}
+\begin{eqnarray}
+\cfrac{\partial \phi(z_i)}{\partial z_j}
+&=& \begin{cases}
+\cfrac{e^{z_j} \sum_k e^{z_k} - (e^{z_j})^2}{\left(\sum_k e^{z_k}\right)^2} & (i = j) \\
+- \cfrac{e^{z_j} e^{z_i}}{\left(\sum_k e^{z_k}\right)^2} & (i = j) & (i \neq j)
+\end{cases} \\
+&=& \begin{cases}
 \phi(z_j) \left( 1 - \phi(z_j) \right) & (i = j) \\
 - \phi(z_i) \phi(z_j) & (i \neq j)
-\end{cases}
+\end{cases} \\
+\end{eqnarray}
 $$
 
 全ての $$j$$ で和を取ると1になることから、分類問題における各ラベルへの所属確率として、出力層の活性化関数に使うことが多い。
@@ -301,7 +308,7 @@ $$
 \end{eqnarray}
 $$
 
-途中、ソフトマックス関数の微分の式を用いて和を $$i=j$$ と $$i \neq j$$ に分けた。
+途中、ソフトマックス関数の微分の式を用いて和を $$l=j$$ と $$l \neq j$$ に分けた。
 
 ## コード
 
