@@ -47,33 +47,54 @@ MLP の処理の流れは以下の通り。
 ## 1. 順伝播法（フォワードプロパゲーション）による出力計算
 
 1. モデルへの入力値 $$\boldsymbol{x} = (x_1, \cdots, x_m)$$ にバイアス $$x_0 = 1$$ を加え、最初の隠れ層の総入力 $$z_j^{(1)} = \sum_{i=0}^{n} w_{i \rightarrow j}^{(1)} x_i$$ を計算
-2. 活性化関数 $$\phi$$ を適用し、活性化ユニット $$a_j^{(1)} = \phi\left(z_j^{(1)}\right)$$ を計算
+2. 活性化関数 $$\phi$$ を適用し、層の出力 $$a_j^{(1)} = \phi\left(z_j^{(1)}\right)$$ を計算
 3. 得られた $$a_j^{(1)}$$ + バイアス $$a_0^{(1)} = 1$$ を入力として次の隠れ層の総入力 $$z_j^{(2)} = \sum_{i=0}^{h} w_{i \rightarrow j}^{(2)} a_i^{(1)}$$ を計算（$$h$$ は1つの隠れ層が含むニューロン数）
 4. 2,3を繰り返し、出力層を計算
 
-> **【NOTE】活性化関数には非線形関数を使う**
->
-> 隠れ層が1つであるような MLP を考え、活性化関数 $$\phi$$ が線形関数であるとする。
->
-> $$\phi(z) = cz + b \ (c, b = const.)$$
->
-> 隠れ層の出力値は、
->
-> $$ a_j^{(1)} = \phi \left(z_j^{(1)}\right) = c \sum_i w_{i \rightarrow j}^{(1)} a_i + b$$
->
-> 出力層の出力値は、
->
-> $$
-\begin{eqnarray}
-a_j^{(2)}
-&=& \phi \left(z_j^{(2)}\right) \\
-&=& c \displaystyle \sum_i w_{i \rightarrow j}^{(2)} a_i^{(1)} + b \\
-&=& c \displaystyle \sum_i w_{i \rightarrow j}^{(2)} \left( c\left(\sum_k w_{k \rightarrow i}^{(1)} x_k\right) + b \right) + b \\
-&=& c^2 \displaystyle \sum_k \sum_i w_{k \rightarrow i}^{(1)} w_{i \rightarrow j}^{(2)} x_k + b\left( 1 + c \sum_i w_{i \rightarrow j}^{(2)} \right)
-\end{eqnarray}$$
->
-> これは結局、入力層を一度線形変換したものに過ぎない。  
-> つまり隠れ層なしでも同じ計算を実現でき、**層を深くすることによる恩恵がない**。
+実際の計算では、$$n$$ 個のデータサンプル $$\boldsymbol{x}^{(1)}, \cdots, \boldsymbol{x}^{(n)}$$ 全てに対して変換を適用していく。  
+これらの計算は、第 $$l$$ 層への重みを並べた行列
+
+$$
+W^{(l)} = \begin{pmatrix}
+w_{0 \rightarrow 1}^{(l)} & \cdots & w_{m \rightarrow 1}^{(l)} \\
+\vdots &  & \vdots \\
+w_{0 \rightarrow t}^{(l)} & \cdots & w_{m \rightarrow t}^{(l)}
+\end{pmatrix}
+$$
+
+を用いて
+
+$$
+\begin{pmatrix}
+z_1^{(l)} \\
+\vdots \\
+z_t^{(l)}  \\
+\end{pmatrix}
+=
+W^{(l)}
+\begin{pmatrix}
+1 \\
+a_1^{(l-1)} \\
+\vdots \\
+a_m^{(l-1)}  \\
+\end{pmatrix}
+$$
+
+$$
+\begin{pmatrix}
+a_1^{(l)} \\
+\vdots \\
+a_t^{(l)}  \\
+\end{pmatrix}
+= \phi
+\begin{pmatrix}
+z_1^{(l)} \\
+\vdots \\
+z_t^{(l)}  \\
+\end{pmatrix}
+$$
+
+という行列形式で記述できる。
 
 
 ## 2. 誤差逆伝播法（バックプロパゲーション）による重み更新
@@ -254,6 +275,30 @@ $$
 $$
 
 全ての $$j$$ で和を取ると1になることから、分類問題における各ラベルへの所属確率として、出力層の活性化関数に使うことが多い。
+
+> **【NOTE】活性化関数には非線形関数を使う**
+>
+> 隠れ層が1つであるような MLP を考え、活性化関数 $$\phi$$ が線形関数であるとする。
+>
+> $$\phi(z) = cz + b \ (c, b = const.)$$
+>
+> 隠れ層の出力値は、
+>
+> $$ a_j^{(1)} = \phi \left(z_j^{(1)}\right) = c \sum_i w_{i \rightarrow j}^{(1)} a_i + b$$
+>
+> 出力層の出力値は、
+>
+> $$
+\begin{eqnarray}
+a_j^{(2)}
+&=& \phi \left(z_j^{(2)}\right) \\
+&=& c \displaystyle \sum_i w_{i \rightarrow j}^{(2)} a_i^{(1)} + b \\
+&=& c \displaystyle \sum_i w_{i \rightarrow j}^{(2)} \left( c\left(\sum_k w_{k \rightarrow i}^{(1)} x_k\right) + b \right) + b \\
+&=& c^2 \displaystyle \sum_k \sum_i w_{k \rightarrow i}^{(1)} w_{i \rightarrow j}^{(2)} x_k + b\left( 1 + c \sum_i w_{i \rightarrow j}^{(2)} \right)
+\end{eqnarray}$$
+>
+> これは結局、入力層を一度線形変換したものに過ぎない。  
+> つまり隠れ層なしでも同じ計算を実現でき、**層を深くすることによる恩恵がない**。
 
 
 # 実装・動作確認
