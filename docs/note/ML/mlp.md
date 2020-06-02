@@ -267,7 +267,7 @@ $$
 \cfrac{\partial \phi(z_i)}{\partial z_j}
 &=& \begin{cases}
 \cfrac{e^{z_j} \sum_k e^{z_k} - (e^{z_j})^2}{\left(\sum_k e^{z_k}\right)^2} & (i = j) \\
-- \cfrac{e^{z_j} e^{z_i}}{\left(\sum_k e^{z_k}\right)^2} & (i = j) & (i \neq j)
+- \cfrac{e^{z_j} e^{z_i}}{\left(\sum_k e^{z_k}\right)^2} & (i \neq j)
 \end{cases} \\
 &=& \begin{cases}
 \phi(z_j) \left( 1 - \phi(z_j) \right) & (i = j) \\
@@ -355,7 +355,7 @@ $$
 \end{eqnarray}
 $$
 
-途中、ソフトマックス関数の微分の式を用いて和を $$l=j$$ と $$l \neq j$$ に分けた。
+出力層の活性化関数はソフトマックス関数であるから、計算途中、ソフトマックス関数の微分の式を用いて和を $$l=j$$ と $$l \neq j$$ に分けた。
 
 ## コード
 
