@@ -16,7 +16,8 @@ title: 最適化アルゴリズム
 
 コスト関数の勾配を下る方向に重みを更新する。
 
-![GradientDescent](https://user-images.githubusercontent.com/13412823/83935415-68c7ba00-a7f4-11ea-9c36-c860f4e3f527.png)
+![GradientDescent](https://user-images.githubusercontent.com/13412823/83935849-78e19880-a7f8-11ea-83da-1562ac7ae825.png)
+
 
 
 ### 最急降下法
@@ -62,7 +63,7 @@ $$
 \end{eqnarray}
 $$
 
-![Momentum](https://user-images.githubusercontent.com/13412823/83935416-6a917d80-a7f4-11ea-8373-c94a63ae1c7b.png)
+![Momentum](https://user-images.githubusercontent.com/13412823/83935851-7a12c580-a7f8-11ea-8377-d2d7c81be9d1.png)
 
 
 ## AdaGrad
@@ -81,7 +82,7 @@ $$
 
 $$\epsilon$$ はゼロ除算を避けるための非常に小さな正の定数。
 
-![AdaGrad](https://user-images.githubusercontent.com/13412823/83935417-6b2a1400-a7f4-11ea-8563-c0bc7b34a6a6.png)
+![AdaGrad](https://user-images.githubusercontent.com/13412823/83935848-754e1180-a7f8-11ea-9682-3cae1117d012.png)
 
 
 ## RMSProp
@@ -99,7 +100,7 @@ $$
 \end{eqnarray}
 $$
 
-![RMSProp](https://user-images.githubusercontent.com/13412823/83935418-6b2a1400-a7f4-11ea-9a66-b266b9438acd.png)
+![RMSProp](https://user-images.githubusercontent.com/13412823/83935853-7aab5c00-a7f8-11ea-99f9-dbe08951ed3e.png)
 
 
 ## Adam
@@ -116,7 +117,7 @@ $$
 \end{eqnarray}
 $$
 
-![Adam](https://user-images.githubusercontent.com/13412823/83935419-6c5b4100-a7f4-11ea-8382-3e581e803a5a.png)
+![Adam](https://user-images.githubusercontent.com/13412823/83935854-7aab5c00-a7f8-11ea-94f4-126fa4f2a37b.png)
 
 
 # 実装・動作確認
