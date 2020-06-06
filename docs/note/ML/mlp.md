@@ -366,3 +366,25 @@ $$
 {% gist 4da6cc3fc14a4ff65d7adef80c86e442 ~fit-mlp-classifier.py %}
 
 ![MLP 分類器](https://user-images.githubusercontent.com/13412823/83343294-d7ce7b80-a2e7-11ea-9d7d-7131b16203f5.png)
+
+## デバッグ
+
+### Gradient Checking
+
+{% gist 4da6cc3fc14a4ff65d7adef80c86e442 ~debug-gradient-check.py %}
+
+### 活性化関数の出力分布
+
+{% gist 4da6cc3fc14a4ff65d7adef80c86e442 ~debug-activation-histogram.py %}
+
+シグモイド：
+
+![Unknown-7](https://user-images.githubusercontent.com/13412823/83941196-7432d980-a824-11ea-80b8-c211b19c2773.png)
+
+tanh：
+
+![Unknown-6](https://user-images.githubusercontent.com/13412823/83941197-772dca00-a824-11ea-80d2-442035b59bf1.png)
+
+ReLU：
+
+![Unknown-4](https://user-images.githubusercontent.com/13412823/83941198-785ef700-a824-11ea-9991-e6315ceb7abe.png)
