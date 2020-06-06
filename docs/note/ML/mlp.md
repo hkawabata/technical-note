@@ -213,6 +213,15 @@ $$
 
 $$\eta$$ は学習率。
 
+また、L2 正則化を行う場合は正則化項の微分
+
+$$
+\cfrac{\partial}{\partial w_{i \rightarrow j}^{(l)}} \left( \cfrac{\lambda}{2} \displaystyle \sum_{i^{'}} \sum_{j^{'}} \sum_{l^{'}} \left(w_{i^{'} \rightarrow j^{'}}^{(l^{'})}\right)^2 \right)
+= \lambda w_{i \rightarrow j}^{(l)}
+$$
+
+をコスト関数の勾配に加える。
+
 
 # 活性化関数
 
