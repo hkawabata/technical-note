@@ -40,6 +40,9 @@ title: Tex 数式
 | `\cdots` | $$\cdots$$ |
 | `\vdots` | $$\vdots$$ |
 | `\ddots` | $$\ddots$$ |
+| `\because` | $$\because$$ |
+| `\therefore` | $$\therefore$$ |
+
 
 # 数学記号
 
