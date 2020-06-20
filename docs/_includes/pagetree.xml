@@ -72,11 +72,19 @@
                 <span class="pagetree-accordion">▼</span>
                 <ul class="pagetree-hidden">
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/pickle">pickle
+</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/pyaudio">PyAudio
 </a>
                   </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/fabric">Fabric
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/pillow">Pillow
 </a>
                   </li>
                   <li>
