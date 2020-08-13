@@ -267,7 +267,7 @@ $$
 | 変数 | 説明 |
 | :-- | :-- |
 | $$\hat{\boldsymbol{y}}^{(k)}$$ | 前層の出力のうち、ミニバッチの $$k$$ 番目のサンプル。<br>ソフトマックス層などで計算された、サンプルが各ラベルへ所属する確率のベクトル |
-| $$\boldsymbol{y}$$ | 正解クラスラベルを表す確率のベクトル。正解クラスに対応する成分のみ1、他成分は0 |
+| $$\boldsymbol{y}^{(k)}$$ | ミニバッチの $$k$$ 番目のサンプルの正解クラスラベルを表す確率のベクトル。正解クラスに対応する成分のみ1、他成分は0 |
 
 #### 出力変数
 
@@ -412,9 +412,109 @@ a_j^{(2)}
 > つまり隠れ層なしでも同じ計算を実現でき、**層を深くすることによる恩恵がない**。
 
 
-# Batch Normalization
+# 効率を高める工夫
 
-（ToDo）
+## Batch Normalization
+
+ミニバッチ学習において、活性化関数の適用前にミニバッチ内で正規化（標準化）の処理を挟むことで、重みが大きくなりすぎて過学習が起こるのを防ぐ。
+
+### 入力変数
+
+| 変数 | 説明 |
+| :-- | :-- |
+| $$\boldsymbol{x}^{(k)}$$ | 前層の出力のうち、ミニバッチの $$k$$ 番目のサンプル |
+| $$\boldsymbol{\gamma}$$ | $$\boldsymbol{x}^{(k)}$$ と同じ次元の調整用変数（重み） |
+| $$\boldsymbol{\beta}$$ | $$\boldsymbol{x}^{(k)}$$ と同じ次元の調整用変数（バイアス） |
+| $$N$$ | ミニバッチのサイズ（サンプル数）→ 定数 |
+
+### 中間変数
+
+| 変数 | 説明 |
+| :-- | :-- |
+| $$\boldsymbol{\mu}$$ | $$\boldsymbol{x}$$ のミニバッチ内平均 |
+| $$\boldsymbol{\sigma}$$ | $$\boldsymbol{x}$$ のミニバッチ内標準偏差 |
+| $$\hat{\boldsymbol{x}}^{(k)}$$ | $$\boldsymbol{x}^{(k)}$$ をミニバッチ内で標準化したもの |
+
+$$
+\boldsymbol{\mu} \equiv \cfrac{1}{N} \displaystyle \sum_k \boldsymbol{x}^{(k)}
+$$
+
+$$
+\boldsymbol{\sigma}^2 \equiv \cfrac{1}{N} \displaystyle \sum_k \left( \boldsymbol{x}^{(k)} - \boldsymbol{\mu} \right)^2
+$$
+
+$$
+\hat{\boldsymbol{x}}^{(k)} \equiv \cfrac{\boldsymbol{x}^{(k)} - \boldsymbol{\mu}}{\sqrt{\boldsymbol{\sigma}^2 + \varepsilon}}
+$$
+
+### 出力変数
+
+$$
+\boldsymbol{z}^{(k)} = \boldsymbol{\gamma} \odot \hat{\boldsymbol{x}}^{(k)} + \boldsymbol{\beta}
+$$
+
+$$\odot$$ は同じ成分同士の積を取る演算（アダマール積）
+
+
+### 勾配の導出
+
+$$
+\cfrac{\partial \mu_i}{\partial x_i^{(j)}} = \cfrac{1}{N}
+$$
+
+$$
+\cfrac{\partial \sigma_i^2}{\partial x_i^{(j)}} = \cfrac{2}{N} \left( x_i^{(j)} - \mu_i \right)
+$$
+
+より、
+
+$$
+\cfrac{\partial J}{\partial \gamma_i} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \cfrac{\partial z_i^{(k)}}{\partial \gamma_i}
+= \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \hat{x}_i^{(k)}
+$$
+
+$$
+\cfrac{\partial J}{\partial \beta_i} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \cfrac{\partial z_i^{(k)}}{\partial \beta_i}
+= \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}}
+$$
+
+$$
+\begin{eqnarray}
+\cfrac{\partial J}{\partial x_i^{(j)}} &=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \cfrac{\partial z_i^{(k)}}{\partial x_i^{(j)}}
+= \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \cfrac{\partial z_i^{(k)} \left( x_i, \mu_i(x_i), \sigma_i^2(x_i) \right) }{\partial x_i^{(j)}}
+\\
+&=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \gamma_i
+\left(
+\cfrac{1}{\sqrt{\sigma_i^2 + \varepsilon}} \delta_{jk}
+- \cfrac{\partial \mu_i}{\partial x_i^{(j)}} \cfrac{1}{\sqrt{\sigma_i^2 + \varepsilon}}
+- \cfrac{\partial \sigma_i^2}{\partial x_i^{(j)}} \cfrac{x_i^{(k)} - \mu_i}{2 \left( \sqrt{\sigma_i^2 + \varepsilon} \right)^3}
+\right) \\
+&=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \gamma_i
+\left(
+\cfrac{1}{\sqrt{\sigma_i^2 + \varepsilon}} \delta_{jk}
+- \cfrac{1}{N} \cfrac{1}{\sqrt{\sigma_i^2 + \varepsilon}}
+- \cfrac{1}{N} \left( x_i^{(j)} - \mu_i \right) \cfrac{x_i^{(k)} - \mu_i}{\left( \sqrt{\sigma_i^2 + \varepsilon} \right)^3}
+\right) \\
+&=& \cfrac{\gamma_i}{N \sqrt{\sigma_i^2 + \varepsilon}}
+\left(
+N \cfrac{\partial J}{\partial z_i^{(j)}}
+- \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}}
+- \hat{x}_i^{(j)} \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \hat{x}_i^{(k)}
+\right) \\
+&=& \cfrac{\gamma_i}{N \sqrt{\sigma_i^2 + \varepsilon}}
+\left(
+N \cfrac{\partial J}{\partial z_i^{(j)}}
+- \displaystyle \cfrac{\partial J}{\partial \beta_i}
+- \hat{x}_i^{(j)} \cfrac{\partial J}{\partial \gamma_i}
+\right) \\
+&=& \left\{ \cfrac{1}{N} \cfrac{\boldsymbol{\gamma}}{\sqrt{\boldsymbol{\sigma}^2 + \varepsilon}} \odot
+\left(
+N \cfrac{\partial J}{\partial \boldsymbol{z}^{(j)}}
+- \displaystyle \cfrac{\partial J}{\partial \boldsymbol{\beta}}
+- \hat{\boldsymbol{x}}^{(j)} \odot \cfrac{\partial J}{\partial \boldsymbol{\gamma}}
+\right) \right\}_i \\
+\end{eqnarray}
+$$
 
 
 # 実装・動作確認
