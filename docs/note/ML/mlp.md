@@ -2,7 +2,7 @@
 title: 多層パーセプトロン
 ---
 
-# 多層パーセプトロン（MLP）
+# 多層パーセプトロン（MLP）とは
 
 MLP = Multi-Layer Perceptron
 
@@ -13,211 +13,311 @@ MLP = Multi-Layer Perceptron
 
 下図に MLP の概観を示す。
 
-![](https://user-images.githubusercontent.com/13412823/82748407-8a7c7680-9ddc-11ea-8478-e9c8be13fd17.png)
+![MLP外観](https://user-images.githubusercontent.com/13412823/89358011-adb38400-d6b1-11ea-8964-7147bddc2749.png)
 
-- **入力層**：生の入力データに相当する層
-- **出力層**：モデルの最終的な出力に相当する層
-- **隠れ層**：入力層と出力層の間の層。隠れ層が多く、各層のニューロンが多いほど複雑なモデルを表現できる
+| 層 | 説明 |
+| :-- | :-- |
+| **入力層** | 生の入力データに相当する層 |
+| **出力層** | モデルの最終的な出力に相当する層 |
+| **隠れ層** | 入力層と出力層の間の中間データに相当する層。隠れ層が多く、各層のニューロンが多いほど複雑なモデルを表現できる |
+| **全結合層** | 前層の各出力値に重みをかけ、バイアス項を加えて和を取る層 |
+| **活性化層** | 値に何らかの活性化関数を適用する層 |
 
-第1層以降の $$a_j^{(l)}$$ 1つ1つが単一ニューロンに相当し、1つ前の層の出力+バイアス項を入力として値を1つ出力する。
+上図では、
+- 隠れ層の数：1つ
+- 各層のニューロン数
+  - 入力層：2つ
+  - 隠れ層：4つ
+  - 出力層：3つ
 
-各ニューロンは、全入力
+各ニューロンは、1つ前の層の全ての出力に重みをかけたもの+バイアス項
 
 $$
-z_j^{(l)} = \displaystyle \sum_{k} w_{k \rightarrow j}^{(l)} a_k^{(l-1)}
+a_i^{(l)} \equiv \displaystyle \sum_k W_{ik}^{(l)} x_k^{(l)} + b_i^{(l)}
 $$
 
-に対し、何らかの活性化関数 $$\phi$$ を適用した活性化ユニット
+を総入力として、これに活性化関数を適用した値
 
 $$
-a_j^{(l)} = \phi(z_j^{(l)})
+x_i^{(l+1)} = \phi^{(l)} \left( a_i^{(l)} \right) = \phi^{(l)} \left( \displaystyle \sum_k W_{ik}^{(l)} x_k^{(l)} + b_i^{(l)} \right)
 $$
 
 を出力とする。
 
-MLP の処理の流れは以下の通り。
+MLP においては、コストを最小化する最適な $$W_{ik}, b_i$$ を学習する。
 
-1. 左の層から右の層へ順次ニューロンの計算を進め、入力 $$\boldsymbol{x}$$ に対して最終出力を計算
-2. 最終出力を評価し、誤差を計算
-3. 誤差を右の層から左の層へ順次伝播させ、重みを更新
-4. 1〜3繰り返し
+以上の式は、行列・ベクトルを用いて以下のようにも記述できる。
 
-# 手順
+$$
+\boldsymbol{a}^{(l)} \equiv W^{(l)} \boldsymbol{x}^{(l)} + \boldsymbol{b}^{(l)}
+$$
 
-## 1. 順伝播法（フォワードプロパゲーション）による出力計算
+$$
+\boldsymbol{x}^{(l+1)} = \phi^{(l)} \left( \boldsymbol{a}^{(l)} \right) = \phi^{(l)} \left( W^{(l)} \boldsymbol{x}^{(l)} + \boldsymbol{b}^{(l)} \right)
+$$
 
-1. モデルへの入力値 $$\boldsymbol{x} = (x_1, \cdots, x_m)$$ にバイアス $$x_0 = 1$$ を加え、最初の隠れ層の総入力 $$z_j^{(1)} = \sum_{i=0}^{n} w_{i \rightarrow j}^{(1)} x_i$$ を計算
-2. 活性化関数 $$\phi$$ を適用し、層の出力 $$a_j^{(1)} = \phi\left(z_j^{(1)}\right)$$ を計算
-3. 得られた $$a_j^{(1)}$$ + バイアス $$a_0^{(1)} = 1$$ を入力として次の隠れ層の総入力 $$z_j^{(2)} = \sum_{i=0}^{h} w_{i \rightarrow j}^{(2)} a_i^{(1)}$$ を計算（$$h$$ は1つの隠れ層が含むニューロン数）
-4. 2,3を繰り返し、出力層を計算
-
-これらの計算は、第 $$l$$ 層への重みを並べた行列
+ただし、
 
 $$
 W^{(l)} = \begin{pmatrix}
-w_{0 \rightarrow 1}^{(l)} & \cdots & w_{m \rightarrow 1}^{(l)} \\
+w_{11}^{(l)} & \cdots & w_{1m}^{(l)} \\
 \vdots &  & \vdots \\
-w_{0 \rightarrow t}^{(l)} & \cdots & w_{m \rightarrow t}^{(l)}
+w_{t1}^{(l)} & \cdots & w_{tm}^{(l)}
 \end{pmatrix}
 $$
 
-を用いて
-
 $$
-\begin{pmatrix}
-z_1^{(l)} \\
+\boldsymbol{b}^{(l)} = \begin{pmatrix}
+b_1^{(l)} \\
 \vdots \\
-z_t^{(l)}  \\
-\end{pmatrix}
-=
-W^{(l)}
-\begin{pmatrix}
-1 \\
-a_1^{(l-1)} \\
-\vdots \\
-a_m^{(l-1)}  \\
+b_t^{(l)}  \\
 \end{pmatrix}
 $$
 
 $$
-\begin{pmatrix}
-a_1^{(l)} \\
+\boldsymbol{x}^{(l)} = \begin{pmatrix}
+x_1^{(l)} \\
 \vdots \\
-a_t^{(l)}  \\
-\end{pmatrix}
-= \phi
-\begin{pmatrix}
-z_1^{(l)} \\
-\vdots \\
-z_t^{(l)}  \\
+x_m^{(l)}  \\
 \end{pmatrix}
 $$
 
-という行列形式で記述できる。
+$$
+\boldsymbol{x}^{(l+1)} = \begin{pmatrix}
+x_1^{(l+1)} \\
+\vdots \\
+x_t^{(l+1)}  \\
+\end{pmatrix}
+$$
 
-- $$m$$：第 $$(l-1)$$ 層の出力の次元
-- $$t$$：第 $$l$$ 層の出力の次元
+
+# 手順
+
+MLP の処理の流れは以下の通り。
+
+1. 入力層から出力層へ向かって順次ニューロンの計算を進め、入力 $$\boldsymbol{x}$$ に対して最終層の出力を計算
+2. 最終層の出力を評価し、コスト関数を計算
+3. コスト関数の勾配（誤差）を出力層から入力層へ順次伝播させ、重みを更新
+4. 1〜3繰り返し
+
+## 1. 順伝播による出力計算
+
+1. 各層の重み・バイアスを適当な乱数で初期化
+2. 前述の式を用いて、前層の出力 $$\boldsymbol{x}^{(l)}$$ から次の層の出力 $$\boldsymbol{x}^{(l+1)}$$ を計算する作業を繰り返して最終的な出力を得る
+3. 最終的な出力値に対するコスト関数を計算
 
 
-## 2. 誤差逆伝播法（バックプロパゲーション）による重み更新
+## 2. 誤差逆伝播（バックプロパゲーション）による重み更新
 
-### 準備
+### 基礎理論
 
-入力層を除く任意の第 $$l$$ 層を考える。
+ネットワークを構成する層の1つ（第 $$l+1$$ 層）について考える。
 
-総出力の第 $$j$$ 成分 $$z_j^{(l)}$$、および活性化ユニット $$a_j^{(l)}$$ は、その層の重みと1つ前の層の活性化ユニットを用いて次のように計算される。
+説明の一般化のため、層の出力 $$\boldsymbol{x}^{(l+1)} = \left(x_1^{(l+1)}, \cdots, x_t^{(l+1)}\right)$$ を計算するために必要な
+
+- 1つ前の層の出力
+- 重み・バイアス等のパラメータ
+
+を全てひっくるめて $$\boldsymbol{v}$$ で表す：
+
+$$\boldsymbol{v} = (v_1, \cdots, v_n) \equiv \left(\boldsymbol{x}^{(l)}, W^{(l)}, \boldsymbol{b}^{(l)}, \cdots\right)$$
+
+$$\boldsymbol{x}^{(l+1)}$$ は $$\boldsymbol{v}$$ から計算されるので、$$\boldsymbol{x}^{(l+1)}$$ は $$\boldsymbol{v}$$ のみの関数として表現できる：
+
+$$\boldsymbol{x}^{(l+1)} = \boldsymbol{x}^{(l+1)}(v_1, \cdots, v_n)$$
+
+よって、コスト関数 $$J$$ の勾配の $$\boldsymbol{v}$$ 成分（= $$J$$ の $$\boldsymbol{v}$$ 微分）は、$$J$$ の $$\boldsymbol{x}^{(l+1)}$$ 微分で記述できる。
+
+$$
+\cfrac{\partial J}{\partial v_i}
+= \cfrac{\partial J\left( x_1^{(l+1)}(\boldsymbol{v}),\cdots,x_t^{(l+1)}(\boldsymbol{v}) \right)}{\partial v_i}
+= \displaystyle \sum_k \cfrac{\partial J}{\partial x_k^{(l+1)}} \cfrac{\partial x_k^{(l+1)}}{\partial v_i}
+$$
+
+ここで、
+- $$\cfrac{\partial x_k^{(l+1)}}{\partial v_i}$$ はこの層で行う処理から解析的に計算できる
+- $$\cfrac{\partial J}{\partial x_k^{(l+1)}}$$ は1つ後ろの層の入力による微分
+
+なので、**1つ後ろの層の微分が分かれば前の層の微分が全て計算できる**。  
+
+また、コスト関数 $$J$$ は最終層（出力層）の出力値のみを使って計算される関数であるから、**最終層の変数による $$J$$ の微分は計算で求められる**。
+
+したがって、**出力層から入力層に向かって再帰的に勾配を計算していき、全ての層の微分を求めることができる（誤差逆伝播法）**。
+
+
+### 各層におけるコスト関数の勾配
+
+#### 全結合層
+
+##### 入力変数
+
+| 変数 | 説明 |
+| :-- | :-- |
+| $$\boldsymbol{x}$$ | 前層の出力 |
+| $$W$$ | $$\boldsymbol{x}$$ に付加する重み |
+| $$\boldsymbol{b}$$ | バイアス項 |
+
+##### 出力変数
+
+$$
+z_i = \displaystyle \sum_k W_{ik} x_k + b_i
+$$
+
+$$
+\boldsymbol{z} = W \boldsymbol{x} + \boldsymbol{b}
+$$
+
+##### 勾配の導出
+
+$$
+\cfrac{\partial z_i}{\partial x_j} = W_{ij},
+\cfrac{\partial z_i}{\partial b_i} = 1,
+\cfrac{\partial z_i}{\partial W_{jk}} = \begin{cases}
+x_k & \rm{\quad if \quad} i = j \\
+0 & \rm{\quad if \quad} i \neq j
+\end{cases}
+$$
+
+より、
+
+$$
+\cfrac{\partial J}{\partial x_i} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial x_i}
+= \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} W_{ki}
+= \displaystyle \sum_k W_{ik}^T \cfrac{\partial J}{\partial z_k}
+= \left( W^T \cfrac{\partial J}{\partial \boldsymbol{z}} \right)_i
+$$
+
+$$
+\cfrac{\partial J}{\partial W_{ij}} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial W_{ij}}
+= \cfrac{\partial J}{\partial z_i} \cfrac{\partial z_i}{\partial W_{ij}}
+= \cfrac{\partial J}{\partial z_i} x_j
+= \left( \cfrac{\partial J}{\partial \boldsymbol{z}} \boldsymbol{x}^T \right)_{ij}
+$$
+
+$$
+\cfrac{\partial J}{\partial b_i} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial b_i}
+= \cfrac{\partial J}{\partial z_i} \cfrac{\partial z_i}{\partial b_i}
+= \cfrac{\partial J}{\partial z_i}
+$$
+
+
+#### 活性化層
+
+##### 入力変数
+
+| 変数 | 説明 |
+| :-- | :-- |
+| $$\boldsymbol{x}$$ | 前層の出力 |
+
+##### 出力変数
+
+$$
+\boldsymbol{z} = \phi \left( \boldsymbol{x} \right)
+$$
+
+##### 勾配の導出
+
+$$
+\cfrac{\partial J}{\partial x_i} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial x_i}
+= \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial \phi \left( \boldsymbol{x} \right)_k}{\partial x_i}
+$$
+
+
+#### SoftMax 層
+
+##### 入力変数
+
+| 変数 | 説明 |
+| :-- | :-- |
+| $$\boldsymbol{x}$$ | 前層の出力 |
+
+##### 出力変数
+
+$$
+z_i = \cfrac{e^{x_i}}{\sum_k e^{x_k}}
+$$
+
+##### 勾配の導出
+
+$$
+\cfrac{\partial J}{\partial x_i} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial x_i}
+= \displaystyle \sum_k \cfrac{\partial J}{\partial z_k}
+\cfrac{
+    \frac{\partial e^{x_k}}{\partial x_i} \sum_l e^{x_l}
+    - \frac{\partial \left(\sum_l e^{x_l}\right)}{\partial x_i} e^{x_k}
+}
+{ \left(\sum_l e^{x_l}\right)^2 }
+= \displaystyle \sum_k \cfrac{\partial J}{\partial z_k}
+\cfrac{
+    \delta_{ki} e^{x_i} \sum_l e^{x_l}
+    - e^{x_i} e^{x_k}
+}
+{ \left(\sum_l e^{x_l}\right)^2 }
+= \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \left(
+\delta_{ki} z_i - z_i z_k
+\right)
+= z_i \left( \cfrac{\partial J}{\partial z_i} - \sum_k \cfrac{\partial J}{\partial z_k} z_k \right)
+$$
+
+
+### コスト関数計算（分類問題において対数尤度を用いる場合）
+
+#### 入力変数
+
+| 変数 | 説明 |
+| :-- | :-- |
+| $$\hat{\boldsymbol{y}}^{(k)}$$ | 前層の出力のうち、ミニバッチの $$k$$ 番目のサンプル。<br>ソフトマックス層などで計算された、サンプルが各ラベルへ所属する確率のベクトル |
+| $$\boldsymbol{y}$$ | 正解クラスラベルを表す確率のベクトル。正解クラスに対応する成分のみ1、他成分は0 |
+
+#### 出力変数
+
+出力はコスト関数 $$J$$。
+
+ロジスティック回帰と同様に、与えられた教師データが実現する尤度（対数尤度）を最大化する場合を考える。  
+このとき、コスト関数 $$J$$ は対数尤度にマイナスをかけたものとなる：
+
+$$
+J =
+- \displaystyle \sum_i \sum_j \left\{
+y_j^{(i)} \log{\hat{y}_j^{(i)}}
++ \left(1-y_j^{(i)}\right) \log{\left(1-\hat{y}_j^{(i)}\right)}
+\right\}
+$$
+
+
+#### 勾配の導出
 
 $$
 \begin{eqnarray}
-z_j^{(l)} &=& \displaystyle \sum_{k} w_{k \rightarrow j}^{(l)} a_k^{(l-1)} &\qquad\qquad& \rm{(0.1)} \\
-a_j^{(l)} &=& \phi(z_j^{(l)}) &\qquad\qquad& \rm{(0.2)}
+\cfrac{\partial J}{\partial \hat{y_j^{(i)}}}
+&=& - \left( \cfrac{y_j^{(i)}}{\hat{y_j^{(i)}}} - \cfrac{1-y_j^{(i)}}{1-\hat{y_j^{(i)}}} \right)
+\\
+&=& \cfrac{\hat{y_j^{(i)}} - y_j^{(i)}}{\hat{y_j^{(i)}} \left(1-\hat{y_j^{(i)}}\right) }
 \end{eqnarray}
 $$
-
-最小化したいコスト関数（誤差平方和など）を $$J(W)$$ と置くと、第 $$l$$ 層の重みに対するコスト関数の勾配は以下のように計算できる。
-
-$$
-\begin{eqnarray}
-\cfrac{\partial J(W)}{\partial w_{i \rightarrow j}^{(l)}}
-&=& \displaystyle \sum_{k} \cfrac{\partial J(W)}{\partial z_k^{(l)}} \cfrac{\partial z_k^{(l)}}{\partial w_{i \rightarrow j}^{(l)}} \\
-&=& \cfrac{\partial J(W)}{\partial z_j^{(l)}} \cfrac{\partial z_j^{(l)}}{\partial w_{i \rightarrow j}^{(l)}} \\
-&=& \cfrac{\partial J(W)}{\partial z_j^{(l)}} a_i^{(l-1)} \\
-\end{eqnarray}
-$$
-
-誤差
-
-$$
-\delta_j^{(l)} \equiv \cfrac{\partial J(W)}{\partial z_j^{(l)}} \qquad\qquad \rm{(0.3)}
-$$
-
-を定義すると、
-
-$$
-\cfrac{\partial J(W)}{\partial w_{i \rightarrow j}^{(l)}} = \delta_j^{(l)} a_i^{(l-1)} \qquad\qquad \rm{(0.4)}
-$$
-
-### 出力層の重みの勾配
-
-最終層（出力層）を第 $$L$$ 層とする。
-
-$$
-z_j^{(L)} = \displaystyle \sum_{k} w_{k \rightarrow j}^{(L)} a_k^{(L-1)}
-$$
-
-出力層の重みに関するコスト関数の勾配は
-
-$$
-\cfrac{\partial J(W)}{\partial w_{i \rightarrow j}^{(L)}}
-= \delta_j^{(L)} a_i^{(L-1)} = \cfrac{\partial J(W)}{\partial z_j^{(L)}} a_i^{(L-1)} \qquad\qquad \rm{(1.1)}
-$$
-
-コスト関数 $$J(W)$$ は出力層の総出力 $$z_j^{(L)}$$ を使って計算するので、$$\cfrac{\partial J(W)}{\partial z_j^{(L)}}$$ の値は計算して求められる。
-
-
-### 隠れ層の重みの勾配
-
-隠れ層である第 $$l$$ 層（$$l \lt L$$）の重みに関するコスト関数の勾配は、
-
-$$
-\cfrac{\partial J(W)}{\partial w_{i \rightarrow j}^{(l)}}
-= \delta_j^{(l)} a_i^{(l-1)}
-$$
-
-$$\rm{(0.1), (0.2)}$$ を用いて誤差を計算する：
-
-$$
-\begin{eqnarray}
-\delta_j^{(l)}
-&=& \cfrac{\partial J(W)}{\partial z_j^{(l)}} \\
-&=& \displaystyle \sum_{k} \cfrac{\partial J(W)}{\partial z_k^{(l+1)}} \cfrac{\partial z_k^{(l+1)}}{\partial z_j^{(l)}} \\
-&=& \displaystyle \sum_{k} \delta_k^{(l+1)} \cfrac{\partial z_k^{(l+1)}}{\partial z_j^{(l)}} \\
-&=& \displaystyle \sum_{k} \delta_k^{(l+1)}
-\sum_i \cfrac{\partial z_k^{(l+1)}}{\partial a_i^{(l)}} \cfrac{\partial a_i^{(l)}}{\partial z_j^{(l)}} \\
-&=& \displaystyle \sum_{k} \delta_k^{(l+1)}
-\sum_i \cfrac{\partial z_k^{(l+1)}}{\partial a_i^{(l)}} \cfrac{\partial \phi\left(z_i^{(l)}\right)}{\partial z_j^{(l)}} \\
-&=& \displaystyle \sum_{k} \delta_k^{(l+1)}
-\cfrac{\partial z_k^{(l+1)}}{\partial a_j^{(l)}} \cfrac{\partial \phi\left(z_j^{(l)}\right)}{\partial z_j^{(l)}} \\
-&=& \displaystyle \sum_{k} \delta_k^{(l+1)}
-w_{j \rightarrow k}^{(l+1)} \cfrac{\partial \phi\left(z_j^{(l)}\right)}{\partial z_j^{(l)}} \\
-&=& \cfrac{\partial \phi\left(z_j^{(l)}\right)}{\partial z_j^{(l)}} \left( \left(W^{(l+1)}\right)^T \boldsymbol{\delta}^{(l+1)} \right){}_j \\
-\end{eqnarray}
-$$
-
-全ての成分をまとめてベクトル表記にすると、
-
-$$
-\begin{eqnarray}
-\boldsymbol{\delta}^{(l)}
-&=& \cfrac{\partial J(W)}{\partial \boldsymbol{z}^{(l)}} \\
-&=& \cfrac{\partial \phi\left(z_j^{(l)}\right)}{\partial \boldsymbol{z}^{(l)}} \odot \left(W^{(l+1)}\right)^T \boldsymbol{\delta}^{(l+1)} \\
-\end{eqnarray}
-$$
-
-※ $$\odot$$ は成分ごとに積を取る演算（アダマール積）。
-
-したがって、1つ後ろの第 $$l+1$$ 層の誤差が分かれば第 $$l$$ 層の誤差も計算できる。
-
-**前節で最終層（出力層）の誤差を計算済みであるから、再帰的に全ての誤差が計算できる。**
 
 
 ### 重みの更新
 
-以上により、全ての重みに関するコスト関数の勾配が求まったので、
+以上により、全ての重みに関するコスト関数の勾配が求まるので、
 
 $$
-W_{ij}^{(l)} \longleftarrow W_{ij}^{(l)} - \eta \cfrac{\partial J(W)}{\partial w_{i \rightarrow j}^{(l)}}
+W_{ij}^{(l)} \longleftarrow W_{ij}^{(l)} - \eta \cfrac{\partial J(W, \boldsymbol{b})}{\partial W_{ij}^{(l)}}
 $$
 
-により重みを更新する。
+$$
+b_i^{(l)} \longleftarrow W_i^{(l)} - \eta \cfrac{\partial J(W, \boldsymbol{b})}{\partial b_i^{(l)}}
+$$
+
+によりパラメータを更新する。
 
 $$\eta$$ は学習率。
 
 また、L2 正則化を行う場合は正則化項の微分
 
 $$
-\cfrac{\partial}{\partial w_{i \rightarrow j}^{(l)}} \left( \cfrac{\lambda}{2} \displaystyle \sum_{i^{'}} \sum_{j^{'}} \sum_{l^{'}} \left(w_{i^{'} \rightarrow j^{'}}^{(l^{'})}\right)^2 \right)
-= \lambda w_{i \rightarrow j}^{(l)}
+\cfrac{\partial}{\partial W_{ij}^{(l)}} \left( \cfrac{\lambda}{2} \displaystyle \sum_{i^{'}} \sum_{j^{'}} \sum_{l^{'}} \left(W_{i^{'}j^{'}}^{(l^{'})}\right)^2 \right)
+= \lambda W_{ij}^{(l)}
 $$
 
 をコスト関数の勾配に加える。
@@ -295,7 +395,7 @@ $$
 >
 > 隠れ層の出力値は、
 >
-> $$ a_j^{(1)} = \phi \left(z_j^{(1)}\right) = c \sum_i w_{i \rightarrow j}^{(1)} a_i + b$$
+> $$ a_j^{(1)} = \phi \left(z_j^{(1)}\right) = c \sum_i W_{ji}^{(1)} a_i + b$$
 >
 > 出力層の出力値は、
 >
@@ -303,97 +403,46 @@ $$
 \begin{eqnarray}
 a_j^{(2)}
 &=& \phi \left(z_j^{(2)}\right) \\
-&=& c \displaystyle \sum_i w_{i \rightarrow j}^{(2)} a_i^{(1)} + b \\
-&=& c \displaystyle \sum_i w_{i \rightarrow j}^{(2)} \left( c\left(\sum_k w_{k \rightarrow i}^{(1)} x_k\right) + b \right) + b \\
-&=& c^2 \displaystyle \sum_k \sum_i w_{k \rightarrow i}^{(1)} w_{i \rightarrow j}^{(2)} x_k + b\left( 1 + c \sum_i w_{i \rightarrow j}^{(2)} \right)
+&=& c \displaystyle \sum_i W_{ji}^{(2)} a_i^{(1)} + b \\
+&=& c \displaystyle \sum_i W_{ji}^{(2)} \left( c\left(\sum_k W_{ik}^{(1)} x_k\right) + b \right) + b \\
+&=& c^2 \displaystyle \sum_k \sum_i W_{ik}^{(1)} W_{ji}^{(2)} x_k + b\left( 1 + c \sum_i W_{ji}^{(2)} \right)
 \end{eqnarray}$$
 >
 > これは結局、入力層を一度線形変換したものに過ぎない。  
 > つまり隠れ層なしでも同じ計算を実現でき、**層を深くすることによる恩恵がない**。
 
 
+# Batch Normalization
+
+（ToDo）
+
+
 # 実装・動作確認
 
 多層パーセプトロンによる多クラス分類器を作ってみる。
 
-## 準備
-
-ロジスティック回帰と同様に、最小化すべきコスト関数 $$J(W)$$ は教師データが与えられたときにそれが実現する尤度（対数尤度）にマイナスをかけたものとする：
-
-$$
-J(W) =
-- \displaystyle \sum_i \left\{
-\sum_j y_j^{(i)} \log{\phi\left(z_j^{(L)(i)}\right)}
-+ \sum_i \sum_j \left(1-y_j^{(i)}\right) \log{\left(1-\phi\left(z_j^{(L)(i)}\right)\right)}
-\right\}
-$$
-
-- $$y_j^{(i)}$$: $$i$$ 番目のサンプルの正解ラベルベクトルの第 $$j$$ 成分
-- $$z_j^{(L)(i)}$$: $$i$$ 番目のサンプルの出力層（第 $$L$$ 層）の全入力の第 $$j$$ 成分
-
-隠れ層の活性化関数にはロジスティック関数 / 双曲線正接関数 / ReLU 関数を用い、出力層の活性化関数はソフトマックス関数を使う。
-
-誤差逆伝播の過程で、出力層の総入力に関するコスト関数の微分を使うので計算しておく。
-
-$$
-\begin{eqnarray}
-\delta_j^{(L)(i)} = \cfrac{\partial J(W)}{\partial z_j^{(L)(i)}}
-&=&
-- \cfrac{\partial}{\partial z_j^{(L)(i)}} \displaystyle \sum_k \left\{
-\sum_l y_l^{(k)} \log{\phi\left(z_l^{(L)(k)}\right)}
-+ \sum_k \sum_l \left(1-y_l^{(k)}\right) \log{\left(1-\phi\left(z_l^{(L)(k)}\right)\right)}
-\right\}
-\\
-&=&
-- \displaystyle \left\{
-\sum_l y_l^{(i)} \cfrac{1}{\phi\left(z_l^{(L)(i)}\right)} \cfrac{\partial \phi\left(z_l^{(L)(i)}\right)}{\partial z_j^{(L)(i)}}
-- \sum_l \left(1-y_l^{(i)}\right) \cfrac{1}{1-\phi\left(z_l^{(L)(i)}\right)} \cfrac{\partial \phi\left(z_l^{(L)(i)}\right)}{\partial z_j^{(L)(i)}}
-\right\}
-\\
-&=&
-\displaystyle \sum_l \cfrac{\phi\left(z_l^{(L)(i)}\right)-y_l^{(i)}}{\phi\left(z_l^{(L)(i)}\right) \left(1-\phi\left(z_l^{(L)(i)}\right)\right)}
-\cfrac{\partial \phi\left(z_l^{(L)(i)}\right)}{\partial z_j^{(L)(i)}}
-\\
-&=&
-\cfrac{\phi\left(z_j^{(L)(i)}\right)-y_j^{(i)}}{1-\phi\left(z_j^{(L)(i)}\right)} \left(1-\phi\left(z_j^{(L)(i)}\right)\right)
-- \displaystyle \sum_{l \neq j} \cfrac{\phi\left(z_l^{(L)(i)}\right)-y_l^{(i)}}{1-\phi\left(z_l^{(L)(i)}\right)} \phi\left(z_j^{(L)(i)}\right)
-\\
-&=&
-\cfrac{\phi\left(z_j^{(L)(i)}\right)-y_j^{(i)}} {1 - \phi\left(z_j^{(L)(i)}\right)}
-- \phi\left(z_j^{(L)(i)}\right) \displaystyle \sum_l \cfrac{\phi\left(z_l^{(L)(i)}\right)-y_l^{(i)}}{1-\phi\left(z_l^{(L)(i)}\right)}
-\end{eqnarray}
-$$
-
-出力層の活性化関数はソフトマックス関数であるから、計算途中、ソフトマックス関数の微分の式を用いて和を $$l=j$$ と $$l \neq j$$ に分けた。
+- Batch Normalization を適用
+- 最適化手法として、単純な勾配効果法ではなく Adam を利用
 
 ## コード
 
-{% gist 4da6cc3fc14a4ff65d7adef80c86e442 mlp-classifier.py %}
+各層のクラス：
+
+{% gist f78d08d8c85fb47af24a48d687125ecc nn-layers-simple.py %}
+
+分類器本体：
+
+{% gist f78d08d8c85fb47af24a48d687125ecc nn-classifier-simple.py %}
 
 ## 動作確認
 
-{% gist 4da6cc3fc14a4ff65d7adef80c86e442 ~fit-mlp-classifier.py %}
+{% gist f78d08d8c85fb47af24a48d687125ecc ~fit-mlp-classifier.py %}
 
-![MLP 分類器](https://user-images.githubusercontent.com/13412823/83343294-d7ce7b80-a2e7-11ea-9d7d-7131b16203f5.png)
+![MLP 分類器](https://user-images.githubusercontent.com/13412823/90081374-2d8fbd00-dd48-11ea-92ec-22e15cba3a72.png)
+
 
 ## デバッグ
 
 ### Gradient Checking
 
-{% gist 4da6cc3fc14a4ff65d7adef80c86e442 ~debug-gradient-check.py %}
-
-### 活性化関数の出力分布
-
-{% gist 4da6cc3fc14a4ff65d7adef80c86e442 ~debug-activation-histogram.py %}
-
-シグモイド：
-
-![Unknown-7](https://user-images.githubusercontent.com/13412823/83941196-7432d980-a824-11ea-80b8-c211b19c2773.png)
-
-tanh：
-
-![Unknown-6](https://user-images.githubusercontent.com/13412823/83941197-772dca00-a824-11ea-80d2-442035b59bf1.png)
-
-ReLU：
-
-![Unknown-4](https://user-images.githubusercontent.com/13412823/83941198-785ef700-a824-11ea-9991-e6315ceb7abe.png)
+{% gist f78d08d8c85fb47af24a48d687125ecc ~debug-gradient-check.py %}
