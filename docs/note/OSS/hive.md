@@ -34,7 +34,41 @@ B NG b     Bad
 C OK other Bad
 ```
 
-## Group By の際にキー全ての合計も出力
+## WITH 句
+
+- 誤：テンポラリテーブルを作成して処理結果を格納し、何度も使い回せる機能
+- 正：定義した処理を都度呼び出して実行できる機能
+
+→ **WITH で定義した処理を複数回呼び出すと、その回数だけ同じ処理が実行される（= 効率化はされない）**  
+→ 同じ処理結果を使い回したいのであれば、WITH ではなく別にテンポラリテーブルを作る
+
+```sql
+with
+proccessed1 as (
+  select
+    *
+  from
+    my_table1
+  where
+    ...
+),
+proccessed2 as (
+  select
+    *
+  from
+    my_table2
+  where
+    ...
+)
+
+select
+  *
+from
+  processed1 join processed2
+  on processed1.key = processed2.key
+```
+
+## GROUP BY の際にキー全ての合計も出力
 
 `with rollup`句を使う。
 
