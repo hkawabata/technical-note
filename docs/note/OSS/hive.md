@@ -16,7 +16,7 @@ select
     when 'A' then 'a'
     when 'B' then 'b'
     else 'other'
-  end
+  end,
   -- より複雑な条件による分岐
   case
     when key1 = 'A' then 'Good'
