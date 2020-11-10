@@ -5,6 +5,29 @@ main_image: https://user-images.githubusercontent.com/13412823/98496677-88707c00
 
 # HiveQL
 
+## テーブル操作
+
+### 作成
+
+```sql
+create table if not exists my_db.my_table (
+  user_id     int,
+  name        string,
+  actions     array<string>,
+  other_attr  map<string, string>
+)
+-- 処理効率化のためのパーティショニング
+partitioned by (year int, month int, day int)
+
+row format delimited
+fields terminated by '\t'           -- フィールド区切り文字
+collection items terminated by ','  -- コレクションの要素の区切り文字
+map keys terminated by '='          -- Mapのkey-valueの区切り文字
+lines terminated by '\n'            -- 行の区切り文字
+;
+```
+
+
 ## 文字列の結合
 
 ```sql
