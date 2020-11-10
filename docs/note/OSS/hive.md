@@ -7,6 +7,16 @@ main_image: https://user-images.githubusercontent.com/13412823/98496677-88707c00
 
 ## テーブル操作
 
+### 一覧・詳細
+
+```
+-- 一覧表示
+show tables;
+
+-- テーブル詳細情報表示
+describe my_table;
+```
+
 ### 作成
 
 ```sql
@@ -25,6 +35,18 @@ collection items terminated by ','  -- コレクションの要素の区切り�
 map keys terminated by '='          -- Mapのkey-valueの区切り文字
 lines terminated by '\n'            -- 行の区切り文字
 ;
+```
+
+### 削除
+
+```sql
+drop table if exists my_db.my_table;
+```
+
+### 名前変更
+
+```sql
+alter table my_table rename to my_new_table;
 ```
 
 
