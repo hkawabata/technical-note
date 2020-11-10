@@ -5,6 +5,24 @@ main_image: https://user-images.githubusercontent.com/13412823/98496677-88707c00
 
 # HiveQL
 
+## 文字列の結合
+
+```sql
+select
+  key,
+  value,
+  concat(key, '/', value)
+from
+  my_table
+```
+
+```
+A a A/a
+A b A/b
+B a B/a
+...
+```
+
 ## 条件分岐による値の設定
 
 ```sql
@@ -115,4 +133,26 @@ B    b    15
 A    NULL 35
 B    NULL 45
 NULL NULL 80
+```
+
+## 正規表現による置換・抽出
+
+### 置換
+
+```sql
+select regexp_replace('aA1 bB2 cC3', '[A-Z]', '_')
+```
+
+```
+a_1 b_2 c_3
+```
+
+### 抽出
+
+```sql
+select regexp_extract('BirthDate: 2000/1/1', ': ([0-9/]+)')
+```
+
+```
+2000/1/1
 ```
