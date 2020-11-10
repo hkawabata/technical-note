@@ -165,3 +165,24 @@ select
 ```
 2000/1/1
 ```
+
+
+## 複数要素の展開
+
+```sql
+select
+  key,
+  values,
+  value
+from
+  my_table
+  literal view explode(values) t as value
+```
+
+```
+A  ['a', 'b', 'c']  a
+A  ['a', 'b', 'c']  b
+A  ['a', 'b', 'c']  c
+B  ['a', 'c']       a
+B  ['a', 'c']       c
+```
