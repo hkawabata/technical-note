@@ -14,6 +14,7 @@ select
   concat(key, '/', value)
 from
   my_table
+;
 ```
 
 ```
@@ -43,6 +44,7 @@ select
   end
 from
   my_table
+;
 ```
 
 ```
@@ -84,6 +86,7 @@ select
 from
   processed1 join processed2
   on processed1.key = processed2.key
+;
 ```
 
 ## GROUP BY の際に複数の値を文字列として結合
@@ -99,6 +102,7 @@ from
   my_table
 group by
   key
+;
 ```
 
 ```
@@ -122,6 +126,7 @@ group by
   key1,
   key2
 with rollup
+;
 ```
 
 ```
@@ -140,7 +145,9 @@ NULL NULL 80
 ### 置換
 
 ```sql
-select regexp_replace('aA1 bB2 cC3', '[A-Z]', '_')
+select
+  regexp_replace('aA1 bB2 cC3', '[A-Z]', '_')
+;
 ```
 
 ```
@@ -150,7 +157,9 @@ a_1 b_2 c_3
 ### 抽出
 
 ```sql
-select regexp_extract('BirthDate: 2000/1/1', ': ([0-9/]+)')
+select
+  regexp_extract('BirthDate: 2000/1/1', ': ([0-9/]+)')
+;
 ```
 
 ```
