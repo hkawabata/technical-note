@@ -68,6 +68,27 @@ from
   on processed1.key = processed2.key
 ```
 
+## GROUP BY の際に複数の値を文字列として結合
+
+```sql
+select
+  key,
+  collect_list(value),
+  concat_ws(',', collect_list(value)),
+  collect_set(value),
+  concat_ws(',', collect_set(value))
+from
+  my_table
+group by
+  key
+```
+
+```
+A  ['a', 'a', 'b']       a,a,b    ['a', 'b']       a,b
+B  ['a', 'c']            a,c      ['a', 'c']       a,c
+C  ['a', 'c', 'b', 'c']  a,c,b,c  ['a', 'c', 'b']  a,c,b
+```
+
 ## GROUP BY の際にキー全ての合計も出力
 
 `with rollup`句を使う。
