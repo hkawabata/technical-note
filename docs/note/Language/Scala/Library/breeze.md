@@ -7,6 +7,8 @@ title: Breeze
 Scala の数値計算ライブラリ。  
 行列・ベクトル演算の各種 API を提供。
 
+可視化ライブラリの Breeze Viz もある。
+
 # 使用するための設定
 
 build.sbt
@@ -15,10 +17,14 @@ build.sbt
 libraryDependencies ++= Seq(
   // https://mvnrepository.com/artifact/org.scalanlp/breeze
   "org.scalanlp" %% "breeze" % "1.0"
+  // https://mvnrepository.com/artifact/org.scalanlp/breeze-viz
+  "org.scalanlp" %% "breeze-viz" % "1.0"
 )
 ```
 
 # 簡単なサンプル
+
+## Breeze
 
 ```scala
 import breeze.linalg._
@@ -237,3 +243,34 @@ DenseVector(1.0, 2.0, 2.0, 5.0, 3.0, 1.0)
 2.0  5.0  1.0  
 ```
 
+## Breeze Viz
+
+```scala
+import breeze.linalg._
+import breeze.plot._
+
+val x: DenseVector[Double] = DenseVector(0 to 100: _*).map(_ * 0.02)
+
+val f = Figure()
+
+val p1 = f.subplot(1, 2, 0)
+p1.title = "Graph 1"
+p1.xlabel = "X"
+p1.ylabel = "Y"
+p1.xaxis.setTickUnit(new NumberTickUnit(0.2))
+p1.yaxis.setTickUnit(new NumberTickUnit(1.0))
+p1 += plot(x, x ^:^ 2.0, name = "Y = X^2")
+p1 += plot(x, x ^:^ 3.0, name = "Y = X^3", style = '.')
+p1.legend = true
+
+val p2 = f.subplot(1, 2, 1)
+p2.title = "Graph 2"
+p2.xlabel = "X"
+p2.ylabel = "Frequency of X"
+val g = breeze.stats.distributions.Gaussian(0,1)
+p2 += hist(g.sample(100000),100)
+
+f.saveas("target/sample.png")
+```
+
+![sample](https://user-images.githubusercontent.com/13412823/99353330-99556900-28e7-11eb-9643-c105ea71e8b8.png)
