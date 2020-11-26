@@ -6,6 +6,10 @@ title: matplotlib
 
 Python の画像処理ライブラリ。
 
+![anatomy](https://user-images.githubusercontent.com/13412823/100397531-83853800-308d-11eb-993d-7a32700fbbb9.png)
+
+（[Usage Guide](https://matplotlib.org/tutorials/introductory/usage.html) より）
+
 # 使い方
 
 ```bash
