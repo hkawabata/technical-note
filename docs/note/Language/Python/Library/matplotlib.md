@@ -53,6 +53,12 @@ plt.show()
 ![](https://user-images.githubusercontent.com/13412823/100397768-dca19b80-308e-11eb-8084-041393a1a115.png)
 
 
+### 散布図
+
+
+### ヒストグラム
+
+
 ## グラフの配置
 
 
