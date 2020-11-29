@@ -87,6 +87,5 @@ plt.grid()
 plt.show()
 ```
 
-![](https://user-images.githubusercontent.com/13412823/100530911-2f1fbb00-323b-11eb-9713-ae4fe5a9ec5c.png)
-
+![](https://user-images.githubusercontent.com/13412823/100530930-82920900-323b-11eb-896e-a2726abd17db.png)
 
