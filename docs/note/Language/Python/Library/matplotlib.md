@@ -55,6 +55,20 @@ plt.show()
 
 ### 散布図
 
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+
+N = 1000
+r = np.random.rand(N)
+theta = np.random.rand(N) * np.pi * 2
+plt.scatter(r*np.cos(theta), r*np.sin(theta), s=2.0, label='foo')
+plt.legend()
+plt.show()
+```
+
+![](https://user-images.githubusercontent.com/13412823/100533276-018c3f00-3246-11eb-863e-ee6b13fe18a9.png)
+
 
 ### ヒストグラム
 
