@@ -90,9 +90,20 @@ plt.fill_between(x, y1, y2, facecolor='red', alpha=0.3, label='foo')
 plt.fill_between(x, y2, y3, facecolor='red', alpha=0.7, label='bar', where=(x>0)&(y3<y2))
 plt.grid()
 plt.show()
+
+plt.plot(y1, x, color='black')
+plt.plot(y2, x, color='black')
+plt.plot(y3, x, color='black')
+plt.fill_betweenx(x, y1, y2, facecolor='red', alpha=0.3, label='foo')
+plt.fill_betweenx(x, y2, y3, facecolor='red', alpha=0.7, label='bar', where=(x>0)&(y3<y2))
+plt.legend()
+plt.grid()
+plt.show()
 ```
 
 ![](https://user-images.githubusercontent.com/13412823/100530930-82920900-323b-11eb-896e-a2726abd17db.png)
+
+![](https://user-images.githubusercontent.com/13412823/100532803-52009e00-3240-11eb-8f7f-1bff62a85a6e.png)
 
 
 ### 等高線
