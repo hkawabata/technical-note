@@ -124,6 +124,27 @@ plt.show()
 ![](https://user-images.githubusercontent.com/13412823/100532684-b0c51800-323e-11eb-905d-c0b6f7932ffc.png)
 
 
+### 円グラフ
+
+```python
+from matplotlib import pyplot as plt
+
+labels = ['A', 'B', 'C', 'D', 'E']
+sizes = [5, 4, 3, 2, 1]
+colors = ['r', 'g', 'b', 'm', 'c']
+
+plt.pie(sizes, labels=labels, colors=colors, autopct='%1.2f%%')
+plt.show()
+
+plt.pie(sizes, radius=1, labels=labels, colors=colors, autopct='%1.2f%%', wedgeprops=dict(width=0.3, edgecolor='w'))
+plt.show()
+```
+
+![](https://user-images.githubusercontent.com/13412823/100532730-49f42e80-323f-11eb-9fa3-91a94365aa5e.png)
+
+![](https://user-images.githubusercontent.com/13412823/100532729-48c30180-323f-11eb-9244-bd960329a092.png)
+
+
 ## グラフの配置
 
 
