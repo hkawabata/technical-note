@@ -156,6 +156,23 @@ plt.show()
 ![](https://user-images.githubusercontent.com/13412823/100532729-48c30180-323f-11eb-9244-bd960329a092.png)
 
 
+### 表付きグラフ
+
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+
+values = [[1,2,3,4],[5,6,7,8]]
+collabels = ['A', 'B', 'C', 'D']
+rowlabels = ['a', 'b']
+plt.plot(np.arange(0, 10, 0.1), np.arange(0, 10, 0.1))
+plt.table(cellText=values, rowLabels=rowlabels, colLabels=collabels, loc='top')
+plt.show()
+```
+
+![](https://user-images.githubusercontent.com/13412823/100532948-37c7bf80-3242-11eb-8202-9f5719805ca5.png)
+
+
 ## グラフの配置
 
 
