@@ -72,6 +72,58 @@ plt.show()
 ![](https://user-images.githubusercontent.com/13412823/100531045-321bab00-323d-11eb-8c21-e875ebda5cb7.png)
 
 
+### 塗りつぶし
+
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+
+x = np.arange(-4.0, 4.0, 0.01)
+y1 = np.sin(x+1)
+y2 = np.sin(x)
+y3 = 0.2 * x
+
+plt.plot(x, y1, color='black')
+plt.plot(x, y2, color='black')
+plt.plot(x, y3, color='black')
+plt.fill_between(x, y1, y2, facecolor='red', alpha=0.3, label='foo')
+plt.fill_between(x, y2, y3, facecolor='red', alpha=0.7, label='bar', where=(x>0)&(y3<y2))
+plt.grid()
+plt.show()
+```
+
+![](https://user-images.githubusercontent.com/13412823/100530930-82920900-323b-11eb-896e-a2726abd17db.png)
+
+
+### 等高線
+
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+
+x = np.arange(-5, 5, 0.1)
+y = np.arange(-5, 5, 0.1)
+x, y = np.meshgrid(x, y)
+z = 2*np.exp(-((x+3)**2+y**2)/2) - np.exp(-((x-2)**2+(y-2)**2)/2) - 2*np.exp(-((x-2)**2+(y+2)**2)/2)
+
+plt.contour(x, y, z, 20)
+plt.show()
+
+cs = plt.contour(x, y, z, 20)
+plt.clabel(cs, inline=1, fontsize=10)
+plt.show()
+
+plt.contourf(x, y, z, 20, cmap='gray')
+plt.show()
+```
+
+![](https://user-images.githubusercontent.com/13412823/100532686-b4f13580-323e-11eb-8636-44cafb4c0dd0.png)
+
+![](https://user-images.githubusercontent.com/13412823/100532685-b3277200-323e-11eb-89c5-5ae90326c6e6.png)
+
+![](https://user-images.githubusercontent.com/13412823/100532684-b0c51800-323e-11eb-905d-c0b6f7932ffc.png)
+
+
 ## グラフの配置
 
 
@@ -133,25 +185,4 @@ plt.show()
 ### 凡例の位置調整
 
 
-### 塗りつぶし
-
-```python
-from matplotlib import pyplot as plt
-import numpy as np
-
-x = np.arange(-4.0, 4.0, 0.01)
-y1 = np.sin(x+1)
-y2 = np.sin(x)
-y3 = 0.2 * x
-
-plt.plot(x, y1, color='black')
-plt.plot(x, y2, color='black')
-plt.plot(x, y3, color='black')
-plt.fill_between(x, y1, y2, facecolor='red', alpha=0.3, label='foo')
-plt.fill_between(x, y2, y3, facecolor='red', alpha=0.7, label='bar', where=(x>0)&(y3<y2))
-plt.grid()
-plt.show()
-```
-
-![](https://user-images.githubusercontent.com/13412823/100530930-82920900-323b-11eb-896e-a2726abd17db.png)
 
