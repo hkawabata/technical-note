@@ -81,8 +81,8 @@ y3 = 0.2 * x
 plt.plot(x, y1, color='black')
 plt.plot(x, y2, color='black')
 plt.plot(x, y3, color='black')
-plt.fill_between(x, y1, y2, facecolor='red', alpha=0.3)
-plt.fill_between(x, y2, y3, facecolor='red', alpha=0.7, where=(x>0)&(y3<y2))
+plt.fill_between(x, y1, y2, facecolor='red', alpha=0.3, label='foo')
+plt.fill_between(x, y2, y3, facecolor='red', alpha=0.7, label='bar', where=(x>0)&(y3<y2))
 plt.grid()
 plt.show()
 ```
