@@ -58,11 +58,77 @@ plt.show()
 
 ### ヒストグラム
 
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+
+N = 1000
+x = np.random.randn(N)
+plt.hist(x, bins=20, label='hoge')
+plt.legend()
+plt.show()
+```
+
+![](https://user-images.githubusercontent.com/13412823/100531045-321bab00-323d-11eb-8c21-e875ebda5cb7.png)
+
 
 ## グラフの配置
 
 
 ## Tips
+
+### 線・点のスタイル
+
+線のスタイル：
+
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+
+x = np.arange(0, 10.0+1, 1.0)
+y = x * 0.2
+linestyles = [
+    'solid', 'dashed', 'dotted', 'dashdot',
+    (0, (1, 10)),
+    (0, (5, 10)),
+    (0, (5, 1)),
+    (0, (3, 10, 1, 10)),
+    (0, (3, 1, 1, 1)),
+    (0, (3, 5, 1, 5, 1, 5)),
+    (0, (3, 10, 1, 10, 1, 10)),
+    (0, (3, 1, 1, 1, 1, 1))
+]
+for style in linestyles:
+    plt.plot(x, y, linestyle=style, label='{}'.format(style))
+    y += 1.0
+plt.legend(ncol=1, bbox_to_anchor=(1.05, 0.93, 0.5, .100))
+plt.show()
+```
+
+![](https://user-images.githubusercontent.com/13412823/100531139-ecabad80-323d-11eb-978e-b26d87617ed3.png)
+
+点のスタイル：
+
+```python
+from matplotlib import pyplot as plt
+from matplotlib.lines import Line2D
+import numpy as np
+
+x, y = np.array([0]), np.array([0])
+cnt = 0
+for k, v in Line2D.markers.items():
+    if cnt%10 == 0:
+        x = 0
+        y += 1
+    x += 1
+    plt.scatter(x, y, marker=k, label='{} {}'.format(k, v))
+    cnt += 1
+plt.legend(ncol=3, bbox_to_anchor=(1.05, 0.93, 0.5, .100))
+plt.show()
+```
+
+![](https://user-images.githubusercontent.com/13412823/100531141-ee757100-323d-11eb-89cb-623394b8d6da.png)
+
 
 ### 凡例の位置調整
 
