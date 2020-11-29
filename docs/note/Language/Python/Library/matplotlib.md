@@ -50,7 +50,7 @@ plt.grid()
 plt.show()
 ```
 
-![](https://user-images.githubusercontent.com/13412823/100397768-dca19b80-308e-11eb-8084-041393a1a115.png)
+![](https://user-images.githubusercontent.com/13412823/100530912-30e97e80-323b-11eb-9799-9ac22091d71a.png)
 
 
 ### 散布図
@@ -65,5 +65,28 @@ plt.show()
 ## Tips
 
 ### 凡例の位置調整
+
+
+### 塗りつぶし
+
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+
+x = np.arange(-4.0, 4.0, 0.01)
+y1 = np.sin(x+1)
+y2 = np.sin(x)
+y3 = 0.2 * x
+
+plt.plot(x, y1, color='black')
+plt.plot(x, y2, color='black')
+plt.plot(x, y3, color='black')
+plt.fill_between(x, y1, y2, facecolor='red', alpha=0.3)
+plt.fill_between(x, y2, y3, facecolor='red', alpha=0.7, where=(x>0)&(y3<y2))
+plt.grid()
+plt.show()
+```
+
+![](https://user-images.githubusercontent.com/13412823/100530911-2f1fbb00-323b-11eb-9713-ae4fe5a9ec5c.png)
 
 
