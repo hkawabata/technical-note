@@ -2,6 +2,8 @@
 title: リフレクション（書きかけ）
 ---
 
+## メンバ一覧
+
 ```scala
 import scala.reflect.runtime.{universe => ru}
 
@@ -67,7 +69,7 @@ members.filter(_.asTerm.isVar).foreach(println)
 // variable sVar
 ```
 
-値の`set`/`get`
+## 値の set / get
 
 ➔ `val`でも値を変更できる？
 
