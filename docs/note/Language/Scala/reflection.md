@@ -94,12 +94,12 @@ im.reflectField(fieldTermSymb).set("bVar")
 println(im.reflectField(fieldTermSymb).get)
 // bVar
 
-val fieldTermSymb: ru.TermSymbol = ru.typeOf[MyBean].decl(ru.TermName("s")).asTerm
-im.reflectField(fieldTermSymb).set("b")
-println(im.reflectField(fieldTermSymb).get)
+val fieldTermSymbVal: ru.TermSymbol = ru.typeOf[MyBean].decl(ru.TermName("s")).asTerm
+im.reflectField(fieldTermSymbVal).set("b")
+println(im.reflectField(fieldTermSymbVal).get)
 // b
 
-val fieldTermSymb: ru.TermSymbol = ru.typeOf[MyBean].decl(ru.TermName("notExists")).asTerm
+val fieldTermSymbNotExists: ru.TermSymbol = ru.typeOf[MyBean].decl(ru.TermName("notExists")).asTerm
 /*
 scala.ScalaReflectionException: <none> is not a term
   at scala.reflect.api.Symbols$SymbolApi.asTerm(Symbols.scala:211)
