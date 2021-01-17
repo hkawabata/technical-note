@@ -85,9 +85,14 @@ img_rgb = img_png.convert('RGB')
 # 上書きされるため元画像を残す場合は copy した画像を使う
 img1.paste(img2)
 # 貼り付け位置を指定
-img1.paste(img2, (100, 40))
+img1.paste(img2, (1000, 200))
 # マスク画像を利用して任意の形で貼り付け
-img1.paste(img2, (100, 40), img_mask)
+base = Image.new("RGBA", img1.size, 0)
+base.paste(img2, (1000, 200))
+mask = Image.new("L", img1.size, 0)
+draw = ImageDraw.Draw(mask)
+draw.ellipse((1000, 200, 1000+img2.size[0], 200+img2.size[1]), fill=255)
+img1.paste(img2, (0, 0), mask)
 ```
 
 
