@@ -125,7 +125,7 @@ $$
 
 ![SVD](https://user-images.githubusercontent.com/13412823/104837549-ab0fb880-58f8-11eb-91dd-c66ac392f2fe.png)
 
-次元削減の解としては、$$U'$$ を用いれば良い。
+次元削減後のベクトルとしては、$$U'$$ を用いれば良い。
 
 
 ## 実装
