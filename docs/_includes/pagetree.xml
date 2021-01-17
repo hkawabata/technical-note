@@ -80,6 +80,10 @@
 </a>
                   </li>
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/matplotlib">matplotlib
+</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/fabric">Fabric
 </a>
                   </li>
@@ -175,6 +179,20 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Language/Scala/curry_and_partial-application">カリー化・部分適用
+</a>
+              </li>
+              <li>
+                <span>Library</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Scala/Library/breeze">Breeze
+</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/Scala/reflection">リフレクション（書きかけ）
 </a>
               </li>
             </ul>
@@ -299,6 +317,10 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/ML/Preprocess/lda">線形判別分析（LDA）
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/Preprocess/svd">特異値分解（SVD）
 </a>
               </li>
               <li>
@@ -443,6 +465,10 @@
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/OSS/prometheus">Prometheus
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/OSS/hive">Hive
 </a>
           </li>
           <li>
