@@ -117,6 +117,9 @@ $$
 
 を $$A$$ の近似として用いれば良い。
 
+![SVD](https://user-images.githubusercontent.com/13412823/104837549-ab0fb880-58f8-11eb-91dd-c66ac392f2fe.png)
+
+
 ## 実装
 
 ### コード
