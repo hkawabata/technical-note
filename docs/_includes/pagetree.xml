@@ -582,6 +582,16 @@
         </ul>
       </li>
       <li>
+        <span>NLP</span>
+        <span class="pagetree-accordion">▼</span>
+        <ul class="pagetree-hidden">
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/NLP/word2vec">Word2Vec
+</a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <span>Tool</span>
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
