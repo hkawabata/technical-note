@@ -157,7 +157,7 @@ $$
 = \displaystyle \sum_{k} \sum_{l} \cfrac{\partial J}{\partial H_{kl}} \cfrac{\partial H_{kl}}{\partial C_{ij}^{\rm b, f}}
 = \displaystyle \sum_{k} \sum_{l} \cfrac{\partial J}{\partial H_{kl}} \cfrac{1}{2} W_{jl}^{\rm in} \delta_{ik}
 = \displaystyle \sum_{l} \cfrac{\partial J}{\partial H_{il}} \cfrac{1}{2} W_{jl}^{\rm in}
-= \cfrac{1}{2} \left( \cfrac{\partial J}{\partial H} W^{{\rm in}\ T} \right)_{ij}
+= \cfrac{1}{2} \left( \cfrac{\partial J}{\partial H} W^{ {\rm in}\ T} \right)_{ij}
 $$
 
 $$
@@ -174,7 +174,7 @@ $$
 = \displaystyle \sum_{k} \sum_{l} \cfrac{\partial J}{\partial H_{kl}} \cfrac{\partial H_{kl}}{\partial Z_{ij}}
 = \displaystyle \sum_{k} \sum_{l} \cfrac{\partial J}{\partial Z_{kl}} W_{jl}^{\rm out} \delta_{ik}
 = \displaystyle \sum_{l} \cfrac{\partial J}{\partial Z_{il}} W_{jl}^{\rm out}
-= \left( \cfrac{\partial J}{\partial Z} W^{{\rm out}\ T} \right)_{ij}
+= \left( \cfrac{\partial J}{\partial Z} W^{ {\rm out}\ T} \right)_{ij}
 $$
 
 ### 単語の分散表現
