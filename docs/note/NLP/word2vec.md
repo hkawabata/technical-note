@@ -194,23 +194,23 @@ $$
 $$
 \begin{eqnarray}
 C^{\rm f} W^{\rm in} &=&
-\begin{pmatrix} \hline
-    0 & 0 & \color{blue}{1} & 0 & 0 & 0 \\ \hline \hline
-    0 & 0 & 0 & \color{red}{1} & 0 & 0 \\ \hline
+\begin{pmatrix}
+    0 & 0 & \color{blue}{1} & 0 & 0 & 0 \\
+    0 & 0 & 0 & \color{red}{1} & 0 & 0 \\
     0 & 0 & 0 & 0 & 1 & 0 \\
     0 & 1 & 0 & 0 & 0 & 0 \\
     0 & 0 & 0 & 0 & 0 & 1 \\
     0 & 0 & 0 & 1 & 0 & 0
 \end{pmatrix}
 \left(
-\begin{array}{|c||c||c||c|}
+\begin{pmatrix}
     w_{00} & w_{01} & w_{02} & w_{03} \\
     w_{10} & w_{11} & w_{12} & w_{13} \\
     \color{blue}{w_{20}} & \color{blue}{w_{21}} & \color{blue}{w_{22}} & \color{blue}{w_{23}} \\
     \color{red}{w_{30}} & \color{red}{w_{31}} & \color{red}{w_{32}} & \color{red}{w_{33}} \\
     w_{40} & w_{41} & w_{42} & w_{43} \\
     w_{50} & w_{51} & w_{52} & w_{53}
-\end{array}
+\end{pmatrix}
 \right)
 \\
 &=&
