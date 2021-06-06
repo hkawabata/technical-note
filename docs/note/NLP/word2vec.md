@@ -202,7 +202,6 @@ C^{\rm f} W^{\rm in} &=&
     0 & 0 & 0 & 0 & 0 & 1 \\
     0 & 0 & 0 & 1 & 0 & 0
 \end{pmatrix}
-\left(
 \begin{pmatrix}
     w_{00} & w_{01} & w_{02} & w_{03} \\
     w_{10} & w_{11} & w_{12} & w_{13} \\
@@ -211,7 +210,6 @@ C^{\rm f} W^{\rm in} &=&
     w_{40} & w_{41} & w_{42} & w_{43} \\
     w_{50} & w_{51} & w_{52} & w_{53}
 \end{pmatrix}
-\right)
 \\
 &=&
 \begin{pmatrix}
