@@ -8,11 +8,35 @@ title: PyAudio
 $ pip install pyaudio
 ```
 
+## エラー
+
+### 'portaudio.h' file not found
+
 以下のようなエラーが出てインストールできない場合は`brew install portaudio`を先に実行する（Mac）。
 
 ```bash
 src/_portaudiomodule.c:29:10: fatal error: 'portaudio.h' file not found
 ```
+
+### cdefs.h: error: Unsupported architecture
+
+```bash
+    ...
+    In file included from src/_portaudiomodule.c:27:
+    In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/stdio.h:64:
+    In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/_stdio.h:68:
+    /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/sys/cdefs.h:807:2: error: Unsupported architecture
+    #error Unsupported architecture
+     ^
+```
+
+のようなエラーが出たときは環境変数を設定すれば解決した。
+
+```bash
+export ARCHFLAGS="-arch x86_64"
+```
+
+
 
 # 使い方
 
