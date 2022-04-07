@@ -29,21 +29,27 @@ title: Chart.js
           labels: x,  // 横軸の値
           datasets: [{
             label: 'A',
-            data: y1
+            data: y1,
+            borderColor: 'rgba(255, 99, 132, 1)', //線の色
+            backgroundColor: 'rgba(255, 99, 132, 0.1)', //塗りつぶしの色
           },
           {
             label: 'B',
-            data: y2
+            data: y2,
+            borderColor: 'rgba(99, 132, 255, 1)',
+            backgroundColor: 'rgba(99, 132, 255, 0.1)',
           }]
         },
         options: {
-          title: {
-            display: true,
-            text: 'Title of Chart',
-            fontSize: 20
-          },
-          legend: {
-            display: true  // 凡例を表示する
+          plugins: {
+            title: {
+              display: true,
+              text: 'Title of Chart',
+              fontSize: 20
+            },
+            legend: {
+              display: true  // 凡例を表示する
+            },
           },
           scales: {
             // X軸
