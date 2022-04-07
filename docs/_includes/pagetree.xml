@@ -31,6 +31,19 @@
             <a href="https://hkawabata.github.io/technical-note/note/Management/seven-tools-for-quality-control">QC 7つ道具
 </a>
           </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Management/external-and-internal-career">external-and-internal-career.md</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Management/career-anchor">キャリア・アンカー
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Management/planned-happenstance">planned-happenstance.md</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Management/will-can-must">will-can-must.md</a>
+          </li>
         </ul>
       </li>
       <li>
@@ -209,6 +222,10 @@
             <span>JavaScript</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/JavaScript/chart.js">Chart.js
+</a>
+              </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Language/JavaScript/vue.js">Vue.js
 </a>
