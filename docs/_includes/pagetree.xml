@@ -39,9 +39,6 @@
 </a>
           </li>
           <li>
-            <a href="https://hkawabata.github.io/technical-note/note/Management/planned-happenstance">planned-happenstance.md</a>
-          </li>
-          <li>
             <a href="https://hkawabata.github.io/technical-note/note/Management/will-can-must">will-can-must.md</a>
           </li>
         </ul>
@@ -222,6 +219,10 @@
             <span>JavaScript</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/JavaScript/jquery">jQuery
+</a>
+              </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Language/JavaScript/chart.js">Chart.js
 </a>
