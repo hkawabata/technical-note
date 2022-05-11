@@ -248,4 +248,19 @@ plt.show()
 ### 凡例の位置調整
 
 
+### 日本語フォント
 
+デフォルト設定だと日本語フォントは文字化けする。  
+グラフに日本語を表示するには、ttf ファイルを読み込んで使う。
+
+```
+import numpy as np
+from matplotlib import pyplot as plt, font_manager
+fp = font_manager.FontProperties(fname='/System/Library/Fonts/ヒラギノ丸ゴ ProN W4.ttc')
+plt.title('日本語フォント', fontproperties=fp)
+
+x = np.array(range(10))
+y = x ** 2
+plt.plot(x, y)
+plt.show()
+```
