@@ -9,7 +9,7 @@ title: ラグランジュの未定乗数法
 
 ## ラグランジュの未定乗数法：等式制約
 
-制約が等式 $$g(\boldsymbol{x}) = 0$$ で表現されるときの関数 $$f(\boldsymbol{x})$$ の極値を求めたい。
+制約が等式 $g(\boldsymbol{x}) = 0$ で表現されるときの関数 $f(\boldsymbol{x})$ の極値を求めたい。
 
 ![Unknown](https://user-images.githubusercontent.com/13412823/78958628-98738200-7b23-11ea-838d-ab20bcb8ccd7.png)
 
