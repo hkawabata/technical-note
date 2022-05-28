@@ -18,7 +18,7 @@ title: ラグランジュの未定乗数法
 
 ### 定理
 
-$$n$$ 変数 $$\boldsymbol{x} = (x_1, \cdots, x_n)$$ の関数 $$f(\boldsymbol{x})$$ に関して、束縛条件 $$g(\boldsymbol{x}) = 0$$ が課されているとする。  
+$n$ 個の変数 $$\boldsymbol{x} = (x_1, \cdots, x_n)$$ の関数 $$f(\boldsymbol{x})$$ に関して、束縛条件 $$g(\boldsymbol{x}) = 0$$ が課されているとする。  
 **ラグランジュ関数** $$L(\boldsymbol{x}, \lambda)$$ を
 
 $$L(\boldsymbol{x}, \lambda) \equiv f(\boldsymbol{x}) - \lambda g(\boldsymbol{x})$$
