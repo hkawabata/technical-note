@@ -2,5 +2,6 @@
   "legacyEditor": false,
   "livePreview": true,
   "useMarkdownLinks": true,
-  "newLinkFormat": "relative"
+  "newLinkFormat": "relative",
+  "showLineNumber": true
 }
