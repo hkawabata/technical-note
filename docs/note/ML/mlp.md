@@ -485,33 +485,33 @@ $$
 \\
 &=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \gamma_i
 \left(
-\cfrac{1}{\sqrt{\sigma_i^2 + \varepsilon}} \delta_{jk}
-- \cfrac{\partial \mu_i}{\partial x_i^{(j)}} \cfrac{1}{\sqrt{\sigma_i^2 + \varepsilon}}
-- \cfrac{\partial \sigma_i^2}{\partial x_i^{(j)}} \cfrac{x_i^{(k)} - \mu_i}{2 \left( \sqrt{\sigma_i^2 + \varepsilon} \right)^3}
+\cfrac{1}{\sqrt{\sigma_i^2 + \varepsilon}} \delta_{jk} -
+\cfrac{\partial \mu_i}{\partial x_i^{(j)}} \cfrac{1}{\sqrt{\sigma_i^2 + \varepsilon}} - \cfrac{\partial \sigma_i^2}{\partial x_i^{(j)}} \cfrac{x_i^{(k)} - \mu_i}{2 \left( \sqrt{\sigma_i^2 + \varepsilon} \right)^3}
 \right) \\
 &=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \gamma_i
 \left(
-\cfrac{1}{\sqrt{\sigma_i^2 + \varepsilon}} \delta_{jk}
-- \cfrac{1}{N} \cfrac{1}{\sqrt{\sigma_i^2 + \varepsilon}}
-- \cfrac{1}{N} \left( x_i^{(j)} - \mu_i \right) \cfrac{x_i^{(k)} - \mu_i}{\left( \sqrt{\sigma_i^2 + \varepsilon} \right)^3}
+\cfrac{1}{\sqrt{\sigma_i^2 + \varepsilon}} \delta_{jk} -
+\cfrac{1}{N} \cfrac{1}{\sqrt{\sigma_i^2 + \varepsilon}} -
+\cfrac{1}{N} \left( x_i^{(j)} - \mu_i \right) \cfrac{x_i^{(k)} -
+\mu_i}{\left( \sqrt{\sigma_i^2 + \varepsilon} \right)^3}
 \right) \\
 &=& \cfrac{\gamma_i}{N \sqrt{\sigma_i^2 + \varepsilon}}
 \left(
-N \cfrac{\partial J}{\partial z_i^{(j)}}
-- \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}}
-- \hat{x}_i^{(j)} \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \hat{x}_i^{(k)}
+N \cfrac{\partial J}{\partial z_i^{(j)}} -
+\displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} -
+\hat{x}_i^{(j)} \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \hat{x}_i^{(k)}
 \right) \\
 &=& \cfrac{\gamma_i}{N \sqrt{\sigma_i^2 + \varepsilon}}
 \left(
-N \cfrac{\partial J}{\partial z_i^{(j)}}
-- \displaystyle \cfrac{\partial J}{\partial \beta_i}
-- \hat{x}_i^{(j)} \cfrac{\partial J}{\partial \gamma_i}
+N \cfrac{\partial J}{\partial z_i^{(j)}} -
+\displaystyle \cfrac{\partial J}{\partial \beta_i} -
+\hat{x}_i^{(j)} \cfrac{\partial J}{\partial \gamma_i}
 \right) \\
 &=& \left\{ \cfrac{1}{N} \cfrac{\boldsymbol{\gamma}}{\sqrt{\boldsymbol{\sigma}^2 + \varepsilon}} \odot
 \left(
-N \cfrac{\partial J}{\partial \boldsymbol{z}^{(j)}}
-- \displaystyle \cfrac{\partial J}{\partial \boldsymbol{\beta}}
-- \hat{\boldsymbol{x}}^{(j)} \odot \cfrac{\partial J}{\partial \boldsymbol{\gamma}}
+N \cfrac{\partial J}{\partial \boldsymbol{z}^{(j)}} -
+\displaystyle \cfrac{\partial J}{\partial \boldsymbol{\beta}} -
+\hat{\boldsymbol{x}}^{(j)} \odot \cfrac{\partial J}{\partial \boldsymbol{\gamma}}
 \right) \right\}_i \\
 \end{eqnarray}
 $$
