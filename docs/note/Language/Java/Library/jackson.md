@@ -321,3 +321,28 @@ System.out.println(json);
 Scala の case class では動かないらしく、通常のクラスを使う必要がある（2019/9/10時点）。
 
 https://github.com/FasterXML/jackson-module-scala/issues/308
+
+
+## Object を整形された JSON 文字列として出力する
+
+```scala
+case class Hoge(s: String, n: Int, d: Double, m: Map[String, Int], l: List[Int])
+val h = Hoge("abc", 123, 1.23, Map("a" -> 10, "b" -> 20), List(1, 2, 3))
+
+val mapper = new ObjectMapper().registerModule(DefaultScalaModule)
+println(mapper.writeValueAsString(h))
+// {"s":"abc","n":123,"d":1.23,"m":{"a":10,"b":20},"l":[1,2,3]}
+println(mapper.writerWithDefaultPrettyPrinter.writeValueAsString(h))
+/*
+{
+  "s" : "abc",
+  "n" : 123,
+  "d" : 1.23,
+  "m" : {
+    "a" : 10,
+    "b" : 20
+  },
+  "l" : [ 1, 2, 3 ]
+}
+*/
+```
