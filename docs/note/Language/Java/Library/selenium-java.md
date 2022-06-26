@@ -21,7 +21,44 @@ title: Selenium
 
 # 使い方
 
-(TODO)
+```java
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class App {
+    public static void main(String[] args) {
+        // WebDriver 生成
+        System.setProperty("webdriver.chrome.driver", "./exe/chromedriver-v101-mac64");
+        WebDriver driver = new ChromeDriver();
+
+        // ウェブページへアクセス
+        driver.get("https://ja.wikipedia.org/?curid=4105812");
+
+        // ページの要素を取得
+        WebElement toc = driver.findElement(By.id("toc"));
+        List<WebElement> aTags = driver.findElements(By.className("contentslist"));
+
+        // ページの要素から情報を抽出
+        for (WebElement aTag : aTags) {
+            String href = aTag.getAttribute("href");
+            System.out.println(href);
+        }
+  }
+}
+```
+
+
+# TIPS
+ヘッドレスブラウザを使う
+
+```java
+ChromeOptions options = new ChromeOptions();
+options.addArguments("--headless");
+System.setProperty("webdriver.chrome.driver", "./exe/chromedriver-v101-mac64");
+WebDriver driver = new ChromeDriver(options);
+```
 
 # トラブルシューティング
 
