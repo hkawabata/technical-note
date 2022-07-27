@@ -39,6 +39,10 @@
 </a>
           </li>
           <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Management/planned-happenstance-theory">計画的偶発性理論
+</a>
+          </li>
+          <li>
             <a href="https://hkawabata.github.io/technical-note/note/Management/retrospective">振り返り
 </a>
           </li>
@@ -616,6 +620,10 @@
         <span>NLP</span>
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/NLP/string-similarity">文字列の類似度
+</a>
+          </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/NLP/word2vec">Word2Vec
 </a>
