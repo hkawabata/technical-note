@@ -14,38 +14,47 @@ wavelet transform
 
 ウェーブレット変換ではその欠点を補い、時間とともにデータの周期性が変化していく様子を捉えることができる。
 
-# 基本的な考え方
+# 基本的な考え方・変換手順
 
-## ウェーブレットの導入
+## ウェーブレットの生成
 
-信号の周波数成分を解析するための物差しとして導入する、「波の断片」。
+信号の周波数成分を解析するための物差しとして導入する「波の断片」を **ウェーブレット**と呼ぶ。  
 基準となる**マザーウェーブレット**をメキシカンハット関数
 
 $$
 \psi(t) = \left(1 - t^2 \right) \exp{ \left( - \cfrac{t^2}{2} \right)}
 $$
 
-などで定義する。
+などで定義する（以後の説明では、ウェーブレットとしてメキシカンハット関数を使用）。
 
 <img src="https://user-images.githubusercontent.com/13412823/181408870-68f10e7e-dfa2-4ef5-8b79-e28e51acec71.png" alt="" width="500">
 
-これを拡大・縮小 / 平行移動して、色々な形のウェーブレットを生成して用いる：
+これを時間軸方向に拡大・縮小 / 平行移動して色々な形のウェーブレットを生成し、後の変換に用いる：
 
 $$
-\psi_{\sigma, t_0}(t) = \left(1 - \cfrac{(t-t_0)^2}{\sigma^2} \right) \exp{ \left( - \cfrac{(t-t_0)^2}{2\sigma^2} \right)}
+\psi_{\sigma, t_0}(t)
+= \cfrac{1}{\sqrt{\sigma}} \psi \left( \cfrac{t-t_0}{\sigma} \right)
+= \cfrac{1}{\sqrt{\sigma}} \left(1 - \cfrac{(t-t_0)^2}{\sigma^2} \right) \exp{ \left( - \cfrac{(t-t_0)^2}{2\sigma^2} \right)}
 $$
 
-![Figure_1](https://user-images.githubusercontent.com/13412823/181471261-eed5ff18-6383-434f-89c6-3b197816c98d.png)
+| パラメータ | 説明 |
+| :-- | :-- |
+| $\sigma$ | 拡大縮小のパラメータ。波の波長に相当 |
+| $t_0$ | 平行移動のパラメータ。波の中心位置に相当 |
+
+ここで、$\sigma$ 倍に引き伸ばされた波のエネルギーのスケールを合わせるため、重み $\frac{1}{\sqrt{\sigma}}$ をかけている。
+
+![](https://user-images.githubusercontent.com/13412823/181709828-9fc224b4-ee70-42ba-9b95-e87b9ca75277.png)
 
 <details>
-<summary>（作図に使ったコード）</summary>
+<summary>（展開：作図に使ったコード）</summary>
 {% gist 3bd481ef29271e88d567126aa0efb1b2 wavelet.py %}
 </details>
 
 
 ## 時間・周波数的な特徴の計算
 
-用意した色々なウェーブレット $\psi_{\sigma, t_0}(t)$ と元の時系列データ $f(t)$ とで、同じ時刻の成分どうしの積 $\psi_{\sigma, t_0}(t) f(t)$ を取り、全区間で積分することを考える。
+用意した色々なウェーブレット $\psi_{\sigma, t_0}(t)$ と元の時系列データ $f(t)$ とで、同じ時刻の成分どうしの積 $\psi_{\sigma, t_0}(t) f(t)$ を取り、全時間で積分することを考える。
 
 $$
 I(\sigma, t_0) = \int_{-\infty}^{\infty} \psi_{\sigma, t_0}(t) f(t) dt
@@ -53,46 +62,30 @@ $$
 
 ウェーブレット $\psi_{\sigma, t_0}(t)$ は、以下の特徴を持つ波であると考えることができる。
 - 特定の時刻 $t_0$ 付近だけに高い振幅を持つ
-- 周期が $\sigma$ に比例する
+- 波長（周期）が $\sigma$ に比例する
 
 なので、
 - 積 $\psi_{\sigma, t_0}(t) f(t)$ の値は、時刻 $t_0$ 付近以外ではゼロに近い値になる
-- その積分である $I(\sigma, t_0)$ の値は、時刻 $t_0$ 付近に同じ周期・同じ位相の波が存在すると大きな値になる
+- その積分値 $I(\sigma, t_0)$ は、時刻 $t_0$ 付近に同じ波長・同じ位相の波が存在すると大きな値になる
+	- 位相が同じでも、ウェーブレットと時系列データの波長が異なると、積分値は打ち消しあって小さくなる
 
+時系列データに対して様々なウェーブレットをかけて積分した具体例を下図に示す。
 
-$$
-\int_{-\infty}^{\infty} \psi_{\sigma, t_0}(t) f(t) dt
-$$
+- blue：解析対象の時系列データ $y = \sin(t^2/5) \ \ \  (0 \le t \le 20)$
+- orange：ウェーブレット $y = \psi_{\sigma, t_0}(t)$
+- green：時系列データとウェーブレットの積関数
+
+![](https://user-images.githubusercontent.com/13412823/181736071-eecf5bc3-ec83-40d2-8ff6-3096580423ab.png)
 
 <details>
-<summary>（作図に使ったコード）</summary>
-
-```python
-from matplotlib import pyplot as plt
-import numpy as np
-
-def mexican_hat(t, sigma, t0):
-    tmp = ((t - t0) / sigma)**2
-    return (1 - tmp) * np.exp(-tmp/2)
-
-t = np.arange(2000) / 100
-
-t0_list = [5.0, 10.0, 15.0]
-sigma_list = [0.5, 1.0, 2.0]
-
-fig = plt.figure(figsize=(9,9))
-c = 0
-for t0 in t0_list:
-    for sigma in sigma_list:
-        c += 1
-        y = mexican_hat(t, sigma, t0)
-        ax = fig.add_subplot(3, 3, c)
-        ax.set_title('$\sigma = ' + str(sigma) + ', t_0 = ' + str(t0) + '$')
-        ax.plot(t, y)
-        ax.grid()
-
-plt.tight_layout()
-plt.show()
-```
-
+<summary>（展開：作図に使ったコード）</summary>
+{% gist 3bd481ef29271e88d567126aa0efb1b2 wavelet-x-timeseries.py %}
 </details>
+
+## ウェーブレット変換
+
+もっと細かく $\sigma, t_0$ を区切って積分 $I(\sigma, t_0)$ を計算し、2次元ヒートマップを作成することで、時間とともに波長（周波数）が変化していく様子を捉えることができる。
+
+![Figure_3](https://user-images.githubusercontent.com/13412823/181758590-142f9859-34af-4d16-a338-78cad0b4a54a.png)
+
+{% gist 3bd481ef29271e88d567126aa0efb1b2 wavelet-transform.py %}
