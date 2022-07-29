@@ -249,6 +249,16 @@
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
           <li>
+            <span>time-series</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/time-series/wavelet-transform">ウェーブレット変換
+</a>
+              </li>
+            </ul>
+          </li>
+          <li>
             <a href="https://hkawabata.github.io/technical-note/note/Algorithm/linear_programming">線形計画法
 </a>
           </li>
