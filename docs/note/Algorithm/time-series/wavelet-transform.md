@@ -39,35 +39,7 @@ $$
 
 <details>
 <summary>（作図に使ったコード）</summary>
-
-```python
-from matplotlib import pyplot as plt
-import numpy as np
-
-def mexican_hat(t, sigma, t0):
-    tmp = ((t - t0) / sigma)**2
-    return (1 - tmp) * np.exp(-tmp/2)
-
-t = np.arange(2000) / 100
-
-t0_list = [5.0, 10.0, 15.0]
-sigma_list = [0.5, 1.0, 2.0]
-
-fig = plt.figure(figsize=(9,9))
-c = 0
-for t0 in t0_list:
-    for sigma in sigma_list:
-        c += 1
-        y = mexican_hat(t, sigma, t0)
-        ax = fig.add_subplot(3, 3, c)
-        ax.set_title('$\sigma = ' + str(sigma) + ', t_0 = ' + str(t0) + '$')
-        ax.plot(t, y)
-        ax.grid()
-
-plt.tight_layout()
-plt.show()
-```
-
+{% gist 3bd481ef29271e88d567126aa0efb1b2 wavelet.py %}
 </details>
 
 
