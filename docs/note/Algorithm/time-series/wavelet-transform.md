@@ -39,7 +39,7 @@ $$
 
 | パラメータ | 説明 |
 | :-- | :-- |
-| $\sigma$ | 拡大縮小のパラメータ。波の波長に相当 |
+| $\sigma$ | 拡大縮小のパラメータ。波の波長に相当(逆数 $\frac{1}{\sigma}$ は周波数に相当) |
 | $t_0$ | 平行移動のパラメータ。波の中心位置に相当 |
 
 ここで、$\sigma$ 倍に引き伸ばされた波のエネルギーのスケールを合わせるため、重み $\frac{1}{\sqrt{\sigma}}$ をかけている。
@@ -86,6 +86,6 @@ $$
 
 もっと細かく $\sigma, t_0$ を区切って積分 $I(\sigma, t_0)$ を計算し、2次元ヒートマップを作成することで、時間とともに波長（周波数）が変化していく様子を捉えることができる。
 
-![Figure_3](https://user-images.githubusercontent.com/13412823/181758590-142f9859-34af-4d16-a338-78cad0b4a54a.png)
+![Figure_3](https://user-images.githubusercontent.com/13412823/181863486-16025902-d144-4ea3-ad93-c8874358de39.png)
 
 {% gist 3bd481ef29271e88d567126aa0efb1b2 wavelet-transform.py %}
