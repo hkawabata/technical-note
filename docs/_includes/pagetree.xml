@@ -16,6 +16,26 @@
         </ul>
       </li>
       <li>
+        <span>DataMining</span>
+        <span class="pagetree-accordion">▼</span>
+        <ul class="pagetree-hidden">
+          <li>
+            <span>time-series</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/singular-spectrum-transformation">特異スペクトル変換
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/wavelet-transform">ウェーブレット変換
+</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
         <span>Management</span>
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
@@ -44,6 +64,10 @@
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/Management/retrospective">振り返り
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Management/delegation-of-authority">権限移譲
 </a>
           </li>
         </ul>
@@ -249,16 +273,6 @@
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
           <li>
-            <span>time-series</span>
-            <span class="pagetree-accordion">▼</span>
-            <ul class="pagetree-hidden">
-              <li>
-                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/time-series/wavelet-transform">ウェーブレット変換
-</a>
-              </li>
-            </ul>
-          </li>
-          <li>
             <a href="https://hkawabata.github.io/technical-note/note/Algorithm/linear_programming">線形計画法
 </a>
           </li>
@@ -303,6 +317,28 @@
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/Math/lagrange-multiplier">ラグランジュの未定乗数法
 </a>
+          </li>
+          <li>
+            <span>matrix</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/singular-value-decomposition">特異値分解
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/eigenvalue">固有値
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/inverse-matrix">逆行列
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/determinant">行列式
+</a>
+              </li>
+            </ul>
           </li>
         </ul>
       </li>

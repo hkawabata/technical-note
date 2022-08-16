@@ -3,5 +3,6 @@
   "livePreview": true,
   "useMarkdownLinks": true,
   "newLinkFormat": "relative",
-  "showLineNumber": true
+  "showLineNumber": true,
+  "alwaysUpdateLinks": true
 }
