@@ -73,7 +73,7 @@ $$
 \det
 \begin{pmatrix}
   a_{11} & a_{12} & a_{13} & a_{14} \\
-  {\color{red} a_{21}} & {\color{red} a_{22}} & {\color{red} a_{23}} & {\color{red} a_{24}} \\
+  {\color{red}{a_{21}}} & {\color{red}{a_{22}}} & {\color{red}{a_{23}}} & {\color{red}{a_{24}}} \\
   a_{31} & a_{32} & a_{33} & a_{34} \\
   a_{41} & a_{42} & a_{43} & a_{44}
 \end{pmatrix}
@@ -113,37 +113,37 @@ $$
 \det
 \begin{pmatrix}
   a_{11} & a_{12} & a_{13} & a_{14} \\
-  {\color{red} a_{21}} & {\color{red} a_{22}} & {\color{red} a_{23}} & {\color{red} a_{24}} \\
+  {\color{red}{a_{21}}} & {\color{red}{a_{22}}} & {\color{red}{a_{23}}} & {\color{red}{a_{24}}} \\
   a_{31} & a_{32} & a_{33} & a_{34} \\
-  {\color{blue} a_{41}} & {\color{blue} a_{42}} & {\color{blue} a_{43}} & {\color{blue} a_{44}}
+  {\color{blue}{a_{41}}} & {\color{blue}{a_{42}}} & {\color{blue}{a_{43}}} & {\color{blue}{a_{44}}}
 \end{pmatrix}
 =
-{\color{red} -1}
+{\color{red}{-1}}
 \det
 \begin{pmatrix}
   a_{11} & a_{12} & a_{13} & a_{14} \\
-  {\color{blue} a_{41}} & {\color{blue} a_{42}} & {\color{blue} a_{43}} & {\color{blue} a_{44}} \\
+  {\color{blue}{a_{41}}} & {\color{blue}{a_{42}}} & {\color{blue}{a_{43}}} & {\color{blue}{a_{44}}} \\
   a_{31} & a_{32} & a_{33} & a_{34} \\
-  {\color{red} a_{21}} & {\color{red} a_{22}} & {\color{red} a_{23}} & {\color{red} a_{24}}
+  {\color{red}{a_{21}}} & {\color{red}{a_{22}}} & {\color{red}{a_{23}}} & {\color{red}{a_{24}}}
 \end{pmatrix}
 $$
 
 $$
 \det
 \begin{pmatrix}
-  a_{11} & a_{12} & {\color{red} a_{13}} & {\color{blue} a_{14}} \\
-  a_{21} & a_{22} & {\color{red} a_{23}} & {\color{blue} a_{24}} \\
-  a_{31} & a_{32} & {\color{red} a_{33}} & {\color{blue} a_{34}} \\
-  a_{41} & a_{42} & {\color{red} a_{43}} & {\color{blue} a_{44}}
+  a_{11} & a_{12} & {\color{red}{a_{13}}} & {\color{blue}{a_{14}}} \\
+  a_{21} & a_{22} & {\color{red}{a_{23}}} & {\color{blue}{a_{24}}} \\
+  a_{31} & a_{32} & {\color{red}{a_{33}}} & {\color{blue}{a_{34}}} \\
+  a_{41} & a_{42} & {\color{red}{a_{43}}} & {\color{blue}{a_{44}}}
 \end{pmatrix}
 =
-{\color{red} -1}
+{\color{red}{-1}}
 \det
 \begin{pmatrix}
-  a_{11} & a_{12} & {\color{blue} a_{14}} & {\color{red} a_{13}} \\
-  a_{21} & a_{22} & {\color{blue} a_{24}} & {\color{red} a_{23}} \\
-  a_{31} & a_{32} & {\color{blue} a_{34}} & {\color{red} a_{33}} \\
-  a_{41} & a_{42} & {\color{blue} a_{44}} & {\color{red} a_{43}}
+  a_{11} & a_{12} & {\color{blue}{a_{14}}} & {\color{red}{a_{13}}} \\
+  a_{21} & a_{22} & {\color{blue}{a_{24}}} & {\color{red}{a_{23}}} \\
+  a_{31} & a_{32} & {\color{blue}{a_{34}}} & {\color{red}{a_{33}}} \\
+  a_{41} & a_{42} & {\color{blue}{a_{44}}} & {\color{red}{a_{43}}}
 \end{pmatrix}
 $$
 
@@ -153,15 +153,15 @@ $$
 \det
 \begin{pmatrix}
   a_{11} & a_{12} & a_{13} & a_{14} \\
-  {\color{red} a_{21}} & {\color{red} a_{22}} & {\color{red} a_{23}} & {\color{red} a_{24}} \\
+  {\color{red}{a_{21}}} & {\color{red}{a_{22}}} & {\color{red}{a_{23}}} & {\color{red}{a_{24}}} \\
   a_{31} & a_{32} & a_{33} & a_{34} \\
-  {\color{blue} a_{41}} & {\color{blue} a_{42}} & {\color{blue} a_{43}} & {\color{blue} a_{44}}
+  {\color{blue}{a_{41}}} & {\color{blue}{a_{42}}} & {\color{blue}{a_{43}}} & {\color{blue}{a_{44}}}
 \end{pmatrix}
 =
 \det
 \begin{pmatrix}
   a_{11} & a_{12} & a_{13} & a_{14} \\
-  {\color{red} a_{21}+ca_{41}} & {\color{red} a_{22}+ca_{42}} & {\color{red} a_{23}+ca_{43}} & {\color{red} a_{24}+ca_{44}} \\
+  {\color{red}{a_{21}+ca_{41}}} & {\color{red}{a_{22}+ca_{42}}} & {\color{red}{a_{23}+ca_{43}}} & {\color{red}{a_{24}+ca_{44}}} \\
   a_{31} & a_{32} & a_{33} & a_{34} \\
   a_{41} & a_{42} & a_{43} & a_{44}
 \end{pmatrix}
@@ -170,18 +170,18 @@ $$
 $$
 \det
 \begin{pmatrix}
-  a_{11} & a_{12} & {\color{red} a_{13}} & {\color{blue} a_{14}} \\
-  a_{21} & a_{22} & {\color{red} a_{23}} & {\color{blue} a_{24}} \\
-  a_{31} & a_{32} & {\color{red} a_{33}} & {\color{blue} a_{34}} \\
-  a_{41} & a_{42} & {\color{red} a_{43}} & {\color{blue} a_{44}}
+  a_{11} & a_{12} & {\color{red}{a_{13}}} & {\color{blue}{a_{14}}} \\
+  a_{21} & a_{22} & {\color{red}{a_{23}}} & {\color{blue}{a_{24}}} \\
+  a_{31} & a_{32} & {\color{red}{a_{33}}} & {\color{blue}{a_{34}}} \\
+  a_{41} & a_{42} & {\color{red}{a_{43}}} & {\color{blue}{a_{44}}}
 \end{pmatrix}
 =
 \det
 \begin{pmatrix}
-  a_{11} & a_{12} & {\color{red} a_{13}+ca_{14}} & a_{14} \\
-  a_{21} & a_{22} & {\color{red} a_{23}+ca_{24}} & a_{24} \\
-  a_{31} & a_{32} & {\color{red} a_{33}+ca_{34}} & a_{34} \\
-  a_{41} & a_{42} & {\color{red} a_{43}+ca_{44}} & a_{44}
+  a_{11} & a_{12} & {\color{red}{a_{13}+ca_{14}}} & a_{14} \\
+  a_{21} & a_{22} & {\color{red}{a_{23}+ca_{24}}} & a_{24} \\
+  a_{31} & a_{32} & {\color{red}{a_{33}+ca_{34}}} & a_{34} \\
+  a_{41} & a_{42} & {\color{red}{a_{43}+ca_{44}}} & a_{44}
 \end{pmatrix}
 $$
 
