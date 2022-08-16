@@ -91,19 +91,19 @@ $$
 $$
 \det
 \begin{pmatrix}
-  a_{11} & a_{12} & \textcolor{red}{a_{13}} & a_{14} \\
-  a_{21} & a_{22} & \textcolor{red}{a_{23}} & a_{24} \\
-  a_{31} & a_{32} & \textcolor{red}{a_{33}} & a_{34} \\
-  a_{41} & a_{42} & \textcolor{red}{a_{43}} & a_{44}
+  a_{11} & a_{12} & {\color{red}{a_{13}}} & a_{14} \\
+  a_{21} & a_{22} & {\color{red}{a_{23}}} & a_{24} \\
+  a_{31} & a_{32} & {\color{red}{a_{33}}} & a_{34} \\
+  a_{41} & a_{42} & {\color{red}{a_{43}}} & a_{44}
 \end{pmatrix}
 =
-\textcolor{red}{\cfrac{1}{c}}
+{\color{red}{\cfrac{1}{c}}}
 \det
 \begin{pmatrix}
-  a_{11} & a_{12} & \textcolor{red}{c a_{13}} & a_{14} \\
-  a_{21} & a_{22} & \textcolor{red}{c a_{23}} & a_{24} \\
-  a_{31} & a_{32} & \textcolor{red}{c a_{33}} & a_{34} \\
-  a_{41} & a_{42} & \textcolor{red}{c a_{43}} & a_{44}
+  a_{11} & a_{12} & {\color{red}{c a_{13}}} & a_{14} \\
+  a_{21} & a_{22} & {\color{red}{c a_{23}}} & a_{24} \\
+  a_{31} & a_{32} & {\color{red}{c a_{33}}} & a_{34} \\
+  a_{41} & a_{42} & {\color{red}{c a_{43}}} & a_{44}
 \end{pmatrix}
 $$
 
