@@ -97,7 +97,7 @@ $$
   a_{41} & a_{42} & {\color{red} a_{43}} & a_{44}
 \end{pmatrix}
 =
-{\color{red} \cfrac{1}{c}}
+\color{red}{\cfrac{1}{c}}
 \det
 \begin{pmatrix}
   a_{11} & a_{12} & {\color{red} c a_{13}} & a_{14} \\
@@ -188,6 +188,7 @@ $$
 
 ## 三角行列の行列式
 上三角行列
+
 $$
 A =
 \begin{pmatrix}
