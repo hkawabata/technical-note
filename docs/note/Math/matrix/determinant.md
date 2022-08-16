@@ -78,11 +78,11 @@ $$
   a_{41} & a_{42} & a_{43} & a_{44}
 \end{pmatrix}
 =
-{\color{red} \cfrac{1}{c}}
+{\color{red}{\cfrac{1}{c}}}
 \det
 \begin{pmatrix}
   a_{11} & a_{12} & a_{13} & a_{14} \\
-  {\color{red} c a_{21}} & {\color{red} c a_{22}} & {\color{red} c a_{23}} & {\color{red} c a_{24}} \\
+  {\color{red} c a_{21}} & {\color{red} c a_{22}} & {\color{red} c a_{23}} & {\color{red}{c a_{24}}} \\
   a_{31} & a_{32} & a_{33} & a_{34} \\
   a_{41} & a_{42} & a_{43} & a_{44}
 \end{pmatrix}
