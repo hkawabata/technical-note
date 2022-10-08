@@ -143,6 +143,10 @@
 </a>
                   </li>
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/pandas">pandas
+</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/flask">Flask
 </a>
                   </li>
@@ -236,6 +240,10 @@
                 <span>Library</span>
                 <span class="pagetree-accordion">▼</span>
                 <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Scala/Library/parser-combinator">Parser Combinator
+</a>
+                  </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Scala/Library/breeze">Breeze
 </a>
@@ -668,6 +676,10 @@
         <ul class="pagetree-hidden">
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/NLP/string-similarity">文字列の類似度
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/NLP/tf-idf">TF-IDF
 </a>
           </li>
           <li>
