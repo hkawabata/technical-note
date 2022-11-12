@@ -58,10 +58,10 @@ import org.apache.spark.sql.catalyst.ScalaReflection
 import org.apache.spark.sql.types.StructType
 
 case class MySubObj(n: Int, s: String)
-case class MyRecord(obj: MySubObj, list: List[String], num: Int, str: String)
-val schema: StructType = ScalaReflection.schemaFor[MyRecord].dataType.asInstanceOf[StructType]
+case class MyData(obj: MySubObj, list: List[String], num: Int, str: String)
+val schema: StructType = ScalaReflection.schemaFor[MyData].dataType.asInstanceOf[StructType]
 
-val records: Dataset[MyRecord] = spark.read.schema(schema).json("sample.json").as[MyRecord]
+val records: Dataset[MyData] = spark.read.schema(schema).json("sample.json").as[MyData]
 ```
 
 ### CSV
@@ -371,5 +371,165 @@ scala> ds.groupBy("s1", "s2").max("n", "d").orderBy("s1", "s2").show()
 | `var_samp` | 標本分散 |
 | `variance` | = `var_samp` |
 
-### join
+### ソート
 
+```scala
+scala> ds.orderBy($"s1".desc, $"n").show()
++---+---+---+---+
+| s1| s2|  n|  d|
++---+---+---+---+
+|  c|  y|  2|0.3|
+|  c|  x|  3|0.2|
+|  c|  y|  4|0.1|
+|  b|  x|  1|0.4|
+|  b|  x|  3|0.6|
+|  b|  y|  4|0.5|
+|  a|  x|  1|0.8|
+|  a|  y|  2|0.7|
++---+---+---+---+
+```
+
+### 集合同士の操作
+
+```scala
+val ds1: Dataset[String] = Seq("a", "b", "c", "d").toDS()
+val ds2: Dataset[String] = Seq("a", "b", "e", "f").toDS()
+```
+
+#### 結合
+
+```scala
+scala> ds1.unionAll(ds2).show()
++-----+
+|value|
++-----+
+|    a|
+|    b|
+|    c|
+|    d|
+|    a|
+|    b|
+|    e|
+|    f|
++-----+
+```
+
+#### 積集合
+
+```scala
+scala> ds1.intersect(ds2).show()
++-----+
+|value|
++-----+
+|    b|
+|    a|
++-----+
+```
+
+#### 差分
+
+```scala
+scala> ds1.except(ds2).show()
++-----+
+|value|
++-----+
+|    d|
+|    c|
++-----+
+
+scala> ds2.except(ds1).show()
++-----+
+|value|
++-----+
+|    f|
+|    e|
++-----+
+```
+
+#### join
+
+```scala
+case class MyRecord2(name: String, birthPlace: String)
+case class MyRecord3(name: String, age: Int)
+val ds1 = Seq(
+  MyRecord2("a", "New York"),
+  MyRecord2("b", "Tokyo"),
+  MyRecord2("c", "London"),
+  MyRecord2("d", "Beijing")
+).toDS
+val ds2 = Seq(
+  MyRecord3("a", 10),
+  MyRecord3("b", 20),
+  MyRecord3("e", 30)
+).toDS
+
+import org.apache.spark.sql.catalyst.plans.{Inner, LeftOuter, RightOuter, FullOuter, Cross}
+```
+
+inner join：
+
+```scala
+scala> ds1.join(ds2, ds1("name") === ds2("name"), "inner").show()
++----+----------+----+---+
+|name|birthPlace|name|age|
++----+----------+----+---+
+|   a|  New York|   a| 10|
+|   b|     Tokyo|   b| 20|
++----+----------+----+---+
+```
+
+outer join：
+
+```scala
+scala> ds1.join(ds2, ds1("name") === ds2("name"), "leftouter").show()
++----+----------+----+----+
+|name|birthPlace|name| age|
++----+----------+----+----+
+|   a|  New York|   a|  10|
+|   b|     Tokyo|   b|  20|
+|   c|    London|null|null|
+|   d|   Beijing|null|null|
++----+----------+----+----+
+
+scala> ds1.join(ds2, ds1("name") === ds2("name"), "rightouter").show()
++----+----------+----+---+
+|name|birthPlace|name|age|
++----+----------+----+---+
+|   a|  New York|   a| 10|
+|   b|     Tokyo|   b| 20|
+|null|      null|   e| 30|
++----+----------+----+---+
+
+scala> ds1.join(ds2, ds1("name") === ds2("name"), "fullouter").show()
++----+----------+----+----+
+|name|birthPlace|name| age|
++----+----------+----+----+
+|null|      null|   e|  30|
+|   d|   Beijing|null|null|
+|   c|    London|null|null|
+|   b|     Tokyo|   b|  20|
+|   a|  New York|   a|  10|
++----+----------+----+----+
+```
+
+cross join：
+
+```scala
+scala> ds1.crossJoin(ds2).show()
++----+----------+----+---+
+|name|birthPlace|name|age|
++----+----------+----+---+
+|   a|  New York|   a| 10|
+|   a|  New York|   b| 20|
+|   a|  New York|   e| 30|
+|   b|     Tokyo|   a| 10|
+|   b|     Tokyo|   b| 20|
+|   b|     Tokyo|   e| 30|
+|   c|    London|   a| 10|
+|   c|    London|   b| 20|
+|   c|    London|   e| 30|
+|   d|   Beijing|   a| 10|
+|   d|   Beijing|   b| 20|
+|   d|   Beijing|   e| 30|
++----+----------+----+---+
+```
