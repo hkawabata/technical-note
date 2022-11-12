@@ -51,3 +51,59 @@ x_{t+(w-1)} & x_{t+(w-1)+1} & \cdots & x_{t+(w-1)+(M-1)}
 $$
 
 を定義する。
+
+
+# 実装例
+
+結果が期待通りにならないのでバグが有りそう。要確認
+
+```python
+import numpy as np
+from matplotlib import pyplot as plt
+
+T = 5000
+w = 10
+M = 500
+L = 300
+
+ts = np.arange(T) / 100
+y_noise = np.random.normal(loc=0, scale=0.1, size=T)
+y1 = y_noise + np.where(np.logical_and(4*np.pi < ts, ts < 9*np.pi), np.sin(ts), np.sin(3*ts))
+y2 = y_noise + np.sin(ts) + np.where(np.logical_and(np.pi < ts, ts < np.pi*101/100), 5.0, 0)
+
+#plt.plot(ts, y1)
+#plt.show()
+#plt.plot(ts, y2)
+#plt.show()
+
+def get_matrix(i_start, y):
+    ret = []
+    for i in range(i_start, i_start+M):
+        ret.append(y[i:i+w])
+    return np.array(ret).T
+
+def calc_svd(matrix):
+    U, s, V = np.linalg.svd(matrix)
+    return U, s, V
+
+def step(i_start, y):
+    H = get_matrix(i_start, y)
+    H_history = get_matrix(i_start-L, y)
+    U, _, _ = calc_svd(H)
+    U_history, _, _ = calc_svd(H_history)
+    _, s, _ = calc_svd((U.T).dot(U_history))
+    return 1 - s[0]
+
+a_y1 = []
+a_y2 = []
+for i_start in range(L, T-w-M):
+    if i_start % 100 == 0:
+        print(i_start)
+    a_y1.append(step(i_start, y1))
+    a_y2.append(step(i_start, y2))
+
+plt.plot(ts[L:T-w-M], a_y1)
+plt.show()
+plt.plot(ts[L:T-w-M], a_y2)
+plt.show()
+```

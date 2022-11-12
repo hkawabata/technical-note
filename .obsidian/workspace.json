@@ -1,0 +1,147 @@
+{
+  "main": {
+    "id": "7b41d50032361882",
+    "type": "split",
+    "children": [
+      {
+        "id": "43a51b8b11b82765",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "febb43e2d9c18ab5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/note/Language/Scala/collection-performance.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "11f3d40a8d11732c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/note/NLP/tf-idf.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "a4bfea9bdd260922",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/note/Network/words.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "4ce58be69b39251e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/note/OSS/Spark/Dataset.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "bbfa5ada2aa5a61b",
+    "type": "split",
+    "children": [
+      {
+        "id": "a6c297b79e418088",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bdcb119cd4e200c7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "75dc1a745f92286b",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "d75e62fc324154d9",
+    "type": "split",
+    "children": [
+      {
+        "id": "c0f40854a847f134",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4e17932294f43fb1",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "docs/note/OSS/Spark/Dataset.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": true,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "active": "4ce58be69b39251e",
+  "lastOpenFiles": [
+    "docs/note/Network/words.md",
+    "docs/note/Algorithm/fft.md",
+    "docs/note/NLP/tf-idf.md",
+    "docs/note/Language/Scala/collection-performance.md",
+    "docs/note/Math/matrix/inverse-matrix.md",
+    "docs/note/Math/matrix/eigenvalue.md",
+    "docs/note/Math/matrix/determinant.md",
+    "docs/note/NLP/string-similarity.md",
+    "docs/note/DataMining/time-series/wavelet-transform.md",
+    "docs/note/Language/Python/Library/pandas.md"
+  ]
+}
