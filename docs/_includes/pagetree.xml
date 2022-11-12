@@ -36,6 +36,16 @@
         </ul>
       </li>
       <li>
+        <span>Network</span>
+        <span class="pagetree-accordion">▼</span>
+        <ul class="pagetree-hidden">
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Network/words">ネットワーク用語
+</a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <span>Management</span>
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
@@ -234,6 +244,10 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Language/Scala/curry_and_partial-application">カリー化・部分適用
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/Scala/collection-performance">コレクションの性能
 </a>
               </li>
               <li>
@@ -660,6 +674,10 @@
             <ul class="pagetree-hidden">
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/OSS/Spark/overview">Spark 概観
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/OSS/Spark/Dataset">Dataset
 </a>
               </li>
               <li>
