@@ -133,9 +133,11 @@ tsv.show()
 
 ```scala
 import org.apache.spark.sql.SaveMode
-df.write.mode(SaveMode.Overwrite).
-  option("header", "true").
-  csv("/path/to/save/directory")
+df.write.mode(SaveMode.Overwrite).  // ErrorIfExists, Overwrite
+  option("header", "true").         // ヘッダをファイル先頭に付与
+  option("compression", "gzip").    // gzip 圧縮
+  option("delimiter", "\t").        // カラムのデリミタをタブに
+  csv("/path/to/save/directory")    // ファイル保存
 ```
 
 ## 種々の操作
@@ -143,8 +145,6 @@ df.write.mode(SaveMode.Overwrite).
 ### select
 
 ※ カラム名の大文字・小文字は区別されない模様
-
-#### 特定カラムの抽出
 
 ```scala
 csvLabeled.select("numInt").show()
@@ -170,6 +170,8 @@ csvLabeled.select($"numInt", $"strSmall").show()
 |     3|       c|
 +------+--------+
 ```
+
+### カラムの値の操作
 
 #### 型キャスト
 
@@ -240,6 +242,39 @@ csvConverted.select(
 | bB| b2|B-b|B/0.8|B/002-0.800000|
 | cC| c3|C-c|C/0.7|C/003-0.700000|
 +---+---+---+-----+--------------+
+```
+
+#### コレクション操作
+
+```scala
+val dsCollection = Seq(
+  (List(1, 10, 100, 10, 0.1), Set(1, 10, 1000, 100)),
+  (List(2, 20, 200, 20, 0.2), Set(2, 20, 2000, 200)),
+  (List(3, 30, 300, 30, 0.3), Set(3, 30, 3000, 300))
+).toDF("array", "set")
+
+val dfArray = Seq(
+  (List(1, 10, 100, 10, 0.1), List(10, 100)),
+  (List(2, 20, 200, 20, 0.2), List(20, 200)),
+  (List(3, 30, 300, 30, 0.3), List(30, 300))
+).toDF("arr1", "arr2")
+```
+
+```scala
+dfArray.select(
+  array_contains($"arr1", 1),
+  sort_array($"arr1")
+).show()
+```
+
+```
++-----------------------+----------------------+
+|array_contains(arr1, 1)|sort_array(arr1, true)|
++-----------------------+----------------------+
+|                   true|  [0.1, 1.0, 10.0, ...|
+|                  false|  [0.2, 2.0, 20.0, ...|
+|                  false|  [0.3, 3.0, 30.0, ...|
++-----------------------+----------------------+
 ```
 
 #### if-else
@@ -462,8 +497,6 @@ val ds2 = Seq(
   MyRecord3("b", 20),
   MyRecord3("e", 30)
 ).toDS
-
-import org.apache.spark.sql.catalyst.plans.{Inner, LeftOuter, RightOuter, FullOuter, Cross}
 ```
 
 inner join：

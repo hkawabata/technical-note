@@ -239,6 +239,10 @@
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
               <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/Scala/string-completion">文字列補間
+</a>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Language/Scala/regular-expression">正規表現
 </a>
               </li>
@@ -337,8 +341,56 @@
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
           <li>
+            <span>statistics</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/law-of-large-numbers">大数の法則
+</a>
+              </li>
+              <li>
+                <span>test</span>
+                <span class="pagetree-accordion">▼</span>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/moment-generating-function">モーメント母関数（積率母関数）
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/chebyshev-inequality">チェビシェフの不等式
+</a>
+              </li>
+              <li>
+                <span>distribution</span>
+                <span class="pagetree-accordion">▼</span>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/qq-plot">Q-Q プロット
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/central-limit-theorem">中心極限定理
+</a>
+              </li>
+            </ul>
+          </li>
+          <li>
             <a href="https://hkawabata.github.io/technical-note/note/Math/lagrange-multiplier">ラグランジュの未定乗数法
 </a>
+          </li>
+          <li>
+            <span>calculus</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/lhopital-theorem">ロピタルの定理
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/formula">微分積分の公式
+</a>
+              </li>
+            </ul>
           </li>
           <li>
             <span>matrix</span>
@@ -396,6 +448,10 @@
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/ML/knn">k 近傍法
+</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/ML/xgboost">XGBoost
 </a>
           </li>
           <li>

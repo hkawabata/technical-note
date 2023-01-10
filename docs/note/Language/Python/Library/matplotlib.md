@@ -253,7 +253,7 @@ plt.show()
 デフォルト設定だと日本語フォントは文字化けする。  
 グラフに日本語を表示するには、ttf ファイルを読み込んで使う。
 
-```
+```python
 import numpy as np
 from matplotlib import pyplot as plt, font_manager
 fp = font_manager.FontProperties(fname='/System/Library/Fonts/ヒラギノ丸ゴ ProN W4.ttc')

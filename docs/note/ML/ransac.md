@@ -4,7 +4,7 @@ title: RANSAC
 
 # RANSAC とは
 
-RANdom SAmple Consensus.  
+= RANdom SAmple Consensus.  
 外れ値を含むデータから、外れ値の影響を除外して数学モデルのパラメータを学習する手法。
 
 ## 流れ
