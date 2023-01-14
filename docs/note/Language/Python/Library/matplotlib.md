@@ -189,6 +189,26 @@ plt.show()
 
 ## グラフの配置
 
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+
+plt.figure(figsize=(9, 6))  # 描画範囲全体のサイズを設定（ヨコ, タテ）
+x = np.array(range(100))/100.0
+for i in range(2):
+	for j in range(3):
+		y = x*i + j
+		n = i*3+j+1
+		plt.subplot(2, 3, n)  # 2行3列のn番目のグラフを描画
+		plt.title('$y = {}x + {}$'.format(i, j))
+		plt.ylim([-0.5, 3.5])
+		plt.plot(x, y)
+
+plt.show()
+```
+
+![Figure_1](https://user-images.githubusercontent.com/13412823/211958451-84e8ac56-e06f-4fa8-a79a-30dfb3f1514b.png)
+
 
 ## Tips
 

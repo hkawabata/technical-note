@@ -363,6 +363,24 @@
               <li>
                 <span>distribution</span>
                 <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/poisson-distribution">ポアソン分布
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/chi-square-distribution">カイ二乗分布
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/beta-distribution">ベータ分布
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/binomial-distribution">二項分布
+</a>
+                  </li>
+                </ul>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/qq-plot">Q-Q プロット
@@ -370,6 +388,10 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/central-limit-theorem">中心極限定理
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/skewness">歪度
 </a>
               </li>
             </ul>
