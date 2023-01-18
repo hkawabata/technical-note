@@ -23,7 +23,7 @@ $B(\alpha, \beta)$ は規格化のための定数。
 
 # 確率密度関数の導出
 
-略
+ToDo
 
 # ベータ分布の期待値・分散
 
@@ -127,6 +127,7 @@ $$
 	- → 試行回数が多いほど、確率の見積もり精度が高まる
 ![Figure_1](https://user-images.githubusercontent.com/13412823/211961160-cd458953-fabc-466e-a782-e023dee885cc.png)
 
+（描画に使った Python コード）
 ```python
 import numpy as np
 import math

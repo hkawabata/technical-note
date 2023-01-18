@@ -345,7 +345,21 @@
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
               <li>
+                <span>time-series</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/time-series/autocorrelation">自己相関
+</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/law-of-large-numbers">大数の法則
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/kurtosis">尖度
 </a>
               </li>
               <li>
@@ -370,6 +384,10 @@
                   </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/chi-square-distribution">カイ二乗分布
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/geometric-distribution">幾何分布
 </a>
                   </li>
                   <li>
@@ -406,6 +424,10 @@
             <ul class="pagetree-hidden">
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/lhopital-theorem">ロピタルの定理
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/taylor-expantion">テイラー展開
 </a>
               </li>
               <li>

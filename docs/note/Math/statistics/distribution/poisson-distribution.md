@@ -176,7 +176,7 @@ $$
 $\lambda$ が大きいほど、分布は平均値付近に集中する：
 ![Figure_2](https://user-images.githubusercontent.com/13412823/212444401-814855e9-f922-44bd-ba08-6aeebc413729.png)
 
-
+（描画に使った Python コード）
 ```python
 import numpy as np
 import math

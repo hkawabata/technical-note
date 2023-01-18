@@ -111,6 +111,7 @@ $$
 
 ![Figure_1](https://user-images.githubusercontent.com/13412823/212012103-71c759ed-4bbd-423b-9260-6011ae86591d.png)
 
+（描画に使った Python コード）
 ```python
 import numpy as np
 import math

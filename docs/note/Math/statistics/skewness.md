@@ -47,9 +47,7 @@ $\left( \cfrac{X - \mu}{\sigma} \right)^3$ の値は、
 | :--: | :--: | :--: |
 | ![Figure_1](https://user-images.githubusercontent.com/13412823/211734961-20285fa9-858d-4cf3-9e79-0eea9d200fef.png) | ![Figure_2](https://user-images.githubusercontent.com/13412823/211734957-2c4e2c16-b5e4-40df-b05c-50629aa526f6.png) | ![Figure_3](https://user-images.githubusercontent.com/13412823/211734949-7969ac1c-4ba7-4f58-9cff-50bbc70c3793.png)
 
-<details>
-<summary>グラフ描画コード</summary>
-
+（描画に使った Python コード）
 ```python
 import numpy as np
 import scipy
@@ -80,4 +78,4 @@ plot_beta(2, 7, 10000, 0.01)
 plot_beta(7, 2, 10000, 0.01)
 plot_beta(7, 7, 10000, 0.01)
 ```
-</details>
+
