@@ -2,7 +2,7 @@
 title: matplotlib
 ---
 
-# matplotlib とは
+# matplotlib 概要
 
 Python の画像処理ライブラリ。
 

@@ -2,6 +2,10 @@
 title: PyAudio
 ---
 
+# 概要
+
+PortAudio（オーディオの再生・録音のためのオープンソースライブラリ）をバインディングして、再生・録音などオーディオ処理を行うライブラリ。
+
 # インストール
 
 ```bash
@@ -12,7 +16,7 @@ $ pip install pyaudio
 
 ### 'portaudio.h' file not found
 
-以下のようなエラーが出てインストールできない場合は`brew install portaudio`を先に実行する（Mac）。
+以下のようなエラーが出てインストールできない場合は `brew install portaudio` を先に実行する（Mac）。
 
 ```bash
 src/_portaudiomodule.c:29:10: fatal error: 'portaudio.h' file not found

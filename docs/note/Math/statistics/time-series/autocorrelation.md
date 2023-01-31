@@ -356,4 +356,76 @@ plt.show()
 
 ## 例：いろいろな手作りデータ
 
-（ToDo：周期性のあるもの、一定のラグに大きな依存があるもの）
+```python
+import numpy as np
+from matplotlib import pyplot as plt
+import statsmodels.api as sm
+
+def noise(sigma, n):
+	rand = np.random.normal(loc=0, scale=sigma, size=n)
+	if n == 1:
+		return rand[0]
+	else:
+		return rand
+
+N = 100
+
+# 周期性あり：サインカーブ
+y_sin = np.sin(np.linspace(0, 10*np.pi, N)) + noise(0.1, N)
+
+# 周期性あり：一定期間ごとに大きなピーク
+y_peak = noise(0.1, N)
+y_peak[::5] += 1.0
+
+# 完全ランダム
+y_rand_norm = noise(1.0, N)
+
+s = 0.01
+# 1つ前の成分だけに依存
+y_1 = [1.0]
+for _ in range(N-1):
+	y_1.append((1.1+noise(s,1))*y_1[-1])
+
+# 1つ前〜3つ前までの成分に依存
+y_123 = [1.0] * 3
+for _ in range(N-3):
+	y_123.append((1.1+noise(s,1))*y_123[-1] - (0.9+noise(s,1))*y_123[-2] + (0.8+noise(s,1))*y_123[-3])
+
+ys = [
+	('$\sin (t)$', y_sin),
+	('peak', y_peak),
+	('random normal', y_rand_norm),
+	('$y_t = 1.1 y_{t-1}$', y_1),
+	('$y_t = 1.1 y_{t-1} - 0.9 y_{t-2} + 0.8 y_{t-3}$', y_123)
+]
+fig, ax = plt.subplots(len(ys), 3, figsize=(10, 2.3*len(ys)))
+plt_cnt = 0
+for title, y in ys:
+	# 元データ
+	ax[plt_cnt,0].plot(range(N), y)
+	ax[plt_cnt,0].grid()
+	ax[plt_cnt,0].set_title('Raw Data' if plt_cnt==0 else '')
+	ax[plt_cnt,0].set_ylabel(title, fontsize=8)
+	# 自己相関係数
+	sm.graphics.tsa.plot_acf(y, lags=N//2-1, ax=ax[plt_cnt,1], marker='.')
+	#ax[plt_cnt,0].set_xticks(np.arange(0, 24*days+1, 24))
+	ax[plt_cnt,1].grid()
+	ax[plt_cnt,1].set_title('Autocorrelation' if plt_cnt==0 else '')
+	# 偏自己相関係数
+	sm.graphics.tsa.plot_pacf(y, lags=N//2-1, ax=ax[plt_cnt,2], marker='.')
+	#ax[plt_cnt,1].set_xticks(np.arange(0, 24*days+1, 24))
+	ax[plt_cnt,2].grid()
+	ax[plt_cnt,2].set_title('Partial Autocorrelation' if plt_cnt==0 else '')
+	plt_cnt += 1
+
+plt.show()
+```
+
+![Figure_1](https://user-images.githubusercontent.com/13412823/213912338-f66c4e43-adec-4fb5-a199-e0735d0e7249.png)
+| データ | 自己相関 | 偏自己相関 |
+| :-- | :-- | :-- |
+| サインカーブ | 期待通り、「ラグ = 周期の倍数」のところに高い相関が出ている | バラバラ。若干期待する周期のところの偏自己相関は大きいかも |
+| 一定期間ごとにピーク | 同上 | 期待する周期（ラグ = 5）のところに相関が見られる。「ラグ = 30〜50」のあたりに大きな相関が観測されているのはなぜ？ |
+| 完全ランダム（正規分布） | 期待通り自己相関は見られない | 期待通り自己相関は見られない |
+| 1つ前の成分だけに依存 | ラグが大きくなるほど自己相関が低下 | 1つ前の成分のみに相関が見られる |
+| 1つ前〜3つ前の成分に依存 | 概ね同上、1つ前の成分だけに依存する場合よりは自己相関はばらつく | 「ラグ = 1〜3」のあたりの偏自己相関は高い。しかし、「ラグ = 40〜」のあたりでも偏自己相関が高くなっているのが謎 |

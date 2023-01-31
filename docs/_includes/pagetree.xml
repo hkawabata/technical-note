@@ -141,6 +141,10 @@
 </a>
                   </li>
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/statsmodels">statsmodels
+</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/matplotlib">matplotlib
 </a>
                   </li>
@@ -154,6 +158,14 @@
                   </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/pandas">pandas
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/numpy">numpy
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/tqdm">qdm
 </a>
                   </li>
                   <li>
@@ -363,6 +375,10 @@
 </a>
               </li>
               <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/lorenz-curve">ローレンツ曲線
+</a>
+              </li>
+              <li>
                 <span>test</span>
                 <span class="pagetree-accordion">▼</span>
               </li>
@@ -410,6 +426,10 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/skewness">歪度
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/partial-correlation">偏相関
 </a>
               </li>
             </ul>
