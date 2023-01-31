@@ -214,40 +214,7 @@ $$
 
 Python で相関係数を計算 & 散布図を描画する関数
 
-```python
-from matplotlib import pyplot as plt
-import numpy as np
-
-def calc_corrcoef(x_, y_, z_):
-	"""
-	3つの確率変数 x_, y_, z_ の互いの相関係数・偏相関係数を計算する
-	"""
-	corrcoef = np.corrcoef([x_, y_, z_])
-	r_xy = corrcoef[0][1]
-	r_yz = corrcoef[1][2]
-	r_zx = corrcoef[2][0]
-	r_xy_z = (r_xy - r_yz * r_zx) / np.sqrt(1 - r_yz**2) / np.sqrt(1 - r_zx**2)
-	r_yz_x = (r_yz - r_zx * r_xy) / np.sqrt(1 - r_zx**2) / np.sqrt(1 - r_xy**2)
-	r_zx_y = (r_zx - r_xy * r_yz) / np.sqrt(1 - r_xy**2) / np.sqrt(1 - r_yz**2)
-	return ([r_xy, r_yz, r_zx], [r_xy_z, r_yz_x, r_zx_y])
-
-def draw_correlation_graph(x, y, z, x_name, y_name, z_name):
-	"""
-	相関係数・偏相関係数と合わせて散布図を描画
-	"""
-	data = [x, y, z]
-	var_name = [x_name, y_name, z_name]
-	corrcoef, p_corrcoef = calc_corrcoef(x, y, z)
-	fig, ax = plt.subplots(1, 3, figsize=(12, 4))
-	plt.subplots_adjust(wspace=0.4, hspace=0.4)
-	for i in range(3):
-		ax[i].scatter(data[i], data[(i+1)%3], marker='.')
-		ax[i].set_xlabel(var_name[i], fontsize=10)
-		ax[i].set_ylabel(var_name[(i+1)%3], fontsize=10)
-		ax[i].set_title(r'$r_{{ {0}{1} }} = {3:.4f}, \quad r_{{ {0}{1},{2} }} = {4:.4f}$'.format(var_name[i], var_name[(i+1)%3], var_name[(i+2)%3], corrcoef[i], p_corrcoef[i]))
-		ax[i].grid()
-	plt.show()
-```
+{% gist 795e3635009c4fdfbf40a148b3eca4c8 partial-correlation.py %}
 
 ### 手作りデータ
 
@@ -257,29 +224,7 @@ def draw_correlation_graph(x, y, z, x_name, y_name, z_name):
 
 という条件で生成する。
 
-```python
-from matplotlib import pyplot as plt
-import numpy as np
-
-N = 500
-z = np.random.normal(loc=10.0, scale=1.0, size=N)
-
-# z と相関を持たせないインデックスをランダムに選ぶ
-idx_x = np.array(range(N))
-idx_y = np.array(range(N))
-np.random.shuffle(idx_x)
-np.random.shuffle(idx_y)
-idx_x_rand = idx_x[:int(N*0.3)]
-idx_y_rand = idx_y[:int(N*0.2)]
-
-# ランダムに一定割合のサンプルが z と相関を持つように x, y を生成
-x = 2.5 * z + 4.2 + np.random.normal(loc=0, scale=1.0, size=N)
-y = -3.2 * z + 1.8 + np.random.normal(loc=0, scale=1.0, size=N)
-x[idx_x_rand] = np.random.normal(loc=x.mean(), scale=x.std(), size=len(idx_x_rand))
-y[idx_y_rand] = np.random.normal(loc=y.mean(), scale=y.std(), size=len(idx_y_rand))
-
-draw_correlation_graph(x, y, z, 'x', 'y', 'z')
-```
+{% gist 795e3635009c4fdfbf40a148b3eca4c8 ~handmade.py %}
 
 ![Figure_1](https://user-images.githubusercontent.com/13412823/215377569-b51f0572-b593-404c-83ef-fba3909733bd.png)
 
@@ -292,32 +237,7 @@ draw_correlation_graph(x, y, z, 'x', 'y', 'z')
 
 [rdatasets](https://vincentarelbundock.github.io/Rdatasets/articles/data.html) より、ニューヨークの大気状態のデータを利用。
 
-```python
-from matplotlib import pyplot as plt
-import statsmodels.api as sm
-import numpy as np
-
-ds = sm.datasets.get_rdataset("airquality", "datasets")
-df = ds.data.dropna()
-
-keys = ['Ozone','Solar.R','Wind','Temp']
-corr = np.corrcoef(df[keys].T)
-"""
-         Ozone        Solar.R      Wind         Temp
-array([[ 1.        ,  0.34834169, -0.61249658,  0.69854141],    Ozone
-       [ 0.34834169,  1.        , -0.12718345,  0.29408764],    Solar.R
-       [-0.61249658, -0.12718345,  1.        , -0.49718972],    Wind
-       [ 0.69854141,  0.29408764, -0.49718972,  1.        ]])   Temp
-"""
-```
-
-単純な相関係数の計算では、Ozone, Wind, Temp の間に相関がありそう。  
-これら3要素のうち1つの影響を取り除いた偏相関を求めてみる。
-
-```python
-x, y, z = df['Ozone'], df['Wind'], df['Temp']
-draw_correlation_graph(x, y, z, 'O', 'W', 'T')
-```
+{% gist 795e3635009c4fdfbf40a148b3eca4c8 ~newyork-airquality.py %}
 
 ![Figure_1](https://user-images.githubusercontent.com/13412823/215378527-662a7f27-9660-4451-a892-1a12467f65fa.png)
 
