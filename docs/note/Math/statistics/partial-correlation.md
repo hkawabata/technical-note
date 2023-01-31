@@ -244,7 +244,7 @@ def draw_correlation_graph(x, y, z, x_name, y_name, z_name):
 		ax[i].scatter(data[i], data[(i+1)%3], marker='.')
 		ax[i].set_xlabel(var_name[i], fontsize=10)
 		ax[i].set_ylabel(var_name[(i+1)%3], fontsize=10)
-		ax[i].set_title(r'$r_{{{0}{1}}} = {3:.4f}, \quad r_{{{0}{1},{2}}} = {4:.4f}$'.format(var_name[i], var_name[(i+1)%3], var_name[(i+2)%3], corrcoef[i], p_corrcoef[i]))
+		ax[i].set_title(r'$r_{{ {0}{1} }} = {3:.4f}, \quad r_{{ {0}{1},{2} }} = {4:.4f}$'.format(var_name[i], var_name[(i+1)%3], var_name[(i+2)%3], corrcoef[i], p_corrcoef[i]))
 		ax[i].grid()
 	plt.show()
 ```
