@@ -237,11 +237,11 @@
                 </ul>
               </li>
               <li>
-                <a href="https://hkawabata.github.io/technical-note/note/Language/Java/runtime_options">実行時オプション
+                <a href="https://hkawabata.github.io/technical-note/note/Language/Java/runtime_options">Java 実行時オプション
 </a>
               </li>
               <li>
-                <a href="https://hkawabata.github.io/technical-note/note/Language/Java/modifier">修飾子
+                <a href="https://hkawabata.github.io/technical-note/note/Language/Java/modifier">Java 修飾子
 </a>
               </li>
             </ul>
@@ -414,6 +414,10 @@
                     <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/binomial-distribution">二項分布
 </a>
                   </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/t-distribution">分布
+</a>
+                  </li>
                 </ul>
               </li>
               <li>
@@ -425,7 +429,21 @@
 </a>
               </li>
               <li>
+                <span>estimation</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/estimation/unbiased-estimator">不偏推定量
+</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/skewness">歪度
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/sum-of-independent-random-variable">独立な確率変数の和
 </a>
               </li>
               <li>
@@ -439,6 +457,16 @@
 </a>
           </li>
           <li>
+            <span>special-functions</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/special-functions/gamma-function">ガンマ関数
+</a>
+              </li>
+            </ul>
+          </li>
+          <li>
             <span>calculus</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
@@ -448,6 +476,10 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/taylor-expantion">テイラー展開
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/convolution">畳み込み積分
 </a>
               </li>
               <li>

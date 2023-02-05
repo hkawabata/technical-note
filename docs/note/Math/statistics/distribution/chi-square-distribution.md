@@ -13,6 +13,10 @@ $$
 
 が従う分布を **自由度 $k$ のカイ二乗分布** という。
 
+# 確率密度関数
+
+## 式
+
 確率密度関数は以下の式で表される。
 
 $$
@@ -27,6 +31,109 @@ $$
 $$
 \Gamma(z) = \int_{0}^{\infty} t^{z-1} e^{-t} dt
 $$
+
+## 確率密度関数の導出
+
+数学的帰納法で証明できる。
+
+### $k=1$ のとき
+
+$$
+\chi^2 = Z_1^2
+$$
+
+$Z_1$ は標準正規分布に従うので、$Z_1$ の確率密度関数は
+
+$$
+\phi(Z_1) = \cfrac{1}{\sqrt{2\pi}} \exp{\left( -\cfrac{Z_1^2}{2} \right)}
+$$
+
+新しい確率変数 $Y \equiv Z_1^2 (= \chi^2)$ を定義し、$Y$ の累積分布関数 $F(y)$ を計算すると、
+
+$$
+\begin{eqnarray}
+	F(y) &=& P(Y \le y)
+	\\ &=&
+	P(Z_1^2 \le y)
+	\\ &=&
+	P(- \sqrt{y} \le Z_1 \le \sqrt{y})
+	\\ &=&
+	\int_{-\sqrt{y}}^{\sqrt{y}} \phi(Z_1) dZ_1
+	\\ &=&
+	\Phi(\sqrt{y}) - \Phi(-\sqrt{y})
+\end{eqnarray}
+$$
+
+ここで、$\Phi(Z_1)$ は $\phi(Z_1)$ の不定積分とする。
+
+$Y$ の確率密度関数 $f(y)$ は累積分布関数を $y$ で微分すれば得られるので、
+
+$$
+\begin{eqnarray}
+	f(y) &=& \cfrac{d}{dy} F(y)
+	\\ &=&
+	\cfrac{d}{dy} (\Phi(\sqrt{y})) - \cfrac{d}{dy} (\Phi(-\sqrt{y}))
+	\\ &=&
+	\phi(\sqrt{y}) \cfrac{d}{dy} (\sqrt{y}) -
+	\phi(-\sqrt{y}) \cfrac{d}{dy} (-\sqrt{y})
+	\\ &=&
+	\cfrac{1}{\sqrt{2\pi}} \exp{\left( -\cfrac{y}{2} \right)} \cfrac{1}{2\sqrt{y}} +
+	\cfrac{1}{\sqrt{2\pi}} \exp{\left( -\cfrac{y}{2} \right)} \cfrac{1}{2\sqrt{y}}
+	\\ &=&
+	\cfrac{1}{\sqrt{2\pi}} \exp{\left( -\cfrac{y}{2} \right)} \cfrac{1}{\sqrt{y}}
+	\\ &=&
+	\cfrac{1}{2^{1/2} \Gamma(1/2)} e^{-y/2}y^{1/2-1}
+\end{eqnarray}
+$$
+
+これは $k=1$ のときのカイ二乗分布の式に一致。
+
+### $k=n (\ge 2)$ のとき
+
+$$\chi_{n-1}^2 \equiv Z_1^2 + \cdots + Z_{n-1}^2$$
+
+が自由度 $n-1$ のカイ二乗分布の式に従うと仮定する。
+
+このとき、$k = n$ の場合のカイ二乗値、すなわち
+
+$$
+\chi_n^2 \equiv Z_1^2 + \cdots + Z_n^2 = \chi_{n-1}^2 + Z_n^2
+$$
+
+の確率密度関数を考える。
+
+$Z_1, \cdots, Z_n$ はそれぞれ互いに独立であるから、$\chi_{n-1}^2, Z_n^2$ も互いに独立。  
+
+新しい確率変数
+
+$$
+\begin{eqnarray}
+	X &\equiv& \chi_{n-1}^2 \\
+	Y &\equiv& Z_n^2
+\end{eqnarray}
+$$
+
+を導入すると、
+
+- $X$ は仮定より自由度 $n-1$ のカイ二乗分布 $f_{n-1}(x)$ に従う
+- $Y$ は前述の「$k=1$ のとき」より自由度1のカイ二乗分布 $f_1(y)$ に従う
+- $X, Y$ は互いに独立
+
+独立な確率変数の和を考える時、その確率密度関数は畳み込みで与えられる（[参考](../sum-of-independent-random-variable.md)）ので、$Z \equiv \chi_n^2 = X + Y$ の確率密度関数 $f(z)$ は、
+
+$$
+\begin{eqnarray}
+	f(z) &=&
+	\int_{0}^{z} f_{n-1}(y) f_1(z-y) dy
+	\\ &=&
+	\cdots
+	\\ &=&
+	\cfrac{1}{2^{n/2} \Gamma(n/2)} e^{-z/2}z^{n/2-1}
+\end{eqnarray}
+$$
+
+（ToDo：途中計算）
+
 
 # カイ二乗分布の利用
 

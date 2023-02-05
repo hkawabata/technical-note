@@ -5,7 +5,7 @@ title: JMX
 # JMX とは
 
 Java Management Extensions の略。
-アプリケーションやデバイス、サービス、JVM の管理・モニタリングを行う API。
+Java アプリケーションやデバイス、サービス、JVM の管理・モニタリングを行う API。
 
 # 有効化
 

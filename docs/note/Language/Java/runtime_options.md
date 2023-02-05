@@ -1,5 +1,5 @@
 ---
-title: 実行時オプション
+title: Java 実行時オプション
 ---
 
 [このページ](https://docs.oracle.com/javase/jp/8/docs/technotes/tools/windows/java.html)が詳しい。
