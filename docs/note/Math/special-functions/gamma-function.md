@@ -8,7 +8,7 @@ title-en: Gamma Function
 実部が正であるような複素数 $z$ に対して、以下の式で定義される関数。
 
 $$
-\Gamma(z) \equiv \int_0^\infty t^{z-1} e^{-t} dt
+\Gamma(z) \coloneqq \int_0^\infty t^{z-1} e^{-t} dt
 $$
 
 後述の性質から、「階乗の一般化（整数以外への階乗の拡張）」と言える。

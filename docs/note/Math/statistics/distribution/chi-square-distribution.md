@@ -32,6 +32,33 @@ $$
 \Gamma(z) = \int_{0}^{\infty} t^{z-1} e^{-t} dt
 $$
 
+![Figure_1](https://user-images.githubusercontent.com/13412823/212242584-fcb0e3f3-8015-453c-ac7c-04b9e69a34e1.png)
+
+（描画に使った Python コード）
+```python
+import numpy as np
+import math
+from matplotlib import pyplot as plt
+
+def chi_square(x, k):
+	return np.exp(-x*0.5) / (2**(k*0.5)) / math.gamma(k*0.5) * np.power(x, k*0.5-1)
+
+x = np.linspace(0, 40.0, 1000)
+for k in range(1, 30+1):
+	y = chi_square(x, k)
+	if k in {1, 2, 3, 5, 10, 20, 30}:
+		plt.plot(x, y, lw=2.0, label='$k = {}$'.format(k))
+	else:
+		plt.plot(x, y, lw=0.5, color='black')
+
+plt.xlabel('$x$')
+plt.ylabel('$f_k(x)$')
+plt.xlim([0, 40.0])
+plt.ylim([0, 0.6])
+plt.legend()
+plt.show()
+```
+
 ## 確率密度関数の導出
 
 数学的帰納法で証明できる。
@@ -267,31 +294,3 @@ $$
 $$
 
 
-# カイ二乗分布の特徴
-
-![Figure_1](https://user-images.githubusercontent.com/13412823/212242584-fcb0e3f3-8015-453c-ac7c-04b9e69a34e1.png)
-
-（描画に使った Python コード）
-```python
-import numpy as np
-import math
-from matplotlib import pyplot as plt
-
-def chi_square(x, k):
-	return np.exp(-x*0.5) / (2**(k*0.5)) / math.gamma(k*0.5) * np.power(x, k*0.5-1)
-
-x = np.linspace(0, 40.0, 1000)
-for k in range(1, 30+1):
-	y = chi_square(x, k)
-	if k in {1, 2, 3, 5, 10, 20, 30}:
-		plt.plot(x, y, lw=2.0, label='$k = {}$'.format(k))
-	else:
-		plt.plot(x, y, lw=0.5, color='black')
-
-plt.xlabel('$x$')
-plt.ylabel('$f_k(x)$')
-plt.xlim([0, 40.0])
-plt.ylim([0, 0.6])
-plt.legend()
-plt.show()
-```
