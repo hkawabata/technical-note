@@ -85,6 +85,14 @@ plt.show()
 
 ![](https://user-images.githubusercontent.com/13412823/100531045-321bab00-323d-11eb-8c21-e875ebda5cb7.png)
 
+`plt.hist` のパラメータは以下の通り
+
+| パラメータ | 説明 |
+| :-- | :-- |
+| `bins` | 階級幅の設定<br>・整数を指定：指定された本数のバーを描画<br>・数値の配列を指定：各数値を切れ目とするヒストグラムを描画 |
+| `histtype` | ヒストグラムのタイプ。<br>'bar', 'barstacked', 'step', 'stepfilled' |
+| `density` | `True` を設定すると、実際の度数ではなく分布密度を描画 |
+
 
 ### 塗りつぶし
 
@@ -211,6 +219,15 @@ plt.show()
 
 
 ## Tips
+
+### 自動で順番に割り当てられる色の一覧
+
+以下のコマンドで取得できる。
+
+```python
+color_names = plt.rcParams['axes.prop_cycle'].by_key()['color']
+# ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+```
 
 ### 線・点のスタイル
 
