@@ -18,7 +18,7 @@ $$
 
 を新しい確率変数とみなすと、$n$ を無限大に発散させたとき、$\bar{X}$ の確率分布は平均 $\mu$、分散 $\cfrac{\sigma^2}{n}$ の正規分布に収束する。
 
-言い換えると、**母集団の分布がどんな形であれ, 標本の数 $n$ が十分に大きい場合の標本平均 $\bar{X}$ の分布は正規分布へと近づいていく**。
+言い換えると、**標本数 $n$ が十分に大きい場合、母集団の分布がどんな形であっても、標本平均 $\bar{X}$ の分布は正規分布へと近づいていく**。
 
 
 # 証明
@@ -194,137 +194,93 @@ $$
 
 # 実験
 
-いろいろな確率分布から標本を繰り返し抽出して、中心極限定理が成り立つことを確認する。
+1. 色々な確率分布から標本を繰り返し抽出して、標本平均の度数分布表を描く。
+2. 標本数 $n$ を大きくしていき、中心極限定理が成り立つ（= 標本数 $n$ が大きいほど標本平均の分布が正規分布に近づく）ことを確認する。
 
-```python
-import numpy as np
-from matplotlib import pyplot as plt
-from abc import ABC, abstractmethod
+## 一様分布
 
-class Distribution(ABC):
-	@abstractmethod
-	def get_name(self):
-		pass
-	
-	@abstractmethod
-	def get_average_of_samples(self, n):
-		pass
-	
-	def get_mu(self):
-		return self.__mu
-	
-	def get_sigma(self):
-		return self.__sigma
-	
-	def set_mu(self, mu):
-		self.__mu = mu
-	
-	def set_sigma(self, sigma):
-		self.__sigma = sigma
+![UniformDist](https://user-images.githubusercontent.com/13412823/217136511-31c44e33-40d6-4810-870b-0e0309687f8e.png)
+
+## ベータ分布
+
+$\alpha = 9, \beta = 3$ の場合：
+
+![BetaDist-1](https://user-images.githubusercontent.com/13412823/217136508-12073e04-247e-4ad9-96d5-9f6180e222a8.png)
 
 
-class UniformDist(Distribution):
-	"""
-	一様分布
-	"""
-	def __init__(self, a, b):
-		self.set_mu((a + b) * 0.5)
-		variance = (b-a)**2/12.0
-		self.set_sigma(np.sqrt(variance))
-		self.__a = a
-		self.__b = b
-	
-	def get_name(self):
-		return 'Uniform Distribution'
-	
-	def get_average_of_samples(self, n):
-		samples = np.random.rand(n) * (self.__b - self.__a) + self.__a
-		return samples.mean()
+$\alpha = 2, \beta = 2$ の場合：
+
+![BetaDist-2](https://user-images.githubusercontent.com/13412823/217136503-6053bcfc-4554-4a0e-b74a-0b16455a7df3.png)
 
 
-class BinomialDist(Distribution):
-	"""
-	二項分布
-	"""
-	def __init__(self, n, p):
-		self.set_mu(n*p)
-		variance = n*p*(1-p)
-		self.set_sigma(np.sqrt(variance))
-		self.__n = n
-		self.__p = p
-	
-	def get_name(self):
-		return 'Binomial Distribution'
-	
-	def get_average_of_samples(self, n):
-		samples = np.random.binomial(self.__n, self.__p, n)
-		return samples.mean()
+## カイ二乗分布
+
+自由度 $k = 2$ の場合：
+
+![ChiSquaredDist-1](https://user-images.githubusercontent.com/13412823/217136500-46baac95-22d0-4beb-b578-3f3073452a94.png)
+
+自由度 $k = 5$ の場合：
+
+![ChiSquaredDist-2](https://user-images.githubusercontent.com/13412823/217136495-42b11187-8fcb-46a5-ac64-8b1c1356742f.png)
 
 
-class BetaDist(Distribution):
-	"""
-	ベータ分布
-	"""
-	def __init__(self, a, b):
-		self.set_mu(a/(a+b))
-		variance = a*b/(a+b+1)/(a+b)**2
-		self.set_sigma(np.sqrt(variance))
-		self.__a = a
-		self.__b = b
-	
-	def get_name(self):
-		return 'Beta Distribution'
-	
-	def get_average_of_samples(self, n):
-		samples = np.random.beta(self.__a, self.__b, n)
-		return samples.mean()
+## 一次関数に従う分布
 
+![LinearDist](https://user-images.githubusercontent.com/13412823/217136488-4d19c0bb-fb9e-4b91-8333-f716013d83cc.png)
 
-def gauss(x, mu, sigma):
-	"""
-	x を引数とする正規分布の確率密度関数を計算
-	"""
-	ret = np.exp(- (x-mu)**2 * 0.5 / sigma**2)
-	ret /= np.sqrt(2.0 * np.pi) * sigma
-	return ret
+ここでは、$0 \le x \le a$ の範囲で一次関数型の分布に従う母集団を考え、$a=1$ を代入した。
 
-def func(dist):
-	"""
-	与えられた確率分布について色々な標本サイズで標本平均を繰り返し計算し、
-	標本平均の分布が正規分布に近づくことをグラフで確認する
-	"""
-	T = 100000  # n個の標本を抽出して平均を取る操作を何度繰り返すか
-	n_samples = [2, 4, 8, 16, 32, 64]  # 標本サイズ
-	# 標本を繰り返し抽出して平均値を記録
-	plt.figure(figsize=(10, 6))
-	plt.subplots_adjust(wspace=0.3, hspace=0.4)
-	for i in range(len(n_samples)):
-		n = n_samples[i]
-		sample_mean = np.empty(T, dtype='float')
-		for t in range(T):
-			sample_mean[t] = dist.get_average_of_samples(n)
-		# ヒストグラム描画のための階級幅を計算
-		mean_max = sample_mean.max()
-		mean_min = sample_mean.min()
-		bins = np.linspace(mean_min, mean_max, 50)  # 階級の区切り
-		# ヒストグラムを描画
-		plt.subplot(2, 3, i+1)
-		plt.hist(sample_mean, bins=bins, density=True)
-		# 中心極限定理により収束が期待される正規分布を描画
-		mu = dist.get_mu()
-		sigma = dist.get_sigma() / np.sqrt(n)
-		x_norm = np.linspace(mean_min-(mean_max-mean_min)*0.2, mean_max+(mean_max-mean_min)*0.2, 100)
-		norm = gauss(x_norm, mu=mu, sigma=sigma)
-		plt.title(r'$n_{{\rm sample}} = {}$'.format(n))
-		plt.plot(x_norm, norm, lw=1.0, color='red', label=r'$N(\mu, \sigma)$')
-		if i == 0:
-			plt.legend()
-	plt.suptitle(dist.get_name())
-	plt.show()
+確率密度関数 $f(x)$ の全区間積分（直角三角形の面積）は1になる必要があるので、三角形の高さ（$x=a$ における $f(x)$ の値）は $\cfrac{2}{a}$
 
-func(UniformDist(0, 6))
-func(BinomialDist(10, 0.7))
-func(BinomialDist(100, 0.2))
-func(BetaDist(9, 3))
-func(BetaDist(2, 2))
-```
+したがって、この確率密度関数（直角三角形の斜辺）の傾きは $\cfrac{2}{a^2}$ となるから、
+
+$$
+f(x) = \begin{cases}
+	\cfrac{2}{a^2} x & \qquad & (0 \le x \le a) \\
+	0 & \qquad & (x \lt 0, a \lt x)
+\end{cases}
+$$
+
+母集団の期待値 $\mu$ は
+
+$$
+\begin{eqnarray}
+	\mu &=& E(x) = \int_0^a x f(x) dx
+	\\ &=&
+	\cfrac{2}{a^2} \int_0^a x^2 dx
+	=
+	\cfrac{2}{a^2} \left[ \cfrac{x^3}{3} \right]_0^a
+	\\ &=&
+	\cfrac{2}{3} a
+\end{eqnarray}
+$$
+
+同様に
+
+$$
+\begin{eqnarray}
+	E(x^2) &=& \int_0^a x^2 f(x) dx
+	\\ &=&
+	\cfrac{2}{a^2} \int_0^a x^3 dx
+	=
+	\cfrac{2}{a^2} \left[ \cfrac{x^4}{4} \right]_0^a
+	\\ &=&
+	\cfrac{1}{2} a^2
+\end{eqnarray}
+$$
+
+であるから、母集団の分散 $\sigma^2$ は
+
+$$
+\begin{eqnarray}
+	\sigma^2 &=& V(x) = E(x^2) - E(x)^2
+	\\ &=&
+	\cfrac{1}{2} a^2 - \cfrac{4}{9} a^2
+	\\ &=&
+	\cfrac{1}{18} a^2
+\end{eqnarray}
+$$
+
+## Appendix: 実験に使った Python コード
+
+{% gist b932ca156b5f7e31158b9dce341856ec central-limit-theorem.py %}
