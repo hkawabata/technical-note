@@ -433,6 +433,14 @@
                 <span class="pagetree-accordion">▼</span>
                 <ul class="pagetree-hidden">
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/estimation/point-estimation">点推定
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/estimation/interval-estimation">区間推定
+</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/estimation/unbiased-estimator">不偏推定量
 </a>
                   </li>
@@ -460,6 +468,10 @@
             <span>special-functions</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/special-functions/beta-function">ベータ関数
+</a>
+              </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/special-functions/gamma-function">ガンマ関数
 </a>
