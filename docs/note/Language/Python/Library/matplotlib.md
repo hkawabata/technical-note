@@ -202,6 +202,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 plt.figure(figsize=(9, 6))  # 描画範囲全体のサイズを設定（ヨコ, タテ）
+plt.subplots_adjust(wspace=0.4, hspace=0.4)  # グラフ間の余白の大きさ
 x = np.array(range(100))/100.0
 for i in range(2):
 	for j in range(3):
@@ -216,6 +217,25 @@ plt.show()
 ```
 
 ![Figure_1](https://user-images.githubusercontent.com/13412823/211958451-84e8ac56-e06f-4fa8-a79a-30dfb3f1514b.png)
+
+以下の書き方でも同じことができる。
+
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+
+fig, ax = plt.subplots(2, 3, figsize=(9, 6))
+plt.subplots_adjust(wspace=0.4, hspace=0.4)
+x = np.array(range(100))/100.0
+for i in range(2):
+	for j in range(3):
+		y = x*i + j
+		ax[i][j].set_title('$y = {}x + {}$'.format(i, j))
+		ax[i][j].set_ylim([-0.5, 3.5])
+		ax[i][j].plot(x, y)
+
+plt.show()
+```
 
 
 ## Tips

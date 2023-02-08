@@ -81,36 +81,48 @@ $$
 
 **【証明】**
 
+標本平均 $\bar{x}$ と母平均 $\mu$ との誤差を
+
+$$
+\epsilon := \bar{x} - \mu
+$$
+
+と置く。
+
 $$
 \begin{eqnarray}
-	\sum_{i=1}^n (x_i - \mu)^2
+	\sum_{i=1}^n (x_i - \bar{x})^2
 	&=&
-	\sum_{i=1}^n ( (x_i - \bar{x}) + (\bar{x} - \mu) )^2
+	\sum_{i=1}^n \{ x_i - (\mu + \epsilon) \}^2
 	\\ &=&
-	\sum_{i=1}^n (x_i - \bar{x})^2 +
-	\sum_{i=1}^n (\bar{x} - \mu)^2 +
-	2 \sum_{i=1}^n (x_i - \bar{x}) (\bar{x} - \mu)
+	\sum_{i=1}^n \{ (x_i - \mu) - \epsilon \}^2
 	\\ &=&
-	\sum_{i=1}^n (x_i - \bar{x})^2 +
-	(\bar{x} - \mu)^2 \sum_{i=1}^n 1 +
-	2 (\bar{x} - \mu) \left( \sum_{i=1}^n x_i - \sum_{i=1}^n \bar{x} \right)
+	\sum_{i=1}^n \{ (x_i - \mu)^2 + \epsilon^2 - 2 \epsilon (x_i - \mu) \}
 	\\ &=&
-	\sum_{i=1}^n (x_i - \bar{x})^2 +
-	n (\bar{x} - \mu)^2 +
-	2 (\bar{x} - \mu) (n \bar{x} - n \bar{x})
+	\sum_{i=1}^n (x_i - \mu)^2 +
+	n \epsilon^2 -
+	2 \epsilon \sum_{i=1}^n (x_i - \mu)
 	\\ &=&
-	\sum_{i=1}^n (x_i - \bar{x})^2 +
-	n (\bar{x} - \mu)^2
+	\sum_{i=1}^n (x_i - \mu)^2 +
+	n \epsilon^2 -
+	2 \epsilon (n \bar{x} - n \mu)
+	\\ &=&
+	\sum_{i=1}^n (x_i - \mu)^2 +
+	n \epsilon^2 -
+	2 n \epsilon^2
+	\\ &=&
+	\sum_{i=1}^n (x_i - \mu)^2 -
+	n \epsilon^2
 \end{eqnarray}
 $$
 
 両辺の期待値を取ると、期待値の線形性より
 
 $$
-\sum_{i=1}^n E \left( (x_i - \mu)^2 \right)
+E \left( \sum_{i=1}^n (x_i - \bar{x})^2 \right)
 =
-E \left( \sum_{i=1}^n (x_i - \bar{x})^2 \right) +
-n E \left( (\bar{x} - \mu)^2 \right)
+\sum_{i=1}^n E \left( (x_i - \mu)^2 \right) -
+n E \left( \epsilon^2 \right)
 $$
 
 ここで、
@@ -121,8 +133,10 @@ $$
 	\\ &=&
 	\sigma^2
 	\\
-	E \left( (\bar{x} - \mu)^2 \right)
+	E \left( \epsilon^2 \right)
 	&=&
+	E \left( (\bar{x} - \mu)^2 \right)
+	\\ &=&
 	V(\bar{x})
 	\\ &=&
 	V\left( \cfrac{x_1 + \cdots + x_n}{n} \right)
@@ -140,13 +154,18 @@ $$
 であるから、
 
 $$
-\sum_{i=1}^n \sigma^2
-=
-E \left( \sum_{i=1}^n (x_i - \bar{x})^2 \right) +
-n \cfrac{\sigma^2}{n}
+\begin{eqnarray}
+	E \left( \sum_{i=1}^n (x_i - \bar{x})^2 \right)
+	&=&
+	\sum_{i=1}^n \sigma^2 - n \cfrac{\sigma^2}{n}
+	\\ &=&
+	n \sigma^2 - \sigma^2
+	\\ &=&
+	(n-1) \sigma^2
+\end{eqnarray}
 $$
 
-右辺第2項を移項して両辺を $n-1$ で割ると、
+両辺を $n-1$ で割ると、
 
 $$
 \sigma^2 = E \left( \cfrac{1}{n-1} \sum_{i=1}^n (x_i - \bar{x})^2 \right) = E(s^2)
@@ -163,14 +182,14 @@ $$
 $$
 
 の計算では、真の母平均 $\mu$ ではなく、標本平均 $\bar{x}$ と $x_i$ の差の平方和を取っている。  
-そのため、真の母平均と差を取る場合に比べて計算結果に誤差が含まれる。  
+そのため、真の母平均と差を取る場合に比べて計算結果に誤差 $\epsilon$ が含まれる。  
 この誤差が前節の計算式において
 
 $$
-E \left( (\bar{x} - \mu)^2 \right)
+E \left( \epsilon^2 \right) = E \left( (\bar{x} - \mu)^2 \right)
 $$
 
-の項として現れており、標本分散の期待値は母分散に比べて小さくなってしまう。
+の項として現れており、この分だけ、標本分散の期待値は母分散に比べて小さくなってしまう。
 
 ### 実験：不偏分散の期待値は本当に母分散になるか？
 

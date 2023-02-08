@@ -194,45 +194,43 @@ $$
 
 # 実験
 
-1. 色々な確率分布から標本を繰り返し抽出して、標本平均の度数分布表を描く。
-2. 標本数 $n$ を大きくしていき、中心極限定理が成り立つ（= 標本数 $n$ が大きいほど標本平均の分布が正規分布に近づく）ことを確認する。
+1. 色々な確率分布から $n$ 件の標本を繰り返し抽出して、標本平均の度数分布表を描画
+2. 標本数 $n$ を大きくしていき、中心極限定理が成り立つ（= 標本数 $n$ が大きいほど標本平均の分布が正規分布に近づく）ことを確認
 
 ## 一様分布
 
-![UniformDist](https://user-images.githubusercontent.com/13412823/217136511-31c44e33-40d6-4810-870b-0e0309687f8e.png)
+![UniformDist](https://user-images.githubusercontent.com/13412823/217184271-46e136a6-13d8-443f-8755-fd3b0fb9afe9.png)
 
 ## ベータ分布
 
 $\alpha = 9, \beta = 3$ の場合：
 
-![BetaDist-1](https://user-images.githubusercontent.com/13412823/217136508-12073e04-247e-4ad9-96d5-9f6180e222a8.png)
-
+![BetaDist-1](https://user-images.githubusercontent.com/13412823/217184284-afd2a502-1f93-486e-86ae-39feaba17fe3.png)
 
 $\alpha = 2, \beta = 2$ の場合：
 
-![BetaDist-2](https://user-images.githubusercontent.com/13412823/217136503-6053bcfc-4554-4a0e-b74a-0b16455a7df3.png)
-
+![BetaDist-2](https://user-images.githubusercontent.com/13412823/217184290-195db58b-c7c3-43bb-976f-6e0cc391a612.png)
 
 ## カイ二乗分布
 
 自由度 $k = 2$ の場合：
 
-![ChiSquaredDist-1](https://user-images.githubusercontent.com/13412823/217136500-46baac95-22d0-4beb-b578-3f3073452a94.png)
+![ChiSquaredDist-1](https://user-images.githubusercontent.com/13412823/217184297-575e6e17-647e-4af2-8ac3-b54e13c2ac8e.png)
 
 自由度 $k = 5$ の場合：
 
-![ChiSquaredDist-2](https://user-images.githubusercontent.com/13412823/217136495-42b11187-8fcb-46a5-ac64-8b1c1356742f.png)
+![ChiSquaredDist-2](https://user-images.githubusercontent.com/13412823/217184302-1f32f3fa-3cda-43f3-83cc-8743ee96451f.png)
 
 
 ## 一次関数に従う分布
 
-![LinearDist](https://user-images.githubusercontent.com/13412823/217136488-4d19c0bb-fb9e-4b91-8333-f716013d83cc.png)
+![LinearDist](https://user-images.githubusercontent.com/13412823/217184306-459f4f32-0bf3-48e9-a385-b6d40f746374.png)
 
-ここでは、$0 \le x \le a$ の範囲で一次関数型の分布に従う母集団を考え、$a=1$ を代入した。
+ここでは、$0 \le x \le a$ の範囲で一次関数 $f(x) = cx$ 型の分布に従う母集団を考え、$a=1$ の場合を描画した。
 
 確率密度関数 $f(x)$ の全区間積分（直角三角形の面積）は1になる必要があるので、三角形の高さ（$x=a$ における $f(x)$ の値）は $\cfrac{2}{a}$
 
-したがって、この確率密度関数（直角三角形の斜辺）の傾きは $\cfrac{2}{a^2}$ となるから、
+したがって、この確率密度関数（直角三角形の斜辺）の傾き $c = \cfrac{2}{a^2}$ となるから、
 
 $$
 f(x) = \begin{cases}
@@ -278,6 +276,77 @@ $$
 	\cfrac{1}{2} a^2 - \cfrac{4}{9} a^2
 	\\ &=&
 	\cfrac{1}{18} a^2
+\end{eqnarray}
+$$
+
+## 二次関数に従う分布
+
+![QuadraticDist](https://user-images.githubusercontent.com/13412823/217184314-6c03c6c3-c158-4514-94fe-5d367c5a78d0.png)
+
+ここでは、$-a \le x \le a$ の範囲で二次関数 $f(x) = cx^2$ 型の分布に従う母集団を考え、$a=1$ の場合を描画した。
+
+確率密度関数 $f(x)$ の全区間積分は1になる必要があるので、
+
+$$
+\begin{eqnarray}
+	1 &=& \int_{-a}^a f(x) dx
+	=
+	c \int_{-a}^a x^2 dx
+	\\ &=&
+	c \left[ \cfrac{x^3}{3} \right]_{-a}^a
+	=
+	\cfrac{2}{3} ca^3
+\end{eqnarray}
+$$
+
+よって分布関数の係数 $c = \cfrac{3}{2a^3}$ となるから、
+
+$$
+f(x) = \begin{cases}
+	\cfrac{3}{2a^3} x^2 & \qquad & (-a \le x \le a) \\
+	0 & \qquad & (x \lt -a, a \lt x)
+\end{cases}
+$$
+
+母集団の期待値 $\mu$ は
+
+$$
+\begin{eqnarray}
+	\mu &=& E(x) = \int_{-a}^a x f(x) dx
+	\\ &=&
+	\cfrac{3}{2a^3} \int_{-a}^a x^3 dx
+	=
+	\cfrac{3}{2a^3} \left[ \cfrac{x^4}{4} \right]_{-a}^a
+	\\ &=&
+	\cfrac{3}{8a^3} (a^4 - a^4) = 0
+\end{eqnarray}
+$$
+
+同様に
+
+$$
+\begin{eqnarray}
+	E(x^2) &=& \int_{-a}^a x^2 f(x) dx
+	\\ &=&
+	\cfrac{3}{2a^3} \int_{-a}^a x^4 dx
+	=
+	\cfrac{3}{2a^3} \left[ \cfrac{x^5}{5} \right]_{-a}^a
+	\\ &=&
+	\cfrac{3}{10a^3} (a^5 - (-a^5))
+	=
+	\cfrac{3}{5} a^2
+\end{eqnarray}
+$$
+
+であるから、母集団の分散 $\sigma^2$ は
+
+$$
+\begin{eqnarray}
+	\sigma^2 &=& V(x) = E(x^2) - E(x)^2
+	\\ &=&
+	\cfrac{3}{5} a^2 - 0^2
+	=
+	\cfrac{3}{5} a^2
 \end{eqnarray}
 $$
 
