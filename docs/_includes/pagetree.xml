@@ -379,10 +379,6 @@
 </a>
               </li>
               <li>
-                <span>test</span>
-                <span class="pagetree-accordion">▼</span>
-              </li>
-              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/moment-generating-function">モーメント母関数（積率母関数）
 </a>
               </li>
@@ -418,10 +414,18 @@
                     <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/t-distribution">分布
 </a>
                   </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/normal-distribution">正規分布
+</a>
+                  </li>
                 </ul>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/qq-plot">Q-Q プロット
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/joint-probability-distribution">同時確率分布
 </a>
               </li>
               <li>
@@ -453,6 +457,24 @@
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/sum-of-independent-random-variable">独立な確率変数の和
 </a>
+              </li>
+              <li>
+                <span>hypothesis-testing</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/hypothesis-testing">仮説検定
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/two-sample-t-test">2標本 t 検定
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/testing-for-the-mean">母平均の検定（t 検定）
+</a>
+                  </li>
+                </ul>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/partial-correlation">偏相関
@@ -514,6 +536,10 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/inverse-matrix">逆行列
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/orthogonal-matrix">直交行列
 </a>
               </li>
               <li>
