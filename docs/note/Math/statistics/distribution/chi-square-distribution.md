@@ -642,7 +642,7 @@ A = \begin{pmatrix}
 (\boldsymbol{a}_1, \boldsymbol{a}_2, \cdots, \boldsymbol{a}_n)
 $$
 
-と置く。ここで、$\boldsymbol{a}_i$ はベクトル $\left (\frac{1}{\sqrt{n}}, a_{2i}, a_{3i}, \cdots, a_{ni} \right)$ を列ベクトルとしたもの。
+と置く。ここで、 $\boldsymbol{a}_i$ はベクトル $\left( \frac{1}{\sqrt{n}}, a_{2i}, a_{3i}, \cdots, a_{ni} \right)$ を列ベクトルとしたもの。
 
 $A$ が直交行列となるための必要十分条件は、任意の $i\ne j$ に対して $\boldsymbol{a}_i \cdot \boldsymbol{a}_j = 0$ となること。  
 
