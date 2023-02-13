@@ -5,6 +5,8 @@ title-en: Chi-Square Distribution
 
 # カイ二乗分布とは
 
+## 定義
+
 標準正規分布に従う互いに独立な $k$ 個の確率変数 $Z_1, \cdots, Z_k$ に対して、
 
 $$
@@ -12,6 +14,11 @@ $$
 $$
 
 が従う分布を **自由度 $k$ のカイ二乗分布** といい、$\chi^2(k)$ で表す。
+
+## カイ二乗分布の利用
+
+- 標本からの母分散の区間推定
+- カイ二乗検定や独立性の検定など、種々の検定
 
 # 確率密度関数
 
@@ -59,7 +66,7 @@ plt.legend()
 plt.show()
 ```
 
-## 確率密度関数の導出
+## 導出
 
 数学的帰納法で証明できる。
 
@@ -124,7 +131,7 @@ $$\chi_{n-1}^2 \equiv Z_1^2 + \cdots + Z_{n-1}^2$$
 このとき、$k = n$ の場合のカイ二乗値、すなわち
 
 $$
-\chi_n^2 \equiv Z_1^2 + \cdots + Z_n^2 = \chi_{n-1}^2 + Z_n^2
+\chi_n^2 := Z_1^2 + \cdots + Z_n^2 = \chi_{n-1}^2 + Z_n^2
 $$
 
 の確率密度関数を考える。
@@ -146,12 +153,26 @@ $$
 - $Y$ は前述の「$k=1$ のとき」より自由度1のカイ二乗分布 $f_1(y)$ に従う
 - $X, Y$ は互いに独立
 
-独立な確率変数の和を考える時、その確率密度関数は畳み込みで与えられる（[参考](../sum-of-independent-random-variable.md)）ので、$Z \equiv \chi_n^2 = X + Y$ の確率密度関数 $f(z)$ は、
+独立な確率変数の和を考える時、その確率密度関数は畳み込みで与えられる（[参考](../sum-of-independent-random-variable.md)）ので、$Z := \chi_n^2 = X + Y$ の確率密度関数 $f_Z(z)$ は、
 
 $$
 \begin{eqnarray}
-	f(z) &=&
+	f_Z(z) &=&
+	\int_{-\infty}^\infty f_{n-1}(y) f_1(z-y) dy
+	\\ &=&
 	\int_{0}^{z} f_{n-1}(y) f_1(z-y) dy
+	\\ &=&
+	\int_{0}^{z}
+	\cfrac{1}{2^{(n-1)/2} \Gamma((n-1)/2)} e^{-y/2}y^{(n-1)/2-1}
+	\cfrac{1}{2^{1/2} \Gamma(1/2)} e^{-(z-y)/2}(z-y)^{1/2-1}
+	dy
+	\\ &=&
+	\cfrac{1}{2^{n/2} \Gamma((n-1)/2) \Gamma(1/2)} e^{-z/2}
+	\int_{0}^{z} y^{(n-1)/2-1} (z-y)^{1/2-1} dy
+	\\ &=&
+	\cdots
+	\\ &=&
+	\cdots
 	\\ &=&
 	\cdots
 	\\ &=&
@@ -159,12 +180,43 @@ $$
 \end{eqnarray}
 $$
 
-（ToDo：途中計算）
+※ 最初の積分区間の変更では、$y \lt 0$ で $f_{n-1}(y) = 0$、$z \lt y$ で $f_1(z-y) = 0$ となることを用いた。
 
+最後の式の積分を計算すると、
 
-# カイ二乗分布の利用
+$$
+\begin{eqnarray}
+	\int_{0}^{z} y^{(n-1)/2-1} (z-y)^{1/2-1} dy
+	&=&
+	\int_{0}^{1} (zu)^{(n-1)/2-1} (z-zu)^{1/2-1} \cdot z du
+	\qquad (y = zu)
+	\\ &=&
+	z^{n/2-1}
+	\int_{0}^{1} u^{(n-1)/2-1} (1-u)^{1/2-1} du
+	\\ &=&
+	z^{n/2-1} B \left( \cfrac{n-1}{2}, \cfrac{1}{2} \right)
+	\\ &=&
+	z^{n/2-1} \cfrac{\Gamma((n-1)/2) \Gamma(1/2)}{\Gamma((n-1)/2 + 1/2)}
+	\\ &=&
+	z^{n/2-1} \cfrac{\Gamma((n-1)/2) \Gamma(1/2)}{\Gamma(n/2)}
+\end{eqnarray}
+$$
 
-（ToDo）
+※ $B(x, y)$ は[ベータ関数](../../special-functions/beta-function.md)であり、式変換の途中、ベータ関数とガンマ関数の関係式を用いた。
+
+以上により、
+
+$$
+\begin{eqnarray}
+	f_Z(z) &=& \cfrac{1}{2^{n/2} \Gamma((n-1)/2) \Gamma(1/2)} e^{-z/2}
+	z^{n/2-1} \cfrac{\Gamma((n-1)/2) \Gamma(1/2)}{\Gamma(n/2)}
+	\\ &=&
+	\cfrac{1}{2^{n/2} \Gamma(n/2)} e^{-z/2} z^{n/2-1}
+\end{eqnarray}
+$$
+
+これは $k=n$ のときのカイ二乗分布の式に一致。
+
 
 # カイ二乗分布の期待値・分散
 

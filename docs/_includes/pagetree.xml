@@ -467,11 +467,11 @@
 </a>
                   </li>
                   <li>
-                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/two-sample-t-test">2標本 t 検定
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/testing-for-the-mean">母平均の検定
 </a>
                   </li>
                   <li>
-                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/testing-for-the-mean">母平均の検定（t 検定）
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/testing-for-the-proportion">母比率の検定
 </a>
                   </li>
                 </ul>
@@ -483,8 +483,14 @@
             </ul>
           </li>
           <li>
-            <a href="https://hkawabata.github.io/technical-note/note/Math/lagrange-multiplier">ラグランジュの未定乗数法
+            <span>formula</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/formula/stirling-approximation">スターリングの公式
 </a>
+              </li>
+            </ul>
           </li>
           <li>
             <span>special-functions</span>
@@ -504,6 +510,10 @@
             <span>calculus</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/lagrange-multiplier">ラグランジュの未定乗数法
+</a>
+              </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/lhopital-theorem">ロピタルの定理
 </a>
