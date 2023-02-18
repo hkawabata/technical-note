@@ -227,7 +227,7 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 
 ## 括弧のサイズ
 
-単に`()`, `{}`, `[]`, `||`とすると、サイズ（高さ）が1文字分に固定され、分数などを表示するときに汚くなる。
+単に`()`, `{}`, `[]`, `||`とすると、サイズ（高さ）が1文字分に固定され、分数などを表示するとはみ出す。
 
 > **例）**
 >
@@ -242,6 +242,22 @@ $$f(n) = \begin{cases} n/2,  & \mbox{if }n\mbox{ is even} \\3n+1, & \mbox{if }n\
 > `$y = 3\left(x + \cfrac{x^2}{1 + x}\right)$`
 >
 > $$y = 3\left(x + \cfrac{x^2}{1 + x}\right)$$
+
+`eqnarray` などで複数行の数式を使うとき、カッコの中身の途中で改行したい場合は `\right. \\ \left.` を使う。
+
+```
+\begin{eqnarray}
+    y = 3 \left( 1 + \cfrac{1}{2} + \cfrac{1}{3} + \right. \\
+    \left.  + \cfrac{1}{4}  + \cfrac{1}{5} \right)
+\end{eqnarray}
+```
+
+$$
+\begin{eqnarray}
+y = 3 \left( 1 + \cfrac{1}{2} + \cfrac{1}{3} + \right. \\ \left.  + \cfrac{1}{4}  + \cfrac{1}{5} \right)
+\end{eqnarray}
+$$
+
 
 ## 複数行の数式
 
