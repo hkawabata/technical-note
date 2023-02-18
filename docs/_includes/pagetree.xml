@@ -463,6 +463,10 @@
                 <span class="pagetree-accordion">▼</span>
                 <ul class="pagetree-hidden">
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/testing-for-goodness-of-fit-and-independence">適合度の検定・独立性の検定
+</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/hypothesis-testing">仮説検定
 </a>
                   </li>
@@ -475,6 +479,10 @@
 </a>
                   </li>
                 </ul>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/variance-covariance-matrix">分散共分散行列
+</a>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/partial-correlation">偏相関
@@ -549,12 +557,42 @@
 </a>
               </li>
               <li>
-                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/orthogonal-matrix">直交行列
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/determinant">行列式
 </a>
               </li>
               <li>
-                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/determinant">行列式
+                <span>special-matrix</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/special-matrix/positive-definite-matrix">正定値行列
 </a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/special-matrix/symmetric-matrix">対称行列
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/special-matrix/hermitian-matrix">エルミート行列
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/special-matrix/normal-matrix">正規行列
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/special-matrix/orthogonal-matrix">直交行列
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/special-matrix/diagonal-matrix">対角行列
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/special-matrix/unitary-matrix">ユニタリー行列
+</a>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
