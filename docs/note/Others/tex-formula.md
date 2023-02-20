@@ -307,6 +307,28 @@ $$
 
 # Tips
 
+## 行列に縦線を入れる
+
+逆行列を求める際の掃き出し法などで使う。
+
+```
+\left(
+  \begin{array}{cc|cc}
+     3 & 5 & 1 & 0 \\
+     4 & 7 & 0 & 1
+  \end{array}
+\right)
+```
+
+$$
+\left(
+  \begin{array}{cc|cc}
+     3 & 5 & 1 & 0 \\
+     4 & 7 & 0 & 1
+  \end{array}
+\right)
+$$
+
 ## 数式の色
 
 `$\color{tomato}{\exp\left(\cfrac{-x^2}{2}\right)}$`などのようにして、数式の色を変えられる：

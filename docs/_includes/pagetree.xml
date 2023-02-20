@@ -549,7 +549,11 @@
 </a>
               </li>
               <li>
-                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/eigenvalue">固有値
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/eigenvalue">固有値と固有ベクトル
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/rank">行列の階数
 </a>
               </li>
               <li>
@@ -558,6 +562,10 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/determinant">行列式
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/orthogonal-transformation">直交変換
 </a>
               </li>
               <li>

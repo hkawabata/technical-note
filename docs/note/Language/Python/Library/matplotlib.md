@@ -194,6 +194,61 @@ plt.show()
 
 ![](https://user-images.githubusercontent.com/13412823/100532948-37c7bf80-3242-11eb-8202-9f5719805ca5.png)
 
+### 3次元
+
+```python
+from mpl_toolkits.mplot3d import Axes3D
+
+# データ作成：直線
+N = 100
+x_line = np.linspace(-15, 15, N)
+y_line = 2.0 * x / 3.0
+z_line = np.zeros(N)
+
+# データ作成：平面
+XX, YY = np.meshgrid(np.linspace(-10, 10, N), np.linspace(-10, 10, N))
+x_plane = XX.flatten()
+y_plane = YY.flatten()
+z_plane = x_plane - y_plane
+
+# 描画
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+ax.set_xlabel('$X$')
+ax.set_ylabel('$Y$')
+ax.set_zlabel('$Z$')
+ax.scatter(x_plane, y_plane, z_plane, s=0.01, c='blue')
+ax.plot(x_line, y_line, z_line, c='orange')
+ax.scatter(0, 0, 0, c='black', marker='o')
+plt.show()
+```
+
+![Figure_1](https://user-images.githubusercontent.com/13412823/219914801-96ced457-813a-4517-bfaa-4e8d9f0764bb.png)
+
+
+## 装飾
+
+### グリッド
+
+```python
+x = np.linspace(-5, 5, 100)
+y = x**2
+
+# デフォルト
+plt.plot(x, y)
+plt.grid()
+plt.show()
+
+# 属性変更
+plt.plot(x, y)
+plt.grid(color='red', linestyle='dotted', linewidth=2, alpha=0.5)
+plt.show()
+```
+
+| デフォルト | 属性変更 |
+| :-- | :-- |
+| ![Figure_1](https://user-images.githubusercontent.com/13412823/219905012-dc57bbcf-b370-4169-9bf6-64d9f1a14411.png) | ![Figure_2](https://user-images.githubusercontent.com/13412823/219905013-fb7b3522-5ad1-48dd-b7c8-e57103f2f81f.png) |
+
 
 ## グラフの配置
 

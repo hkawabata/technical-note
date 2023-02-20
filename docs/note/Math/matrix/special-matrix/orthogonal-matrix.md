@@ -156,3 +156,14 @@ $$
 $$
 \lambda = \pm 1
 $$
+
+## 直交行列と正規直交基底
+
+> **【定理】** 
+> 
+> $n$ 次の直交行列 $A$ の列ベクトルを $\boldsymbol{a}_1, \cdots, \boldsymbol{a}_n$ とすると、これらは $\mathbb{R}^n$ の正規直交基底を成す。  
+> 逆に列ベクトル $\boldsymbol{a}_1, \cdots, \boldsymbol{a}_n$ が $\mathbb{R}^n$ の正規直交基底であるとき、これらを並べた行列 $A$ は直交行列である。
+
+**【証明】**
+
+略
