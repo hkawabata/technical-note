@@ -203,22 +203,22 @@ $$
 | $k$ | $\dim V^{(k)}$ | $\dim V^{(k)}-\dim V^{(k-1)}$<br>$= k$ 階の広義固有ベクトルの個数<br>$=k$ 以上のサイズのジョルダンブロック数 | $V^{(k)}$ の基底ベクトル | $k$ 階の広義固有ベクトル |
 | :-- | :-- | :-- | :-- | :-- |
 | 0 | 0 | - | - | - |
-| 1 | 5 | 5 | $\boldsymbol{x}_1^{(1)}, \cdots, \boldsymbol{x}_5^{(1)}$ | $\boldsymbol{u}_1^{(1)},\ \boldsymbol{u}_2^{(1)},\ \boldsymbol{u}_3^{(1)},\ \boldsymbol{u}_4^{(1)},\ \boldsymbol{u}_5^{(1)}$ |
-| 2 | 9 | 4 | $\boldsymbol{x}_1^{(2)}, \cdots, \boldsymbol{x}_9^{(2)}$ | $\boldsymbol{u}_1^{(2)},\ \boldsymbol{u}_2^{(2)},\ \boldsymbol{u}_3^{(2)},\ \boldsymbol{u}_4^{(2)}$ |
+| 1 | 5 | 5 | $\boldsymbol{x}_i^{(1)} (i = 1, \cdots, 5)$ | $\boldsymbol{u}_1^{(1)},\ \boldsymbol{u}_2^{(1)},\ \boldsymbol{u}_3^{(1)},\ \boldsymbol{u}_4^{(1)},\ \boldsymbol{u}_5^{(1)}$ |
+| 2 | 9 | 4 | $\boldsymbol{x}_i^{(2)} (i = 1, \cdots, 9)$ | $\boldsymbol{u}_1^{(2)},\ \boldsymbol{u}_2^{(2)},\ \boldsymbol{u}_3^{(2)},\ \boldsymbol{u}_4^{(2)}$ |
 | 3 | 11 | 2 | $\boldsymbol{x}_i^{(3)} (i = 1, \cdots, 11)$ | $\boldsymbol{u}_1^{(3)},\ \boldsymbol{u}_2^{(3)}$ |
-| 4 | 13 | 2 | $\boldsymbol{x}_1^{(4)}, \cdots, \boldsymbol{x}_{13}^{(4)}$ | $\boldsymbol{u}_1^{(4)},\ \boldsymbol{u}_2^{(4)}$ |
-| 5 | 14 | 1 | $\boldsymbol{x}_1^{(5)}, \cdots, \boldsymbol{x}_{14}^{(5)}$ | $\boldsymbol{u}_1^{(5)}$ |
+| 4 | 13 | 2 | $\boldsymbol{x}_i^{(4)} (i = 1, \cdots, 13)$ | $\boldsymbol{u}_1^{(4)},\ \boldsymbol{u}_2^{(4)}$ |
+| 5 | 14 | 1 | $\boldsymbol{x}_i^{(5)} (i = 1, \cdots, 14)$ | $\boldsymbol{u}_1^{(5)}$ |
 
 1. 方程式 $(A-\lambda I)^k \boldsymbol{u}=\boldsymbol{0}$ を解き、各 $V^{(k)}$ の基底ベクトル（表の $\boldsymbol{x}_i^{(k)}$）を求める
 2. 5階の広義固有ベクトル：
 	1. 表より、1つだけ存在する
-	2. $V^{(5)}$ の基底ベクトル $\boldsymbol{x}_1^{(5)}, \cdots, \boldsymbol{x}_{14}^{(5)}$ の中から、$V^{(4)}$ の基底ベクトル $\boldsymbol{x}_1^{(4)}, \cdots, \boldsymbol{x}_{13}^{(4)}$ と線形独立なものを1つ選ぶ（複数候補があればどれでも良い）
+	2. $V^{(5)}$ の基底ベクトル $\boldsymbol{x}_i^{(5)} (i = 1, \cdots, 14)$ の中から、$V^{(4)}$ の基底ベクトル $\boldsymbol{x}_i^{(4)} (i = 1, \cdots, 13)$ と線形独立なものを1つ選ぶ（複数候補があればどれでも良い）
 	3. 選んだものを5階の広義固有ベクトル $\boldsymbol{u}_1^{(5)}$ とする
 	4. これに $A-\lambda I$ を1〜4回かけた $(A-\lambda I) \boldsymbol{u}_1^{(5)}, \cdots, (A-\lambda I)^4 \boldsymbol{u}_1^{(5)}$ を順に4〜1階の広義固有ベクトル $\boldsymbol{u}_1^{(4)}, \boldsymbol{u}_1^{(3)}, \boldsymbol{u}_1^{(2)}, \boldsymbol{u}_1^{(1)}$ とする
 	5. $n \times 5$ 行列  $\left(\boldsymbol{u}_1^{(1)}, \boldsymbol{u}_1^{(2)}, \boldsymbol{u}_1^{(3)}, \boldsymbol{u}_1^{(4)}, \boldsymbol{u}_1^{(5)}\right)$ は $J_5(\lambda)$ に対応する $P$ の部分行列になる
 3. 4階の広義固有ベクトル：
 	1. 1つはこれまでのステップで求められている（$\boldsymbol{u}_1^{(4)}$）ので、あと1つを求めたい
-	2. $V^{(4)}$ の基底ベクトル $\boldsymbol{x}_1^{(4)}, \cdots, \boldsymbol{x}_{13}^{(4)}$ の中から、$\boldsymbol{u}_1^{(4)}$ 及び $V^{(3)}$ の基底ベクトル $\boldsymbol{x}_1^{(3)}, \cdots, \boldsymbol{x}_{11}^{(3)}$ と線形独立なものを1つ選ぶ
+	2. $V^{(4)}$ の基底ベクトル $\boldsymbol{x}_i^{(4)} (i = 1, \cdots, 13)$ の中から、$\boldsymbol{u}_1^{(4)}$ 及び $V^{(3)}$ の基底ベクトル $\boldsymbol{x}_i^{(3)} (i = 1, \cdots, 11)$ と線形独立なものを1つ選ぶ
 	3. 選んだものを残る4階の広義固有ベクトル $\boldsymbol{u}_2^{(4)}$ とする
 	4. これに $A-\lambda I$ を1〜3回かけた $(A-\lambda I) \boldsymbol{u}_2^{(4)}, (A-\lambda I)^2 \boldsymbol{u}_2^{(4)}, (A-\lambda I)^3 \boldsymbol{u}_2^{(4)}$ を順に3〜1階の広義固有ベクトル $\boldsymbol{u}_2^{(3)}, \boldsymbol{u}_2^{(2)}, \boldsymbol{u}_2^{(1)}$ とする
 	5. $n \times 4$ 行列  $\left(\boldsymbol{u}_2^{(1)}, \boldsymbol{u}_2^{(2)}, \boldsymbol{u}_2^{(3)}, \boldsymbol{u}_2^{(4)}\right)$ は $J_4(\lambda)$ に対応する $P$ の部分行列になる
@@ -226,13 +226,13 @@ $$
 	1. これまでのステップで2つとも求め終わっている（$\boldsymbol{u}_1^{(3)}, \boldsymbol{u}_2^{(3)}$）
 5. 2階の広義固有ベクトル
 	1. 2つはこれまでのステップで求められている（$\boldsymbol{u}_1^{(2)}, \boldsymbol{u}_2^{(2)}$）ので、あと2つを求めたい
-	2. $V^{(2)}$ の基底ベクトル $\boldsymbol{x}_1^{(2)}, \cdots, \boldsymbol{x}_9^{(2)}$ の中から、$\boldsymbol{u}_1^{(2)}, \boldsymbol{u}_2^{(2)}$ 及び $V^{(1)}$ の基底ベクトル $\boldsymbol{x}_1^{(1)}, \cdots, \boldsymbol{x}_5^{(1)}$ と線形独立なものを2つ選ぶ
+	2. $V^{(2)}$ の基底ベクトル $\boldsymbol{x}_i^{(2)} (i = 1, \cdots, 9)$ の中から、$\boldsymbol{u}_1^{(2)}, \boldsymbol{u}_2^{(2)}$ 及び $V^{(1)}$ の基底ベクトル $\boldsymbol{x}_i^{(1)} (i = 1, \cdots, 5)$ と線形独立なものを2つ選ぶ
 	3. 選んだものを残る2階の広義固有ベクトル $\boldsymbol{u}_3^{(2)}, \boldsymbol{u}_4^{(2)}$ とする
 	4. これらに $A-\lambda I$ を1回かけた $(A-\lambda I) \boldsymbol{u}_3^{(2)}, (A-\lambda I) \boldsymbol{u}_4^{(2)}$ を1階の広義固有ベクトル $\boldsymbol{u}_3^{(1)}, \boldsymbol{u}_4^{(1)}$ とする
 	5. $n \times 2$ 行列 $\left(\boldsymbol{u}_3^{(1)}, \boldsymbol{u}_3^{(2)}\right),\ \left(\boldsymbol{u}_4^{(1)}, \boldsymbol{u}_4^{(2)}\right)$ はともに $J_2(\lambda)$ に対応する $P$ の部分行列になる
 6. 1階の広義固有ベクトル
 	1. 4つはこれまでのステップから求められている（$\boldsymbol{u}_1^{(1)}, \boldsymbol{u}_2^{(1)}, \boldsymbol{u}_3^{(1)}, \boldsymbol{u}_4^{(1)}$）ので、あと1つを求めたい
-	2. $V^{(1)}$ の基底ベクトル $\boldsymbol{x}_1^{(1)}, \cdots, \boldsymbol{x}_5^{(1)}$ の中から、$\boldsymbol{u}_1^{(1)}, \boldsymbol{u}_2^{(1)}, \boldsymbol{u}_3^{(1)}, \boldsymbol{u}_4^{(1)}$ と線形独立なものを1つ選ぶ
+	2. $V^{(1)}$ の基底ベクトル $\boldsymbol{x}_i^{(1)} (i = 1, \cdots, 5)$ の中から、$\boldsymbol{u}_1^{(1)}, \boldsymbol{u}_2^{(1)}, \boldsymbol{u}_3^{(1)}, \boldsymbol{u}_4^{(1)}$ と線形独立なものを1つ選ぶ
 	3. 選んだものを残る1階の広義固有ベクトル $\boldsymbol{u}_5^{(1)}$ とする
 	4. $n \times 1$ 行列 $\boldsymbol{u}_5^{(1)}$ は $J_1(\lambda)$ に対応する $P$ の部分行列になる
 
