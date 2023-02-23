@@ -11,7 +11,7 @@ $n$ 次正方行列 $A$ に対して、$D := P^{-1}AP$ が[対角行列](special
 
 > **【定理】**
 > 
-> - $n$ 次正方行列 $A$ が対角化可能であるための必要十分条件は、$A$ の固有値ベクトル $\boldsymbol{u}_1, \cdots, \boldsymbol{u}_n$ が線形独立である（$n$ 次元空間の基底とできる）こと
+> - $n$ 次正方行列 $A$ が対角化可能であるための必要十分条件は、$A$ が線形独立な $n$ 個の固有値ベクトル $\boldsymbol{u}_1, \cdots, \boldsymbol{u}_n$ を持つ（固有ベクトルを $n$ 次元空間の基底とできる）こと
 > - 具体的には、$\boldsymbol{u}_i$ を列ベクトルと見て横に並べた行列 $P = (\boldsymbol{u}_1, \cdots, \boldsymbol{u}_n)$ を用いて $A$ を対角化できる
 
 **【証明】**
@@ -85,9 +85,15 @@ $$A\boldsymbol{p}_i = \lambda_i \boldsymbol{p}_i$$
 
 ### 理論
 
-前述の通り、$A$ の固有値と固有ベクトルがわかれば、$A$ の対角化である対角行列 $D$ と、対角化の計算に使う正則行列 $P$ が求まる。
+前述の通り、$A$ の固有値と固有ベクトルがわかれば、
+- $A$ が対角化可能か判別できる
+- $A$ が対角化可能であれば、対角化された対角行列 $D$ と、対角化の計算に使う正則行列 $P$ が求まる
 
 ### 具体例
+
+正方行列 $A$ を対角化した行列 $D$ と、その対角化に利用する正則行列 $P$ を求める。
+
+#### 【1】対角化できる場合（固有値に重解なし）
 
 $$
 A = \begin{pmatrix}
@@ -96,8 +102,6 @@ A = \begin{pmatrix}
 	4 & 0 & 1
 \end{pmatrix}
 $$
-
-を対角化した行列 $D$ と、その対角化に利用する正則行列 $P$ を求める。
 
 $A$ の固有方程式は
 
@@ -129,7 +133,7 @@ D = \begin{pmatrix}
 \end{pmatrix}
 $$
 
-次に、それぞれの固有値に対応する固有ベクトル $\boldsymbol{u} = (u_1, u_2, u_3)^T$ を求める。
+次に、それぞれの固有値に対応する固有ベクトル $\boldsymbol{u} = (x, y, z)^T$ を求める。
 
 $\lambda=-1$ のとき、
 
@@ -138,15 +142,15 @@ $$
 	& A \boldsymbol{u} = - \boldsymbol{u}
 	\\ \Longleftrightarrow \ &
 	\begin{cases}
-		3u_1 + 2u_3 = -u_1 \\
-		-3u_1 + 2u_2 + 5u_3 = -u_2 \\
-		4u_1 - u_3 = -u_3
+		3x + 2z = -x \\
+		-3x + 2y + 5z = -y \\
+		4x - z = -z
 	\end{cases}
 	\\ \Longleftrightarrow \ &
-	u_2 = \cfrac{13}{3}u_1,\ u_3 = -2u_1
+	y = \cfrac{13}{3}x,\ z = -2x
 	\\ \Longleftrightarrow \ &
 	\boldsymbol{u} = k\begin{pmatrix}3\\13\\-6\end{pmatrix}
-	\qquad\qquad (u_1 = 3k)
+	\quad (x = 3k)
 \end{eqnarray}
 $$
 
@@ -157,15 +161,15 @@ $$
 	& A \boldsymbol{u} = 2 \boldsymbol{u}
 	\\ \Longleftrightarrow \ &
 	\begin{cases}
-		3u_1 + 2u_3 = 2u_1 \\
-		-3u_1 + 2u_2 + 5u_3 = 2u_2 \\
-		4u_1 - u_3 = 2u_3
+		3x + 2z = 2x \\
+		-3x + 2y + 5z = 2y \\
+		4x - z = 2z
 	\end{cases}
 	\\ \Longleftrightarrow \ &
-	u_1 = 0,\ u_3 = 0
+	x = 0,\ z = 0
 	\\ \Longleftrightarrow \ &
 	\boldsymbol{u} = k\begin{pmatrix}0\\1\\0\end{pmatrix}
-	\qquad\qquad (u_2 = k)
+	\quad (y = k)
 \end{eqnarray}
 $$
 
@@ -176,15 +180,15 @@ $$
 	& A \boldsymbol{u} = 2 \boldsymbol{u}
 	\\ \Longleftrightarrow \ &
 	\begin{cases}
-		3u_1 + 2u_3 = 5u_1 \\
-		-3u_1 + 2u_2 + 5u_3 = 5u_2 \\
-		4u_1 - u_3 = 5u_3
+		3x + 2z = 5x \\
+		-3x + 2y + 5z = 5y \\
+		4x - z = 5z
 	\end{cases}
 	\\ \Longleftrightarrow \ &
-	u_2 = \cfrac{2}{3}u_1,\ u_3 = u_1
+	y = \cfrac{2}{3}x,\ z = x
 	\\ \Longleftrightarrow \ &
 	\boldsymbol{u} = k\begin{pmatrix}3\\2\\3\end{pmatrix}
-	\qquad\qquad (u_1 = 3k)
+	\quad (x = 3k)
 \end{eqnarray}
 $$
 
@@ -197,6 +201,156 @@ P = \begin{pmatrix}
 	-6 & 0 & 3
 \end{pmatrix}
 $$
+
+#### 【2】対角化できる場合（固有値に重解あり）
+
+$$
+A = \begin{pmatrix}
+	2 & -1 & 1 \\
+	0 & 3 & -1 \\
+	0 & 0 & 2
+\end{pmatrix}
+$$
+
+$A$ の固有方程式は
+
+$$
+\begin{eqnarray}
+	& \det (A-\lambda E) = 0
+	\\ \\ \Longleftrightarrow \ &
+	\det \begin{pmatrix}
+		2-\lambda & -1 & 1 \\
+		0 & 3-\lambda & -1 \\
+		0 & 0 & 2-\lambda
+	\end{pmatrix}
+	= 0
+	\\ \\ \Longleftrightarrow \ &
+	(\lambda-2)^2(\lambda-3) = 0
+\end{eqnarray}
+$$
+
+よって $A$ の固有値は $\lambda = 2, 2, 3$  
+重複度2以上の固有値が存在するため、現時点では対角化できるか分からない。
+
+次に、それぞれの固有値に対応する固有ベクトル $\boldsymbol{u} = (x, y, z)^T$ を求める。
+
+$\lambda=2$ のとき、
+
+$$
+\begin{eqnarray}
+	& A \boldsymbol{u} = 2 \boldsymbol{u}
+	\\ \Longleftrightarrow \ &
+	\begin{cases}
+		2x - y + z = 2x \\
+		3y - z = 2y \\
+		2z = 2z
+	\end{cases}
+	\\ \Longleftrightarrow \ &
+	y = z
+	\\ \Longleftrightarrow \ &
+	\boldsymbol{u} =
+	k\begin{pmatrix}1\\0\\0\end{pmatrix} +
+	l\begin{pmatrix}0\\1\\1\end{pmatrix}
+\end{eqnarray}
+$$
+
+よって、重複度2の固有値 $\lambda = 2$ に対して線形独立な固有ベクトルが2つ存在し、この他に重複度が2以上の固有値は存在しないため、$A$ には独立な $n$ 個の固有ベクトルが存在する。  
+したがって、**$A$ は対角化可能**。
+
+$\lambda=3$ のとき、
+
+$$
+\begin{eqnarray}
+	& A \boldsymbol{u} = 3 \boldsymbol{u}
+	\\ \Longleftrightarrow \ &
+	\begin{cases}
+		2x - y + z = 3x \\
+		3y - z = 3y \\
+		2z = 3z
+	\end{cases}
+	\\ \Longleftrightarrow \ &
+	y = -x,\ z = 0
+	\\ \Longleftrightarrow \ &
+	\boldsymbol{u} =
+	k\begin{pmatrix}1\\-1\\0\end{pmatrix}
+	\quad (x = k)
+\end{eqnarray}
+$$
+
+以上により、対角行列 $D = P^{-1}AP$ を与える正則行列 $P$（の1つ）は
+
+$$
+P = \begin{pmatrix}
+	1 & 0 & 1 \\
+	0 & 1 & -1 \\
+	0 & 1 & 0
+\end{pmatrix}
+$$
+
+であり、対角行列 $D$ は
+
+$$
+D = \begin{pmatrix}
+	2 & 0 & 0 \\
+	0 & 2 & 0 \\
+	0 & 0 & 3
+\end{pmatrix}
+$$
+
+
+#### 【3】対角化できない場合
+
+$$
+A = \begin{pmatrix}
+	1 & 3 & 2 \\
+	0 & -1 & 0 \\
+	1 & 2 & 0
+\end{pmatrix}
+$$
+
+$A$ の固有方程式は
+
+$$
+\begin{eqnarray}
+	& \det (A-\lambda E) = 0
+	\\ \\ \Longleftrightarrow \ &
+	\det \begin{pmatrix}
+		1-\lambda & 3 & 2 \\
+		0 & -1-\lambda & 0 \\
+		1 & 2 & -\lambda
+	\end{pmatrix}
+	= 0
+	\\ \\ \Longleftrightarrow \ &
+	(\lambda+1)^2(\lambda-2) = 0
+\end{eqnarray}
+$$
+
+よって $A$ の固有値は $\lambda = -1, -1, 2$  
+重複度2以上の固有値が存在するため、現時点では対角化できるか分からない。
+
+次に、それぞれの固有値に対応する固有ベクトル $\boldsymbol{u} = (x, y, z)^T$ を求める。
+
+$\lambda=-1$ のとき、
+
+$$
+\begin{eqnarray}
+	& A \boldsymbol{u} = - \boldsymbol{u}
+	\\ \Longleftrightarrow \ &
+	\begin{cases}
+		x + 3y + 2z = -x \\
+		-y = -y \\
+		x + 2y = -z
+	\end{cases}
+	\\ \Longleftrightarrow \ &
+	y = 0,\ z = x
+	\\ \Longleftrightarrow \ &
+	\boldsymbol{u} = k\begin{pmatrix}1\\0\\-1\end{pmatrix}
+	\quad (x = k)
+\end{eqnarray}
+$$
+
+よって、重複度2の固有値 $\lambda = -1$ に対して線形独立な固有ベクトルが1つしかないので、$A$ には独立な $n$ 個の固有ベクトルが存在しない。  
+したがって、**$A$ は対角化できない**。
 
 
 ## 行列のべき乗の計算

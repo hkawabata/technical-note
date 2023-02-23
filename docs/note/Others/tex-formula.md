@@ -331,7 +331,11 @@ $$
 
 ## 数式の色
 
-`$\color{tomato}{\exp\left(\cfrac{-x^2}{2}\right)}$`などのようにして、数式の色を変えられる：
+```
+$\color{tomato}{\exp\left(\cfrac{-x^2}{2}\right)}$
+```
+
+などのようにして、数式の色を変えられる：
 
 $$\color{tomato}{\exp\left(\cfrac{-x^2}{2}\right)}$$
 

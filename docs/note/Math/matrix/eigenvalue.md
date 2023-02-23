@@ -146,7 +146,7 @@ $$
 固有値 $\lambda$ に対応する固有ベクトルを求めるには、固有値・固有ベクトルの定義式
 
 $$
-A \boldsymbol{u} = \lambda \boldsymbol{u}
+(A - \lambda I) \boldsymbol{u} = \boldsymbol{0}
 $$
 
 に $\lambda$ を代入し、$\boldsymbol{u} = \left(u_1, u_2, \cdots, u_n \right)^T$ の各成分の連立方程式として解けば良い。
@@ -166,9 +166,6 @@ l \begin{pmatrix} 2 \\ -1 \\ 0 \end{pmatrix}
 $$
 
 のような形で求まる。
-
-※ 式に現れる定数の個数は固有値の重複度以下
-
 
 ## 具体例
 
@@ -527,9 +524,9 @@ $$
 $$
 A =
 \begin{pmatrix}
-	0  & -1 & -3 \\
-	2  & 3  & 3  \\
-	-2 & 1  & 1
+0  & 6 & 3 \\
+-2 & 7 & 2  \\
+0  & 0 & 3
 \end{pmatrix}
 $$
 

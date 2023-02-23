@@ -549,6 +549,10 @@
 </a>
               </li>
               <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/rank-nullity-theorem">次元定理
+</a>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/eigenvalue">固有値と固有ベクトル
 </a>
               </li>
@@ -558,6 +562,10 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/inverse-matrix">逆行列
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/generalized-eigenvector">広義の固有ベクトル
 </a>
               </li>
               <li>
@@ -609,6 +617,14 @@
 </a>
                   </li>
                 </ul>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/trace">行列のトレース
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/matrix/jordan-normal-form">ジョルダン標準形
+</a>
               </li>
             </ul>
           </li>
