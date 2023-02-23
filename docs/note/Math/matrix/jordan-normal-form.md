@@ -205,7 +205,7 @@ $$
 | 0 | 0 | - | - | - |
 | 1 | 5 | 5 | $\boldsymbol{x}_1^{(1)}, \cdots, \boldsymbol{x}_5^{(1)}$ | $\boldsymbol{u}_1^{(1)},\ \boldsymbol{u}_2^{(1)},\ \boldsymbol{u}_3^{(1)},\ \boldsymbol{u}_4^{(1)},\ \boldsymbol{u}_5^{(1)}$ |
 | 2 | 9 | 4 | $\boldsymbol{x}_1^{(2)}, \cdots, \boldsymbol{x}_9^{(2)}$ | $\boldsymbol{u}_1^{(2)},\ \boldsymbol{u}_2^{(2)},\ \boldsymbol{u}_3^{(2)},\ \boldsymbol{u}_4^{(2)}$ |
-| 3 | 11 | 2 | $\boldsymbol{x}_1^{(3)}, \cdots, \boldsymbol{x}_{11}^{(3)}$ | $\boldsymbol{u}_1^{(3)},\ \boldsymbol{u}_2^{(3)}$ |
+| 3 | 11 | 2 | $\boldsymbol{x}_i^{(3)} (i = 1, \cdots, 11)$ | $\boldsymbol{u}_1^{(3)},\ \boldsymbol{u}_2^{(3)}$ |
 | 4 | 13 | 2 | $\boldsymbol{x}_1^{(4)}, \cdots, \boldsymbol{x}_{13}^{(4)}$ | $\boldsymbol{u}_1^{(4)},\ \boldsymbol{u}_2^{(4)}$ |
 | 5 | 14 | 1 | $\boldsymbol{x}_1^{(5)}, \cdots, \boldsymbol{x}_{14}^{(5)}$ | $\boldsymbol{u}_1^{(5)}$ |
 

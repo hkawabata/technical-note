@@ -76,7 +76,7 @@ $$
 \lambda | \boldsymbol{u} |^2 \gt 0
 $$
 
-$| \boldsymbol{u} |^2 \gt 0$ なので、$\lambda \gt 0$
+ベクトルの絶対値は負にならないので、$\lambda \gt 0$
 
 **【$Q \Longrightarrow P$ の証明】**
 
