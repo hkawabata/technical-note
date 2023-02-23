@@ -142,22 +142,24 @@ $$
 
 これらの定理を用いると、固有値に対応するジョルダンブロックの大きさと数を調べられる。
 
-例えば重複度 $r=14$ の固有値 $\lambda$ について、$(A-\lambda I),\ (A-\lambda I)^2,\ (A-\lambda I)^3, \cdots$ の rank から広義固有空間の次元を調べていった結果、以下の表が得られたとする。
+例えば20次正方行列 $A$ の重複度 $r=14$ の固有値 $\lambda$ について、$(A-\lambda I),\ (A-\lambda I)^2,\ (A-\lambda I)^3, \cdots$ の rank から広義固有空間の次元を調べていった結果、以下の表が得られたとする。
 
-| $k$ | $\dim V^{(k)}$ | $\dim V^{(k)}-\dim V^{(k-1)}$<br>$= k$ 階の広義固有ベクトルの個数<br>$=k$ 以上のサイズのジョルダンブロック数 |
-| :-- | :-- | :-- |
-| 0 | 0 | - |
-| 1 | 5 | 5 |
-| 2 | 9 | 4 |
-| 3 | 11 | 2 |
-| 4 | 13 | 2 |
-| 5 | 14 | 1 |
-| 6 | 14 | 0 |
-| 7 | 14 | 0 |
-| 8 | 14 | 0 |
-| $\vdots$ | $\vdots$ | $\vdots$ |
+| $k$ | $\mathrm{rank}(A-\lambda I)^k$ | $\dim V^{(k)}$ | $\dim V^{(k)}-\dim V^{(k-1)}$<br>$= k$ 階の広義固有ベクトルの個数<br>$=k$ 以上のサイズのジョルダンブロック数 |
+| :-- | :-- | :-- | :-- |
+| 0 | 20 | 0 | - |
+| 1 | 15 | 5 | 5 |
+| 2 | 11 | 9 | 4 |
+| 3 | 9 | 11 | 2 |
+| 4 | 7 | 13 | 2 |
+| 5 | 6 | 14 | 1 |
+| 6 | 6 | 14 | 0 |
+| 7 | 6 | 14 | 0 |
+| 8 | 6 | 14 | 0 |
+| $\vdots$ | $\vdots$ | $\vdots$ | $\vdots$ |
 
 （※ $k=5$ の時点で $\dim V^{(5)} = r$ となっているので、$k \ge 6$ は調べずとも明らか）
+
+固有値 $\lambda$ に対応するジョルダンブロックを求める流れは次の通り。
 
 1. サイズ5以上のブロックが1つで、サイズ6以上のブロックは存在しないから、ブロックの1つは $J_5(\lambda)$
 	1. → サイズ5以上のブロックは全て求まった
@@ -167,7 +169,7 @@ $$
 4. サイズ2以上のブロックは4つで、そのうちサイズ3以上のものは1〜3より2つだけなので、残り2つは $J_2(\lambda),\ J_2(\lambda)$
 5. サイズ1以上のブロックは5つで、そのうちサイズ2以上のものは1〜4より4つだけなので、残り1つは $J_1(\lambda)$
 
-という流れで、固有値 $\lambda$ に対応するジョルダンブロックは $J_5(\lambda),\ J_4(\lambda),\ J_2(\lambda),\ J_2(\lambda),\ J_1(\lambda)$ だと分かる。  
+以上により、求めるジョルダンブロックは $J_5(\lambda),\ J_4(\lambda),\ J_2(\lambda),\ J_2(\lambda),\ J_1(\lambda)$ だと分かる。  
 これらを任意の順番で斜めに並べれば良い（他の固有値に対応するブロックと順番が入れ替わっても良い）。
 
 #### 生成行列の部分行列の求め方
@@ -238,11 +240,11 @@ $$
 
 という流れで、固有値 $\lambda$ に対するジョルダン標準形生成行列 $P$ の部分行列
 
-- $\left(\boldsymbol{u}_1^{(1)}, \boldsymbol{u}_1^{(2)}, \boldsymbol{u}_1^{(3)}, \boldsymbol{u}_1^{(4)}, \boldsymbol{u}_1^{(5)}\right)$ 
-- $\left(\boldsymbol{u}_2^{(1)}, \boldsymbol{u}_2^{(2)}, \boldsymbol{u}_2^{(3)}, \boldsymbol{u}_2^{(4)}\right)$
-- $\left(\boldsymbol{u}_3^{(1)}, \boldsymbol{u}_3^{(2)}\right)$
-- $\left(\boldsymbol{u}_4^{(1)}, \boldsymbol{u}_4^{(2)}\right)$
-- $\boldsymbol{u}_5^{(1)}$
+- $P_1 = \left(\boldsymbol{u}_1^{(1)}, \boldsymbol{u}_1^{(2)}, \boldsymbol{u}_1^{(3)}, \boldsymbol{u}_1^{(4)}, \boldsymbol{u}_1^{(5)}\right)$ 
+- $P_2 = \left(\boldsymbol{u}_2^{(1)}, \boldsymbol{u}_2^{(2)}, \boldsymbol{u}_2^{(3)}, \boldsymbol{u}_2^{(4)}\right)$
+- $P_3 = \left(\boldsymbol{u}_3^{(1)}, \boldsymbol{u}_3^{(2)}\right)$
+- $P_4 = \left(\boldsymbol{u}_4^{(1)}, \boldsymbol{u}_4^{(2)}\right)$
+- $P_5 = \boldsymbol{u}_5^{(1)}$
 
 が求まる。
 
@@ -385,7 +387,267 @@ A = \begin{pmatrix}
 \end{pmatrix}
 $$
 
-（ToDo）
+$A$ の固有多項式は
+
+$$
+\det (A-\lambda I) =
+\det
+\begin{pmatrix}
+	7-\lambda & -1 & 1 \\
+	8 & 1-\lambda & 2 \\
+	-6 & 1 & 1-\lambda
+\end{pmatrix}
+=
+-(\lambda-3)^3
+$$
+
+なので、
+- 固有値は $\lambda = 3$
+- 重複度は $r = 3$
+
+行基本変形を用いて、$\lambda_2=0$ に属する $k$ 階の広義固有空間 $V^{(k)}$ の次元を調べていく。
+
+$$
+\begin{eqnarray}
+\dim V^{(1)} &=& 3-\mathrm{rank}(A-3I)
+\\ &=&
+3-\mathrm{rank} \begin{pmatrix}
+	4 & -1 & 1 \\
+	8 & -2 & 2 \\
+	-6 & 1 & -2
+\end{pmatrix}
+=
+3-\mathrm{rank} \begin{pmatrix}
+	4 & -1 & 1 \\
+	0 & 0 & 0 \\
+	2 & -1 & 0
+\end{pmatrix}
+=
+3-\mathrm{rank} \begin{pmatrix}
+	0 & 1 & 1 \\
+	0 & 0 & 0 \\
+	2 & -1 & 0
+\end{pmatrix}
+\\ &=& 3-2 = 1
+\\
+\\
+\dim V^{(2)} &=& 3-\mathrm{rank}(A-3I)^2
+\\ &=&
+3-\mathrm{rank} \begin{pmatrix}
+	2 & -1 & 0 \\
+	4 & -2 & 0 \\
+	-4 & 2 & 0
+\end{pmatrix}
+=
+3-\mathrm{rank} \begin{pmatrix}
+	2 & -1 & 0 \\
+	0 & 0 & 0 \\
+	0 & 0 & 0
+\end{pmatrix}
+\\ &=& 3-1 = 2
+\\
+\\
+\dim V^{(3)} &=& 3-\mathrm{rank}(A-3I)^3
+\\ &=&
+3-\mathrm{rank} \begin{pmatrix}
+	0 & 0 & 0 \\
+	0 & 0 & 0 \\
+	0 & 0 & 0
+\end{pmatrix}
+\\ &=& 3-0 = 3
+\end{eqnarray}
+$$
+
+$\dim V^{(3)} = r$ となったので、$\dim V^{(4)}$ 以上について調べる必要はない。
+
+| $k$ | $\dim V^{(k)}$ | $\dim V^{(k)}-\dim V^{(k-1)}$<br>$= k$ 階の広義固有ベクトルの個数<br>$=k$ 以上のサイズのジョルダンブロック数 |
+| :-- | :-- | :-- |
+| 0 | 0 | - |
+| 1 | 1 | 1 |
+| 2 | 2 | 1 |
+| 3 | 3 | 1 |
+
+表より、$\lambda$ に属するジョルダンブロックは $J_3(3)$ が1つのみ。
+
+**【1階の固有空間 $V^{(1)}$】**
+
+$\lambda_2$ に属する固有ベクトル $\boldsymbol{u}^{(1)}$ を求める。  
+
+$$
+\begin{eqnarray} &
+(A-3I) \boldsymbol{u}^{(1)} = \boldsymbol{0}
+\\ \\ \Longleftrightarrow \ &
+\begin{pmatrix}
+	0 & 1 & 1 \\
+	0 & 0 & 0 \\
+	2 & -1 & 0
+\end{pmatrix}
+\begin{pmatrix}u_1 \\ u_2 \\ u_3\end{pmatrix}
+= \boldsymbol{0}
+\end{eqnarray}
+$$
+
+を解くと $u_2 = 2u_1,\ u_3=-2u_1$ が得られるので、
+
+$$
+\boldsymbol{u}^{(1)}
+=
+\begin{pmatrix}u_1 \\ 2u_1 \\ -2u_1\end{pmatrix}
+=
+u_1 \begin{pmatrix} 1 \\ 2 \\ -2 \end{pmatrix}
+\tag{2.1}
+$$
+
+**【2階の固有空間 $V^{(2)}$】**
+
+2階の広義固有空間の基底 $\boldsymbol{u}^{(2)}$ を求める。
+
+$$
+\begin{eqnarray} &
+(A-3I)^2 \boldsymbol{u}^{(2)} = \boldsymbol{0}
+\\ \\ \Longleftrightarrow \ &
+\begin{pmatrix}
+	2 & -1 & 0 \\
+	0 & 0 & 0 \\
+	0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix}u_1 \\ u_2 \\ u_3\end{pmatrix}
+= \boldsymbol{0}
+\end{eqnarray}
+$$
+
+を解くと $u_2=2u_1$ が得られるので、
+
+$$
+\boldsymbol{u}^{(2)}
+=
+\begin{pmatrix}u_1 \\ 2u_1 \\ u_3\end{pmatrix}
+=
+u_1 \begin{pmatrix} 1 \\ 2 \\ 0 \end{pmatrix} +
+u_3 \begin{pmatrix} 0 \\ 0 \\ 1\end{pmatrix}
+\tag{2.2}
+$$
+
+
+**【3階の固有空間 $V^{(3)}$】**
+
+3階の広義固有空間の基底 $\boldsymbol{u}^{(3)}(\lambda_2)$ を求める。
+
+$$
+\begin{eqnarray} &
+(A-3I)^3 \boldsymbol{u}^{(3)} = \boldsymbol{0}
+\\ \\ \Longleftrightarrow \ &
+\begin{pmatrix}
+	0 & 0 & 0 \\
+	0 & 0 & 0 \\
+	0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix}u_1 \\ u_2 \\ u_3\end{pmatrix}
+= \boldsymbol{0}
+\end{eqnarray}
+$$
+
+を解くと、$u_1,u_2,u_3$ に関する制約は存在しないので、
+
+$$
+\boldsymbol{u}^{(3)}
+=
+\begin{pmatrix}u_1 \\ u_2 \\ u_3\end{pmatrix}
+=
+u_1 \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix} +
+u_2 \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix} +
+u_3 \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}
+\tag{2.3}
+$$
+
+**【ジョルダンブロックを生成する広義固有ベクトルの導出】**
+
+2階・3階の固有空間 $(2.2)\ (2.3)$ を比較する。  
+
+$\boldsymbol{u}^{(3)}$ に現れる線形独立な3つのベクトルのうち、$\boldsymbol{u}^{(2)}$ と線形独立なものを選べば、それが3階の広義固有ベクトルである。  
+$\dim V^{(3)} - \dim V^{(2)} = 1$ なので1つ選ぶと、
+
+$$
+\boldsymbol{u}_1^{(3)} := (0,1,0)^T
+\tag{2.4}
+$$
+
+このベクトルに $A-3I$ を1〜2回かけると、順に2階、1階の固有ベクトルが得られる：
+
+$$
+\begin{eqnarray}
+	\boldsymbol{u}_1^{(2)}
+	:=
+	(A-3I) \boldsymbol{u}_1^{(3)}
+	=
+	(-1,-2,1)^T
+	\\
+	\boldsymbol{u}_1^{(1)}
+	:=
+	(A-3I) \boldsymbol{u}_1^{(2)}
+	=
+	(-1,-2,2)^T
+\end{eqnarray}
+\tag{2.5}
+$$
+
+これでジョルダンブロックを生成するベクトルが全て求まった。
+
+**■ ジョルダン標準形とその生成行列の導出**
+
+$\lambda$ に属するジョルダンブロックは $J_3(3)$ が1つのみなので、$A$ のジョルダン標準形は
+
+$$
+J = J_3(3)
+=
+\begin{pmatrix}
+	3 & 1 & 0 \\
+	0 & 3 & 1 \\
+	0 & 0 & 3
+\end{pmatrix}
+\tag{2.6}
+$$
+
+$(2.4)\ (2.5)$ より、ジョルダン標準形の生成行列を計算すると、
+
+$$
+\begin{eqnarray}
+	P &=& \left(
+		\boldsymbol{u}_1^{(1)},
+		\boldsymbol{u}_1^{(2)},
+		\boldsymbol{u}_1^{(3)}
+	\right)
+	\\ &=&
+	\begin{pmatrix}
+		-1 & -1 & 0 \\
+		-2 & -2 & 1 \\
+		2 & 1 & 0
+	\end{pmatrix}
+\end{eqnarray}
+\tag{2.7}
+$$
+
+掃き出し法により $P$ の逆行列を求めると、
+
+$$
+P^{-1} = \begin{pmatrix}
+	1 & 0 & 1 \\
+	-2 & 0 & -1 \\
+	-2 & 1 & 0
+\end{pmatrix}
+$$
+
+これらを用いて $P^{-1}AP$ を計算すると、
+
+$$
+P^{-1}AP = \begin{pmatrix}
+	3 & 1 & 0 \\
+	0 & 3 & 1 \\
+	0 & 0 & 3
+\end{pmatrix}
+$$
+
+となり、$J$ に一致する。
 
 
 ### 【3】6次正方行列・5重解
@@ -598,12 +860,12 @@ $$
 \tag{3.4}
 $$
 
-このベクトルに $A$ をかけると、1つ下の階数である1階の固有ベクトルが得られる：
+このベクトルに $A-0I$ をかけると、1つ下の階数である1階の固有ベクトルが得られる：
 
 $$
 \boldsymbol{u}_1^{(1)}(\lambda_2)
 :=
-A \boldsymbol{u}_1^{(2)}(\lambda_2)
+(A-0I) \boldsymbol{u}_1^{(2)}(\lambda_2)
 =
 (1,0,0,0,0,0)^T
 \tag{3.5}
@@ -1023,26 +1285,26 @@ $$
 $$
 
 のみ。  
-このベクトルに $A$ をかけるたび、1つ下の階数の固有ベクトルが得られる：
+このベクトルに $A-0I$ をかけるたび、1つ下の階数の固有ベクトルが得られる：
 
 $$
 \begin{eqnarray}
 	\boldsymbol{u}_1^{(3)}(\lambda_2)
 	&:=&
-	A \boldsymbol{u}_1^{(4)}(\lambda_2)
+	(A-0I) \boldsymbol{u}_1^{(4)}(\lambda_2)
 	&=&
 	(1,1,-1,-1,0,1,0)^T
 	\\
 	\boldsymbol{u}_1^{(2)}(\lambda_2)
 	&:=&
-	A \boldsymbol{u}_1^{(3)}(\lambda_2)
+	(A-0I) \boldsymbol{u}_1^{(3)}(\lambda_2)
 	&=&
 	(-3,-1,1,0,0,0,0)^T
 	\tag{4.7}
 	\\
 	\boldsymbol{u}_1^{(1)}(\lambda_2)
 	&:=&
-	A \boldsymbol{u}_1^{(2)}(\lambda_2)
+	(A-0I) \boldsymbol{u}_1^{(2)}(\lambda_2)
 	&=&
 	(2,0,0,0,0,0,0)^T
 \end{eqnarray}
@@ -1058,12 +1320,12 @@ $$
 \tag{4.8}
 $$
 
-を選ぶと、このベクトルに $A$ をかけることで1階の固有ベクトルを得る：
+を選ぶと、このベクトルに $(A-0I)$ をかけることで1階の固有ベクトルを得る：
 
 $$
 \boldsymbol{u}_2^{(1)}(\lambda_2)
 :=
-A \boldsymbol{u}_1^{(4)}(\lambda_2)
+(A-0I) \boldsymbol{u}_1^{(4)}(\lambda_2)
 =
 (-1,1,1,0,0,0,0)^T
 \tag{4.9}
