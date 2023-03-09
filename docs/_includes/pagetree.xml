@@ -40,6 +40,16 @@
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
           <li>
+            <span>ssl-server-certificate</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Network/ssl-server-certificate/csr">CSR
+</a>
+              </li>
+            </ul>
+          </li>
+          <li>
             <a href="https://hkawabata.github.io/technical-note/note/Network/words">ネットワーク用語
 </a>
           </li>
@@ -411,6 +421,10 @@
 </a>
                   </li>
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/f-distribution">F 分布
+</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/t-distribution">分布
 </a>
                   </li>
@@ -462,6 +476,10 @@
                 <span>hypothesis-testing</span>
                 <span class="pagetree-accordion">▼</span>
                 <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/testing-for-the-variance">分散の検定
+</a>
+                  </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/testing-for-goodness-of-fit-and-independence">適合度の検定・独立性の検定
 </a>
