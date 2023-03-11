@@ -2,6 +2,10 @@
 title: Selenium
 ---
 
+# 概要
+
+スクレイピングを行うためのライブラリ。
+
 # pom.xml の設定
 
 ```xml
@@ -48,6 +52,37 @@ public class App {
   }
 }
 ```
+
+## 条件を満たす html タグを探す
+
+### メソッド
+
+| メソッド | 説明 |
+| :-- | :-- |
+| `driver.findElement(By by)` | 条件を満たす `WebElement` を1つ探す<br>1つも存在しない場合は例外発生？（要確認） |
+| `driver.findElements(By by)` | 条件を満たす `WebElement` を全て探す<br>1つも存在しない場合は空コレクション？（要確認） |
+
+### 条件指定
+
+`By` クラスのメソッドを使う。
+
+| メソッド | 説明 |
+| :-- | :-- |
+| `By.id("xxx")` | タグの id を指定 |
+| `By.className("xxx")` | タグの class を指定 |
+| `By.tagName("xxx")` | html タグ名を指定 |
+| `By.linkText("xxx")` | リンクテキストの文字列を指定（完全一致） |
+| `By.partialLinkText("xxx")` | リンクテキストの文字列を指定（部分一致） |
+
+## html タグからの情報抽出
+
+| メソッド | 説明 |
+| :-- | :-- |
+| `webElement.getAttribute("xxx")` | 属性名から属性値を取得 |
+| `webElement.getTagName()` | 要素のタグ名を取得 |
+| `webElement.getText()` | タグに囲まれた内部テキストを取得 |
+| `webElement.getCssValue("xxx")` | CSS プロパティ名から CSS プロパティ値を取得 |
+
 
 
 # TIPS
