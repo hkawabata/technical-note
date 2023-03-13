@@ -164,25 +164,25 @@ M'_{Z_k}(0) = E(Z_k) = 0
 $$
 
 $$
-M''_{Z_k}(0) = E(Z^2_k) = V(Z_k) - E(Z_k)^2 = 1-0^2=1
+M''_{Z_k}(0) = E(Z^2_k) = V(Z_k) + E(Z_k)^2 = 1+0^2=1
 $$
 
-これらをマクローリン展開の式に代入し、$\cfrac{t}{\sqrt{n}}$ の3次以上の式を $O((t/\sqrt{n})^3)$ でまとめて表すと、
+これらをマクローリン展開の式に代入し、$\cfrac{t}{\sqrt{n}}$ の3次以上の式を $O\left(\left(\cfrac{t}{\sqrt{n}}\right)^3\right)$ でまとめて表すと、
 
 $$
 M_{Z_k} \left (\cfrac{t}{\sqrt{n}} \right)
 =
-1 + \cfrac{t^2}{2n} + O ((t/\sqrt{n})^3)
+1 + \cfrac{t^2}{2n} + O\left(\left(\cfrac{t}{\sqrt{n}}\right)^3\right)
 $$
 
-これを $M_\bar{X}(t)$ の式に代入すれば、
+これを $M_Z(t)$ の式に代入すれば、
 
 $$
 \begin{eqnarray}
   M_Z(t) &=& \left( M_{Z_k} \left( \cfrac{t}{\sqrt{n}} \right) \right)^n
   \\ &=&
   \left(
-    1 + \cfrac{t^2}{2n} + O ((t/\sqrt{n})^3)
+    1 + \cfrac{t^2}{2n} + O\left(\left(\cfrac{t}{\sqrt{n}}\right)^3\right)
   \right)^n
   \\ &\longrightarrow&
   \exp{\left( \cfrac{t^2}{2} \right)} \qquad (n \rightarrow \infty)
