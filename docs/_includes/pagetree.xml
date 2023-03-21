@@ -16,6 +16,22 @@
         </ul>
       </li>
       <li>
+        <span>PhysicalSimulation</span>
+        <span class="pagetree-accordion">▼</span>
+        <ul class="pagetree-hidden">
+          <li>
+            <span>mechanics</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/PhysicalSimulation/mechanics/motion-of-mass-point">質点の運動
+</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
         <span>DataMining</span>
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
