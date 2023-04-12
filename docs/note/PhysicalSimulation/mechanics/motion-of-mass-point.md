@@ -36,6 +36,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib.animation as animation
 
+np.seterr(all='raise')
+
 class PointMass:
 	def __init__(self, name, m, x0, v0):
 		self.name = name
@@ -146,7 +148,7 @@ system.draw_simulation(path_length=7, slice_size=5)
 
 ## 振り子の運動
 
-速度 $v_\theta$ の円運動を維持するために必要な半径方向の力（向心力）は $\cfrac{mv_\theta^2}{L}$  であり、これが張力 $S$ と重力の半径方向成分の和に等しいから、
+質量 $m$ の質点が速度 $v_\theta$、半径 $L$ の円運動を維持するために必要な半径方向の力（向心力）は $\cfrac{mv_\theta^2}{L}$  であり、これが張力 $S$ と重力の半径方向成分の和に等しいから、
 
 $$
 S - mg \cos \theta = \cfrac{mv_\theta^2}{L}
