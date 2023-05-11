@@ -439,13 +439,15 @@ B  ['a', 'c']       2  c
 ```
 
 
-# ユーザ定義関数 (UDF)
+# ユーザ定義関数 (UDF, UDTF, UDAF)
 
-UDF = User-Defined Function
+| 種類 | 説明 |
+| :-- | :-- |
+| UDF | User-Defined Function<br>単一レコードから単一の値を生成する、通常のユーザ関数 |
+| UDAF | User-Defined Aggregation Function<br>値のグループを受け入れ、単一の値を返すユーザー定義の集計関数 |
+| UDTF | User-Defined Table Function<br>単一行で動作し、出力としてテーブルの複数の行を生成するユーザー定義テーブル生成関数 |
 
-## UDF の作成
-
-### pom.xml の設定
+## UDF の作成：pom.xml
 
 ```xml
 <dependencies>  
@@ -470,9 +472,11 @@ UDF = User-Defined Function
 </dependencies>
 ```
 
-### UDF の実装
+## UDF の作成：実装
 
-引数が int, double, string などの基本型の場合：
+- `ObjectInspector`：Hive テーブル内の列のデータを扱うための重要なコンポーネントであり、Hive のデータ型と Java オブジェクトの間の変換を処理するために使用される
+
+### UDF：引数が int, double, string などの基本型の場合
 
 ```java
 package com.example;
@@ -496,7 +500,7 @@ public class SampleUDF extends UDF {
 }
 ```
 
-引数に array, map, struct が含まれる場合：
+### UDF：引数が array の場合
 
 ```java
 package com.example;
@@ -513,7 +517,7 @@ import org.apache.hadoop.hive.serde2.objectinspector.primitive.StringObjectInspe
 
 import java.util.List;
 
-public class SampleGenericUDF extends GenericUDF {
+public class SampleGenericArrayUDF extends GenericUDF {
     private StringObjectInspector stringOI;
     private ListObjectInspector listOI;
 
@@ -571,17 +575,28 @@ public class SampleGenericUDF extends GenericUDF {
 }
 ```
 
+
+### UDF：引数が map の場合
+
+
+### UDF：引数が struct の場合
+
+
+### UDF：返り値が struct の場合
+
+
+
+## UDF の利用
+
 ```bash
 mvn clean package
 hdfs dfs -put target/my-udf.jar /path/to/
 ```
 
-## UDF の利用
-
 ```sql
 add jar hdfs:///path/to/my-udf.jar;
 create temporary function myfunc as 'com.example.SampleUDF';
-create temporary function myfunc2 as 'com.example.SampleGenericUDF';
+create temporary function myfunc2 as 'com.example.SampleGenericArrayUDF';
 
 select myfunc('ab', 'ba', 'aab');
 -- false

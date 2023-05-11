@@ -142,6 +142,14 @@ df.write.mode(SaveMode.Overwrite).  // ErrorIfExists, Overwrite
 
 ## 種々の操作
 
+### DataFrame → case class の Dataset
+
+ToDo：`as[MyCaseClass]`
+
+### カラム名設定
+
+ToDo：`toDF`
+
 ### select
 
 ※ カラム名の大文字・小文字は区別されない模様
