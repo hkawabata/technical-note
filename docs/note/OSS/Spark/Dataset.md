@@ -140,11 +140,36 @@ df.write.mode(SaveMode.Overwrite).  // ErrorIfExists, Overwrite
   csv("/path/to/save/directory")    // ファイル保存
 ```
 
+### SaveMode
+
+| SaveMode | 意味 |
+| :-- |  :-- |
+| `SaveMode.ErrorIfExists` | データが既に存在する場合、例外を投げる (default) |
+| `SaveMode.Append` | データが既に存在する場合、既存データに追記 |
+| `SaveMode.Overwrite` | データが既に存在する場合、上書き |
+| `SaveMode.Ignore` | データが既に存在する場合、保存を中止し、例外も投げない |
+
 ## 種々の操作
+
+### Dataset の 内容確認
+
+```scala
+val ds: Dataset[...] = ...
+df.show(numRows=30, truncate=false)   // 30行目まで表示 & 長くても "..." で省略しない
+df.show()  // デフォルト引数 (numRows=20, truncate=true)
+```
 
 ### DataFrame → case class の Dataset
 
-ToDo：`as[MyCaseClass]`
+（ToDo）
+
+```scala
+val df = ...
+
+case class MyCaseClass()
+df.as[MyCaseClass]
+df.as[(String, String, Int)]
+```
 
 ### カラム名設定
 
@@ -344,6 +369,16 @@ csvLabeled.filter($"num" > 1).show()
 csvLabeled.filter($"num" >= 2).show()
 json.filter($"num" > 15 and $"obj.n" < 3).show()
 ```
+
+
+### select + where
+
+項目を `select` で選択し、続く `where` で条件によってデータを絞る。
+
+```scala
+json.select("str").where($"num" > 15 and $"obj.n" < 3)
+```
+
 
 ### データのグルーピング・集約
 

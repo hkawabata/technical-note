@@ -27,8 +27,10 @@ title-en: Statistics
 	- [母平均の検定](hypothesis-testing/testing-for-the-mean.md)
 	- [母比率の検定](hypothesis-testing/testing-for-the-proportion.md)
 	- [分散の検定](hypothesis-testing/testing-for-the-variance.md)
-- 時系列データ
-	- [自己相関](time-series/autocorrelation.md)
+- 相関
+	- [偏相関](correlation/partial-correlation.md)
+	- [自己相関](correlation/autocorrelation.md)
+	- [順位相関](correlation/rank-correlation-coefficient.md)
 - [同時確率分布](joint-probability-distribution.md)
 - [ローレンツ曲線](lorenz-curve.md)
 - [QQ プロット](qq-plot.md)
@@ -37,4 +39,3 @@ title-en: Statistics
 - [尖度](kurtosis.md)
 - [独立な確率変数の和](sum-of-independent-random-variable.md)
 - [分散共分散行列](variance-covariance-matrix.md)
-- [偏相関](partial-correlation.md)
