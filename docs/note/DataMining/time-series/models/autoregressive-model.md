@@ -72,10 +72,7 @@ $$
 \end{eqnarray}
 $$
 
-$r_t$ が[定常過程](../stationary-process.md)であるためには、$p \to \infty$ としたときに $E(r_t)$ が発散しないことが必要。これを満たす条件は以下のいずれか。
-
-1. $|\phi_1| \lt 1$
-2. $\phi_1 = 1, \phi_0 = 0$
+$r_t$ が[定常過程](../stationary-process.md)であるためには、$p \to \infty$ としたときに $E(r_t)$ が発散しないことが必要。これを満たす条件は、$|\phi_1| \lt 1$ あるいは $\phi_1 = 1, \phi_0 = 0$
 
 次に $(3)$ の両辺の分散を取る。  
 右辺の確率変数 $r_{t-p}$ と $\varepsilon_{t-0}, \varepsilon_{t-1}, \cdots \varepsilon_{t-(p-1)}$ は全て独立であるから、
