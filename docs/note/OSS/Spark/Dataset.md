@@ -312,6 +312,8 @@ dfArray.select(
 
 #### if-else
 
+`when(<条件1>, <値1>).when(<条件2>, <値2>).otherwise(<値3>)` のような構文を使う。
+
 ```scala
 csvConverted.select(
   $"numInt",
@@ -359,6 +361,13 @@ scala> json.select(
 |[C, CC, CCC]| CC|
 |[C, CC, CCC]|CCC|
 +------------+---+
+```
+
+#### null を別の値に置換
+
+```scala
+// price カラムが null だったらゼロに置き換える
+df.na.fill(0, Array("price"))
 ```
 
 ### filter

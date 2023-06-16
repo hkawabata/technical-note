@@ -6,10 +6,135 @@ title-en: Autocorrelation
 # 自己相関
 
 自己相関 = 過去と現在の相関。  
-時系列データ $S_0 = \{r_1, \cdots, r_n\}$ と、そこから一定時間をずらしたデータ $S_h = \{r_{1+h}, \cdots, r_{n+h}\}$ との相関を取る。
+時系列データ $S = \{r_1, \cdots, r_n\}$ に対して、そこから一定時間をずらしたデータとの相関係数を計算する。
 
-- **ラグ**：元データからずらす時間
-- **自己相関係数**：時系列データとそこからラグ $h$ だけずらしたデータとの相関係数
+## 自己相関係数の計算
+
+- **ラグ** $h$：元データからずらす時間
+- 時系列データ
+	- $S = \{r_1, \cdots, r_n\}$：元の時系列データ
+	- $S_0 = \{r_1, \cdots, r_{n-h}\}$：計算の都合上 $S_h$ と同じ長さにするため、ラグ $h$ だけ末尾を削った時系列データ
+	- $S_h = \{r_{h+1}, \cdots, r_n\}$：$S_0$ からラグ $h$ だけ後ろにずらした時系列データ
+
+**自己相関係数** $\rho$ は $S_0$ と $S_h$ の相関係数で表される。  
+ただし後述の通り、単純な相関係数とは計算式が少し異なる。
+
+まず、分散・共分散それぞれを計算する際に用いる標本平均は、ラグを取った $S_0, S_h$ それぞれの平均値 $\bar{r_0}, \bar{r_h}$ ではなく、元データ $S$ 全体の平均値 $\bar{r}$ を用いる：
+
+$$
+\bar{r} := \cfrac{1}{n} \sum_{t=1}^n r_t
+$$
+
+次に、分母に出てくる標本標準偏差の計算には、$S_0, S_h$ それぞれの分散 $V(S_0), V(S_h)$ ではなく、元データ $S$ 全体の分散 $V(S)$ を用いる：
+
+$$
+V(S) :=
+\cfrac{1}{n}
+\sum_{t=1}^n (r_t - \bar{r})^2
+$$
+
+最後に、分子である標本共分散の計算においては、$S_0, S_h$ の素直な共分散 $\mathrm{Cov}(S_0, S_h)$ と違って、平均に $\bar{r}$ を使い、和を取る件数 $n-h$ ではなく $n$ で割った **自己共分散** $\mathrm{Cov}_{\mathrm{auto}}(S_0, S_h)$ を用いる：
+
+$$
+\mathrm{Cov}_{\mathrm{auto}}(S_0, S_h) :=
+\cfrac{1}{n}
+\sum_{t=1}^{n-h} (r_t - \bar{r})(r_{t+h}-\bar{r})
+$$
+
+以上により、自己相関係数 $\rho$ の計算式は
+
+$$
+\rho :=
+\cfrac{\mathrm{Cov}_{\mathrm{auto}}(S_0, S_h)}
+{\sqrt{V(S)}\sqrt{V(S)}}
+=
+\cfrac{
+	\displaystyle
+	\sum_{t=1}^{n-h} (r_t - \bar{r})(r_{t+h}-\bar{r})
+}{
+	\displaystyle
+	\sum_{t=1}^n (r_t - \bar{r})^2
+}
+\qquad
+\left(
+	\bar{r} := \cfrac{1}{n} \sum_{t=1}^n r_t
+\right)
+\tag{1}
+$$
+
+> **【NOTE】素直に $S_0, S_h$ の相関係数を計算した場合との差異**
+> 
+> - $S_0 = \{r_1, \cdots, r_{n-h}\}$
+> - $S_h = \{r_{h+1}, \cdots, r_n\}$
+> 
+> の単純な相関係数 $\rho'$ を計算すると、
+> 
+> $$
+\begin{eqnarray}
+	V(S_0) &=& \cfrac{1}{n-h} \sum_{t=1}^{n-h} (r_t-\bar{r_0})^2
+	\qquad
+	\left( \bar{r_0} := \cfrac{1}{n-h} \sum_{t=1}^{n-h} r_t \right)
+	\\
+	\\
+	V(S_h) &=& \cfrac{1}{n-h} \sum_{t=h+1}^{n} (r_t-\bar{r_h})^2
+	\qquad
+	\left( \bar{r_h} := \cfrac{1}{n-h} \sum_{t=h+1}^{n} r_t \right)
+	\\
+	\\
+	\mathrm{Cov}(S_0, S_h) &=& \cfrac{1}{n-h} \sum_{t=1}^{n-h} (r_t - \bar{r_0})(r_{t+h}-\bar{r_h})
+	\\
+	\\
+	\rho' &:=& \cfrac{\mathrm{Cov}(S_0, S_h)}{\sqrt{V(S_0)}\sqrt{V(S_h)}}
+	=
+	\cfrac{
+		\displaystyle
+		\sum_{t=1}^{n-h} (r_t - \bar{r_0})(r_{t+h}-\bar{r_h})
+	}{
+		\displaystyle
+		\sqrt{ \sum_{t=1}^{n-h} (r_t-\bar{r_0})^2 }
+		\sqrt{ \sum_{t=h+1}^{n} (r_t-\bar{r_h})^2 }
+	}
+\end{eqnarray}
+$$
+> 
+> $\rho$ と $\rho'$ は以下の点で異なっている。
+> 
+> - 標本平均
+> 	- $\rho$：全時系列 $S$ の標本平均 $\bar{r}$
+> 	- $\rho'$：$S_0, S_h$ それぞれの標本平均 $\bar{r_0}, \bar{r_h}$
+> - 標本分散
+> 	- $\rho$：全時系列 $S$ の標本分散 $V(S)$
+> 	- $\rho'$：$S_0, S_h$ それぞれの標本分散 $V(S_0), V(S_h)$
+> - 標本共分散の分母
+> 	- $\rho$：和を取る件数（$S_0,S_h$ の長さ）$n-h$ で割らず、全時系列 $S$ のデータ数 $n$ で割る
+> 	- $\rho'$：和を取る件数（$S_0,S_h$ の長さ）$n-h$ で割る
+> 
+> → **（要調査）共分散の計算では、なぜ和を取る件数 $n-h$ ではなく $n$ で割るのか？ 同じくらいの相関があっても、ラグが大きいほど相関係数が小さくなってしまうのでは？**
+> 
+> ※ Python 言語の statsmodels や R 言語の acf 関数といった一般的なライブラリで計算してみると、$\rho'$ ではなく $\rho$ の計算式が使われていることが分かる
+> 
+> 【実験】完全に周期的なデータ（周期7）にノイズを乗せたデータについて $\rho, \rho'$ を計算・プロットしてみる：
+> 
+> ![Figure_1](https://user-images.githubusercontent.com/13412823/243217166-f3ff3d6b-591a-4abf-9bf4-d40a19d8615b.png)
+> 
+> cf. [実験に用いたコード](https://gist.github.com/hkawabata/fb0b6e86ba7e6bdbfbff115d73dafa57#file-20230602_autocorrelation-py)
+> 
+> - lag=7の倍数のところに大きな自己相関
+> - 予想通り、同じ7の倍数でも、14, 21, 28, 35, ... とラグが大きくなるにつれて自己相関係数 $\rho$ は小さくなる
+>   - $\rho'$ はラグが大きくなっても自己相関係数が変わらない
+> 
+> （仮説）ラグが大きくなるほど $S_0, S_h$ の長さは短くなり、自己相関係数の計算精度も落ちる（誤差が大きくなる）ので、それに補正をかけている？  
+> ※ 同じ確率分布から標本抽出して平均を取る場合、分散は標本数に反比例
+> 
+> 【実験】ランダムなノイズを乗せたデータに対して $\rho, \rho'$ を計算する、という操作を1000回繰り返し、$\rho, \rho'$ の分散を計算してみる（ノイズは毎回新しく計算）：
+> 
+> ![Figure_2](https://user-images.githubusercontent.com/13412823/243217190-a4260efb-8ddb-4333-a429-a2a88875631b.png)
+> 
+> cf. [実験に用いたコード](https://gist.github.com/hkawabata/fb0b6e86ba7e6bdbfbff115d73dafa57#file-var-autocorrelation-py)
+> 
+> - ラグが大きくなるほど、$\rho$ の分散は小さくなり、$\rho'$ の分散は大きくなっている
+> - $\rho'$ の分散は、共分散の計算において和を取る標本数 $n-h$ に反比例していそう
+
 
 ## 例：屋久島の2020年6月の気象データ
 
@@ -29,81 +154,22 @@ title-en: Autocorrelation
 
 ![Figure_2](https://user-images.githubusercontent.com/13412823/212796601-c8321832-9b1f-4549-89bc-319fa360f5e4.png)
 
-（描画に使った Python コード）
-```python
-import numpy as np
-from matplotlib import pyplot as plt
-from urllib import request
+cf. [描画に使った Python コード](https://gist.github.com/hkawabata/fb0b6e86ba7e6bdbfbff115d73dafa57#file-yakushima-temperature-py)
 
-unit = {
-	'temperature': 'degree',
-	'rain-fall': 'mm',
-	'pressure': 'hPa',
-	'humidity': '%'
-}
-
-# データ読み込み・格納
-csv_url = 'https://gist.githubusercontent.com/hkawabata/5e0e7cbbb142125643acb663b3c11559/raw/af638f0b4193a9adb4d1f3d069e389a196146daa/20220116_Yakushima_weather.csv'
-response = request.urlopen(csv_url)
-lines = response.read().decode().split('\n')
-response.close()
-t = []
-data = {}
-for k in unit:
-	data[k] = []
-
-for line in lines[1:]:
-	arr = line.split(',')
-	t.append(arr[0])
-	data['temperature'].append(float(arr[1]))
-	data['rain-fall'].append(float(arr[4]))
-	data['pressure'].append(float(arr[8]))
-	data['humidity'].append(float(arr[11]))
-
-# 自己共分散を計算
-acf = {}
-for k in unit:
-	acf[k] = []
-
-for k, vs in data.items():
-	for lag in range(1, len(vs)//2):
-		acf[k].append(np.corrcoef(vs[:len(vs)-lag], vs[lag:])[0][1])
-
-# 元データの描画
-days = 15
-plt.figure(figsize=(8, 10))
-plt.subplots_adjust(wspace=0.4, hspace=0.4)
-plt_cnt = 1
-for k, vs in data.items():
-	plt.subplot(4, 1, plt_cnt)
-	plt.xticks(np.arange(0, 24*days + 1, 24))
-	plt.plot(range(24*days), vs[:24*days])
-	plt.grid()
-	plt.title('{} [{}]'.format(k, unit[k]))
-	plt_cnt += 1
-
-plt.show()
-
-# 自己相関係数の描画
-days = 5
-plt.figure(figsize=(8, 10))
-plt.subplots_adjust(wspace=0.4, hspace=0.4)
-plt_cnt = 1
-for k, vs in acf.items():
-	plt.subplot(4, 1, plt_cnt)
-	plt.xticks(np.arange(0, 24*days + 1, 24))
-	plt.ylim([-1.0, 1.0])
-	plt.stem(range(1, 24*days+1), vs[:24*days], markerfmt='C0.')
-	plt.grid()
-	plt.title(k)
-	plt_cnt += 1
-
-plt.show()
-```
 
 ## 例：いろいろな手作りデータ
 
 （ToDo：周期性のあるもの、一定のラグに大きな依存があるもの）
+
+```python
+T = 2000
+x = np.array(range(T)) / 25
+y1 = np.random.normal(1.0, 0.25, T)
+y2 = np.sin(x) + np.random.normal(0, 0.2, T)
+y3 = np.sin(x**1.3) + np.random.normal(0, 0.2, T)
+y4 = np.sin(x) + 0.5 * x + np.random.normal(0, 0.2, T)
+y5 = np.sin(x) + (x-30)**2/400 + np.random.normal(0, 0.2, T)
+```
 
 
 # 偏自己相関
@@ -134,7 +200,7 @@ $$
 
 ### 問題設定
 
-前提として、弱定常性を仮定する：
+前提として、弱定常性（cf. [定常性](../../../DataMining/time-series/stationary-process)）を仮定する：
 
 - $r_t$ の期待値・分散が時刻によらず一定
 - $r_{t+h}$ と $r_t$ 自己共分散 $\mathrm{Cov} (r_{t+h}, r_t)$ が時刻には寄らず、ラグ $h$ にのみ依存
@@ -171,11 +237,13 @@ $$
 
 ### $\phi_h$ の計算
 
+$\phi_1, \cdots, \phi_h$ が
+
 $$
 r_{t+h} - \mu = \phi_1 (r_{t+h-1} - \mu) + \phi_2 (r_{t+h-2} - \mu) + \cdots + \phi_h (r_t - \mu) \qquad \qquad (2)
 $$
 
-が成り立つような $\phi_1, \cdots, \phi_h$ を求めれば良い。
+を満たせば、$(1)$ が成り立つ。
 
 ※ $(2)$ の両辺に $(r_t - \mu)$ をかけて期待値を取れば、$\mathrm{Cov}(r_s, r_t) = E((r_s-\mu)(r_t-\mu))$ より $(1)$ が成り立つ。
 
@@ -189,7 +257,7 @@ $$
 	\cdots +
 	\phi_{h-1} \mathrm{Cov}(r_{t+1}, r_{t+1}) +
 	\phi_h \mathrm{Cov}(r_{t}, r_{t+1})
-	\\
+	\\ \Longrightarrow \quad
 	\gamma_{h-1} &=&
 	\phi_1 \gamma_{h-2} +
 	\phi_2 \gamma_{h-3} +
@@ -289,68 +357,9 @@ $$
 
 ![Figure_1](https://user-images.githubusercontent.com/13412823/213010136-59400a88-9be4-4c1d-9feb-327708ddb7d1.png)
 
-（描画に使った Python コード）
-```python
-# 偏自己相関係数の計算
-pacf = {}
-for k, vs in data.items():
-	# 各ラグに対する自己共分散
-	cov_all = []
-	for lag in range(len(vs)//2):
-		cov_all.append(np.cov(vs[:len(vs)-lag], vs[lag:])[0][1])
-	cov_all = np.array(cov_all)
-	# 自己共分散を並べた行列
-	cov_matrix_all = np.empty((len(cov_all), len(cov_all)))
-	for i in range(len(cov_all)):
-		for j in range(len(cov_all)):
-			cov_matrix_all[i][j] = cov_all[np.abs(i-j)]
-	# 偏自己共分散
-	pacf[k] = []
-	for lag in range(1, len(vs)//2):
-		cov_matrix = cov_matrix_all[:lag, :lag]
-		cov = cov_all[1:lag+1]
-		phi = np.linalg.inv(cov_matrix).dot(np.matrix(cov).T)[-1,0]
-		pacf[k].append(phi)
+cf. [描画に使った Python コード](https://gist.github.com/hkawabata/fb0b6e86ba7e6bdbfbff115d73dafa57#file-yakushima-temperature-partial-py)
 
-days = 5
-plt.figure(figsize=(8, 10))
-plt.subplots_adjust(wspace=0.4, hspace=0.4)
-plt_cnt = 1
-for k, vs in pacf.items():
-	plt.subplot(4, 1, plt_cnt)
-	plt.xticks(np.arange(0, 24*days + 1, 24))
-	plt.ylim([-1.0, 1.0])
-	plt.stem(range(1, 24*days+1), vs[:24*days], markerfmt='C0.')
-	plt.grid()
-	plt.title(k)
-	plt_cnt += 1
-
-plt.show()
-```
-
-（おまけ：以上の実装が正しいか、`statsmodels` ライブラリの計算結果も確認）
-```python
-import statsmodels.api as sm
-
-days = 5
-fig, ax = plt.subplots(4, 2, figsize=(10, 8))
-plt_cnt = 0
-for k, vs in data.items():
-	# 自己相関係数
-	sm.graphics.tsa.plot_acf(vs, lags=120, ax=ax[plt_cnt,0], marker='.')
-	ax[plt_cnt,0].set_xticks(np.arange(0, 24*days+1, 24))
-	ax[plt_cnt,0].grid()
-	ax[plt_cnt,0].set_title('Autocorrelation' if plt_cnt==0 else '')
-	ax[plt_cnt,0].set_ylabel(k, fontsize=12)
-	# 偏自己相関係数
-	sm.graphics.tsa.plot_pacf(vs, lags=120, ax=ax[plt_cnt,1], marker='.')
-	ax[plt_cnt,1].set_xticks(np.arange(0, 24*days+1, 24))
-	ax[plt_cnt,1].grid()
-	ax[plt_cnt,1].set_title('Partial Autocorrelation' if plt_cnt==0 else '')
-	plt_cnt += 1
-
-plt.show()
-```
+おまけ：以上の実装が正しいか、`statsmodels` ライブラリの計算結果も確認
 
 ![Figure_1](https://user-images.githubusercontent.com/13412823/213066335-0ee026a0-3200-4b1f-aa3e-3121d011d5b5.png)
 

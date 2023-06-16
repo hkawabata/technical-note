@@ -36,11 +36,38 @@
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
           <li>
-            <span>time-series</span>
+            <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series">時系列データ分析
+</a>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
               <li>
+                <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/white-noise">ホワイトノイズ（白色雑音）
+</a>
+              </li>
+              <li>
+                <span>models</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/models/autoregressive-model">自己回帰モデル（AR モデル）
+</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/spurious-regression">見せかけの回帰
+</a>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/singular-spectrum-transformation">特異スペクトル変換
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/unit-root-process">単位根過程
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/stationary-process">定常過程
 </a>
               </li>
               <li>
@@ -61,6 +88,10 @@
             <ul class="pagetree-hidden">
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Network/ssl-server-certificate/csr">CSR
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Network/ssl-server-certificate/root-certificate">ルート証明書
 </a>
               </li>
             </ul>
@@ -386,12 +417,6 @@
               <li>
                 <span>time-series</span>
                 <span class="pagetree-accordion">▼</span>
-                <ul class="pagetree-hidden">
-                  <li>
-                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/time-series/autocorrelation">自己相関
-</a>
-                  </li>
-                </ul>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/law-of-large-numbers">大数の法則
@@ -408,6 +433,24 @@
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/moment-generating-function">モーメント母関数（積率母関数）
 </a>
+              </li>
+              <li>
+                <span>correlation</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/correlation/autocorrelation">自己相関
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/correlation/rank-correlation-coefficient">順位相関係数
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/correlation/partial-correlation">偏相関
+</a>
+                  </li>
+                </ul>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/chebyshev-inequality">チェビシェフの不等式
@@ -486,6 +529,20 @@
 </a>
               </li>
               <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/formula-for-statistics">統計学の公式
+</a>
+              </li>
+              <li>
+                <span>regression-analysis</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/regression-analysis/linear-regression">線形回帰
+</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/sum-of-independent-random-variable">独立な確率変数の和
 </a>
               </li>
@@ -493,6 +550,10 @@
                 <span>hypothesis-testing</span>
                 <span class="pagetree-accordion">▼</span>
                 <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/dickey-fuller-testing">Dickey-Fuller 検定
+</a>
+                  </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/testing-for-the-variance">分散の検定
 </a>
@@ -510,6 +571,10 @@
 </a>
                   </li>
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/ljung-box-testing">Ljung-Box 検定
+</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/testing-for-the-proportion">母比率の検定
 </a>
                   </li>
@@ -517,10 +582,6 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/variance-covariance-matrix">分散共分散行列
-</a>
-              </li>
-              <li>
-                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/partial-correlation">偏相関
 </a>
               </li>
             </ul>
@@ -817,6 +878,10 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Linux/Command/nice">nice
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Linux/Command/nslookup">nslookup
 </a>
               </li>
               <li>
