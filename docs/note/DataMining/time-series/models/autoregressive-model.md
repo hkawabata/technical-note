@@ -238,6 +238,135 @@ $$
 
 実データから $\phi_0$、$\phi_1$、および $\varepsilon_t$ の分散 $\sigma^2$ の推定値 $\hat{\phi_0}, \hat{\phi_1}, \hat{\sigma}^2$ を求める。
 
+### 最尤推定による計算
+
+誤差項の分布として正規分布を仮定する。
+
+$$
+\varepsilon_t \sim N(0, \sigma^2)
+$$
+
+$r_{t-1},\phi_0,\phi_1,\sigma$ が与えられたときに $r_t$ が得られる条件付き確率は、
+
+$$
+f(r_t|r_{t-1},\phi_0,\phi_1, \sigma)
+=
+\cfrac{1}{\sqrt{2\pi}\sigma}
+\exp\left\{
+	- \cfrac{1}{2\sigma^2} (r_t - \phi_0 - \phi_1 r_{t-1} )^2
+\right\}
+$$
+
+よって $S = {r_1, \cdots, r_T}$ の同時確率は、
+
+$$
+\begin{eqnarray}
+	L(\phi_0, \phi_1, \sigma) := f(r_1, \cdots, r_T | \phi_0, \phi_1, \sigma)
+	&=&
+	\prod_{t=2}^T f(r_t|r_{t-1},\phi_0,\phi_1, \sigma)
+	\\ &=&
+	\left( \cfrac{1}{\sqrt{2\pi}\sigma} \right)^{T-1}
+	\prod_{t=2}^T \exp \left\{
+		- \cfrac{1}{2\sigma^2}
+		(r_t - \phi_0 - \phi_1 r_{t-1} )^2
+	\right\}
+	\\ &=&
+	\left( \cfrac{1}{\sqrt{2\pi}\sigma} \right)^{T-1}
+	\exp \left\{
+		- \cfrac{1}{2\sigma^2}
+		\sum_{t=2}^T (r_t - \phi_0 - \phi_1 r_{t-1} )^2
+	\right\}
+\end{eqnarray}
+$$
+
+これを尤度関数とみなし、最大化するためのパラメータを求める。
+
+対数を取ると、
+
+$$
+l(\phi_0, \phi_1, \sigma) := \log L(\phi_0, \phi_1, \sigma)
+=
+- (T-1) \log \left( \sqrt{2\pi}\sigma \right)
+- \cfrac{1}{2\sigma^2}
+\sum_{t=2}^T (r_t - \phi_0 - \phi_1 r_{t-1} )^2
+$$
+
+対数尤度 $l$ が最大値を取る時、
+
+$$
+\begin{eqnarray}
+	\cfrac{\partial l(\phi_0, \phi_1, \sigma)}{\partial \phi_0}
+	&=&
+	\cfrac{1}{\sigma^2}
+	\sum_{t=2}^T (r_t - \phi_0 - \phi_1 r_{t-1} ) = 0
+	\\
+	\cfrac{\partial l(\phi_0, \phi_1, \sigma)}{\partial \phi_1}
+	&=&
+	\cfrac{1}{\sigma^2}
+	\sum_{t=2}^T r_{t-1} (r_t - \phi_0 - \phi_1 r_{t-1} ) = 0
+	\\
+	\cfrac{\partial l(\phi_0, \phi_1, \sigma)}{\partial \sigma}
+	&=&
+	- \cfrac{T-1}{\sigma} + \cfrac{1}{\sigma^3}
+	\sum_{t=2}^T (r_t - \phi_0 - \phi_1 r_{t-1} )^2 = 0
+\end{eqnarray}
+$$
+
+第1式、第2式を変形すると、
+
+$$
+\begin{eqnarray}
+	\sum_{t=2}^T r_t - (T-1) \phi_0 - \phi_1 \sum_{t=1}^{T-1} r_t &=& 0
+	\\
+	\sum_{t=2}^T r_{t-1}r_t - \phi_0 \sum_{t=1}^{T-1} r_t - \phi_1 \sum_{t=1}^{T-1} r_t^2 &=& 0
+\end{eqnarray}
+$$
+
+行列形式で書くと、
+
+$$
+\begin{pmatrix}
+	T-1 & \displaystyle \sum_{t=1}^{T-1} r_t \\
+	\displaystyle \sum_{t=1}^{T-1} r_t & \displaystyle \sum_{t=1}^{T-1} r_t^2
+\end{pmatrix}
+\begin{pmatrix}
+	\phi_0 \\ \phi_1
+\end{pmatrix}
+=
+\begin{pmatrix}
+	\displaystyle \sum_{t=2}^T r_t \\
+	\displaystyle \sum_{t=2}^T r_{t-1}r_t
+\end{pmatrix}
+$$
+
+よって $\phi_0, \phi_1$ の推定値
+
+$$
+\begin{pmatrix}
+	\hat{\phi}_0 \\ \hat{\phi}_1
+\end{pmatrix}
+=
+\begin{pmatrix}
+	T-1 & \displaystyle \sum_{t=1}^{T-1} r_t \\
+	\displaystyle \sum_{t=1}^{T-1} r_t & \displaystyle \sum_{t=1}^{T-1} r_t^2
+\end{pmatrix}^{-1}
+\begin{pmatrix}
+	\displaystyle \sum_{t=2}^T r_t \\
+	\displaystyle \sum_{t=2}^T r_{t-1}r_t
+\end{pmatrix}
+\tag{7}
+$$
+
+を得る。
+
+これらを $\partial l / \partial \sigma = 0$ の式に代入すると、
+
+$$
+\hat{\sigma}^2 =
+\cfrac{\sum_{t=2}^T (r_t - \hat{\phi}_0 - \hat{\phi}_1 r_{t-1} )^2}{T-1}
+\tag{8}
+$$
+
 
 ### 最小二乗法による計算
 
@@ -250,6 +379,11 @@ $$
 と読み替える。  
 $(x,y)$ の実現値として $(r_1, r_2), (r_2, r_3), \cdots, (r_{T-1}, r_T)$ を当てはめ、[最小二乗法](../../../Algorithm/least_square.md)によって $\phi_0, \phi_1$ を求める。  
 また、$\varepsilon$ を回帰直線と実データとの残差と考えれば、$\sigma^2$ の推定値は残差の標本分散を計算すれば良い。
+
+> **【NOTE】**
+> 
+> 最小二乗法は誤差を正規分布と仮定した場合の最尤推定とも解釈できるので、推定結果は前述の $(7)(8)$ と一致する。
+
 
 ### 標本分散・標本自己共分散による計算
 
@@ -293,7 +427,7 @@ $$
 次に $(4)$ で $E(r_t) \to \bar{r}$ とすれば、
 
 $$
-\hat{\phi_0} = (1-\hat{\phi_1}) \bar{r}
+\hat{\phi_0} = \left( 1-\hat{\phi_1} \right) \bar{r}
 $$
 
 最後に $(5)$ で $V(r_t) \to \hat{\gamma_0}, \ V(\varepsilon) \to \hat{\sigma}^2$ と置けば、
@@ -301,7 +435,7 @@ $$
 $$
 \hat{\sigma}^2
 =
-(1-\hat{\phi_1}^2) \hat{\gamma_0}
+\left( 1-\hat{\phi_1}^2 \right) \hat{\gamma_0}
 $$
 
 
@@ -316,7 +450,7 @@ $$
 - その後は完全にランダムに見えるが、実際には後述の通り自己回帰性が見られる
 
 
-| 最小二乗法による推定 | 標本分散・標本自己共分散による推定 |
+| 最小二乗法（最尤推定）による推定 | 標本分散・標本自己共分散による推定 |
 | :-- | :-- |
 | ![Figure_1](https://user-images.githubusercontent.com/13412823/243601123-9bb4469a-cece-462a-8edf-c4257a7a88c7.png) | ![Figure_2](https://user-images.githubusercontent.com/13412823/243601134-e042aedc-a621-4716-9166-02bae8623fd4.png) |
 
@@ -324,5 +458,3 @@ $$
 - 時系列長 $T$ が大きいほど、各パラメータの推定の誤差（標準偏差）は小さくなる
 
 cf. [データ生成 & 分析に用いた Python コード](https://gist.github.com/hkawabata/d839d197bea1f4c50c3c607ff70e0aae)
-
-
