@@ -376,6 +376,16 @@
 </a>
           </li>
           <li>
+            <span>equation</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/equation/newton-method">ニュートン法
+</a>
+              </li>
+            </ul>
+          </li>
+          <li>
             <span>graph</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">

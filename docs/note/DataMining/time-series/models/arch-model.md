@@ -5,6 +5,8 @@ title-en: ARCH model
 
 # 概要
 
+## ARCH モデル
+
 以下を満たす時系列データモデルを **ARCH モデル** と呼び、$\mathrm{ARCH}(p)$ で表す。  
 = AutoRegressive Conditional Heteroscedasticity
 
@@ -18,7 +20,7 @@ $$
 	\tag{2}
 	\\ \\
 	E(\varepsilon_t^2) &=& \sigma_t^2 = \omega + \sum_{i=1}^p \alpha_i \varepsilon_{t-i}^2
-	\qquad (\omega, \alpha_i \ge 0)
+	\qquad (\omega \gt 0,\ \ \alpha_i \ge 0)
 	\tag{3}
 \end{eqnarray}
 $$
@@ -38,6 +40,57 @@ ex. ある企業の株価が大きく下がると、翌日の市場では「次�
 
 ARCH モデルにおける $E(\varepsilon_t^2) = V(\varepsilon_t) + E(\varepsilon_t)^2 = \sigma_t^2$ は変動の大きさを表し、**ボラティリティ** と呼ばれる。
 
+株価等の金融分析において、**ボラティリティは重要なリスク指標となる**。
+
+
+## GARCH モデル
+
+ARCH モデルを一般化した以下のモデルを **GARCH モデル** (= Generalized ARCH) と呼び、$\mathrm{GARCH}(p,q)$ で表す。
+
+$$
+\begin{eqnarray}
+	r_t &=& \mu + \varepsilon_t
+	\tag{1}
+	\\ \\
+	\varepsilon_t &=& \sigma_t \nu_t
+	\qquad (\nu_t \sim N(0,1))
+	\tag{2}
+	\\ \\
+	E(\varepsilon_t^2) &=& \sigma_t^2 = \omega +
+	\sum_{i=1}^p \alpha_i \varepsilon_{t-i}^2 +
+	\sum_{i=1}^q \beta_i \sigma_{t-i}^2
+	\qquad (\omega \gt 0,\ \ \alpha_i, \beta_i \ge 0)
+	\tag{4}
+\end{eqnarray}
+$$
+
+$(3)$ 式が $(4)$ 式に置き換わっており、**過去のノイズ（残差）に加えて、過去のノイズの分散も現在のノイズの分散に影響を与える** モデルとなっている。
+
+
+# モデルの弱定常条件
+
+（TODO：証明）
+
+$\mathrm{ARCH}(p)$ が弱定常過程となる条件は、特性方程式
+
+$$
+1- \sum_{i=1}^p \alpha_i z^i = 0
+$$
+
+の全ての解の絶対値が1より大きくなること。これは $\alpha_i \ge 0$ の条件下では
+
+$$
+\sum_{i=1}^p \alpha_i \lt 1
+$$
+
+と同値。
+
+同様に、$\mathrm{GARCH}(p,q)$ が弱定常過程となる条件は
+
+$$
+\sum_{i=1}^p \alpha_i + \sum_{i=1}^q \beta_i \lt 1
+$$
+
 
 # モデルの適用・パラメータ推定
 
@@ -46,11 +99,11 @@ ARCH モデルにおける $E(\varepsilon_t^2) = V(\varepsilon_t) + E(\varepsilo
 $$
 \begin{eqnarray}
 	r_t &=& \phi_0 + \phi_1 r_{t-1} + \varepsilon_t
-	\tag{4}
+	\tag{5}
 	\\ \\
 	\varepsilon_t &=& \nu_t \sqrt{ \omega + \alpha_1 \varepsilon_{t-1}^2 }
 	\qquad (\nu_t \sim N(0,1))
-	\tag{5}
+	\tag{6}
 \end{eqnarray}
 $$
 
@@ -61,10 +114,12 @@ $$
 
 という **二段階推定** を行う。
 
+
 ### AR(1) のパラメータ推定
 
 まずは通常の $\mathrm{AR}(1)$ モデルとして考え、誤差を正規分布とみなした最尤推定（最小二乗法）により $\phi_0, \phi_1$ の推定値 $\hat{\phi}_0, \hat{\phi}_1$ を計算する。  
 詳細な理論は[自己回帰モデル](autoregressive-model.md)を参照。
+
 
 ### ARCH(1) のパラメータ推定
 
@@ -74,7 +129,7 @@ $$
 \varepsilon_t = r_t - \hat{\phi}_0 - \hat{\phi}_1 r_{t-1}
 $$
 
-ここで、$(5)$ より
+ここで、$(6)$ より
 
 $$
 \varepsilon_t \sim N(0, \omega + \alpha_1 \varepsilon_{t-1}^2)
