@@ -49,6 +49,10 @@
                 <span class="pagetree-accordion">▼</span>
                 <ul class="pagetree-hidden">
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/models/garch-model">GARCH モデル
+</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/models/autoregressive-model">自己回帰モデル（AR モデル）
 </a>
                   </li>
@@ -189,6 +193,10 @@
                 <span>Library</span>
                 <span class="pagetree-accordion">▼</span>
                 <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/scipy">SciPy
+</a>
+                  </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/pickle">pickle
 </a>
@@ -471,6 +479,10 @@
 </a>
               </li>
               <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/order-statistics">順序統計量
+</a>
+              </li>
+              <li>
                 <span>distribution</span>
                 <span class="pagetree-accordion">▼</span>
                 <ul class="pagetree-hidden">
@@ -492,6 +504,10 @@
                   </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/binomial-distribution">二項分布
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/distribution/skew-normal-distribution">歪正規分布
 </a>
                   </li>
                   <li>
@@ -589,6 +605,10 @@
 </a>
                   </li>
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/shapiro-wilk-testing">Shapiro-Wilk 検定
+</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/testing-for-the-proportion">母比率の検定
 </a>
                   </li>
@@ -614,6 +634,10 @@
             <span>special-functions</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/special-functions/error-function">誤差関数
+</a>
+              </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/special-functions/beta-function">ベータ関数
 </a>
