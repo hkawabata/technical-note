@@ -3,14 +3,13 @@ title: Ljung-Box 検定
 title-en: Ljung-Box Testing
 ---
 
-# Ljung-Box 検定
+# 概要
+
+**Ljung-Box 検定** は、注目する時系列データにおいて、[自己相関](../correlation/autocorrelation.md)があるかどうかを調べる検定。
 
 Ljung-Box = リュング・ボックス
 
-注目する時系列データにおいて、[自己相関](../correlation/autocorrelation.md)があるかどうかを調べる検定。
-
-
-## 理論
+# 理論
 
 長さ $n$ の時系列データ $S_0 = \{x_1, \cdots, x_n\}$ と、そこから一定時間（= ラグ）$h$ だけずらしたデータ $S_h = \{x_{1+h}, \cdots, x_{n+h}\}$ との相関係数 $r_h$（自己相関係数）の計算式は以下の通り。
 
@@ -135,94 +134,20 @@ Q_{BP}(m) \sim \chi^2 (m)
 $$
 
 
-## 実験
+# 実験
 
-### 自己相関あり・なしデータの比較
+## 統計ライブラリを使わずスクラッチ実装してみる
 
-```python
-from matplotlib import pyplot as plt
-import numpy as np
-import statsmodels.api as sm
+{% gist 24e34a7e66fc5be4b7e01d8b49ecdd72 20230624_ljung-box_scratch.py %}
 
-def ljungbox(d, lags):
-	result = sm.stats.acorr_ljungbox(d,lags=lags)
-	print(result)
+- statsmodel による $Q_{LB}$ の計算結果とスクラッチ実装の結果が一致した
 
 
-n = 1000
-d_random = np.random.normal(0, 1.0, n)  # 完全ランダムなデータ
-d_acorr = np.zeros(n)                   # 自己相関を持つデータ
-for i in range(n):
-	if i < 3:
-		d_acorr[i] = d_random[i]
-	else:
-		d_acorr[i] = d_random[i] + 0.5 * d_random[i-3]
+## 自己相関あり・なしデータを比較
 
-
-
-ljungbox(d_random, 5)
-"""
-    lb_stat  lb_pvalue
-1  1.412350   0.234667
-2  1.424601   0.490514
-3  5.484168   0.139589
-4  6.407541   0.170710
-5  7.193854   0.206618
-"""
-ljungbox(d_acorr, 5)
-"""
-      lb_stat     lb_pvalue
-1    2.118131  1.455641e-01
-2    2.527147  2.826422e-01
-3  210.852281  1.905388e-45
-4  215.427317  1.806495e-45
-5  215.707116  1.234344e-44
-"""
-```
+{% gist 24e34a7e66fc5be4b7e01d8b49ecdd72 20230624_ljung-box_experiment.py %}
 
 - ランダムデータではラグ1〜5いずれにおいても p 値が大きい
 	- 1%や5%といった一般的な有意水準では帰無仮説は棄却されない
 - 自己相関ありのデータではラグ3以上において p 値が非常に小さい
 	- 一般的な有意水準で見れば帰無仮説は棄却され、自己相関ありという検定結果が得られる
-
-
-### ライブラリを使わず実装
-
-```python
-x = np.array([1.2,3.1,2.1,5.9,2.8,9.1,4.1,11.9])
-
-x_ave = x.mean()
-
-q = 0
-for lag in range(1, 8):
-	T = len(x)
-	d1 = x[:T-lag]
-	d2 = x[lag:]
-	r = ((d1-x_ave)*(d2-x_ave)).sum() / ((x-x_ave)**2).sum()
-	q += r**2 * T * (T+2) / (T-lag)  # Ljung-Box 検定統計量
-	print(lag, r, q)
-
-"""
-1 -0.11001309909076905 0.13831865110348995
-2 0.5101068474854883 3.607771929124599
-3 -0.2783107309806339 4.847081736788196
-4 0.09644526634817903 5.03311552480762
-5 -0.34844223557815784 8.270768632399738
-6 -0.09961730107361173 8.667712899327363
-7 -0.27016874711049466 14.507005052547715
-"""
-
-ljungbox(x,7)
-"""
-     lb_stat  lb_pvalue
-1   0.138319   0.709958
-2   3.607772   0.164658
-3   4.847082   0.183343
-4   5.033116   0.283916
-5   8.270769   0.141931
-6   8.667713   0.193146
-7  14.507005   0.042865
-"""
-```
-
-→ statsmodel による $Q_{LB}$ の計算結果と自分で計算した結果が一致。

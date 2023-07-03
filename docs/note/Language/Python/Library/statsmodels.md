@@ -20,7 +20,8 @@ $ pip install statsmodels
 import statsmodels.api as sm
 ```
 
-## データセット取得
+## R データセット取得
+
 
 ```python
 ds = sm.datasets.get_rdataset("Guerry", "HistData")
@@ -28,6 +29,18 @@ ds = sm.datasets.get_rdataset("Guerry", "HistData")
 df = ds.data
 # <class 'pandas.core.frame.DataFrame'>
 ```
+
+参照：https://vincentarelbundock.github.io/Rdatasets/articles/data.html
+
+| Package | Item | 内容 |
+| :-- | :-- | :-- |
+| HistData | Guerry |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+
 
 ## 線形回帰モデルの適用
 

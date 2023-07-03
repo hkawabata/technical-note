@@ -457,4 +457,10 @@ $$
 - 一見ランダムに見える時系列から、元の $\mathrm{AR}(1)$ モデルのパラメータ $\phi_0 = 1.3, \ \phi_1 = 0.7, \sigma = 0.1$ を求めることができた
 - 時系列長 $T$ が大きいほど、各パラメータの推定の誤差（標準偏差）は小さくなる
 
-cf. [データ生成 & 分析に用いた Python コード](https://gist.github.com/hkawabata/d839d197bea1f4c50c3c607ff70e0aae)
+
+残差の正規性の確認（QQ-plot）：
+
+![Figure_1](https://user-images.githubusercontent.com/13412823/248294085-093edc56-e345-43b5-8847-00d056223e94.png)
+
+
+{% gist d839d197bea1f4c50c3c607ff70e0aae 20230606_ar1-model.py %}
