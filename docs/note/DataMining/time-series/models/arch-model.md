@@ -173,7 +173,7 @@ $$
 
 $$
 \begin{eqnarray}
-	l(\omega, \alpha_1) &:=& \log L(\omega, \alpha_1)
+	l(\omega, \alpha) &:=& \log L(\omega, \alpha)
 	\\ &=&
 	- (T-2) \log \sqrt{2\pi}
 	- \cfrac{1}{2}
@@ -192,7 +192,7 @@ $$
 \end{eqnarray}
 $$
 
-$l(\omega, \alpha_1)$ が最大値を取る時、
+$l(\omega, \alpha)$ が最大値を取る時、
 
 $$
 \begin{eqnarray}
@@ -308,7 +308,7 @@ $$
 	\\
 	l(\omega, \alpha, \phi_0, \phi_1)
 	&:=&
-	\log L(\omega, \alpha_1, \phi_0, \phi_1)
+	\log L(\omega, \alpha, \phi_0, \phi_1)
 	\\ &=&
 	- (T-2) \log \sqrt{2\pi} -
 	\cfrac{1}{2}
@@ -321,7 +321,7 @@ $$
 \end{eqnarray}
 $$
 
-対数尤度を最大化するために使う $\omega, \alpha_1$ による微分についても、$\varepsilon_t$ が $\omega, \alpha_1$ によらないため、二段階推定の式の置き換えで良い：
+対数尤度を最大化するために使う $\omega, \alpha$ による微分についても、$\varepsilon_t$ が $\omega, \alpha$ によらないため、二段階推定の式の置き換えで良い：
 
 $$
 \begin{eqnarray}
@@ -334,7 +334,7 @@ $$
 	\right\}
 	= 0
 	\\
-	\cfrac{\partial l(\omega, \alpha, \phi_0, \phi_1)}{\partial \alpha_1}
+	\cfrac{\partial l(\omega, \alpha, \phi_0, \phi_1)}{\partial \alpha}
 	&=&
 	\cfrac{1}{2}
 	\sum_{t=3}^T \varepsilon_{t-1}(\phi_0, \phi_1)^2 \left\{
@@ -466,14 +466,14 @@ $$
 \end{eqnarray}
 $$
 
-以上の4つの微分方程式に対し、勾配法・ニュートン法などの数値的な手法を用いて $l(\omega, \alpha_1, \phi_0, \phi_1)$ を最大化するパラメータを求める。
+以上の4つの微分方程式に対し、勾配法・ニュートン法などの数値的な手法を用いて $l(\omega, \alpha, \phi_0, \phi_1)$ を最大化するパラメータを求める。
 
 
 # パラメータ推定の実装・実験
 
 ## 実験データの生成
 
-$\phi_0 = 1.3,\ \phi_1 = 0.7,\ \alpha_1 = 0.5,\ \omega = 0.3$ の条件で機械的に $\mathrm{AR}(1)+\mathrm{ARCH}(1)$ モデルのデータを生成。
+$\phi_0 = 1.3,\ \phi_1 = 0.7,\ \alpha = 0.5,\ \omega = 0.3$ の条件で機械的に $\mathrm{AR}(1)+\mathrm{ARCH}(1)$ モデルのデータを生成。
 
 {% gist ea0f90c43f0a4c6a8aa7b8c705b1be8a 20230621_ar1-arch1-model_generate.py %}
 
@@ -496,7 +496,7 @@ alpha = 0.49184768646712124 (err: -1.6304627065757527 %)
 omega = 0.29954663741689064 (err: -0.15112086103645045 %)
 ```
 
-残差の正規性を確認：
+[Shapiro-Wilk 検定](../../../Math/statistics/hypothesis-testing/shapiro-wilk-testing.md)により残差の正規性を確認：
 
 - $\varepsilon_t$ は正規分布ではない
 - $\nu_t$ は正規分布に従っていそう
@@ -533,7 +533,7 @@ alpha = 0.49202068041505176 (err: -1.5958639169896482 %)
 omega = 0.29920945610885463 (err: -0.2635146303817856 %)
 ```
 
-残差の正規性を確認：
+[Shapiro-Wilk 検定](../../../Math/statistics/hypothesis-testing/shapiro-wilk-testing.md)により残差の正規性を確認：
 
 - $\varepsilon_t$ は正規分布ではない
 - $\nu_t$ は正規分布に従っていそう
