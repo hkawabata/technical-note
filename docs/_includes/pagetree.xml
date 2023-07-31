@@ -202,6 +202,10 @@
 </a>
                   </li>
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/mecab-python3">mecab-python3
+</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/pyaudio">PyAudio
 </a>
                   </li>
@@ -598,6 +602,10 @@
                   </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/wilcoxon-rank-sum-testing">ウィルコクソンの順位和検定
+</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/statistics/hypothesis-testing/multiple-comparisons-problem">多重検定の問題
 </a>
                   </li>
                   <li>
@@ -1055,6 +1063,10 @@
             </ul>
           </li>
           <li>
+            <a href="https://hkawabata.github.io/technical-note/note/OSS/trino">Trino (Presto)
+</a>
+          </li>
+          <li>
             <span>Hadoop</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
@@ -1111,6 +1123,16 @@
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/NLP/tf-idf">TF-IDF
 </a>
+          </li>
+          <li>
+            <span>morphological-analysis</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/NLP/morphological-analysis/mecab">MeCab
+</a>
+              </li>
+            </ul>
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/NLP/word2vec">Word2Vec
