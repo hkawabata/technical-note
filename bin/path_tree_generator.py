@@ -61,5 +61,5 @@ if __name__ == '__main__':
     os.chdir(page_root_path)
     xml_string = '<ul class="pagetree">{}</ul>'.format(search(note_path, 1))
     xml_dom = xml.dom.minidom.parseString(xml_string)
-    print xml_dom.toprettyxml(" " * indent_width)
+    print(xml_dom.toprettyxml(" " * indent_width))
 
