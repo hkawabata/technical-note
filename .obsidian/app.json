@@ -4,5 +4,7 @@
   "useMarkdownLinks": true,
   "newLinkFormat": "relative",
   "showLineNumber": true,
-  "alwaysUpdateLinks": true
+  "alwaysUpdateLinks": true,
+  "tabSize": 8,
+  "useTab": false
 }
