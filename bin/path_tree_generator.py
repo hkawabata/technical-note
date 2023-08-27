@@ -3,14 +3,6 @@
 
 import os, re, sys, xml.dom.minidom
 
-u"""
-実行結果の tty 出力は問題ないが、ファイルへ結果をリダイレクトで書き込むと
-UnicodeEncodeError: 'ascii' codec can't encode characters
-が発生するため、標準出力が常に utf8 で自動的に encode されるように設定
-"""
-import codecs
-sys.stdout = codecs.getwriter('utf8')(sys.stdout)
-
 
 base_url = 'https://hkawabata.github.io/technical-note'
 indent_width = 2

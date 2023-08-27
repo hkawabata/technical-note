@@ -811,10 +811,6 @@
 </a>
           </li>
           <li>
-            <a href="https://hkawabata.github.io/technical-note/note/ML/xgboost">XGBoost
-</a>
-          </li>
-          <li>
             <span>Preprocess</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
@@ -859,6 +855,46 @@
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/ML/svm">サポートベクトルマシン
 </a>
+          </li>
+          <li>
+            <span>ensemble-learning</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/ensemble-learning/stacking">スタッキング
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/ensemble-learning/ensemble-learning">アンサンブル学習
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/ensemble-learning/boosting">ブースティング
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/ensemble-learning/bagging">バギング
+</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span>gbdt</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/gbdt/light-gbm">LightGBM
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/gbdt/xgboost">XGBoost
+</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/gbdt/gbdt">勾配ブースティング決定沐浴 (GBDT)
+</a>
+              </li>
+            </ul>
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/ML/adaline">ADALINE
