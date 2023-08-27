@@ -20,7 +20,7 @@ def extract_title_from_file(filepath):
         if len(titles) == 0:
             return filepath.split('/')[-1]
         else:
-            return titles[0].lstrip('title: ')
+            return titles[0].lstrip('title: ').rstrip()
 
 
 def search(path, display_depth = 0):
