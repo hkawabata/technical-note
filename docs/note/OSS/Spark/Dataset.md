@@ -171,6 +171,20 @@ df.as[MyCaseClass]
 df.as[(String, String, Int)]
 ```
 
+
+### Row の操作
+
+値の取り出し：
+
+```scala
+val df: DataFrame = ...
+val rowRDD: RDD[Row] = df.rdd
+val tupleRDD: RDD[(String, Int, Double)] = rowRDD.map{
+  case Row(f1: String, f2: Int, f3: Double) =>
+    (f1, f2, f3)
+}
+```
+
 ### カラム名設定
 
 ToDo：`toDF`

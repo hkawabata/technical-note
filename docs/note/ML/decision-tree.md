@@ -93,6 +93,8 @@ $$
 
 ![過学習](https://user-images.githubusercontent.com/13412823/79865383-0a967180-8416-11ea-9329-bf1107272cb7.png)
 
+→ 外れ値に対して過学習の傾向が見られる
+
 ![過学習回避](https://user-images.githubusercontent.com/13412823/79865392-0d916200-8416-11ea-97a3-9171a5c84e3f.png)
 
 → 葉が持つべきサンプル数の最小値設定により、過学習が抑えられる
