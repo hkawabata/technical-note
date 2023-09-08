@@ -12,7 +12,7 @@ title-en: Bloom Filter
 
 以下の図をもとに解説する。
 
-<img width="600" alt="スクリーンショット 2023-09-08 8 05 47" src="https://user-images.githubusercontent.com/13412823/266461090-bbf5889d-e137-480b-9310-075957826f56.png">
+<img width="600" alt="スクリーンショット 2023-09-08 9 25 53" src="https://user-images.githubusercontent.com/13412823/266469489-c1bd794d-2d6c-4a7d-b849-be9a363c0ba5.png">
 
 
 ## 1. 準備（フィルタの作成・初期化）
