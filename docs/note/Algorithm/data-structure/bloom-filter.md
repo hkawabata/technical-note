@@ -122,21 +122,35 @@ data 5 はまさにその例であり、$H_1(d_5) = H_2(d_3) = 9,\ H_2(d_5) = H_
 
 ## ハッシュ関数の個数を変える
 
-後述の Appendix で議論する通り、フィルタサイズ $m$ と追加データ件数 $n$ を固定した場合、最も偽陽性が小さくなる最適なハッシュ値の個数 $h_\mathrm{opt}$ は
+後述の Appendix で議論するが、フィルタサイズ $m$ と追加データ件数 $n$ を固定した場合、最も偽陽性が小さくなる最適なハッシュ値の個数 $h_\mathrm{opt}$ とそのときの偽陽性確率 $P_\mathrm{fp}(h_\mathrm{opt})$ は
 
 $$
-h_\mathrm{opt} = \cfrac{m}{n} \log 2 \simeq 0.7 \cfrac{m}{n}
-\tag{3.6}
+\begin{eqnarray}
+    h_\mathrm{opt} = \cfrac{m}{n} \log 2 \simeq 0.7 \cfrac{m}{n}
+    \tag{3.7}
+    \\
+    P_\mathrm{fp}
+    \simeq
+    \left( 1 - e^{-nh/m} \right)^h
+    \tag{3.4}
+\end{eqnarray}
 $$
 
 で表される。
 
-よって $m=30000,\ n=7000$ とすれば、$h_\mathrm{opt} \simeq 3$  
+$m=30000,\ n=7000$ を代入すれば、
+
+$$
+h_\mathrm{opt} \simeq 3,\quad
+P_\mathrm{fp}(h_\mathrm{opt}) \simeq \left( 1-\cfrac{1}{2} \right)^3 = 0.125
+$$
+
 これをシミュレーション実験で確かめてみる。
 
-![exp3](https://user-images.githubusercontent.com/13412823/270105826-a1ea06e2-fb60-4a84-873c-6b8848ce2525.png)
+![exp3](https://user-images.githubusercontent.com/13412823/270238462-e9916f8b-a5ca-4078-8dd0-0d5e87b371bf.png)
 
-理論通り、ハッシュ関数が3個のときに偽陽性率が最小となる。
+
+→ 理論通り、ハッシュ関数が3個のときに偽陽性率が最小となり、その値が理論値0.125に近いことが確かめられた。
 
 実験コード：
 
@@ -251,7 +265,7 @@ $$
 $$
 \left( 1 - \cfrac{1}{m} \right)^{nh}
 =
-\left\{ \left( 1 - \cfrac{1}{m} \right)^{(-m)} \right\}^{-nh/m}
+\left\{ \left( 1 + \cfrac{1}{-m} \right)^{(-m)} \right\}^{-nh/m}
 \simeq
 e^{-nh/m}
 \tag{3.3}
@@ -264,6 +278,7 @@ $$
 P_\mathrm{fp}
 \simeq
 \left( 1 - e^{-nh/m} \right)^h
+\tag{3.4}
 $$
 
 両辺で対数を取って、
@@ -280,10 +295,10 @@ $$
 \log \left( 1 - e^{-nh/m} \right)
 +
 h \cfrac{n}{m} e^{-nh/m} \cfrac{1}{1 - e^{-nh/m}}
-\tag{3.4}
+\tag{3.5}
 $$
 
-$(2.2)$ から明らかに $P_\mathrm{fp} \ne 0$ なので、$(3.4)$ に $(3.1)$ を代入して式変形すると、
+$(2.2)$ から明らかに $P_\mathrm{fp} \ne 0$ なので、$(3.5)$ に $(3.1)$ を代入して式変形すると、
 
 $$
 -\cfrac{nh}{m} e^{-nh/m}
@@ -295,10 +310,10 @@ $x := e^{-nh/m}$ とおけば、
 
 $$
 x \log x = (1-x) \log (1-x)
-\tag{3.5}
+\tag{3.6}
 $$
 
-$m,n,h \ge 1$ より $0 \lt x \lt 1$ であり、この範囲における $(3.5)$ の明らかな解は $x = 1/2$。  
+$m,n,h \ge 1$ より $0 \lt x \lt 1$ であり、この範囲における $(3.6)$ の明らかな解は $x = 1/2$。  
 以下のグラフより他の解は存在しない（厳密な証明は省略）
 
 ![](https://user-images.githubusercontent.com/13412823/269975819-30e1d606-5f0a-4039-8e74-e92eefa984ed.png)
@@ -329,16 +344,16 @@ $$
 
 $$
 h_\mathrm{opt} = \cfrac{m}{n} \log 2 \simeq 0.7 \cfrac{m}{n}
-\tag{3.6}
+\tag{3.7}
 $$
 
 が求まる。
 
 $m,n$ 個別の値ではなく、**それらの比 $m/n$ によって最適な $h$ が一意に定まる** ことが分かる。
 
-
-
-
+> **【NOTE】**
+> 
+> 正確に言えば $h_\mathrm{opt}$ は整数であるから、$(3.7)$ を計算して最も近い整数を $h_\mathrm{opt}$ とすれば良い。
 
 > **【NOTE】(2.3) の厳密解**
 > 
@@ -397,7 +412,7 @@ h_\mathrm{opt}
 =
 \cfrac{1}{n}
 \cfrac{\log(1/2)}{\log{(1 - \frac{1}{m})}}
-\tag{3.7}
+\tag{3.8}
 $$
 > 
 > これが求める厳密解となる。  
@@ -418,6 +433,6 @@ h_\mathrm{opt}
 \cfrac{m}{n} \log 2
 $$
 > 
-> となり、$(3.6)$ に一致する。
+> となり、$(3.7)$ に一致する。
 
 
