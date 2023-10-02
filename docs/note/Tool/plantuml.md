@@ -9,8 +9,8 @@ http://plantuml.com/
 ### インストール・実行
 
 ```bash
-$ brew install graphviz
-$ brew install plantuml
+brew install graphviz
+brew install plantuml
 ```
 
 記法に従ってテキストに記述したファイル（hoge.pu）を作り、以下のコマンドを叩くとテキストと同じディレクトリに画像が生成される。

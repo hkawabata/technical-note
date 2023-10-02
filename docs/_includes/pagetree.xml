@@ -197,6 +197,9 @@
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/pandas">pandas</a>
                   </li>
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/graphviz">graphviz</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/numpy">numpy</a>
                   </li>
                   <li>
@@ -350,6 +353,9 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Algorithm/graph/scc">強連結成分（SCC）</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/graph/dijkstra-algorithm">ダイクストラ法</a>
               </li>
             </ul>
           </li>
