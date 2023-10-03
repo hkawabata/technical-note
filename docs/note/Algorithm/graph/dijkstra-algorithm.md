@@ -12,7 +12,8 @@ title: ダイクストラ法
 具体例をもとに手順を解説する。  
 以下のグラフにおいて A から各ノードへの最短経路を求める。
 
-![Graph gv](https://user-images.githubusercontent.com/13412823/271911536-88878413-8d86-42af-bdd3-e86fb33ceb8e.png)
+![図0](https://user-images.githubusercontent.com/13412823/272174880-eb429286-adb3-4f76-a2bb-fd2b22aeb755.png)
+
 
 ## 準備
 
@@ -20,9 +21,11 @@ title: ダイクストラ法
 
 | 変数 | 内容 | 初期化 |
 | :-- | :-- | :-- |
-| `shortest_weight` | 「**現時点で判明している**」A から各ノードまでの最短距離を保持する辞書 | 無限大 |
+| `shortest_weight` | 「**現時点で判明している**」A から各ノードまでの最短距離を保持する辞書 | $\infty$ |
 | `shortest_path` | 「**現時点で判明している**」A から各ノードまでの最短パスを保持する辞書 | null |
 | `n_last_fix` | 現時点の最新ステップで最短経路が確定したノード | null |
+
+![図1](https://user-images.githubusercontent.com/13412823/272174914-39e9ea0c-210e-4af8-a03f-abd0e6f398fd.png)
 
 ```python
 shortest_weight = {
@@ -48,6 +51,8 @@ n_last_fix = None
 - `shortest_weight['A'] = 0` (Fix)
 - `shortest_path['A'] = ['A']` (Fix)
 - `n_last_fix = 'A'`
+
+![図2](https://user-images.githubusercontent.com/13412823/272174910-adce19bc-da76-49f2-8931-d1d54c8ae4e2.png)
 
 ```python
 shortest_weight = {
@@ -100,9 +105,12 @@ shortest_path = {
 n_last_fix = 'A'
 ```
 
-【2】最短経路が未確定のノードを全て見て、**現時点で重みが一番小さいノードの重みと経路を fix**  
+【2】最短経路が未確定のノードを全て見て、**現時点の重みが一番小さいノードの重みと経路を fix**（**他のルート経由では、絶対にこれより長くなる**）
+
 今回の例だと `shortest_weight['D']` の2が最小なので D を fix。  
 よって `n_last_fix = 'D'`
+
+![図3](https://user-images.githubusercontent.com/13412823/272174907-ee9fdd2d-96b0-4a88-9b60-219114ce9c71.png)
 
 ```python
 shortest_weight = {
@@ -128,28 +136,31 @@ n_last_fix = 'D'  # updated
 
 【3】`n_last_fix` が更新されなくなるまで1,2を繰り返す。
 
+![図4](https://user-images.githubusercontent.com/13412823/272174904-408c4283-7fb5-4dfa-a5a5-4a05b5c22c3a.png)
+
 ```python
 shortest_weight = {
-    'A': 0,             # (fixed)
+    'A': 0,              # (fixed)
     'B': 7,
-    'C': 4,             # [1]not updated --> [2]fixed
-    'D': 2,             # (fixed)
+    'C': 4,              # [1]not updated --> [2]fixed
+    'D': 2,              # (fixed)
     'E': float('inf'),
-    'F': 8              # [1]updated
+    'F': 8               # [1]updated
 }
 
 shortest_path = {
-    'A': ['A'],         # (fixed)
+    'A': ['A'],          # (fixed)
     'B': ['A', 'B'],
-    'C': ['A', 'C'],    # [1]not updated --> [2]fixed
-    'D': ['A', 'D'],    # (fixed)
+    'C': ['A', 'C'],     # [1]not updated --> [2]fixed
+    'D': ['A', 'D'],     # (fixed)
     'E': None,
-    'F': ['A', 'D', 'F']# [1]updated
+    'F': ['A', 'D', 'F'] # [1]updated
 }
 n_last_fix = 'C'  # updated
 ```
 
-→
+
+![図5](https://user-images.githubusercontent.com/13412823/272174900-643091be-6db5-46cd-b75b-aef2fefa298e.png)
 
 ```python
 shortest_weight = {
@@ -174,7 +185,7 @@ shortest_path = {
 n_last_fix = 'B'  # updated
 ```
 
-→
+![図6](https://user-images.githubusercontent.com/13412823/272174898-0bcb14ed-5dd3-4394-96fd-92289af5b494.png)
 
 ```python
 shortest_weight = {
@@ -198,7 +209,7 @@ shortest_path = {
 n_last_fix = 'F'  # updated
 ```
 
-→
+![図7](https://user-images.githubusercontent.com/13412823/272174891-ae2dcb6c-9fa3-4f7c-9ec8-4e965dc86273.png)
 
 ```python
 shortest_weight = {
@@ -222,8 +233,10 @@ shortest_path = {
 n_last_fix = 'E'  # updated
 ```
 
-→ 全てのノードが fix されたので、これ以降は繰り返しても `n_last_fix` は更新されない。  
+→ 全てのノードが fix され、これ以降は繰り返しても `n_last_fix` は更新されない。  
 → このときの`shortest_path`と`shortest_weight`が、求める最短経路とその重み。
+
+![図8](https://user-images.githubusercontent.com/13412823/272174887-d189076c-bc26-45e4-b1c2-6ea9fab3e8a8.png)
 
 
 # 実装
@@ -256,8 +269,8 @@ def dijkstra(graph, i_start):
     # 変数準備
     todo = set()   # 未処理のノードを格納
     done = set()   # S からの最短距離を求め終わったノードを格納
-    result_w = {i_start: 0}          # スタートから各ノードまでの最短距離を記録
-    result_p = {i_start: [i_start]}  # スタートから各ノードまでの最短パスを記録
+    shortest_weight = {i_start: 0}          # スタートから各ノードまでの最短距離を記録
+    shortest_path = {i_start: [i_start]}  # スタートから各ノードまでの最短パスを記録
     edges = {}     # 直接つながるエッジの重みを格納
     # 諸々を初期化
     for f, t, w in graph:
@@ -271,26 +284,26 @@ def dijkstra(graph, i_start):
         edges[t][f] = w
     todo.remove(i_start)
     done.add(i_start)
-    n_latest_fix = i_start
+    n_last_fix = i_start
     while True:
         # 1ステップ前に FIX されたノードから直接つながるノードへの距離を見て最短経路を更新
-        for t in edges[n_latest_fix]:
-            w = result_w[n_latest_fix] + edges[n_latest_fix][t]
-            if t not in result_w or w < result_w[t]:
-                result_w[t] = w
-                result_p[t] = result_p[n_latest_fix] + [t]
+        for t in edges[n_last_fix]:
+            w = shortest_weight[n_last_fix] + edges[n_last_fix][t]
+            if t not in shortest_weight or w < shortest_weight[t]:
+                shortest_weight[t] = w
+                shortest_path[t] = shortest_path[n_last_fix] + [t]
         w_min = sys.maxsize
         # 一番近い値は FIX
         for n in todo:
-            if n in result_w and result_w[n] < w_min:
-                w_min = result_w[n]
-                n_latest_fix = n
+            if n in shortest_weight and shortest_weight[n] < w_min:
+                w_min = shortest_weight[n]
+                n_last_fix = n
         if w_min == sys.maxsize:
             break
-        todo.remove(n_latest_fix)
-        done.add(n_latest_fix)
-    for i_goal in result_w:
-        print('from {} to {}: weight={}, path={}'.format(i_start, i_goal, result_w[i_goal], result_p[i_goal]))
+        todo.remove(n_last_fix)
+        done.add(n_last_fix)
+    for i_goal in shortest_weight:
+        print('from {} to {}: weight={}, path={}'.format(i_start, i_goal, shortest_weight[i_goal], shortest_path[i_goal]))
 ```
 
 ![Graph gv](https://user-images.githubusercontent.com/13412823/271911536-88878413-8d86-42af-bdd3-e86fb33ceb8e.png)

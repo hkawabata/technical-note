@@ -393,6 +393,11 @@ csvLabeled.filter($"num" >= 2).show()
 json.filter($"num" > 15 and $"obj.n" < 3).show()
 ```
 
+### null チェック
+
+```scala
+df.filter($"error_log".isNull).show()
+```
 
 ### select + where
 
