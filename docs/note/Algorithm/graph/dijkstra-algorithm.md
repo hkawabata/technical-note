@@ -47,7 +47,9 @@ n_last_fix = None
 
 ## 処理の流れ
 
-【0】スタート地点 A 自身までの最短距離が0であるのは明らか。
+### 【0】スタート地点自身までの最短経路を確定
+
+スタート地点 A 自身までの最短距離が0であるのは明らかなので、A までの最短距離と経路を確定させる：
 - `shortest_weight['A'] = 0` (Fix)
 - `shortest_path['A'] = ['A']` (Fix)
 - `n_last_fix = 'A'`
@@ -76,10 +78,14 @@ shortest_path = {
 n_last_fix = 'A'  # updated
 ```
 
-【1】最短経路が未確定のノードのうち、`n_last_fix` に直接繋がっているノード `n` それぞれについて、以下のルールで `shortest_weight`, `shortest_path` を更新する
+### 【1】最後に確定したノードの隣接ノードの情報を更新
+
+最短経路が未確定のノードのうち、`n_last_fix` の隣接ノード `n` それぞれについて、以下のルールで `shortest_weight`, `shortest_path` を更新する
 - `d_old`：現時点でわかっているそのノードまでの最短距離 `shortest_weight[n]`
-- `d_new`：現時点で判明しているスタート地点から `n_last_fix` までの最短距離`shortest_weight[n_last_fix]` + `n_last_fix` から `n` までの距離
-- `d_new < d_old` なら、
+- `d_new`：以下の2つの和
+    - 確定済みの `n_last_fix` までの最短距離`shortest_weight[n_last_fix]`
+    - `n_last_fix` から `n` までの距離
+- `d_new < d_old` なら最短距離・最短経路を更新：
     - `shortest_weight[n] = d_new` 
     - `shortest_path[n] = shortest_path[n_last_fix] + n` 
 
@@ -105,7 +111,9 @@ shortest_path = {
 n_last_fix = 'A'
 ```
 
-【2】最短経路が未確定のノードを全て見て、**現時点の重みが一番小さいノードの重みと経路を fix**（**他のルート経由では、絶対にこれより長くなる**）
+### 【2】未確定のうち距離が一番小さいノードの距離・経路を確定
+
+最短経路が未確定のノードを全て見て、**現時点の距離が一番小さいノードの距離と経路を fix**（**他のルート経由では、絶対にこれより長くなる**）
 
 今回の例だと `shortest_weight['D']` の2が最小なので D を fix。  
 よって `n_last_fix = 'D'`
@@ -134,7 +142,9 @@ shortest_path = {
 n_last_fix = 'D'  # updated
 ```
 
-【3】`n_last_fix` が更新されなくなるまで1,2を繰り返す。
+### 【3】1,2を繰り返し
+
+`n_last_fix` が更新されなくなるまで1,2を繰り返す。
 
 ![図4](https://user-images.githubusercontent.com/13412823/272174904-408c4283-7fb5-4dfa-a5a5-4a05b5c22c3a.png)
 
