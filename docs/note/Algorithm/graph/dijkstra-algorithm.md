@@ -241,90 +241,28 @@ n_last_fix = 'E'  # updated
 
 # 実装
 
-```python
-import sys
-from graphviz import Graph
+{% gist 0ad400c415ed0b29812559d24f5e5082 20231004_dijkstra.py %}
 
-graph = {
-    # from, to, weight
-    ('A', 'B', 7),
-    ('A', 'C', 4),
-    ('A', 'D', 2),
-    ('B', 'C', 2),
-    ('C', 'D', 3),
-    ('B', 'E', 6),
-    ('C', 'F', 2),
-    ('D', 'F', 6),
-    ('E', 'F', 4)
-}
-
-def show_graph(graph):
-    g = Graph(format='png')
-    g.graph_attr['rankdir'] = 'LR'
-    for f, t, w in graph:
-        g.edge(str(f), str(t), str(w))
-    g.view()
-
-def dijkstra(graph, i_start):
-    # 変数準備
-    todo = set()   # 未処理のノードを格納
-    done = set()   # S からの最短距離を求め終わったノードを格納
-    shortest_weight = {i_start: 0}          # スタートから各ノードまでの最短距離を記録
-    shortest_path = {i_start: [i_start]}  # スタートから各ノードまでの最短パスを記録
-    edges = {}     # 直接つながるエッジの重みを格納
-    # 諸々を初期化
-    for f, t, w in graph:
-        todo.add(f)
-        todo.add(t)
-        if f not in edges:
-            edges[f] = {}
-        if t not in edges:
-            edges[t] = {}
-        edges[f][t] = w
-        edges[t][f] = w
-    todo.remove(i_start)
-    done.add(i_start)
-    n_last_fix = i_start
-    while True:
-        # 1ステップ前に FIX されたノードから直接つながるノードへの距離を見て最短経路を更新
-        for t in edges[n_last_fix]:
-            w = shortest_weight[n_last_fix] + edges[n_last_fix][t]
-            if t not in shortest_weight or w < shortest_weight[t]:
-                shortest_weight[t] = w
-                shortest_path[t] = shortest_path[n_last_fix] + [t]
-        w_min = sys.maxsize
-        # 一番近い値は FIX
-        for n in todo:
-            if n in shortest_weight and shortest_weight[n] < w_min:
-                w_min = shortest_weight[n]
-                n_last_fix = n
-        if w_min == sys.maxsize:
-            break
-        todo.remove(n_last_fix)
-        done.add(n_last_fix)
-    for i_goal in shortest_weight:
-        print('from {} to {}: weight={}, path={}'.format(i_start, i_goal, shortest_weight[i_goal], shortest_path[i_goal]))
-```
+前述の「処理の流れ」で扱ったグラフのとき：
 
 ![Graph gv](https://user-images.githubusercontent.com/13412823/271911536-88878413-8d86-42af-bdd3-e86fb33ceb8e.png)
-
 
 ```python
 >>> dijkstra(graph, 'A')
 from A to A: weight=0, path=['A']
+from A to B: weight=6, path=['A', 'C', 'B']
 from A to C: weight=4, path=['A', 'C']
 from A to D: weight=2, path=['A', 'D']
-from A to B: weight=6, path=['A', 'C', 'B']
-from A to F: weight=6, path=['A', 'C', 'F']
 from A to E: weight=10, path=['A', 'C', 'F', 'E']
+from A to F: weight=6, path=['A', 'C', 'F']
 
 >>> dijkstra(graph, 'C')
-from C to C: weight=0, path=['C']
-from C to D: weight=3, path=['C', 'D']
 from C to A: weight=4, path=['C', 'A']
 from C to B: weight=2, path=['C', 'B']
-from C to F: weight=2, path=['C', 'F']
+from C to C: weight=0, path=['C']
+from C to D: weight=3, path=['C', 'D']
 from C to E: weight=6, path=['C', 'F', 'E']
+from C to F: weight=2, path=['C', 'F']
 ```
 
 ツリー状である時
@@ -348,21 +286,21 @@ show_graph(graph)
 ```python
 >>> dijkstra(graph, 'A')
 from A to A: weight=0, path=['A']
-from A to D: weight=2, path=['A', 'D']
-from A to C: weight=4, path=['A', 'C']
 from A to B: weight=5, path=['A', 'B']
+from A to C: weight=4, path=['A', 'C']
+from A to D: weight=2, path=['A', 'D']
+from A to E: weight=11, path=['A', 'B', 'E']
+from A to F: weight=12, path=['A', 'B', 'F']
 from A to G: weight=7, path=['A', 'C', 'G']
 from A to H: weight=6, path=['A', 'C', 'H']
-from A to F: weight=12, path=['A', 'B', 'F']
-from A to E: weight=11, path=['A', 'B', 'E']
 
 >>> dijkstra(graph, 'E')
-from E to E: weight=0, path=['E']
-from E to B: weight=6, path=['E', 'B']
-from E to F: weight=13, path=['E', 'B', 'F']
 from E to A: weight=11, path=['E', 'B', 'A']
-from E to D: weight=13, path=['E', 'B', 'A', 'D']
+from E to B: weight=6, path=['E', 'B']
 from E to C: weight=15, path=['E', 'B', 'A', 'C']
+from E to D: weight=13, path=['E', 'B', 'A', 'D']
+from E to E: weight=0, path=['E']
+from E to F: weight=13, path=['E', 'B', 'F']
 from E to G: weight=18, path=['E', 'B', 'A', 'C', 'G']
 from E to H: weight=17, path=['E', 'B', 'A', 'C', 'H']
 ```
@@ -388,11 +326,18 @@ show_graph(graph)
 ```python
 >>> dijkstra(graph, 'A')
 from A to A: weight=0, path=['A']
-from A to D: weight=3, path=['A', 'C', 'D']
-from A to C: weight=2, path=['A', 'C']
 from A to B: weight=4, path=['A', 'C', 'B']
+from A to C: weight=2, path=['A', 'C']
+from A to D: weight=3, path=['A', 'C', 'D']
+from A to E: weight=inf, path=None
+from A to F: weight=inf, path=None
+from A to G: weight=inf, path=None
 
 >>> dijkstra(graph, 'E')
+from E to A: weight=inf, path=None
+from E to B: weight=inf, path=None
+from E to C: weight=inf, path=None
+from E to D: weight=inf, path=None
 from E to E: weight=0, path=['E']
 from E to F: weight=4, path=['E', 'F']
 from E to G: weight=5, path=['E', 'F', 'G']
