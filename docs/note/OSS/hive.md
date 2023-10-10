@@ -458,134 +458,28 @@ B  ['a', 'c']       2  c
 
 ## UDF の作成：pom.xml
 
-```xml
-<dependencies>  
-    <dependency>
-        <groupId>org.apache.hadoop</groupId>  
-        <artifactId>hadoop-client</artifactId>  
-        <version>2.7.3</version>  
-        <optional>true</optional>  
-    </dependency>
-    <dependency>
-        <groupId>org.apache.hive</groupId>  
-        <artifactId>hive-exec</artifactId>  
-        <version>2.3.9</version>  
-        <optional>true</optional>  
-        <exclusions>
-	        <exclusion>
-		        <groupId>org.pentaho</groupId>  
-                <artifactId>*</artifactId>  
-            </exclusion>
-        </exclusions>
-    </dependency>
-</dependencies>
-```
+{% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~pom.xml %}
+
 
 ## UDF の作成：実装
 
 - `ObjectInspector`：Hive テーブル内の列のデータを扱うための重要なコンポーネントであり、Hive のデータ型と Java オブジェクトの間の変換を処理するために使用される
 
-### UDF：引数が int, double, string などの基本型の場合
+### UDF：引数も返り値も基本型の場合
 
-```java
-package com.example;
+基本型：int, double, string, boolean など。
 
-import org.apache.hadoop.hive.ql.exec.UDF;
-import org.apache.hadoop.io.Text;
-
-// org.apache.hadoop.hive.ql.exec.UDF を継承したクラスを作成する
-/**
- * 第2引数以降のうち、「第1引数の文字列で始まるもの」が1つ以上含まれていれば true を返す関数
- */
-public class SampleUDF extends UDF {
-    public Boolean evaluate(final Text prefix, Text ... values) {
-        for (Text v: values) {
-            if (v.toString().startsWith(prefix.toString())) {
-                return true;
-            }
-        }
-        return false;
-    }
-}
-```
-
-### UDF：引数が array の場合
-
-```java
-package com.example;
-
-import org.apache.hadoop.hive.ql.exec.UDFArgumentException;
-import org.apache.hadoop.hive.ql.exec.UDFArgumentLengthException;
-import org.apache.hadoop.hive.ql.metadata.HiveException;
-import org.apache.hadoop.hive.ql.udf.generic.GenericUDF;
-import org.apache.hadoop.hive.serde2.objectinspector.ListObjectInspector;
-import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector;
-import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector.Category;
-import org.apache.hadoop.hive.serde2.objectinspector.primitive.PrimitiveObjectInspectorFactory;
-import org.apache.hadoop.hive.serde2.objectinspector.primitive.StringObjectInspector;
-
-import java.util.List;
-
-public class SampleGenericArrayUDF extends GenericUDF {
-    private StringObjectInspector stringOI;
-    private ListObjectInspector listOI;
-
-    /**
-     * UDF が受け取る型、返却する型を定義
-     *
-     * @param args
-     * @return
-     * @throws UDFArgumentException
-     */
-    @Override
-    public ObjectInspector initialize(ObjectInspector[] args) throws UDFArgumentException {
-        if (args.length != 2) throw new UDFArgumentLengthException("just 2 argument can be taken");
-        if (! (args[0] instanceof StringObjectInspector)) {
-            throw new UDFArgumentException("args[0] need to be an string");
-        }
-        if (args[1].getCategory() != Category.LIST) {
-            throw new UDFArgumentException("args[1] need to be an array");
-        }
-        // HiveQL から受け取るオブジェクトを作成
-        stringOI = (StringObjectInspector) args[0];
-        listOI = (ListObjectInspector) args[1];
-        // UDF が返却する型を定義
-        return PrimitiveObjectInspectorFactory.javaIntObjectInspector;
-    }
-
-    /**
-     * UDF に渡される各レコードの値についての処理内容を定義
-     *
-     * @param args
-     * @return
-     * @throws HiveException
-     */
-    @Override
-    public Object evaluate(DeferredObject[] args) throws HiveException {
-        String args0 = stringOI.getPrimitiveJavaObject(args[0].get());
-        List<?> args1 = listOI.getList(args[1].get());
-        int cnt = 0;
-        for (Object elem : args1) {
-            if (elem.toString().startsWith(args0)) cnt++;
-        }
-        return cnt;
-    }
-
-    /**
-     * explain で表示されるテキストを記載
-     *
-     * @param strings
-     * @return
-     */
-    @Override
-    public String getDisplayString(String[] strings) {
-        return "arrayに含まれる値のうち、指定した文字列から始まるものの個数を返す";
-    }
-}
-```
+{% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~1-string-to-boolean.java %}
 
 
-### UDF：引数が map の場合
+### UDF：引数が array、返り値が基本型の場合
+
+{% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~2-array-to-int.java %}
+
+
+### UDF：引数が map、返り値が array の場合
+
+{% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~3-map-to-array.java %}
 
 
 ### UDF：引数が struct の場合
@@ -599,13 +493,14 @@ public class SampleGenericArrayUDF extends GenericUDF {
 
 ```bash
 mvn clean package
-hdfs dfs -put target/my-udf.jar /path/to/
+hdfs dfs -put target/my-hive-udf.jar /path/to/
 ```
 
 ```sql
-add jar hdfs:///path/to/my-udf.jar;
+add jar hdfs:///path/to/my-hive-udf.jar;
 create temporary function myfunc as 'com.example.SampleUDF';
 create temporary function myfunc2 as 'com.example.SampleGenericArrayUDF';
+create temporary function myfunc2 as 'com.example.SampleGenericMapUDF';
 
 select myfunc('ab', 'ba', 'aab');
 -- false
@@ -620,4 +515,15 @@ select myfunc2('ab', array('ba', 'ab', 'abab', 'baba'));
 -- 2
 select myfunc2('ab', array());
 -- 0
+
+select myfunc3('https://', map(  
+    'siteA', 'https://a.com',
+    'siteB', 'http://b.com',
+    'siteC', 'https://c.com'));
+-- ["siteA","siteC"]
+select myfunc3('ftp://', map(  
+    'siteA', 'https://a.com',
+    'siteB', 'http://b.com',
+    'siteC', 'https://c.com'));
+-- []
 ``` 
