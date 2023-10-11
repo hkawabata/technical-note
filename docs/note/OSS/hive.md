@@ -469,23 +469,22 @@ B  ['a', 'c']       2  c
 
 基本型：int, double, string, boolean など。
 
-{% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~1-string-to-boolean.java %}
+{% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~1_string-to-boolean.java %}
 
 
 ### UDF：引数が array、返り値が基本型の場合
 
-{% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~2-array-to-int.java %}
+{% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~2_array-to-int.java %}
 
 
 ### UDF：引数が map、返り値が array の場合
 
-{% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~3-map-to-array.java %}
+{% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~3_map-to-array.java %}
 
 
-### UDF：引数が struct の場合
+### UDF：引数も返り値も struct 場合
 
-
-### UDF：返り値が struct の場合
+{% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~4_struct-to-struct.java %}
 
 
 
