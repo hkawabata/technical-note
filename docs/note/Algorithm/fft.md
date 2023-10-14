@@ -6,22 +6,38 @@ title: 高速フーリエ変換（FFT）
 
 ## フーリエ変換
 
-数学的な証明は除く。
-
-周期関数に限らず、任意の関数 $f(t)$ は、正弦波（$A \sin{\omega t}$$や$$A \cos{\omega t}$$。$$A$, $\omega$ は定数）の和で表現できる。  
+周期関数に限らず、任意の関数 $f(t)$ は、正弦波（$A \sin{\omega t}$ や $A \cos{\omega t}$$。$$A$, $\omega$ は定数）の和で表現できる（数学的な証明はここでは行わない）。  
 $t$ を時間 [s] とすれば
 - $\omega$ は波の角周波数 [rad/s]（周波数 $f$ [Hz] との関係は $\omega = 2\pi f$）
-- $A$ は波の振幅に当たる。
+- $A$ は波の振幅
+
+にあたる。
 
 **フーリエ変換 = 関数 $f(t)$ を様々な周波数 $\omega$ の正弦波に分解する変換。各周波数の波がそれぞれどの程度の強さ（= 振幅 $A$）で混ざり合っているのかを求められる**
 
-**【フーリエ変換公式】**
+> **【公式】フーリエ変換**
+> 
+> フーリエ変換：
+> 
+> $$F(\omega) = \displaystyle \int_{-\infty}^{\infty} f(t) e^{-i\omega t} \,dt \tag{1}$$
+> 
+> フーリエ逆変換：
+> 
+> $$f(t) = \displaystyle \cfrac{1}{2\pi} \int_{-\infty}^{\infty} F(\omega) e^{i\omega t} \,d\omega \tag{2}$$
 
-フーリエ変換：  
-$$F(\omega) = \displaystyle \int_{-\infty}^{\infty} f(t) e^{-i\omega t} \,dt$$
-
-フーリエ逆変換：  
-$$f(t) = \displaystyle \cfrac{1}{2\pi} \int_{-\infty}^{\infty} F(\omega) e^{i\omega t} \,d\omega$$
+> **【NOTE】逆変換の式の係数**
+>
+> フーリエ逆変換 $(2)$ の係数 $1/2\pi$ は、計算上の辻褄合わせ。  
+> この係数なしで積分を行うと、$f(t)$ を変換した後に逆変換したとき、元の関数 $f(t)$ ではなく $2\pi f(t)$ になってしまうので、$1/2\pi$ をかけて元に戻るようにしてある。  
+> つまり、変換の係数と逆変換の係数の積が $1/2\pi$ になっていれば何でも良く、書籍によっては以下のように定義されている：
+> 
+> $$
+\begin{eqnarray}
+    F(\omega) &=& \cfrac{1}{\sqrt{2\pi}} \displaystyle \int_{-\infty}^{\infty} f(t) e^{-i\omega t} \,dt
+    \\
+    f(t) &=& \cfrac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} F(\omega) e^{i\omega t} \,d\omega
+\end{eqnarray}
+$$
 
 **【例】**
 
@@ -140,7 +156,7 @@ $$
 したがって、最終的な計算量は $$O(N \log_2{N})$$
 
 
-### $$k \lt N/2$$ かどうかで分けて考える
+### $k \lt N/2$ かどうかで分けて考える
 
 任意の $$k$$ について、
 
@@ -200,74 +216,48 @@ $$
 
 ## サンプルコード
 
-```python
-import numpy as np
+{% gist 801c6ed6298b2d193ec7a5d7807ac5f7  %}
 
-def dft(f_):
-    """
-    愚直に和を取る
-    """
-    N_ = len(f_)
-    F_ = np.full(N_, 0j)
-    x = -1j*2*np.pi/N_
-    for k in range(N_):
-        for n in range(N_):
-            F_[k] += f_[n] * np.exp(x*k*n)
-    return F_
+関数
 
-def fft_poor(f_, start=0, d=1):
-    """
-    各kのDFTを再帰的に2分割して高速化
-    - バタフライ演算非対応
-    - 配列を何度も作るのでコストがかかっていそう
-    """
-    N_ = len(f_) / d
-    if 1 < N_:
-        return fft_poor(f_, start, d*2) + fft_poor(f_, start+d, d*2) * np.exp(-1j*2*np.pi*np.arange(len(f_))/N_)
-    else:
-        return np.array([f_[start]])
+$$
+\begin{eqnarray}
+    f(t) = A_1 \sin{2 \pi f_1 t} + A_2 \sin{2 \pi f_2 t}
+    \\
+    A_1 = 1.0,\, f_1 = 1.0 \mathrm{[Hz]}
+    \\
+    A_2 = 0.2,\, f_2 = 2.5 \mathrm{[Hz]}
+\end{eqnarray}
+$$ 
+に実装した FFT を適用してみる。  
+また、numpy の fft 関数の結果と誤差がないか比較する。
 
-def fft(f_):
-    """
-    Cooley-Tukey アルゴリズム
-    """
-    N_ = len(f_)
-    b = int(np.log2(N_))
-    F_ = []
-    for i in range(N_):
-        F_.append(f_[reverse_bit(i, b)])
-    window = 1
-    while window < N_:
-        window <<= 1
-        j = 0
-        for i in range(N_):
-            if i%window < window/2:
-                k = int(i + window/2)
-                wi = np.exp(-1j * 2 * np.pi * (i%window) / window)
-                wk = np.exp(-1j * 2 * np.pi * (k%window) / window)
-                F_[i], F_[k] = F_[i] + wi * F_[k], F_[i] + wk * F_[k]
-    return F_
+{% gist 801c6ed6298b2d193ec7a5d7807ac5f7 ~adapt-fft.py %}
 
-def reverse_bit(num, b):
-    """
-    bビットの数値numのビットを逆順に変換
-    - ex. num=2, b=4 の場合、0010 => 0100 => 4
-    - ex. num=20, b=6 の場合、010100 => 001010 => 10
-    """
-    tmp = num
-    res = tmp & 1
-    for _ in range(b-1):
-        tmp >>= 1
-        res = (res << 1) | (tmp & 1)
-    return res
-```
+![fft](https://user-images.githubusercontent.com/13412823/275214863-39c153a6-fc1d-446d-844b-ccd5afe54cd1.png)
 
-関数 $$f(t) = \sin{60 \pi t} + 0.1 \sin{600 \pi t}$$ に FFT を適用：
+- いずれの実装も、numpy の fft 関数との誤差は極微小（正しく実装できていそう）
+- $f(t)$ の定義通り、$f_1 = 1.0 \mathrm{[Hz]}$ と $f_1 = 2.5 \mathrm{[Hz]}$ のあたりにピークが観測される
+- また、フーリエ変換で得られた振幅の比は定義した $A_1$ と $A_2$ の比（$1.0:0.2 = 5:1$）にだいたい一致
 
-![Unknown-6](https://user-images.githubusercontent.com/13412823/75610477-c218b100-5b54-11ea-9539-7fddce19666e.png)
 
-## 速度の比較
+## 計算速度の比較
 
-![Unknown-1](https://user-images.githubusercontent.com/13412823/75618487-5f560280-5bb2-11ea-8769-e15b84a92315.png)
+実装した各手法と `numpy.fft.fft` の速度を比較してみる：
 
+{% gist 801c6ed6298b2d193ec7a5d7807ac5f7 ~compare-speed.py %}
+
+![fft-speed](https://user-images.githubusercontent.com/13412823/275224596-41c6d2f9-255d-4006-b56b-cf9b72b49c7d.png)
+
+DFT が圧倒的に遅いので、除外してデータ数を増やしてみる：
+
+![fft-speed2](https://user-images.githubusercontent.com/13412823/275225513-16e34921-2004-4daa-b4b4-18416cd941fc.png)
+
+- 愚直に和を取る離散フーリエ変換に比べて FFT が圧倒的に速い
+- 同じ FFT の中でも、バタフライ演算に対応すればさらに大きく高速化（`fft` VS `fft_poor`）
+- バタフライ演算対応版に比べても、numpy の `numpy.fft.fft` が速すぎる。実装どうなってるの...？
+
+| 今回実装した FFT | `numpy.fft.fft` |
+| :-- | :-- |
+| ![fft-speed4](https://user-images.githubusercontent.com/13412823/275225515-93771393-4742-446d-925d-9d36b1a62ad6.png) | ![fft-speed3](https://user-images.githubusercontent.com/13412823/275225514-aa868cc7-fbb0-4be1-a596-4443b657d619.png) |
 

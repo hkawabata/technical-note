@@ -456,73 +456,80 @@ B  ['a', 'c']       2  c
 | UDAF | User-Defined Aggregation Function<br>値のグループを受け入れ、単一の値を返すユーザー定義の集計関数 |
 | UDTF | User-Defined Table Function<br>単一行で動作し、出力としてテーブルの複数の行を生成するユーザー定義テーブル生成関数 |
 
-## UDF の作成：pom.xml
+- `ObjectInspector`：Hive テーブル内の列のデータを扱うための重要なコンポーネントであり、Hive のデータ型と Java オブジェクトの間の変換を処理するために使用される
+
+## pom.xml
 
 {% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~pom.xml %}
 
 
-## UDF の作成：実装
+## UDF
 
-- `ObjectInspector`：Hive テーブル内の列のデータを扱うための重要なコンポーネントであり、Hive のデータ型と Java オブジェクトの間の変換を処理するために使用される
-
-### UDF：引数も返り値も基本型の場合
+### UDF の実装：引数も返り値も基本型の場合
 
 基本型：int, double, string, boolean など。
 
 {% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~1_string-to-boolean.java %}
 
 
-### UDF：引数が array、返り値が基本型の場合
+### UDF の実装：引数が array、返り値が基本型の場合
 
 {% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~2_array-to-int.java %}
 
 
-### UDF：引数が map、返り値が array の場合
+### UDF の実装：引数が map、返り値が array の場合
 
 {% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~3_map-to-array.java %}
 
 
-### UDF：引数も返り値も struct 場合
+### UDF の実装：引数も返り値も struct 場合
+
+正確には、より複雑なケースとして、struct の array から struct の array への変換を実装。
 
 {% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~4_struct-to-struct.java %}
 
 
-
-## UDF の利用
+### UDF の利用
 
 ```bash
 mvn clean package
 hdfs dfs -put target/my-hive-udf.jar /path/to/
 ```
 
-```sql
-add jar hdfs:///path/to/my-hive-udf.jar;
-create temporary function myfunc as 'com.example.SampleUDF';
-create temporary function myfunc2 as 'com.example.SampleGenericArrayUDF';
-create temporary function myfunc2 as 'com.example.SampleGenericMapUDF';
+{% gist 9ab9e66ccfc4583f799dbcf1835ff6ce ~use-udf.hql %}
 
-select myfunc('ab', 'ba', 'aab');
--- false
-select myfunc('ab', 'ba', 'aba');
--- true
-select myfunc('ab');
--- false
 
-select myfunc2('ab', array('ba', 'aab'));
--- 0
-select myfunc2('ab', array('ba', 'ab', 'abab', 'baba'));
--- 2
-select myfunc2('ab', array());
--- 0
+## UDAF
 
-select myfunc3('https://', map(  
-    'siteA', 'https://a.com',
-    'siteB', 'http://b.com',
-    'siteC', 'https://c.com'));
--- ["siteA","siteC"]
-select myfunc3('ftp://', map(  
-    'siteA', 'https://a.com',
-    'siteB', 'http://b.com',
-    'siteC', 'https://c.com'));
--- []
-``` 
+[公式のマニュアル](https://cwiki.apache.org/confluence/display/hive/genericudafcasestudy)が詳しい。
+
+### UDAF の実装
+
+UDAF の実装は2段階。
+
+1. resolver の実装
+    - resolver の役割：引数型の誤りチェック & 異なる引数型に応じて適切な evaluator を返す
+    - 抽象クラス`AbstractGenericUDAFResolver`を継承し、`getEvaluator`メソッドをオーバーライド
+2. evaluator の実装
+    - evaluator の役割：
+    - 抽象クラス`GenericUDAFEvaluator`を継承し、以下のメソッドをオーバーライド
+
+`getEvaluator`メソッドの返り値の型は抽象クラス`GenericUDAFEvaluator`であり、これを継承する具象クラスも実装する必要がある。
+
+`GenericUDAFEvaluator`の具象クラスでは、以下のメソッドをオーバーライドする。
+
+| メソッド | 役割 |
+| :-- | :-- |
+| `AggregationBuffer getNewAggregationBuffer()` |  |
+| `void reset(AggregationBuffer aggregationBuffer)` |  |
+| `void iterate(AggregationBuffer aggregationBuffer, Object[] objects)` |  |
+| `Object terminatePartial(AggregationBuffer aggregationBuffer)` |  |
+| `void merge(AggregationBuffer aggregationBuffer, Object o)` |  |
+| `Object terminate(AggregationBuffer aggregationBuffer)` |  |
+
+
+
+### UDAF の利用
+
+(ToDo)
+## UDTF
