@@ -17,15 +17,21 @@ title-en: Hypothesis Testing for the Proportion
 
 ### 理論
 
-確率 $p$ で成功する試行を $n$ 回繰り返したとき、成功回数 $X$ は二項分布 $B(n, p)$ に従う。
+確率 $p$ で成功する試行を $n$ 回繰り返したとき、成功回数 $X$ は[二項分布](../distribution/binomial-distribution.md) $B(n, p)$ に従う。  
+また、$n$ が十分大きい時、二項分布は正規分布に近づく（[二項分布](../distribution/binomial-distribution.md)を参照）：
 
-$n$ が十分大きい時、中心極限定理により $B(n, p) \to N(np, np(1-p))$ であるから、$X$ を標準化した確率変数 $Z$ は標準正規分布に従う：
+$$
+B(n, p) \to N(np, np(1-p))
+\qquad \qquad (n \to \infty)
+$$
+
+よって、$n$ が十分大きい時、$X$ を標準化した確率変数 $Z$ は標準正規分布に従う：
 
 $$
 Z := \cfrac{X - np}{\sqrt{np(1-p)}} \sim N(0, 1)
 $$
 
-この $Z$ を検定統計量として利用できる。  
+この $Z$ を検定統計量として利用する。  
 また、分母分子を $n$ で割ることで、$Z$ を標本比率 $\hat{p} = X/n$ を用いて表すこともできる：
 
 $$
