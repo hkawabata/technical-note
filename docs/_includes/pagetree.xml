@@ -203,6 +203,9 @@
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/numpy">numpy</a>
                   </li>
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/jinja2">jinja2</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/tqdm">qdm</a>
                   </li>
                   <li>
@@ -332,6 +335,18 @@
             <ul class="pagetree-hidden">
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Algorithm/equation/newton-method">ニュートン法</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span>sort</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/sort/bubble-sort">バブルソート</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/sort/quick-sort">クイックソート</a>
               </li>
             </ul>
           </li>
@@ -572,6 +587,33 @@
                 <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/lhopital-theorem">ロピタルの定理</a>
               </li>
               <li>
+                <span>complex-analysis</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/complex-analysis/complex-integral">複素積分</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/complex-analysis/residue-theorem">留数定理</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/complex-analysis/basic">複素解析の基礎</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/complex-analysis/cauchy–riemann-equations">コーシー・リーマンの方程式</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/complex-analysis/laurent-series-expansion">ローラン展開</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/complex-analysis/regular-analytic-function">正則関数</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/complex-analysis/singularity">特異点</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/taylor-expantion">テイラー展開</a>
               </li>
               <li>
@@ -764,10 +806,31 @@
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
               <li>
+                <span>ranking</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/ML/Evaluation/ranking/map">MAP (Mean Average Precision)</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/ML/Evaluation/ranking/precision-at-k">Precision@k</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/ML/Evaluation/ranking/mrr">MRR (Mean Reciprocal Rank)</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/ML/Evaluation/ranking/racall-at-k">Recall@k</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/ML/Evaluation/roc-auc">ROC 曲線</a>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/ML/Evaluation/elbow-method">エルボー法</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/Evaluation/precision-recall-curve">PR 曲線 (適合率-再現率曲線)</a>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/ML/Evaluation/silhouette-analysis">シルエット分析</a>
