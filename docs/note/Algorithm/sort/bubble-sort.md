@@ -1,0 +1,143 @@
+---
+title: バブルソート
+title-en: bubble sort
+---
+# 概要
+
+配列のソートアルゴリズムの1つ。
+
+# アルゴリズム
+
+1. 変数定義
+    1. $N$：配列の長さ
+    2. $a(i)$：対象の配列の $i$ 番目の要素。$i = 1,2,\cdots,N$
+    3. $i_\mathrm{max}$：そのループで調べるインデックスの最大値。$N-1$ で初期化
+2. $i = 1,2,\cdots,i_\mathrm{max}$ の順に以下の操作を行う
+    1. もし $a(i) \gt a(i+1)$ なら、$a(i)$ と $a(i+1)$ の値を入れ替え
+3. $i_\mathrm{max}$ の値を1小さくする
+4. $i_\mathrm{max} = 0$ となるまで2,3 を繰り返す
+
+> **【NOTE】ループごとに $i_\mathrm{max}$ を小さくする理由**
+> 
+> 2は隣り合う左右を比較して、大きい方の値を左から右へ順番に移動させていく操作  
+> → 2の操作が終わった時点で、$a(1),a(2),\cdots,a(i_\mathrm{max}),a(i_\mathrm{max}+1)$ の中で $a(i_\mathrm{max}+1)$ が最大であることが保証できる。  
+> → 必ず $a(i_\mathrm{max}) \lt a(i_\mathrm{max}+1)$ なので、次のループでは $a(i_\mathrm{max})$ と $a(i_\mathrm{max}+1)$ を比べる必要がない。
+
+# 計算量
+
+## 時間計算量
+
+配列サイズ $N$ に対するループごとの比較回数は
+- 1ループ目：$i=1,\cdots,N-1$ の $N-1$ 回
+- 2ループ目：$i=1,\cdots,N-2$ の $N-2$ 回
+- ...
+- $N-1$ ループ目：$i=1$ の1回
+
+であるから、合計の比較回数は
+
+$$
+\begin{eqnarray}
+    \sum_{k=1}^{N-1} (N-k)
+    &=&
+    \sum_{k=1}^{N-1} N - \sum_{k=1}^{N-1} k
+    \\ &=&
+    N(N-1) - \cfrac{1}{2}(N-1)N
+    \\ &=&
+    \cfrac{1}{2}(N-1)N
+\end{eqnarray}
+$$
+
+したがって時間計算量は $O(N^2)$
+
+## 空間計算量
+
+元の配列の中身を入れ替えるだけなので、元の配列分のメモリしか消費しない。
+したがって、空間計算量は $O(N)$
+
+# 具体例
+
+順序が確定したものを `<5>` のように表す。
+
+```
+(4 3) 5 1 2
+左の方が大きいので入れ替え
+
+3 (4 5) 1 2
+左の方が小さいのでそのまま
+
+3 4 (5 1) 2
+左の方が大きいので入れ替え
+
+3 4 1 (5 2)
+左の方が大きいので入れ替え
+
+(3 4) 1 2 <5>
+左の方が小さいのでそのまま
+
+3 (4 1) 2 <5>
+左の方が大きいので入れ替え
+
+3 1 (4 2) <5>
+左の方が大きいので入れ替え
+
+(3 1) 2 <4> <5>
+左の方が大きいので入れ替え
+
+1 (3 2) <4> <5>
+左の方が大きいので入れ替え
+
+(1 2) <3> <4> <5>
+左の方が小さいのでそのまま
+
+<1> <2> <3> <4> <5>
+ソート完了
+```
+
+
+# 実装
+
+{% gist 12061820cfef20172e8a7549464995de ~1_bubble-sort.py %}
+
+テスト：
+
+{% gist 12061820cfef20172e8a7549464995de ~test-sort-algorithm.py %}
+
+```python
+>>> test_sort_algorithm(bubble_sort)
+OK: [1, 6, 2, 7, 5, 4, 3] --> [1, 2, 3, 4, 5, 6, 7]
+OK: [2, 4, 3, 7, 6, 5, 1] --> [1, 2, 3, 4, 5, 6, 7]
+OK: [3, 1, 5, 7, 6, 4, 2] --> [1, 2, 3, 4, 5, 6, 7]
+OK: [3, 6, 5, 7, 4, 2, 1] --> [1, 2, 3, 4, 5, 6, 7]
+OK: [4, 3, 7, 6, 5, 2, 1] --> [1, 2, 3, 4, 5, 6, 7]
+OK: [5, 2, 1, 7, 6, 4, 3] --> [1, 2, 3, 4, 5, 6, 7]
+OK: [5, 7, 2, 6, 4, 3, 1] --> [1, 2, 3, 4, 5, 6, 7]
+OK: [6, 4, 3, 7, 5, 2, 1] --> [1, 2, 3, 4, 5, 6, 7]
+OK: [7, 2, 5, 6, 4, 3, 1] --> [1, 2, 3, 4, 5, 6, 7]
+OK: [7, 6, 5, 4, 3, 2, 1] --> [1, 2, 3, 4, 5, 6, 7]
+All 5040 tests passed.
+```
+
+計算量の実験：
+
+{% gist 12061820cfef20172e8a7549464995de ~measure-processing-speed.py %}
+
+```python
+Ns = np.arange(1, 10+1) * 1000
+time_ave, time_std = measure_processing_speed(bubble_sort, Ns)
+
+coe = np.polyfit(Ns, time_ave, 2)
+n = np.arange(Ns[0], Ns[-1]+1)
+fit_curve = coe[0]*n**2+coe[1]*n+coe[2]
+plt.title('Bubble Sort')
+plt.xlabel('Array Length $n$')
+plt.ylabel('Processing Time $y$ [s]')
+plt.plot(n, fit_curve, label='Fit: $y = an^2+bn+c$')
+plt.errorbar(Ns, time_ave, yerr=time_std,
+             capsize=3, fmt='o', markersize=3,
+             ecolor='black', markeredgecolor = "black", color='w')
+plt.grid()
+plt.legend()
+plt.show()
+```
+
+![bubble-sort](https://user-images.githubusercontent.com/13412823/275299643-a337b280-6752-4326-b9ea-8ec15c912f9e.png)

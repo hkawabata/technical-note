@@ -1,20 +1,30 @@
 ---
 title: ROC 曲線
+title-en: ROC Curve
 ---
+# 概要
 
-# ROC 曲線とは
+ROC = 受信者操作特性（Receiver Operating Characteristic）の略。  
+縦軸に **真陽性率（True Positive Rate, TPR）**、横軸に **偽陽性率（False Positive Rate, FPR）** を取り、分類モデルの性能を評価する際に用いられる。
 
-受信者操作特性（Receiver Operating Characteristic）の略。  
-縦軸に **真陽性率（True Positive Rate）**、横軸に **偽陽性率（False Positive Rate）** を取り、モデルの性能を評価する際に用いられる。
+- 真陽性率：正解が陽性のデータのうち、モデルが正しく陽性と判定できたものの割合
+    - 高いほど良い
+    - 再現率（Recall）と同じ
+- 偽陽性率：正解が陰性のデータのうち、モデルが誤って陽性と判定してしまったものの割合
+    - 低いほど良い
 
-## 問題設定
+$$
+\begin{eqnarray}
+    \mathrm{TPR} &=& \cfrac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FN}}
+    \\
+    \mathrm{FPR} &=& \cfrac{\mathrm{FP}}{\mathrm{FP} + \mathrm{TN}}
+\end{eqnarray}
+$$
 
-与えられたデータサンプルに対する事象の真/偽を判定する二値分類問題を考える。  
-この問題に対するモデルは内部に評価関数を持ち、評価関数の値が閾値 $$T$$ 以上なら真、$$T$$ 未満なら偽と判定する。
 
-## ROC 曲線
+# ROC 曲線の描画
 
-モデルの評価関数の閾値 $$T$$ を色々変えながら、$$N$$ 件のテストデータを使って以下の操作を繰り返す。
+モデルの評価関数の閾値 $T$ を色々変えながら、$N$ 件のテストデータを使って以下の操作を繰り返す。
 
 1. テストデータに対する真偽を判定
 2. 判定結果と正解を比べて真陽性率と偽陽性率を計算
@@ -22,10 +32,30 @@ title: ROC 曲線
 
 ![ROC](https://user-images.githubusercontent.com/13412823/80943194-9b5f4b00-8e21-11ea-9a30-bbdbe4ffea2d.png)
 
+# ROC 曲線の見方
 
-## ROC-AUC
+- グラフの左下
+    - TPR も FPR も低い = 全てを陰性判定するモデル
+- グラフの右上
+    - TPR も FPR も高い = 全てを陽性判定するモデル
+    - 陽性判定の精度は高いが、陰性判定の精度は低い
+- グラフの左上
+    - TPR が高く FPR が低い = 陽性も陰性も誤判定が少なく良いモデル
+- グラフの右下
+    - FPR が高く TPR が低い = 誤判定ばかりしてしまうモデル
+    - ランダム以下の性能
 
-性能を評価する数値として、ROC 曲線の下側の面積である **AUC**（Area Under the Curve）が用いられることが多い。  
+
+# ROC-AUC
+
+複数の閾値で総合的にモデルの性能を評価する数値として、ROC 曲線の下側の面積である **AUC**（Area Under the Curve）が用いられることが多い。  
 
 - **ROC-AUC が大きい = 少ない誤りで真だと判定できている = 性能が良い**
-- ROC-AUC = 0.5 は完全にランダムなモデルに相当
+- ROC-AUC = 0.5（前節の図の波線）は完全にランダムなモデルに相当
+
+前節の図で言えば、AUC が最大の model 3 が最も高性能と言える。
+
+# PR 曲線と ROC 曲線の使い分け
+
+[PR 曲線](precision-recall-curve.md)を参照。
+

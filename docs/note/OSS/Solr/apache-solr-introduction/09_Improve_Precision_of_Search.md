@@ -188,7 +188,7 @@ $$F_{measure} = \displaystyle \frac{1}{\frac{1}{2P} + \frac{1}{2R}} = \frac{2PR}
 $$F_{measure} = \displaystyle \frac{1}{\alpha\frac{1}{P} + (1-\alpha)\frac{1}{R}}$$
 
 
-### 適合率-再現率曲線
+### 適合率-再現率曲線 (PR 曲線)
 
 あるクエリに対する適合ドキュメントが全部で10件あるとき、ある検索システムで以下のランキング結果が出たとする。
 
@@ -227,21 +227,17 @@ $$F_{measure} = \displaystyle \frac{1}{\alpha\frac{1}{P} + (1-\alpha)\frac{1}{R}
 	- 適合率-再現率曲線の各再現率レベルにおいて、評価対象の全クエリの補完適合率の平均を取ったもの
 	- 適合率0.0〜1.0の範囲を0.1刻み11点で平均を取ることが名称の由来
 
-### Precision at k
+### Precision at k (P@k)
 
 - 上位 k 件まで見たときの適合率
-- `P@k`のように略記される
 - それぞれのクエリに特有の適合ドキュメント数の影響を受けやすく、全クエリで平均を取ることが難しい
+- [Precision@k](../../../ML/Evaluation/ranking/precision-at-k.md) を参照
 
 ### MAP
 
-- Mean Average Precision
-- 変数定義：
-	- $$ \left\vert Q \right\vert $$ ：テストセットに含まれるクエリの総数
-	- クエリ $$q_j$$ には全部で $$m_j$$ 件の適合ドキュメントがあるとする
-	- クエリ $$q_j$$ の適合ドキュメントのうち $$k$$ 件を返すためには上位 $$R_{jk}$$ 件の検索結果を返す必要があり、この上位 $$R_{jk}$$ 件に注目したときの適合率を $$Precision\left(R_{jk}\right)$$ とする
-- $$MAP = \displaystyle \frac{1}{\left|Q\right|} \sum_{j=1}^{\left|Q\right|} \frac{1}{m_j} \sum_{k=1}^{m_j} Precision\left(R_{jk}\right)$$
+= Mean Average Precision
 
+[MAP](../../../ML/Evaluation/ranking/map.md) を参照
 
 ### DCG/NDCG
 

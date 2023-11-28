@@ -502,8 +502,17 @@ hdfs dfs -put target/my-hive-udf.jar /path/to/
 ## UDAF
 
 [公式のマニュアル](https://cwiki.apache.org/confluence/display/hive/genericudafcasestudy)が詳しい。
+公式の集約関数の実装も参考になる：[count](https://github.com/apache/hive/blob/master/ql/src/java/org/apache/hadoop/hive/ql/udf/generic/GenericUDAFCount.java)
 
 ### UDAF の実装
+
+#### 実装する抽象クラス
+
+| 抽象クラス | 説明 |
+| :-- | :-- |
+| `AbstractGenericUDAFResolver` | 引数型の誤りチェック & 異なる引数型に応じて適切な evaluator を返す |
+| `GenericUDAFEvaluator` |  |
+| `AbstractAggregationBuffer` |  |
 
 UDAF の実装は2段階。
 

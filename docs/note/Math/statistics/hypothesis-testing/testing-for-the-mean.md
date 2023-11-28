@@ -20,12 +20,32 @@ title-en: Hypothesis Testing for the Mean
 
 $$
 t := \cfrac{\bar{x}-\mu}{\sqrt{s^2/n}}
+\tag{1.1}
 $$
 
 は自由度 $n-1$ の [t 分布](../distribution/t-distribution.md)に従う。  
-この $t$ を用いた仮説検定の手法を **t 検定** と呼ぶ。
+この $t$ を検定統計量に用いた仮説検定の手法を **t 検定** と呼ぶ。
 
 > **【NOTE】** 自然界の多くの分布は正規分布に従うため、母集団が正規分布に従うと仮定することが多い。そのため、t 検定は非常に頻繁に使用される。
+
+次に、有意水準 $\alpha$ のときの両側検定の信頼区間を求める。  
+t 分布の上側 $\alpha$ 点を $t(\alpha)$ と書けば、t 分布の対称性から $t(1-\alpha) = -t(\alpha)$ が成り立つので、
+
+$$
+-t(\alpha/2) \le \cfrac{\bar{x}-\mu}{\sqrt{s^2/n}} \le t(\alpha/2)
+\tag{1.2}
+$$
+
+が成り立てば良い。これを $\mu$ について解けば、
+
+$$
+\bar{x} - t(\alpha/2) \sqrt{\cfrac{s^2}{n}}
+\le \mu \le
+\bar{x} + t(\alpha/2) \sqrt{\cfrac{s^2}{n}}
+\tag{1.3}
+$$
+
+これが母平均 $\mu$ の信頼区間となる。
 
 ### 具体例
 
