@@ -1,7 +1,6 @@
 ---
 title: jinja2
 ---
-
 # jinja2 概要
 
 Python のテンプレートエンジンのライブラリ。
@@ -20,30 +19,13 @@ from jinja2 import Template
 
 ## 変数の代入
 
-```python
-p = 'Hello {{ name }}!'
-template = Template(tmp)
-ren = template.render(name='Tom')
-print(ren)
-# Hello Tom!
-```
+{% gist 111f259961178fecd04c5e7f2dbb8de8 ~dainyu.py %}
 
 ## 条件分岐：if
 
 ### 変数の値のチェック
 
-```python
-tmp = """
-{% if score == 100 %}
-100点です！
-{% elif score >= 40 %}
-合格点です。
-{% else %}
-不合格なので再試験です。
-{% endif %}
-"""
-template = Template(tmp)
-```
+{% gist 111f259961178fecd04c5e7f2dbb8de8 ~if-value.py %}
 
 ```python
 >>> print(template.render(score=100))
@@ -61,16 +43,7 @@ template = Template(tmp)
 
 ### 変数が定義されているかのチェック
 
-```python
-tmp = """
-{% if flag %}
-flag という変数が定義されており、値は {{ flag }} です。
-{% else %}
-flag という変数は定義されていません。
-{% endif %}
-"""
-template = Template(tmp)
-```
+{% gist 111f259961178fecd04c5e7f2dbb8de8 ~if-exist.py %}
 
 ```python
 >>> print(template.render(flag=1))
@@ -87,14 +60,7 @@ flag という変数は定義されていません。
 
 ### list, set
 
-```python
-tmp = """
-{% for x in xs %}
-- {{ x }}
-{% endfor %}
-"""
-template = Template(tmp)
-```
+{% gist 111f259961178fecd04c5e7f2dbb8de8 ~for-list.py %}
 
 ```python
 >>> print(template.render(xs=[1,2,3,4,5]))
@@ -112,19 +78,7 @@ template = Template(tmp)
 
 ### dict
 
-```python
-tmp = """
-<table>
-  {% for k in dic %}
-  <tr>
-    <td>{{ k }}</td>
-    <td>{{ dic[k] }}</td>
-  </tr>
-  {% endfor %}
-</table>
-"""
-template = Template(tmp)
-```
+{% gist 111f259961178fecd04c5e7f2dbb8de8 ~for-dict.py %}
 
 ```python
 >>> print(template.render(dic={1:10,2:20,3:30}))
