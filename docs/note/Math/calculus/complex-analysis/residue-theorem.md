@@ -278,7 +278,9 @@ $C_2$ 上では $\vert z \vert = R$ であるから、$z=Re^{i\theta}\,(0\le\the
 
 $$
 \begin{eqnarray}
-    \int_{C_2} f(z) dz &=& \int_0^\pi \cfrac{iRe^{i\theta}}{R^4 e^{4\pi i} + 1} d\theta
+    \left\vert \int_{C_2} f(z) dz \right\vert
+    &=&
+    \left\vert \int_0^\pi \cfrac{iRe^{i\theta}}{R^4 e^{4\pi i} + 1} d\theta \right\vert
     \\ &\le&
     \int_0^\pi \left\vert \cfrac{iRe^{i\theta}}{R^4 e^{4\pi i} + 1} \right\vert d\theta
     \\ &=&
@@ -353,7 +355,7 @@ $$
 \end{eqnarray}
 $$
 
-$f(z) = \cfrac{1}{z^2 + 6z + 1}$ とおけば、複素空間上の円周 $|z|=1$ の内側にある $f(z)$ の特異点は $z=-3+2\sqrt{2}$ のみ。
+$f(z) = \cfrac{1}{z^2 + 6z + 1}$ とおけば、複素空間上の円周 $\vert z \vert=1$ の内側にある $f(z)$ の特異点は $z=-3+2\sqrt{2}$ のみ。
 
 したがって、留数定理より
 
