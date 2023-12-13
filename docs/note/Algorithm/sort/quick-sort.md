@@ -9,24 +9,14 @@ title-en: quick sort
 # アルゴリズム
 
 1. 配列の要素数が1以下ならソート終了
-2. 要素数が2以上の場合、配列の要素のうち基準値 $a_\mathrm{base}$ を1つ選ぶ
+2. 要素数が2以上の場合、配列の要素のうち基準値 $a_\mathrm{pivot}$ を1つ選ぶ
     1. たとえば配列の末尾の要素など
 3. 配列の要素を以下の2つに分ける
-    1. 【A】$a_\mathrm{base}$ 以下のもの
-    2. 【B】$a_\mathrm{base}$ より大きいもの
+    1. 【A】$a_\mathrm{pivot}$ 以下のもの
+    2. 【B】$a_\mathrm{pivot}$ より大きいもの
 4. 部分集合 A, B をソートし、【A】【B】の順に並べる
     1. A, B をソートするにあたって、全く同じ手順1〜4を再帰的に適用する
 
-
-# 計算量
-
-## 時間計算量
-
-
-
-## 空間計算量
-
-元の配列以外のメモリ領域を使わないので、$O(N)$
 
 # 具体例
 
@@ -65,35 +55,34 @@ title-en: quick sort
 ```
 
 
+# 計算量
+
+## 時間計算量
+
+### 平均計算量
+
+うまく基準値を選べている場合、元の配列を分割した部分集合はだいたい均等な大きさになる。  
+要素数が1になるまで分割するのにかかる分割回数（深さ）は $\log n$ のオーダーであり、それぞれの深さで $n$ 個の要素を1度ずつ探索するので、平均計算量は $O(n\log n)$
+
+### 最悪計算量
+
+配列の末尾や先頭の要素を基準値 $a_\mathrm{pivot}$ とするアルゴリズムでは、配列が最初から昇順ソート or 降順ソートされている場合、基準値が配列の最大値 / 最小値になってしまう。  
+こうなると、分割しても全ての要素が一方の部分集合に集中してしまい、計算量が節約できない。  
+このとき、1度分割しても分割後の部分集合の要素数は1しか減らないので、計算量は
+
+$$
+n + (n-1) + (n-2) + \cdots + 1 = \cfrac{n(n+1)}{2} \sim O(n^2)
+$$
+
+
+## 空間計算量
+
+元の配列以外のメモリ領域を使わないので、$O(N)$
+
+
 # 実装
 
 {% gist 12061820cfef20172e8a7549464995de ~2_quick-sort.py %}
-
-```python
-def quick_sort_split(arr, i_from, i_to):
-    pivot = arr[i_to]  # 簡単のため、単純に末尾をピボットに選ぶ
-    i_split = i_from
-    for j in range(i_from, i_to):
-        # ピボットよりも小さい値が見つかったら左端から詰めこんでいく
-        if arr[j] <= pivot:
-            arr[i_split], arr[j] = arr[j], arr[i_split]
-            i_split += 1
-    # 末尾のピボットデータを切れ目に移動
-    arr[i_split], arr[i_to] = arr[i_to], arr[i_split]
-    return i_split
-
-def quick_sort(array, i_from=None, i_to=None):
-    if i_from is None or i_to is None:
-        a = array.copy()
-        i_from, i_to = 0, len(array)-1
-    else:
-        a = array
-    if i_from < i_to:
-        i_split = quick_sort_split(a, i_from, i_to)
-        quick_sort(a, i_from, i_split-1)  # ピボット以下をソート
-        quick_sort(a, i_split+1, i_to)    # ピボット以上をソート
-    return a
-```
 
 テスト：
 
@@ -114,26 +103,47 @@ OK: [7, 6, 5, 4, 3, 2, 1] --> [1, 2, 3, 4, 5, 6, 7]
 All 5040 tests passed.
 ```
 
-計算量の実験：
+平均時間計算量 $O(n\log n)$ の確認：
 
-{% gist 12061820cfef20172e8a7549464995de ~measure-processing-speed.py %}
+{% gist 12061820cfef20172e8a7549464995de ~experiment-computing-time.py %}
+
+{% gist 12061820cfef20172e8a7549464995de ~draw-computing-order.py %}
 
 ```python
-Ns = np.arange(1, 10+1) * 10000
-time_ave, time_std = measure_processing_speed(quick_sort, Ns, T=3)
-
-coe = np.polyfit(Ns, time_ave, 1)
-n = np.arange(Ns[0], Ns[-1]+1)
-fit_curve = coe[0]*n**2+coe[1]*n+coe[2]
-plt.title('Quick Sort')
-plt.xlabel('Array Length $n$')
-plt.ylabel('Processing Time $y$ [s]')
-plt.plot(n, fit_curve, label='Fit: $y = an^2+bn+c$')
-plt.errorbar(Ns, time_ave, yerr=time_std,
-             capsize=3, fmt='o', markersize=3,
-             ecolor='black', markeredgecolor = "black", color='w')
-plt.grid()
-plt.legend()
-plt.show()
+Ns = np.arange(1, 20+1) * 1000
+ave, std = experiment_computing_time(QuickSort(), Ns)
+draw_computing_order(Ns, ave, std)
 ```
 
+![quick_sort](https://gist.github.com/assets/13412823/99d8158d-556e-415a-a7f3-b09d54b3d3df)
+
+最悪時間計算量 $O(n^2)$ の確認：
+
+{% gist 12061820cfef20172e8a7549464995de ~array-generator.py %}
+
+```python
+import sys
+import time
+
+Ns = np.arange(1, 10+1) * 2000
+T = 10
+# 関数の再帰呼び出し回数の上限を引き上げておく
+sys.setrecursionlimit(Ns.max()*10)  
+
+t_ave = []
+t_std = []
+for n in Ns:
+    ts = []
+    for _ in range(T):
+        a = ArrayGenerator.asc(n)
+        t1 = time.time()
+        QuickSort().sort(a)
+        t2 = time.time()
+        ts.append(t2-t1)
+    t_ave.append(np.mean(ts))
+    t_std.append(np.std(ts))
+
+draw_computing_order(Ns, np.array(t_ave), np.array(t_std))
+```
+
+![quick_sort_asc](https://gist.github.com/assets/13412823/dd75f50f-19aa-4f6e-b75c-549a10710898)

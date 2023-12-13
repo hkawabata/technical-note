@@ -23,6 +23,53 @@ title-en: bubble sort
 > → 2の操作が終わった時点で、$a(1),a(2),\cdots,a(i_\mathrm{max}),a(i_\mathrm{max}+1)$ の中で $a(i_\mathrm{max}+1)$ が最大であることが保証できる。  
 > → 必ず $a(i_\mathrm{max}) \lt a(i_\mathrm{max}+1)$ なので、次のループでは $a(i_\mathrm{max})$ と $a(i_\mathrm{max}+1)$ を比べる必要がない。
 
+
+# 具体例
+
+各計算ステップにおいて、
+
+- 注目している部分を `(4 5)`
+- 順序が確定したものを `<5>`
+
+のように表す。
+
+```
+(4 3) 5 1 2
+左の方が大きいので入れ替え
+
+3 (4 5) 1 2
+左の方が小さいのでそのまま
+
+3 4 (5 1) 2
+左の方が大きいので入れ替え
+
+3 4 1 (5 2)
+左の方が大きいので入れ替え --> 5の位置が確定
+
+(3 4) 1 2 <5>
+左の方が小さいのでそのまま
+
+3 (4 1) 2 <5>
+左の方が大きいので入れ替え
+
+3 1 (4 2) <5>
+左の方が大きいので入れ替え --> 4の位置が確定
+
+(3 1) 2 <4> <5>
+左の方が大きいので入れ替え
+
+1 (3 2) <4> <5>
+左の方が大きいので入れ替え --> 3の位置が確定
+
+(1 2) <3> <4> <5>
+左の方が小さいのでそのまま --> 1,2の位置が確定
+
+<1> <2> <3> <4> <5>
+ソート完了
+```
+
+
+
 # 計算量
 
 ## 時間計算量
@@ -54,46 +101,6 @@ $$
 元の配列の中身を入れ替えるだけなので、元の配列分のメモリしか消費しない。
 したがって、空間計算量は $O(N)$
 
-# 具体例
-
-順序が確定したものを `<5>` のように表す。
-
-```
-(4 3) 5 1 2
-左の方が大きいので入れ替え
-
-3 (4 5) 1 2
-左の方が小さいのでそのまま
-
-3 4 (5 1) 2
-左の方が大きいので入れ替え
-
-3 4 1 (5 2)
-左の方が大きいので入れ替え
-
-(3 4) 1 2 <5>
-左の方が小さいのでそのまま
-
-3 (4 1) 2 <5>
-左の方が大きいので入れ替え
-
-3 1 (4 2) <5>
-左の方が大きいので入れ替え
-
-(3 1) 2 <4> <5>
-左の方が大きいので入れ替え
-
-1 (3 2) <4> <5>
-左の方が大きいので入れ替え
-
-(1 2) <3> <4> <5>
-左の方が小さいのでそのまま
-
-<1> <2> <3> <4> <5>
-ソート完了
-```
-
-
 # 実装
 
 {% gist 12061820cfef20172e8a7549464995de ~1_bubble-sort.py %}
@@ -103,7 +110,7 @@ $$
 {% gist 12061820cfef20172e8a7549464995de ~test-sort-algorithm.py %}
 
 ```python
->>> test_sort_algorithm(bubble_sort)
+>>> test_sort_algorithm(BubbleSort())
 OK: [1, 6, 2, 7, 5, 4, 3] --> [1, 2, 3, 4, 5, 6, 7]
 OK: [2, 4, 3, 7, 6, 5, 1] --> [1, 2, 3, 4, 5, 6, 7]
 OK: [3, 1, 5, 7, 6, 4, 2] --> [1, 2, 3, 4, 5, 6, 7]
@@ -117,27 +124,16 @@ OK: [7, 6, 5, 4, 3, 2, 1] --> [1, 2, 3, 4, 5, 6, 7]
 All 5040 tests passed.
 ```
 
-計算量の実験：
+時間計算量 $O(n^2)$ の確認：
 
-{% gist 12061820cfef20172e8a7549464995de ~measure-processing-speed.py %}
+{% gist 12061820cfef20172e8a7549464995de ~experiment-computing-time.py %}
+
+{% gist 12061820cfef20172e8a7549464995de ~draw-computing-order.py %}
 
 ```python
-Ns = np.arange(1, 10+1) * 1000
-time_ave, time_std = measure_processing_speed(bubble_sort, Ns)
-
-coe = np.polyfit(Ns, time_ave, 2)
-n = np.arange(Ns[0], Ns[-1]+1)
-fit_curve = coe[0]*n**2+coe[1]*n+coe[2]
-plt.title('Bubble Sort')
-plt.xlabel('Array Length $n$')
-plt.ylabel('Processing Time $y$ [s]')
-plt.plot(n, fit_curve, label='Fit: $y = an^2+bn+c$')
-plt.errorbar(Ns, time_ave, yerr=time_std,
-             capsize=3, fmt='o', markersize=3,
-             ecolor='black', markeredgecolor = "black", color='w')
-plt.grid()
-plt.legend()
-plt.show()
+Ns = np.arange(1, 20+1) * 1000
+ave, std = experiment_computing_time(BubbleSort(), Ns)
+draw_computing_order(Ns, ave, std)
 ```
 
-![bubble-sort](https://user-images.githubusercontent.com/13412823/275299643-a337b280-6752-4326-b9ea-8ec15c912f9e.png)
+![bubble_sort](https://gist.github.com/assets/13412823/7f07f2ad-c055-4d4f-af21-6bce4103a656)
