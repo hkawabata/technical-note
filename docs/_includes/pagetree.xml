@@ -185,6 +185,9 @@
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/statsmodels">statsmodels</a>
                   </li>
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/datetime">datetime</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/matplotlib">matplotlib</a>
                   </li>
                   <li>
@@ -343,7 +346,19 @@
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
               <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/sort/selection-sort">選択ソート</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/sort/heap-sort">ヒープソート</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/sort/insertion-sort">挿入ソート</a>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Algorithm/sort/bubble-sort">バブルソート</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/sort/merge-sort">merge sort</a>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Algorithm/sort/quick-sort">クイックソート</a>

@@ -107,8 +107,6 @@ $$
 
 テスト：
 
-{% gist 12061820cfef20172e8a7549464995de ~test-sort-algorithm.py %}
-
 ```python
 >>> test_sort_algorithm(BubbleSort())
 OK: [1, 6, 2, 7, 5, 4, 3] --> [1, 2, 3, 4, 5, 6, 7]
@@ -124,16 +122,17 @@ OK: [7, 6, 5, 4, 3, 2, 1] --> [1, 2, 3, 4, 5, 6, 7]
 All 5040 tests passed.
 ```
 
+[（参考）`test_sort_algorithm`：指定した長さの全ての組み合わせの配列を生成してソート結果をテストする関数](https://gist.github.com/hkawabata/12061820cfef20172e8a7549464995de#file-test-sort-algorithm-py)
+
 時間計算量 $O(n^2)$ の確認：
-
-{% gist 12061820cfef20172e8a7549464995de ~experiment-computing-time.py %}
-
-{% gist 12061820cfef20172e8a7549464995de ~draw-computing-order.py %}
 
 ```python
 Ns = np.arange(1, 20+1) * 1000
 ave, std = experiment_computing_time(BubbleSort(), Ns)
 draw_computing_order(Ns, ave, std)
 ```
+
+- [（参考）`experiment_computing_time`：処理時間を複数回測定して平均と標準偏差を計算する関数](https://gist.github.com/hkawabata/12061820cfef20172e8a7549464995de#file-experiment-computing-time-py)
+- [（参考）`draw_computing_order`：配列長と処理時間の関係を表す回帰関数を最小二乗法で求めて描画する関数](https://gist.github.com/hkawabata/12061820cfef20172e8a7549464995de#file-draw-computing-order-py)
 
 ![bubble_sort](https://gist.github.com/assets/13412823/7f07f2ad-c055-4d4f-af21-6bce4103a656)

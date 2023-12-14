@@ -36,6 +36,7 @@ H[i=7] I[i=8] J[i=9]
     - 値を交換した子ノードのインデックスで $i$ を更新：$i \gets 2i+2$
     - 更新後の $i$ に対して、条件を満たさなくなるまで3の操作を再起的に繰り返す
 4. $i_\mathrm{max}$ の値を1小さくする：$i_\mathrm{max} \gets i_\mathrm{max}-1$
+5. $i_\mathrm{max} >= 0$ なら2に戻る。$i_\mathrm{max} = -1$ になったらヒープ構築完了
 
 ### ソートの実行
 
@@ -270,6 +271,17 @@ H[i=7] I[i=8] J[i=9]
 
 ## 時間計算量
 
+- 最初のヒープ作成の計算量：$O(n \log n)$
+    - $i_\mathrm{max}$ を末尾の $i_\mathrm{max}=n-1$ から先頭の $i_\mathrm{max}=1$ までスキャンする計算オーダーは $O(n)$
+    - それぞれの $i_\mathrm{max}$ に対して部分二分木を探索する計算オーダーは以下の理由により $O(\log n)$
+        - 二分木の深さを $d$ とすると、各深さのノード数は $1, 2, 4, 8, \cdots$ と二倍で増えていくことから、全ノード数 $n \simeq 1 + 2 + 2^2 + \cdots + 2^{d-1} = 2^d-1$
+        - これを $d$ について解けば $d \simeq \log_2 (n+1)$
+        - 1つの $i_\mathrm{max}$ に関する二分木の探索ではいずれか一方の子ノードを選びながら最大で深さ $d$ まで辿るので、計算量は $O(d) \sim O(\log n)$
+- ソートの計算量：$O(n\log n)$
+    - 1ステップごとに配列の末尾が決定するので、ステップ数は $n$
+    - 各ステップごとに最大で二分木の深さ $d$ まで探索するので、ステップごとの計算量は $O(d)\sim O(\log n)$
+
+以上により、最初のヒープ作成とその後のソートの計算量はいずれも $O(n\log n)$ であるから、ヒープソートの時間計算量も $O(n\log n)$
 
 ## 空間計算量
 
@@ -281,8 +293,6 @@ H[i=7] I[i=8] J[i=9]
 {% gist 12061820cfef20172e8a7549464995de ~3_heap-sort.py %}
 
 テスト：
-
-{% gist 12061820cfef20172e8a7549464995de ~test-sort-algorithm.py %}
 
 ```python
 >>> test_sort_algorithm(HeapSort())
@@ -299,17 +309,18 @@ OK: [7, 6, 5, 4, 3, 2, 1] --> [1 2 3 4 5 6 7]
 All 5040 tests passed.
 ```
 
+[（参考）`test_sort_algorithm`：指定した長さの全ての組み合わせの配列を生成してソート結果をテストする関数](https://gist.github.com/hkawabata/12061820cfef20172e8a7549464995de#file-test-sort-algorithm-py)
+
 平均時間計算量 $O(n\log n)$ の確認：
-
-{% gist 12061820cfef20172e8a7549464995de ~experiment-computing-time.py %}
-
-{% gist 12061820cfef20172e8a7549464995de ~draw-computing-order.py %}
 
 ```python
 Ns = np.arange(1, 20+1) * 1000
 ave, std = experiment_computing_time(HeapSort(), Ns)
 draw_computing_order(Ns, ave, std)
 ```
+
+- [（参考）`experiment_computing_time`：処理時間を複数回測定して平均と標準偏差を計算する関数](https://gist.github.com/hkawabata/12061820cfef20172e8a7549464995de#file-experiment-computing-time-py)
+- [（参考）`draw_computing_order`：配列長と処理時間の関係を表す回帰関数を最小二乗法で求めて描画する関数](https://gist.github.com/hkawabata/12061820cfef20172e8a7549464995de#file-draw-computing-order-py)
 
 ![heap_sort](https://gist.github.com/assets/13412823/60dd52f6-5a2a-463e-ac61-81057356f4ba)
 
