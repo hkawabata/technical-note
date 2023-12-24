@@ -94,40 +94,15 @@ U_{n+1}^m
 $$
 
 
+# 実装
+
 {% gist a38013791e705b0b314af9b946bdc35f ~PartialDifferentialEquationSolver.py %}
 
-```python
-class WaveEquationSolver(PartialDifferentialEquationSolver):
-    def __init__(self, c):
-        """
-        波動方程式 d^2 u/dt^2 = c * d^2 u / dx^2
-        c : 波動方程式の右辺の係数
-        """
-        self.c = c
-    
-    def u0(self):
-        """座標 x から u(x,t) の初期値 u(x,0) を計算"""
-        mu = 3.0
-        sigma = 1.0
-        res = np.exp(-(self.x-mu)**2/sigma**2)
-        res[0], res[-1] = 0, 0  # 境界の値はゼロで固定（ディリクレ境界条件）
-        return res
-    
-    def update_U(self, i):
-        """i ステップ目の u(x,t) を計算"""
-        if i == 1:
-            self.U[i] = self.U[i-1]
-        else:
-            alpha = self.c * self.dt**2 / self.dx**2
-            u_in = alpha * (self.U[i-1][:-2] + self.U[i-1][2:])
-            u_out = 2 * alpha * self.U[i-1][1:-1]
-            self.U[i][1:-1] = 2*self.U[i-1][1:-1] - self.U[i-2][1:-1] + u_in - u_out
-            # 両端 U[i][0], U[i][-1] は初期値ゼロのまま更新しない（ディリクレ境界条件）
-
-solver = WaveEquationSolver(c=0.1)
-solver.solve(x_min=0, x_max=10.0, dx=0.1, dt=0.01, n_steps=10000)
-solver.draw_result_animation(plot_interval=100, ani_interval=100)
-solver.draw_result_image(interval=1000)
-```
+{% gist a38013791e705b0b314af9b946bdc35f ~wave-fixed.py %}
 
 ![partial-differential-eq](https://gist.github.com/assets/13412823/fbcdcf63-223b-489f-b7e3-7b93f98ae547)
+
+{% gist a38013791e705b0b314af9b946bdc35f ~wave-free.py %}
+
+![partial-differential-eq](https://gist.github.com/assets/13412823/6bac4e92-b17c-4a88-872d-bb23185a54d6)
+

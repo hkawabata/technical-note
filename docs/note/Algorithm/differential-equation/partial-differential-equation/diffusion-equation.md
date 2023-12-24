@@ -100,8 +100,8 @@ $(2),(3)$ を $(1)$ に代入して整理すると、
 $$
 u(x, t+\Delta t)
 \simeq
+(1-2\alpha)u(x, t) +
 \alpha u(x+\Delta x, t) +
-(1-2\alpha) u(x, t) +
 \alpha u(x-\Delta x, t)
 \qquad \left( \alpha := \cfrac{\kappa \Delta t}{(\Delta x)^2} \right)
 \tag{4}
@@ -112,9 +112,8 @@ $$
 $$
 u(x_m, t_{n+1})
 \simeq
-\alpha u(x_{m+1},t_n) +
 (1-2\alpha) u(x_m,t_n) +
-\alpha u(x_{m-1},t_n)
+\alpha (u(x_{m+1},t_n) + u(x_{m-1},t_n))
 \tag{5}
 $$
 
@@ -123,9 +122,8 @@ $$
 $$
 U_{n+1}^m
 \simeq
-\alpha U_n^{m+1} +
 (1-2\alpha)U_n^m +
-\alpha U_n^{m-1}
+\alpha (U_n^{m+1} + U_n^{m-1})
 \tag{6}
 $$
 
@@ -138,10 +136,10 @@ $$
 
 漸化式 $(5)$ の右辺の解釈は以下の通り。
 
-- 第1項 $\alpha u(x_{m+1},n)$、第3項 $\alpha u(x_{m-1},n)$
-    - 隣接する格子点 $x_{m+1}, x_{m-1}$ から $x_m$ へ流れ込んでくる流入量
-- 第2項 $(1-2\alpha) u(x_m,t_n)$
+- 第1項 $(1-2\alpha) u(x_m,t_n)$
     - 元々格子点 $x_m$ に存在した物理量 $u(x_m, t_n)$ から、両隣の格子点 $x_{m-1},x_{m+1}$ それぞれへ流れ出す流出量 $\alpha u(x_m, t_n)$ を引いたもの
+- 第2項 $\alpha (u(x_{m+1},t_n) + u(x_{m-1},t_n))$
+    - 隣接する格子点 $x_{m+1}, x_{m-1}$ から $x_m$ へ流れ込んでくる流入量
 
 よって、拡散方程式の漸化式の物理的な意味は以下のように解釈できる。
 - 各格子点が今現在持っている物理量 $u$ が、時間と共に周囲へ流れ出す
@@ -219,9 +217,9 @@ $$
 \begin{eqnarray}
     u(x, y, t+\Delta t)
     &\simeq&
-    \alpha (u(x+\Delta x, y, t) + u(x-\Delta x, y, t))
+    (1-2\alpha-2\beta) u(x, y, z, t) +
+    \\ && + \alpha (u(x+\Delta x, y, t) + u(x-\Delta x, y, t))
     \\ && + \beta (u(x, y+\Delta y, t) + u(x, y-\Delta y, t))
-    \\ && + (1-2\alpha-2\beta) u(x, y, z, t)
     \\ \\
     (\alpha, \beta) &:=& \left( \cfrac{\kappa \Delta t}{(\Delta x)^2},\,\cfrac{\kappa \Delta t}{(\Delta y)^2} \right)
 \end{eqnarray}
@@ -231,9 +229,9 @@ $$
 
 $$
 \begin{eqnarray}
-    u(x_m, y_l, t_{n+1}) &=& \alpha (u(x_{m+1}, y_l, t_n) + u(x_{m-1}, y_l, t_n))
+    u(x_m, y_l, t_{n+1}) &=& (1-2\alpha-2\beta) u(x_m, y_l, t_n)
+    \\ && + \alpha (u(x_{m+1}, y_l, t_n) + u(x_{m-1}, y_l, t_n))
     \\ && + \beta (u(x_m, y_{l+1}, t_n) + u(x_m, y_{l-1}, t_n))
-    \\ && + (1-2\alpha-2\beta) u(x_m, y_l, t_n)
 \end{eqnarray}
 $$
 
@@ -252,10 +250,11 @@ $$
 
 $$
 \begin{eqnarray}
-    u(x_m, y_l, z_k, t_{n+1}) &=& \alpha (u(x_{m+1}, y_l, z_k, t_n) + u(x_{m-1}, y_l, z_k, t_n))
+    u(x_m, y_l, z_k, t_{n+1}) &=&
+    (1-2\alpha-2\beta-2\gamma) u(x_m, y_l, t_n)
+    \\ && + \alpha (u(x_{m+1}, y_l, z_k, t_n) + u(x_{m-1}, y_l, z_k, t_n))
     \\ && + \beta (u(x_m, y_{l+1}, z_k,  t_n) + u(x_m, y_{l-1}, z_k, t_n))
     \\ && + \gamma (u(x_m, y_l, z_{k+1}, t_n) + u(x_m, y_l, z_{k-1}, t_n))
-    \\ && + (1-2\alpha-2\beta-2\gamma) u(x_m, y_l, t_n)
     \\ \\
     (\alpha, \beta, \gamma) &:=& \left(
         \cfrac{\kappa \Delta t}{(\Delta x)^2},\,
@@ -295,34 +294,7 @@ $$
 
 {% gist a38013791e705b0b314af9b946bdc35f ~PartialDifferentialEquationSolver.py %}
 
-```python
-class DiffusionEquationSolverWithFlux(PartialDifferentialEquationSolver):
-    def __init__(self, kappa):
-        self.kappa = kappa
-    
-    def u0(self):
-        """座標 x から u(x,t) の初期値 u(x,0) を計算"""
-        mu = 3.0
-        sigma = 1.0
-        res = np.exp(-(self.x-mu)**2/sigma**2)
-        res[0], res[-1] = 0, 0  # 境界の値はゼロで固定（ディリクレ境界条件）
-        return res
-    
-    #def update_U(self, i, alpha):
-    def update_U(self, i):
-        """i ステップ目の u(x,t) を計算"""
-        alpha = self.kappa * self.dt / self.dx**2
-        u_in = alpha * (self.U[i-1][:-2] + self.U[i-1][2:])
-        u_out = 2 * alpha * self.U[i-1][1:-1]
-        self.U[i][1:-1] = self.U[i-1][1:-1] + u_in - u_out
-        # 両端 U[i][0], U[i][-1] は初期値ゼロのまま更新しない（ディリクレ境界条件）
-
-
-solver = DiffusionEquationSolverWithFlux(kappa=0.1)
-solver.solve(x_min=0, x_max=10.0, dx=0.1, dt=0.01, n_steps=5000)
-solver.draw_result_animation(plot_interval=100, ani_interval=100)
-solver.draw_result_image(interval=500)
-```
+{% gist a38013791e705b0b314af9b946bdc35f ~diffusion-flux.py %}
 
 ![partial-differential-eq](https://gist.github.com/assets/13412823/a544c22c-1b9c-492b-b238-851703747501)
 
@@ -354,36 +326,7 @@ $$
 \cfrac{\partial u}{\partial x}(x_\mathrm{min}, t) = 0,\quad \cfrac{\partial u}{\partial x}(x_\mathrm{max}, t) = 0
 $$
 
-```python
-class DiffusionEquationSolverWithNoFlux(PartialDifferentialEquationSolver):
-    """熱伝導における断熱壁など、境界の外側とのやりとりがない場合"""
-    def __init__(self, kappa):
-        self.kappa = kappa
-    
-    def u0(self):
-        """座標 x から u(x,t) の初期値 u(x,0) を計算"""
-        mu = 3.0
-        sigma = 1.0
-        res = np.exp(-(self.x-mu)**2/sigma**2)
-        # 両端の境界セルは1つ内側の値と同じにして流量ゼロにする（ノイマン境界条件）
-        res[0], res[-1] = res[1], res[-2]
-        return res
-    
-    def update_U(self, i):
-        """i ステップ目の u(x,t) を計算"""
-        alpha = self.kappa * self.dt / self.dx**2
-        u_in = alpha * (self.U[i-1][:-2] + self.U[i-1][2:])
-        u_out = 2 * alpha * self.U[i-1][1:-1]
-        self.U[i][1:-1] = self.U[i-1][1:-1] + u_in - u_out
-        # 両端の境界セルは1つ内側の値と同じにして流量ゼロにする（ノイマン境界条件）
-        self.U[i][0] = self.U[i][1]
-        self.U[i][-1] = self.U[i][-2]
-
-solver = DiffusionEquationSolverWithNoFlux(kappa=0.1)
-solver.solve(x_min=0, x_max=10.0, dx=0.1, dt=0.01, n_steps=5000)
-solver.draw_result_animation(plot_interval=100, ani_interval=100)
-solver.draw_result_image(interval=500)
-```
+{% gist a38013791e705b0b314af9b946bdc35f ~diffusion-noflux.py %}
 
 ![partial-differential-eq](https://gist.github.com/assets/13412823/9896e3f2-7f45-457a-9bb6-5515566b24bf)
 
