@@ -376,3 +376,10 @@ y = x ** 2
 plt.plot(x, y)
 plt.show()
 ```
+
+### xlabel, ylabel が見切れるのを防ぐ
+
+```python
+plt.rcParams['figure.subplot.left'] = 0.15    # default: 0.125
+plt.rcParams['figure.subplot.bottom'] = 0.13  # default: 0.11
+```

@@ -337,6 +337,9 @@
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
               <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/equation/bisection-method">二分法</a>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Algorithm/equation/newton-method">ニュートン法</a>
               </li>
             </ul>
@@ -391,6 +394,27 @@
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/Algorithm/fft">高速フーリエ変換（FFT）</a>
+          </li>
+          <li>
+            <span>differential-equation</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <span>partial-differential-equation</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Algorithm/differential-equation/partial-differential-equation/wave-equation">波動方程式</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Algorithm/differential-equation/partial-differential-equation/diffusion-equation">拡散方程式</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/differential-equation/euler-method">オイラー法</a>
+              </li>
+            </ul>
           </li>
           <li>
             <span>string</span>
@@ -636,6 +660,24 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/formula">微分積分の公式</a>
+              </li>
+              <li>
+                <span>differential-equation</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <span>boundary-condition</span>
+                    <span class="pagetree-accordion">▼</span>
+                    <ul class="pagetree-hidden">
+                      <li>
+                        <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/differential-equation/boundary-condition/neumann-boundary-condition">ノイマン境界条件</a>
+                      </li>
+                      <li>
+                        <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/differential-equation/boundary-condition/dirichlet-boundary-condition">ディリクレ境界条件</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>

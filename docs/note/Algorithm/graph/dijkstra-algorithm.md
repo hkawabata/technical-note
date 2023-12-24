@@ -5,7 +5,7 @@ title: ダイクストラ法
 
 # 問題定義
 
-グラフ構造において、各エッジが重みをもつとき、ある頂点から別の頂点への最短経路を求めたい。
+エッジが重みを持つグラフ構造において、ある頂点から別の頂点への最短経路を求めたい。
 
 # 解法
 
@@ -81,11 +81,11 @@ n_last_fix = 'A'  # updated
 ### 【1】最後に確定したノードの隣接ノードの情報を更新
 
 最短経路が未確定のノードのうち、`n_last_fix` の隣接ノード `n` それぞれについて、以下のルールで `shortest_weight`, `shortest_path` を更新する
-- `d_old`：現時点でわかっているそのノードまでの最短距離 `shortest_weight[n]`
-- `d_new`：以下の2つの和
+- $d_\mathrm{old}$：現時点でわかっているそのノードまでの最短距離 `shortest_weight[n]`
+- $d_\mathrm{new}$：以下の2つの和
     - 確定済みの `n_last_fix` までの最短距離`shortest_weight[n_last_fix]`
     - `n_last_fix` から `n` までの距離
-- `d_new < d_old` なら最短距離・最短経路を更新：
+- $d_\mathrm{old} \lt d_\mathrm{old}$ なら最短距離・最短経路を更新：
     - `shortest_weight[n] = d_new` 
     - `shortest_path[n] = shortest_path[n_last_fix] + n` 
 
