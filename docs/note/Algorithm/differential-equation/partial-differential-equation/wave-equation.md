@@ -4,7 +4,7 @@ title-en: wave equation
 ---
 # 問題設定
 
-時刻 $t$、空間座標 $x$ を変数に持つ関数 $u(x,t)$ の偏微分方程式
+時刻 $t$、空間座標 $x$ を変数に持つ関数 $u(x,t)$ の波動方程式
 
 $$
 \cfrac{\partial^2 u}{\partial t^2} = c \cfrac{\partial^2 u}{\partial x^2}
@@ -20,6 +20,11 @@ $$
 ## 1次元空間の波動方程式
 
 ### 漸化式
+
+- 座標空間に微小な間隔 $\Delta x$ で格子点 $x_0, \cdots, x_M$ を取る
+    - $x_{m+1} = x_m + \Delta x$
+- 時間ステップを微小な間隔 $\Delta t$ 単位で進める
+    - $t_{n+1} = t_n + \Delta t$
 
 #### 漸化式の導出
 

@@ -128,6 +128,29 @@ plt.show()
 ![](https://user-images.githubusercontent.com/13412823/100532803-52009e00-3240-11eb-8f7f-1bff62a85a6e.png)
 
 
+### ヒートマップ
+
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+
+x = np.arange(-8, 8, 0.1)
+y = np.arange(-5, 5, 0.1)
+xx, yy = np.meshgrid(x, y)
+z = np.exp(-((xx-1)**2+(yy-2)**2)/8.0)
+
+plt.imshow(z, aspect=1.0, cmap='viridis')
+plt.colorbar()  # カラーバーを横に付ける
+plt.show()
+```
+
+- `aspect`
+    - `aspect=1.0` で縦横比等倍
+    - `aspect='auto'` で自動調整
+
+![imshow](https://gist.github.com/assets/13412823/f2b7a18b-fe90-40d6-b654-9c9cba989503)
+
+
 ### 等高線
 
 ```python

@@ -4,7 +4,7 @@ title-en: diffusion equation
 ---
 # 問題設定
 
-時刻 $t$、空間座標 $x$ を変数に持つ関数 $u(x,t)$ の偏微分方程式
+時刻 $t$、空間座標 $x$ を変数に持つ関数 $u(x,t)$ の拡散方程式
 
 $$
 \cfrac{\partial u}{\partial t} = \kappa \cfrac{\partial^2 u}{\partial x^2}
