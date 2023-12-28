@@ -140,6 +140,7 @@ $$
     - 元々格子点 $x_m$ に存在した物理量 $u(x_m, t_n)$ から、両隣の格子点 $x_{m-1},x_{m+1}$ それぞれへ流れ出す流出量 $\alpha u(x_m, t_n)$ を引いたもの
 - 第2項 $\alpha (u(x_{m+1},t_n) + u(x_{m-1},t_n))$
     - 隣接する格子点 $x_{m+1}, x_{m-1}$ から $x_m$ へ流れ込んでくる流入量
+- 隣接格子点へ流れる量は、元々その格子点に存在した物理量 $u(x_m, t_n)$ に比例
 
 よって、拡散方程式の漸化式の物理的な意味は以下のように解釈できる。
 - 各格子点が今現在持っている物理量 $u$ が、時間と共に周囲へ流れ出す
@@ -160,7 +161,8 @@ $$
 境界における $u(x,t)$ の値が一定である場合に適用する。
 
 $$
-u(x_0) = \alpha = \mathrm{const.}, \quad u(x_M) = \beta = \mathrm{const.}
+u(x_0) = a = \mathrm{const.}, \quad u(x_M) = b = \mathrm{const.}
+\tag{7}
 $$
 
 例：
@@ -175,8 +177,9 @@ $$
 境界における勾配 $\cfrac{\partial u}{\partial x}$ の値が一定である場合に適用する。
 
 $$
-\cfrac{\partial u}{\partial x} (x_0, t) = \alpha = \mathrm{const.}, \quad
-\cfrac{\partial u}{\partial x} (x_M, t) = \beta = \mathrm{const.}
+\cfrac{\partial u}{\partial x} (x_0, t) = a = \mathrm{const.}, \quad
+\cfrac{\partial u}{\partial x} (x_M, t) = b = \mathrm{const.}
+\tag{8}
 $$
 
 例：
@@ -184,6 +187,111 @@ $$
     - $\cfrac{\partial u}{\partial x} (x_0, t) = \cfrac{\partial u}{\partial x} (x_M, t) = 0$
 
 （詳細は[ノイマン境界条件](../../../Math/calculus/differential-equation/boundary-condition/neumann-boundary-condition.md)を参照）
+
+
+### 安定性条件の確認
+
+漸化式 $(5)(6)$ による繰り返し計算が発散せず安定するための条件を調べる。
+
+座標 $x$ に対して波数 $k$ を導入し、$u(x, t)$ にフーリエ変換を適用すると、
+
+$$
+\begin{eqnarray}
+    u(x,t) &=& \int_{-\infty}^\infty A(k,t) e^{ikx} dk
+    \tag{9}
+    \\
+    A(k,t) &=& \cfrac{1}{2\pi} \int_{-\infty}^\infty u(x,t) e^{-ikx} dx
+\end{eqnarray}
+$$
+
+計算が安定するには、全ての波数 $k$ に関して、時間 $t$ とともに振幅 $A(k,t)$ が発散しなければ良い。すなわち、任意の $k$ に対して以下が成り立つ必要がある。
+
+$$
+\left\vert \cfrac{A(k,t+\Delta t)}{A(k,t)} \right\vert \le 1
+\qquad \Longleftrightarrow \qquad
+-1 \le \cfrac{A(k,t+\Delta t)}{A(k,t)} \le 1
+\tag{10}
+$$
+
+$(9)$ を $(2),(3)$ 式に代入すると、
+
+$$
+\begin{eqnarray}
+    \cfrac{\partial^2 u}{\partial t}
+    &\simeq&
+    \cfrac{u(x, t+\Delta t) - u(x, t)}{\Delta t}
+    \\ &=&
+    \cfrac{1}{\Delta t}
+    \int_{-\infty}^\infty (A(k,t+\Delta t) - A(k,t)) e^{ikx} dk
+    \\
+    \\
+    \cfrac{\partial^2 u}{\partial x^2}
+    &\simeq&
+    \cfrac{u(x+\Delta x, t) - 2u(x,t) + u(x-\Delta x, t)}{(\Delta x)^2}
+    \\ &=&
+    \cfrac{1}{(\Delta x)^2}
+    \int_{-\infty}^\infty A(k,t)\left(
+        e^{ik(x+\Delta x)} - 2 e^{ikx} + e^{ik(x-\Delta x)}
+    \right) dk
+    \\ &=&
+    \cfrac{1}{(\Delta x)^2}
+    \int_{-\infty}^\infty A(k,t) e^{ikx} \left(
+        e^{ik\Delta x} - 2 + e^{-ik\Delta x}
+    \right) dk
+    \\ &=&
+    \cfrac{2}{(\Delta x)^2}
+    \int_{-\infty}^\infty A(k,t) e^{ikx} \left(
+        \cos k\Delta x - 1
+    \right) dk
+    \\ &=&
+    \cfrac{-4}{(\Delta x)^2}
+    \int_{-\infty}^\infty A(k,t) e^{ikx} \sin^2 \cfrac{k\Delta x}{2} dk
+\end{eqnarray}
+$$
+
+これらを元の拡散方程式 $(1)$ に代入して変形すると、
+
+$$
+\int_{-\infty}^\infty A(k, t+\Delta t) e^{ikx} dk
+\simeq
+\int_{-\infty}^\infty A(k,t) e^{ikx} \left( 1 - \cfrac{4 \kappa \Delta t}{(\Delta x)^2} \sin^2 \cfrac{k\Delta x}{2} \right) dk
+$$
+
+任意の波数 $k$ でこの式が成り立つためには、
+
+$$
+A(k, t+\Delta t) e^{ikx}
+\simeq
+A(k,t) e^{ikx} \left( 1 - \cfrac{4 \kappa \Delta t}{(\Delta x)^2} \sin^2 \cfrac{k\Delta x}{2} \right)
+$$
+
+よって
+
+$$
+\cfrac{A(k,t+\Delta t)}{A(k,t)}
+\simeq
+1 - \cfrac{4 \kappa \Delta t}{(\Delta x)^2} \sin^2 \cfrac{k\Delta x}{2}
+$$
+
+これを $(10)$ に代入して式変形すると、
+
+$$
+\begin{eqnarray}
+    & -1 \le 1 - \cfrac{4 \kappa \Delta t}{(\Delta x)^2} \sin^2 \cfrac{k\Delta x}{2} \le 1
+    \\ \Longleftrightarrow &
+    0 \le \cfrac{\kappa \Delta t}{(\Delta x)^2} \sin^2 \cfrac{k\Delta x}{2} \le \cfrac{1}{2}
+\end{eqnarray}
+$$
+
+左の不等号は明らかに成り立つので、右の不等号だけを考えれば良い。  
+任意の $k$ について考えているから、$0 \le \sin^2 (k\Delta x/2) \le 1$ の取りうる値全てついて不等式が成り立つ必要がある。したがって、
+
+$$
+\cfrac{\kappa \Delta t}{(\Delta x)^2} \le \cfrac{1}{2}
+\tag{11}
+$$
+
+これが求める安定性条件となる。
 
 
 ## 2次元以上の空間の拡散方程式
@@ -292,13 +400,65 @@ $$
 u(x_\mathrm{min}, t) = 0,\quad u(_\mathrm{max}, t) = 0
 $$
 
+$\kappa=0.1,\, \Delta x = 0.1,\, \Delta t = 0.01$ として安定条件が満たされるようにする：
+
+$$
+\cfrac{\kappa \Delta t}{(\Delta x)^2} = 0.1 \le \cfrac{1}{2}
+$$
+
 {% gist a38013791e705b0b314af9b946bdc35f ~PartialDifferentialEquationSolver.py %}
 
-{% gist a38013791e705b0b314af9b946bdc35f ~diffusion-flux.py %}
+{% gist a38013791e705b0b314af9b946bdc35f ~DiffusionEquationSolverWithFlux.py %}
+
+```python
+solver = DiffusionEquationSolverWithFlux(kappa=0.1)
+solver.solve(x_min=0, x_max=10.0, dx=0.1, dt=0.01, n_steps=5000)
+solver.draw_result_animation(plot_interval=100, ani_interval=100)
+solver.draw_result_image(interval=500)
+```
 
 ![partial-differential-eq](https://gist.github.com/assets/13412823/a544c22c-1b9c-492b-b238-851703747501)
 
 ![diffusion-equation-flux](https://gist.github.com/assets/13412823/1576cd67-d3e1-4461-8e5d-6f72f76ea5f1)
+
+
+## ディリクレ境界条件の例（安定性条件を破る）
+
+前節と同じ想定で、$\kappa=0.1,\, \Delta x = 0.04,\, \Delta t = 0.01$ として安定条件 $(11)$ を破ってみる：
+
+$$
+\cfrac{\kappa \Delta t}{(\Delta x)^2} = 0.625 \gt \cfrac{1}{2}
+$$
+
+```python
+solver = DiffusionEquationSolverWithFlux(kappa=0.1)
+solver.solve(x_min=0, x_max=10.0, dx=0.04, dt=0.01, n_steps=50)
+solver.draw_result_animation(plot_interval=2, ani_interval=100)
+solver.draw_result_image(interval=10)
+```
+
+![partial-differential-eq](https://gist.github.com/assets/13412823/8e31614e-1ba9-4a86-a5a3-ec571da29161)
+
+![diffusion-eq-notstable](https://gist.github.com/assets/13412823/6ea3c12a-2946-4227-bdc4-5de7dc1083df)
+
+
+> **【NOTE】境界条件ギリギリの挙動の確認**
+> 
+> $\kappa=0.1,\,\Delta t = 0.01$ とした場合、
+> 
+> $$
+\begin{eqnarray}
+    \Delta x = 0.0446 \quad \Longrightarrow \quad
+    \cfrac{\kappa \Delta t}{(\Delta x)^2} = 0.5027 \gt \cfrac{1}{2}
+    \\
+    \Delta x = 0.0448 \quad \Longrightarrow \quad
+    \cfrac{\kappa \Delta t}{(\Delta x)^2} = 0.4982 \lt \cfrac{1}{2}
+\end{eqnarray}
+$$
+> 
+> | $\Delta x = 0.0446$ | $\Delta x = 0.0448$ |
+> | :-- | :-- |
+> | ![diffusion-giri-over](https://gist.github.com/assets/13412823/4827e548-289d-424b-804a-160ac5073996) | ![diffusion-giri-safe](https://gist.github.com/assets/13412823/2845fadf-7a96-4ccf-8e9a-1eaab1132627) |
 
 
 ## ノイマン境界条件の例
@@ -326,7 +486,14 @@ $$
 \cfrac{\partial u}{\partial x}(x_\mathrm{min}, t) = 0,\quad \cfrac{\partial u}{\partial x}(x_\mathrm{max}, t) = 0
 $$
 
-{% gist a38013791e705b0b314af9b946bdc35f ~diffusion-noflux.py %}
+{% gist a38013791e705b0b314af9b946bdc35f ~DiffusionEquationSolverWithNoFlux.py %}
+
+```python
+solver = DiffusionEquationSolverWithNoFlux(kappa=0.1)
+solver.solve(x_min=0, x_max=10.0, dx=0.1, dt=0.01, n_steps=5000)
+solver.draw_result_animation(plot_interval=100, ani_interval=100)
+solver.draw_result_image(interval=500)
+```
 
 ![partial-differential-eq](https://gist.github.com/assets/13412823/9896e3f2-7f45-457a-9bb6-5515566b24bf)
 

@@ -125,7 +125,7 @@ $$
 ![poisson-eq-grid](https://gist.github.com/assets/13412823/43716ec3-41c1-42a5-84d4-bdf12b9944a5)
 
 
-### Appendix: 連立方程式の行列形式
+### 連立方程式の行列形式
 
 未知変数 $U_m^l$ は合わせて $N_x N_y$ 個あるので、連立方程式 $(8)$ を行列形式
 
@@ -144,9 +144,7 @@ $$
 
 $(8)$ に関して、
 
-- 境界条件を課しているので、以下のいずれかが成り立つ時、$U_i^j = \mathrm{const.}$
-    - $i=0,N_x+1$
-    - $j=0,N_y+1$
+- 境界条件を課しているので、$U_0^j, U_i^0, U_{Nx+1}^j, U_i^{Ny+1} = \mathrm{const.}$
 - $U_m^l$ の係数は $-4$
 - 境界条件による定数の場合を除き、$U_{m+1}^l,U_{m-1}^l,U_m^{l+1},U_m^{l-1}$ の係数は $1$
 
@@ -250,14 +248,16 @@ $$
 \end{pmatrix}
 $$
 
-よって、係数行列 $A$ は $N_y$ 次正方行列
+よって、係数行列 $A$ は
+- 体格成分がす全て $0$ で、体格成分の隣接成分が全て $1$ の $N_y$ 次正方行列 $C_{Ny}$
+- $Ny$ 次単位行列 $I_{Ny}$
 
 $$
 C_{Ny} = \begin{pmatrix}
-    -4 & 1      &  & O \\
-    1  & -4     &  \ddots \\
+    0 & 1      &  & O \\
+    1  & 0     &  \ddots \\
        & \ddots & \ddots & 1 \\
-    O  &        & 1 & -4
+    O  &        & 1 & 0
 \end{pmatrix},
 \qquad
 I_{Ny} = \begin{pmatrix}
@@ -272,14 +272,15 @@ $$
 
 $$
 A = \begin{pmatrix}
-    C_{Ny} & I_{Ny} &        & O      \\
+    C_{Ny}-4I_{Ny} & I_{Ny} &        & O      \\
     I_{Ny} & \ddots & \ddots &        \\
            & \ddots & \ddots & I_{Ny} \\
-    O      &        & I_{Ny} & C_{Ny}
+    O      &        & I_{Ny} & C_{Ny}-4I_{Ny}
 \end{pmatrix}
 $$
 
 と表せる。
+
 
 # 実装
 
