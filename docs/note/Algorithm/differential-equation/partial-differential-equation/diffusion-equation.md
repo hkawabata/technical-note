@@ -189,7 +189,7 @@ $$
 （詳細は[ノイマン境界条件](../../../Math/calculus/differential-equation/boundary-condition/neumann-boundary-condition.md)を参照）
 
 
-### 安定性条件の確認
+### 計算の安定性条件の導出
 
 漸化式 $(5)(6)$ による繰り返し計算が発散せず安定するための条件を調べる。
 
