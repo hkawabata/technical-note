@@ -404,16 +404,16 @@
                 <span class="pagetree-accordion">▼</span>
                 <ul class="pagetree-hidden">
                   <li>
-                    <a href="https://hkawabata.github.io/technical-note/note/Algorithm/differential-equation/partial-differential-equation/poisson-equation">ポアソン方程式</a>
+                    <a href="https://hkawabata.github.io/technical-note/note/Algorithm/differential-equation/partial-differential-equation/poisson-equation">ポアソン方程式の数値的解法</a>
                   </li>
                   <li>
-                    <a href="https://hkawabata.github.io/technical-note/note/Algorithm/differential-equation/partial-differential-equation/wave-equation">波動方程式</a>
+                    <a href="https://hkawabata.github.io/technical-note/note/Algorithm/differential-equation/partial-differential-equation/wave-equation">波動方程式の数値的解法</a>
                   </li>
                   <li>
-                    <a href="https://hkawabata.github.io/technical-note/note/Algorithm/differential-equation/partial-differential-equation/diffusion-equation">拡散方程式</a>
+                    <a href="https://hkawabata.github.io/technical-note/note/Algorithm/differential-equation/partial-differential-equation/diffusion-equation">拡散方程式の数値的解法</a>
                   </li>
                   <li>
-                    <a href="https://hkawabata.github.io/technical-note/note/Algorithm/differential-equation/partial-differential-equation/laplace-equation">ラプラス方程式</a>
+                    <a href="https://hkawabata.github.io/technical-note/note/Algorithm/differential-equation/partial-differential-equation/laplace-equation">ラプラス方程式の数値的解法</a>
                   </li>
                 </ul>
               </li>
@@ -680,6 +680,18 @@
                       </li>
                       <li>
                         <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/differential-equation/boundary-condition/dirichlet-boundary-condition">ディリクレ境界条件</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <span>special-equation</span>
+                    <span class="pagetree-accordion">▼</span>
+                    <ul class="pagetree-hidden">
+                      <li>
+                        <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/differential-equation/special-equation/wave-equation">波動方程式</a>
+                      </li>
+                      <li>
+                        <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/differential-equation/special-equation/diffusion-equation">拡散方程式</a>
                       </li>
                     </ul>
                   </li>

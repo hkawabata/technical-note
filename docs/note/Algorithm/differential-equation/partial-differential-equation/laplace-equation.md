@@ -1,6 +1,6 @@
 ---
-title: ラプラス方程式
-title-en: Laplace's equation
+title: ラプラス方程式の数値的解法
+title-en: numerical solution for Laplace's equation
 ---
 # 問題設定
 

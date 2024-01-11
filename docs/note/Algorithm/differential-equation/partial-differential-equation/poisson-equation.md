@@ -1,6 +1,6 @@
 ---
-title: ポアソン方程式
-title-en: Poisson's equation
+title: ポアソン方程式の数値的解法
+title-en: numerical solution for Poisson's equation
 ---
 # 問題設定
 

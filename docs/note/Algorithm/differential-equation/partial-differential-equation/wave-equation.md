@@ -1,6 +1,6 @@
 ---
-title: 波動方程式
-title-en: wave equation
+title: 波動方程式の数値的解法
+title-en: numerical solution for wave equation
 ---
 # 問題設定
 

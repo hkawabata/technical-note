@@ -1,6 +1,6 @@
 ---
-title: 拡散方程式
-title-en: diffusion equation
+title: 拡散方程式の数値的解法
+title-en: numerical solution for diffusion equation
 ---
 # 問題設定
 

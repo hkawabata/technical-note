@@ -7,7 +7,7 @@ title-en: Dirichlet boundary condition
 微分方程式の解を決定するための境界条件の形状の1つ。  
 境界条件上の点の値を直接与えるもの。
 
-微分方程式の解となる関数を $f(x)$、考える区間の境界点を $x=x_0$ として、
+微分方程式の解となる関数を $f(x)$、考える領域の境界点を $x=x_0$ として、
 
 $$
 f(x_0) = \alpha \qquad (\alpha = \mathrm{const.})
