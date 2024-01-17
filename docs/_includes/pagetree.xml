@@ -688,6 +688,9 @@
                     <span class="pagetree-accordion">▼</span>
                     <ul class="pagetree-hidden">
                       <li>
+                        <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/differential-equation/special-equation/poisson-equation">ポアソン方程式</a>
+                      </li>
+                      <li>
                         <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/differential-equation/special-equation/wave-equation">波動方程式</a>
                       </li>
                       <li>

@@ -18,8 +18,8 @@ $$
 # 導出
 
 前提
-- 微小距離 $\Delta x$ ごとに空間を区切り、区切られた微小領域間の物質の受け渡しを考える
-- 微小時間 $\Delta t$ の間に隣の領域に渡される物質の量は、その空間の物質濃度 $u(x,t)$ に比例：比例定数 $c$
+- 微小距離 $\Delta x$ ごとに空間を区切り、区切られた微小領域間の物理量の受け渡しを考える
+- 微小時間 $\Delta t$ の間に隣の領域に渡される物理量は、その空間の物質濃度 $u(x,t)$ に比例：比例定数 $c$
 
 微小時間 $\Delta t$ の間の物質の移動を考えると、
 
@@ -155,30 +155,30 @@ B e^{-\omega t} \left(
 \right)
 $$
 
-$BA_1, BA_2 \to C_1, C_2$ と置き換えれば、
+$BA_1, BA_2 \to S, C$ と置き換えれば、
 
 $$
 u_\omega (x, t)
 =
 e^{-\omega t} \left(
-    C_1 \sin \sqrt{\cfrac{\omega}{\kappa}}x +
-    C_2 \cos \sqrt{\cfrac{\omega}{\kappa}}x
+    S \sin \sqrt{\cfrac{\omega}{\kappa}}x +
+    C \cos \sqrt{\cfrac{\omega}{\kappa}}x
 \right)
 $$
 
-ここで、任意の $\omega \gt 0$ に対して $(1)$ は成り立つ。また実際に計算してみれば明らかなように、異なる $\omega = \omega_1, \omega_2$ に対してそれらの重ね合わせ（和）である $u_{\omega_1}(x,t)+u_{\omega_2}(x,t)$ も $(1)$ を満たす。  
+ここで、任意の $\omega \gt 0$ に対して $(1)$ は成り立つ。また実際に計算してみれば明らかなように、任意の異なる $\omega = \omega_1, \omega_2$ に対してそれらの重ね合わせ（和）である $u_{\omega_1}(x,t)+u_{\omega_2}(x,t)$ も $(1)$ を満たす。  
 したがって、$(1)$ の一般解は
 
 $$
 u(x,t) = \sum_{\omega \gt 0}
 e^{-\omega t} \left(
-    C_{1\omega} \sin \sqrt{\cfrac{\omega}{\kappa}}x +
-    C_{2\omega} \cos \sqrt{\cfrac{\omega}{\kappa}}x
+    S_{\omega} \sin \sqrt{\cfrac{\omega}{\kappa}}x +
+    C_{\omega} \cos \sqrt{\cfrac{\omega}{\kappa}}x
 \right)
 \tag{2}
 $$
 
-定数 $C_{1\omega},C_{2\omega}$ は境界条件や初期条件を課すことで定まる。
+積分定数 $S_\omega,C_\omega$ は境界条件や初期条件を課すことで定まる。
 
 # 境界条件と特殊解
 
@@ -221,19 +221,19 @@ $(2)$ 式に境界条件・初期条件を適用して、
 $$
 \begin{cases}
     \sum_{\omega}
-    e^{-\omega t} C_{2\omega} = 0
+    e^{-\omega t} C_\omega = 0
     \\ \\
     \sum_{\omega}
     e^{-\omega t} \left(
-        C_{1\omega} \sin \sqrt{\cfrac{\omega}{\kappa}}L +
-        C_{2\omega} \cos \sqrt{\cfrac{\omega}{\kappa}}L
+        S_\omega \sin \sqrt{\cfrac{\omega}{\kappa}}L +
+        C_\omega \cos \sqrt{\cfrac{\omega}{\kappa}}L
     \right)
     = 0
     \\ \\
     \sum_{\omega}
     \left(
-        C_{1\omega} \sin \sqrt{\cfrac{\omega}{\kappa}}x +
-        C_{2\omega} \cos \sqrt{\cfrac{\omega}{\kappa}}x
+        S_\omega \sin \sqrt{\cfrac{\omega}{\kappa}}x +
+        C_\omega \cos \sqrt{\cfrac{\omega}{\kappa}}x
     \right)
     =
     U_0 \sin \cfrac{2\pi x}{L}
@@ -243,17 +243,17 @@ $$
 第1式が任意の時刻 $t$ で成り立つためには、
 
 $$
-C_{2\omega} = 0
+C_\omega = 0
 $$
 
 第2式に代入して、
 
 $$
 \sum_{\omega}
-e^{-\omega t} C_{1\omega} \sin \sqrt{\cfrac{\omega}{\kappa}}L = 0
+e^{-\omega t} S_\omega \sin \sqrt{\cfrac{\omega}{\kappa}}L = 0
 $$
 
-これが任意の時刻 $t$ で成り立ち、かつ、$C_1=C_2=0$ のような無意味な解にならないためには、
+これが任意の時刻 $t$ で成り立ち、かつ、$C_\omega=S_\omega=0$ のような無意味な解にならないためには、
 
 $$
 \begin{eqnarray}
@@ -263,11 +263,11 @@ $$
 \end{eqnarray}
 $$
 
-以上を第3式に代入し、見やすさのため $C_{1\omega}\to C_{1n}$ と書き換えると、
+以上を第3式に代入し、以後 $n$ を用いて議論するために $S_\omega \to S(n)$ と書き換えると、
 
 $$
 \sum_{n=1}^\infty
-C_{1n} \sin \cfrac{n\pi x}{L}
+S(n) \sin \cfrac{n\pi x}{L}
 =
 U_0 \sin \cfrac{2\pi x}{L}
 $$
@@ -276,10 +276,10 @@ $$
 
 $$
 \begin{cases}
-    C_{1n}  = U_0
+    S(n)  = U_0
     \qquad &(\mathrm{if}\quad n=2)
     \\ \\
-    C_{1n}  = 0
+    S(n)  = 0
     \qquad &(\mathrm{if}\quad n \ne 2)
 \end{cases}
 $$
@@ -287,7 +287,7 @@ $$
 以上により、
 
 $$
-u(x,t) = U_0 \exp{\left( -\kappa \left( \cfrac{2\pi}{L} \right)^2 t \right)} \sin \cfrac{2\pi x}{L}
+u(x,t) = U_0 \exp{\left\{ -\kappa \left( \cfrac{2\pi}{L} \right)^2 t \right\}} \sin \cfrac{2\pi x}{L}
 $$
 
 ![diffusion-eq-const](https://gist.github.com/assets/13412823/b8d05985-a043-4f2d-bd6f-319f9019945d)
@@ -310,20 +310,20 @@ $(2)$ 式に境界条件・初期条件を適用して、
 $$
 \begin{cases}
     \sum_{\omega}
-    e^{-\omega t} \sqrt{\cfrac{\omega}{\kappa}} C_{1\omega}
+    e^{-\omega t} \sqrt{\cfrac{\omega}{\kappa}} S_\omega
     = 0
     \\ \\
     \sum_{\omega}
     e^{-\omega t} \sqrt{\cfrac{\omega}{\kappa}} \left(
-        C_{1\omega} \cos \sqrt{\cfrac{\omega}{\kappa}} L -
-    C_{2\omega} \sin \sqrt{\cfrac{\omega}{\kappa}} L
+        S_\omega \cos \sqrt{\cfrac{\omega}{\kappa}} L -
+    C_\omega \sin \sqrt{\cfrac{\omega}{\kappa}} L
     \right)
     = 0
     \\ \\
     \sum_{\omega}
     \left(
-        C_{1\omega} \sin \sqrt{\cfrac{\omega}{\kappa}}x +
-        C_{2\omega} \cos \sqrt{\cfrac{\omega}{\kappa}}x
+        S_\omega \sin \sqrt{\cfrac{\omega}{\kappa}}x +
+        C_\omega \cos \sqrt{\cfrac{\omega}{\kappa}}x
     \right)
     =
     U_0 \cos \cfrac{2\pi x}{L}
@@ -333,17 +333,17 @@ $$
 第1式が任意の時刻 $t$ で成り立つためには、
 
 $$
-C_{1\omega} = 0
+S_\omega = 0
 $$
 
 第2式に代入して、
 
 $$
 - \sum_{\omega}
-e^{-\omega t} \sqrt{\cfrac{\omega}{\kappa}} C_{2\omega} \sin \sqrt{\cfrac{\omega}{\kappa}}L = 0
+e^{-\omega t} \sqrt{\cfrac{\omega}{\kappa}} C_\omega \sin \sqrt{\cfrac{\omega}{\kappa}}L = 0
 $$
 
-これが任意の時刻 $t$ で成り立ち、かつ、$C_1=C_2=0$ のような無意味な解にならないためには、
+これが任意の時刻 $t$ で成り立ち、かつ、$S_\omega=C_\omega=0$ のような無意味な解にならないためには、
 
 $$
 \begin{eqnarray}
@@ -353,11 +353,11 @@ $$
 \end{eqnarray}
 $$
 
-以上を第3式に代入し、見やすさのため $C_{1\omega}\to C_{1n}$ と書き換えると、
+以上を第3式に代入し、以後 $n$ を用いて議論するために $C_\omega \to C(n)$ と書き換えると、
 
 $$
 \sum_{n=1}^\infty
-C_{2n} \cos \cfrac{n\pi x}{L}
+C(n) \cos \cfrac{n\pi x}{L}
 =
 U_0 \cos \cfrac{2\pi x}{L}
 $$
@@ -366,10 +366,10 @@ $$
 
 $$
 \begin{cases}
-    C_{2n}  = U_0
+    C(n)  = U_0
     \qquad &(\mathrm{if}\quad n=2)
     \\ \\
-    C_{2n}  = 0
+    C(n) = 0
     \qquad &(\mathrm{if}\quad n \ne 2)
 \end{cases}
 $$
@@ -377,8 +377,9 @@ $$
 以上により、
 
 $$
-u(x,t) = U_0 \exp{\left( -\kappa \left( \cfrac{2\pi}{L} \right)^2 t \right)} \cos \cfrac{2\pi x}{L}
+u(x,t) = U_0 \exp{\left\{ -\kappa \left( \cfrac{2\pi}{L} \right)^2 t \right\}} \cos \cfrac{2\pi x}{L}
 $$
 
 ![diffusion-eq-dannetsu](https://gist.github.com/assets/13412823/611c2afb-d75c-4902-bc09-991012c8e832)
 
+（cf. [描画に使った python コード](https://gist.github.com/hkawabata/4cb052a95ff294e143b09aee4b55bd95#file-u-x-t-animation-py)）
