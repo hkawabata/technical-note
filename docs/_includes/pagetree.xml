@@ -659,6 +659,15 @@
                 </ul>
               </li>
               <li>
+                <span>vector-calculus</span>
+                <span class="pagetree-accordion">▼</span>
+                <ul class="pagetree-hidden">
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/vector-calculus/nabla">ナブラ演算子</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/taylor-expantion">テイラー展開</a>
               </li>
               <li>
