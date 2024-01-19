@@ -91,7 +91,7 @@ $$
 
 > **【発散の数学的意味】** 
 > 
-> ベクトル場 $\boldsymbol{v}(x,y,z)$ の発散 $\nabla \cdot \boldsymbol{v}$ は、各点における流入・流出の評価を符号付きスカラーで与える。
+> ベクトル場 $\boldsymbol{v}(x,y,z)$ の発散 $\nabla \cdot \boldsymbol{v}$ は、各点における流入・流出（湧き出し・吸い込み）の評価を符号付きスカラーで与える。
 
 **【解説】**
 
@@ -106,7 +106,7 @@ $$
 
 下図の通り、点 $\boldsymbol{x}$ から見て $xy$ 方向の上下左右にだけ離れた4点を取る。  
 
-![divergence](https://gist.github.com/assets/13412823/b11fe975-0304-48dc-946a-6c0c7724fe18)
+![divergence](https://gist.github.com/assets/13412823/62160cf8-3438-4210-a823-d5abe7a52262)
 
 ```python
 import numpy as np
@@ -114,7 +114,7 @@ from matplotlib import pyplot as plt
 
 plt.xlabel(r'$x$', fontsize=12)
 plt.ylabel(r'$y$', fontsize=12)
-plt.scatter(0, 0, label=r'$(x,y,z)$', color='black')
+plt.scatter(0, 0, label=r'$(x,y)$', color='black')
 c = 'red'
 plt.scatter(0.5, 0, color=c)
 plt.arrow(0.5-0.3,0,0.6,0, label=r'$v_x(x+\Delta,y)$', width=0.01, color=c, ec=c)
@@ -182,7 +182,7 @@ $$
 \end{eqnarray}
 $$
 
-したがって、
+よって、
 
 $$
 d
@@ -193,7 +193,7 @@ d
 \nabla \cdot \boldsymbol{v}
 $$
 
-なので、発散 $\nabla \cdot \boldsymbol{v}$ はベクトル場 $\boldsymbol{v}$ の各点における流入・流出の評価を符号付きスカラーで与える。
+したがって、発散 $\nabla \cdot \boldsymbol{v}$ はベクトル場 $\boldsymbol{v}$ の各点における流入・流出（湧き出し・吸い込み）の評価を符号付きスカラーで与える。
 
 
 ## 回転
@@ -215,6 +215,7 @@ $$
 \right)
 $$
 
+
 ### 数学的な意味
 
 > **【回転の数学的意味】** 
@@ -223,9 +224,11 @@ $$
 
 **【解説】**
 
-点 $\boldsymbol{x} = (x,y,z)$ の周りのベクトル場について、$\boldsymbol{x}$ を通って $z$ 軸に平行な回転軸周りの回転度合い $r_z$ を考える。
+点 $\boldsymbol{x} = (x,y,z)$ の周りのベクトル場について、$\boldsymbol{x}$ を通って $z$ 軸に平行な回転軸周りのトルク $t_z$ を考える。
 
-下図の通り、点 $\boldsymbol{x}$ から見て $xy$ 方向の上下左右に微小距離 $\Delta$ だけ離れた4点について、回転方向（左回りを正とする）のベクトルのトルクの和を取れば、回転の度合いを表現できる。
+下図の通り、点 $\boldsymbol{x}$ から見て $xy$ 方向の上下左右に微小距離 $\Delta$ だけ離れた4点について、回転方向（左回りを正とする）のベクトルのトルクの和を取る。
+
+※ 点 $\boldsymbol{x}$ まわりの点 $\boldsymbol{x'}$ のベクトル場 $\boldsymbol{v}(\boldsymbol{x'})$ の **トルク** は、「点 $\boldsymbol{x}$ から見た $\boldsymbol{x'}$ の位置ベクトル $\boldsymbol{x'}-\boldsymbol{x}$」と「ベクトル場 $\boldsymbol{v}(\boldsymbol{x'})$」の外積 $(\boldsymbol{x'}-\boldsymbol{x}) \times \boldsymbol{v}(\boldsymbol{x'})$ で定義される。
 
 ![rotation](https://gist.github.com/assets/13412823/b9537088-eebf-4db7-a0f4-91db3747d9e1)
 
@@ -260,10 +263,10 @@ plt.show()
 
 $$
 t_z =
-v_x(x, y-\Delta, z) \cdot \Delta -
-v_x(x, y+\Delta, z) \cdot \Delta +
-v_y(x+\Delta, y, z) \cdot \Delta -
-v_y(x-\Delta, y, z) \cdot \Delta
+\Delta \cdot v_x(x, y-\Delta, z) -
+\Delta \cdot v_x(x, y+\Delta, z) +
+\Delta \cdot v_y(x+\Delta, y, z) -
+\Delta \cdot v_y(x-\Delta, y, z)
 $$
 
 $\Delta$ は微小なので、テイラー展開により
@@ -337,4 +340,4 @@ $$
 \right) = \nabla \times \boldsymbol{v}
 $$
 
-なので、回転 $\nabla \times \boldsymbol{v}$ はベクトル場 $\boldsymbol{v}$ の各点 $\boldsymbol{x}$ 周りの回転度合いを表す。
+したがって、回転 $\nabla \times \boldsymbol{v}$ はベクトル場 $\boldsymbol{v}$ の各点 $\boldsymbol{x}$ 周りの回転度合いを表す。
