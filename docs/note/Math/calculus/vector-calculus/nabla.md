@@ -15,329 +15,321 @@ $$
 \right)
 $$
 
-# 勾配・発散・回転
 
-## 勾配
+# ベクトル三重積・スカラー三重積
 
-### 定義
 
-スカラー関数 $f(x,y,z)$ の **勾配** $\mathrm{grad}\,f$ は下式で定義される。
+# ラプラシアン
+
+## 定義
+
+**ラプラシアン**：ナブラ演算子同士の内積 $\nabla \cdot \nabla$ で定義される演算子。$\nabla^2$ または $\Delta$ で表す（大文字デルタと同じ記号）。
 
 $$
-\mathrm{grad}\,f := \nabla f = \left(
-    \cfrac{\partial f}{\partial x},
-    \cfrac{\partial f}{\partial y},
+\Delta = \nabla^2 := \nabla \cdot \nabla =
+\cfrac{\partial^2}{\partial x^2} +
+\cfrac{\partial^2}{\partial y^2} +
+\cfrac{\partial^2}{\partial z^2}
+$$
+
+## 極座標形式
+
+極座標 $(r,\theta,\phi)$ を用いてラプラシアンを表すと、
+
+$$
+\Delta f =
+\cfrac{1}{r^2} \cfrac{\partial}{\partial r}
+\left( r^2 \cfrac{\partial f}{\partial r} \right) +
+\cfrac{1}{r^2 \sin\theta} \cfrac{\partial}{\partial \theta}
+\left( \sin\theta \cfrac{\partial f}{\partial \theta} \right) +
+\cfrac{1}{r^2\sin^2\theta} \cfrac{\partial^2 f}{\partial \phi^2}
+$$
+
+### 導出
+
+極座標 $(r,\theta,\phi)$ と直交座標 $(x,y,z)$ の関係は以下の通り。
+
+$$
+\begin{cases}
+    x = r\sin\theta \cos\phi
+    \\
+    y = r \sin\theta \sin\phi
+    \\
+    z = r \cos\theta
+\end{cases}
+$$
+
+$$
+\begin{cases}
+    r = \sqrt{x^2+y^2+z^2}
+    \\
+    \theta = \arctan \cfrac{\sqrt{x^2+y^2}}{z}
+    \\
+    \phi = \arctan \cfrac{y}{x}
+\end{cases}
+$$
+
+ここで、後の計算で使うために必要な偏微分を計算しておく。
+
+$$
+\begin{eqnarray}
+    \cfrac{\partial r}{\partial x}
+    &=& \cfrac{x}{\sqrt{x^2+y^2+z^2}} = \cfrac{x}{r}
+    = \sin\theta\cos\phi
+    \\
+    \cfrac{\partial r}{\partial y}
+    &=& \cfrac{y}{\sqrt{x^2+y^2+z^2}} = \cfrac{y}{r}
+    = \sin\theta\sin\phi
+    \\
+    \cfrac{\partial r}{\partial z}
+    &=& \cfrac{z}{\sqrt{x^2+y^2+z^2}} = \cfrac{z}{r}
+    = \cos\theta
+    \\
+    \cfrac{\partial \theta}{\partial x}
+    &=& 2x \cdot \cfrac{1}{2z\sqrt{x^2+y^2}} \cdot \cfrac{1}{1+(x^2+y^2)/z^2}
+    = \cfrac{xz}{(x^2+y^2+z^2)\sqrt{x^2+y^2}}
+    \\ &=&
+    \cfrac{r\sin\theta \cos\phi \cdot r\cos\theta}{r^2 \cdot r \sin \theta}
+    = \cfrac{1}{r} \cos\theta \cos\phi
+    \\
+    \cfrac{\partial \theta}{\partial y}
+    &=& 2y \cdot \cfrac{1}{2z\sqrt{x^2+y^2}} \cdot \cfrac{1}{1+(x^2+y^2)/z^2}
+    = \cfrac{yz}{(x^2+y^2+z^2)^2\sqrt{x^2+y^2}}
+    \\ &=&
+    \cfrac{r\sin\theta \sin\phi \cdot r\cos\theta}{r^2 \cdot r \sin \theta}
+    = \cfrac{1}{r} \cos\theta \sin\phi
+    \\
+    \cfrac{\partial \theta}{\partial z}
+    &=& - \cfrac{\sqrt{x^2+y^2}}{z^2} \cdot \cfrac{1}{1+(x^2+y^2)/z^2}
+    = - \cfrac{\sqrt{x^2+y^2}}{x^2+y^2+z^2}
+    \\ &=&
+    - \cfrac{r\sin\theta}{r^2}
+    = - \cfrac{1}{r} \sin\theta
+    \\
+    \cfrac{\partial \phi}{\partial x}
+    &=& - \cfrac{y}{x^2} \cdot \cfrac{1}{1+y^2/x^2}
+    = -\cfrac{y}{x^2+y^2}
+    \\ &=&
+    - \cfrac{r\sin\theta \sin\phi}{r^2 \sin^2\theta}
+    = -\cfrac{\sin\phi}{r\sin\theta}
+    \\
+    \cfrac{\partial \phi}{\partial y}
+    &=& \cfrac{1}{x} \cdot \cfrac{1}{1+y^2/x^2}
+    = \cfrac{x}{x^2+y^2}
+    \\ &=&
+    \cfrac{r\sin\theta \cos\phi}{r^2 \sin^2\theta}
+    = \cfrac{\cos\phi}{r\sin\theta}
+    \\
+    \cfrac{\partial \phi}{\partial z}
+    &=& 0
+\end{eqnarray}
+$$
+
+途中、逆三角関数の微分公式
+
+$$
+\cfrac{d}{du} \arctan u = \cfrac{1}{1+u^2}
+$$
+
+と、極座標では $0 \le \theta \le \pi$ より $\sin \theta \ge 0$ であることを用いた。
+
+以上を用いて、極座標の関数 $f(r, \theta, \phi)$ に関して、$x,y,z$ による偏微分を行う。  
+まず $x$ について、
+
+$$
+\begin{eqnarray}
+    \cfrac{\partial f}{\partial x}
+    &=&
+    \cfrac{\partial r}{\partial x} \cfrac{\partial f}{\partial r} +
+    \cfrac{\partial \theta}{\partial x} \cfrac{\partial f}{\partial \theta} +
+    \cfrac{\partial \phi}{\partial x} \cfrac{\partial f}{\partial \phi}
+    \\ &=&
+    \sin\theta\cos\phi \cfrac{\partial f}{\partial r} +
+    \cfrac{1}{r} \cos\theta \cos\phi \cfrac{\partial f}{\partial \theta} -
+    \cfrac{\sin\phi}{r\sin\theta} \cfrac{\partial f}{\partial \phi}
+    \\
+    \\
+    \cfrac{\partial^2 f}{\partial x^2}
+    &=&
+    \sin\theta\cos\phi \cfrac{\partial}{\partial r}
+    \left(\cfrac{\partial f}{\partial x}\right) +
+    \cfrac{1}{r} \cos\theta \cos\phi \cfrac{\partial}{\partial \theta}
+    \left(\cfrac{\partial f}{\partial x}\right) -
+    \cfrac{\sin\phi}{r\sin\theta} \cfrac{\partial}{\partial \phi}
+    \left(\cfrac{\partial f}{\partial x}\right)
+    \\ &=&
+    \sin\theta\cos\phi \left(
+        \sin\theta\cos\phi \cfrac{\partial^2 f}{\partial r^2} -
+        \cfrac{1}{r^2} \cos\theta \cos\phi \cfrac{\partial f}{\partial \theta} +
+        \cfrac{1}{r} \cos\theta \cos\phi \cfrac{\partial^2 f}{\partial \theta \partial r} +
+        \cfrac{\sin\phi}{r^2\sin\theta} \cfrac{\partial f}{\partial \phi} -
+        \cfrac{\sin\phi}{r\sin\theta} \cfrac{\partial^2 f}{\partial \phi \partial r}
+    \right)
+    \\ && +
+    \cfrac{1}{r} \cos\theta \cos\phi \left(
+        \cos\theta\cos\phi \cfrac{\partial f}{\partial r} +
+        \sin\theta\cos\phi \cfrac{\partial^2 f}{\partial r \partial \theta} -
+        \cfrac{1}{r} \sin\theta \cos\phi \cfrac{\partial f}{\partial \theta} +
+        \cfrac{1}{r} \cos\theta \cos\phi \cfrac{\partial^2 f}{\partial \theta^2} +
+        \cfrac{\cos\theta\sin\phi}{r\sin^2\theta} \cfrac{\partial f}{\partial \phi} -
+        \cfrac{\sin\phi}{r\sin\theta} \cfrac{\partial^2 f}{\partial \phi \partial \theta}
+    \right)
+    \\ && -
+    \cfrac{\sin\phi}{r\sin\theta} \left(
+        -\sin\theta\sin\phi \cfrac{\partial f}{\partial r} +
+        \sin\theta\cos\phi \cfrac{\partial^2 f}{\partial r \partial \phi} -
+        \cfrac{1}{r} \cos\theta \sin\phi \cfrac{\partial f}{\partial \theta} +
+        \cfrac{1}{r} \cos\theta \cos\phi \cfrac{\partial^2 f}{\partial \theta \partial \phi} -
+        \cfrac{\cos\phi}{r\sin\theta} \cfrac{\partial f}{\partial \phi} -
+        \cfrac{\sin\phi}{r\sin\theta} \cfrac{\partial^2 f}{\partial \phi^2}
+    \right)
+    \\ &=&
+    \sin^2\theta\cos^2\phi \cfrac{\partial^2 f}{\partial r^2} +
+    \cfrac{\cos^2\theta \cos^2\phi}{r^2} \cfrac{\partial^2 f}{\partial \theta^2} +
+    \cfrac{\sin^2\phi}{r^2\sin^2\theta} \cfrac{\partial^2 f}{\partial \phi^2}
+    \\ &&+
+    \cfrac{2\sin\theta\cos\theta\cos^2\phi}{r} \cfrac{\partial^2 f}{\partial r \partial \theta} -
+    \cfrac{2\cos\theta\sin\phi\cos\phi}{r^2\sin\theta} \cfrac{\partial^2 f}{\partial \theta \partial \phi} -
+    \cfrac{2\sin\phi\cos\phi}{r} \cfrac{\partial^2 f}{\partial \phi \partial r}
+    \\ &&+
+    \cfrac{\cos^2\theta\cos^2\phi+\sin^2\phi}{r} \cfrac{\partial f}{\partial r} +
+    \cfrac{\cos\theta\sin^2\phi-2\sin^2\theta\cos\theta\cos^2\phi}{r^2\sin\theta} \cfrac{\partial f}{\partial \theta} +
+    \cfrac{2\sin\phi\cos\phi}{r^2\sin^2\theta} \cfrac{\partial f}{\partial \phi}
+\end{eqnarray}
+$$
+
+次に $y$ について、
+
+$$
+\begin{eqnarray}
+    \cfrac{\partial f}{\partial y}
+    &=&
+    \cfrac{\partial r}{\partial y} \cfrac{\partial f}{\partial r} +
+    \cfrac{\partial \theta}{\partial y} \cfrac{\partial f}{\partial \theta} +
+    \cfrac{\partial \phi}{\partial y} \cfrac{\partial f}{\partial \phi}
+    \\ &=&
+    \sin\theta\sin\phi \cfrac{\partial f}{\partial r} +
+    \cfrac{1}{r} \cos\theta \sin\phi \cfrac{\partial f}{\partial \theta} +
+    \cfrac{\cos\phi}{r\sin\theta} \cfrac{\partial f}{\partial \phi}
+    \\
+    \\
+    \cfrac{\partial^2 f}{\partial y^2}
+    &=&
+    \sin\theta\sin\phi \cfrac{\partial}{\partial r}
+    \left(\cfrac{\partial f}{\partial y}\right) +
+    \cfrac{1}{r} \cos\theta \sin\phi \cfrac{\partial}{\partial \theta}
+    \left(\cfrac{\partial f}{\partial y}\right) +
+    \cfrac{\cos\phi}{r\sin\theta} \cfrac{\partial}{\partial \phi}
+    \left(\cfrac{\partial f}{\partial z}\right)
+    \\ &=&
+    \sin\theta\sin\phi \left(
+        \sin\theta\sin\phi \cfrac{\partial^2 f}{\partial r^2} -
+        \cfrac{1}{r^2} \cos\theta \sin\phi \cfrac{\partial f}{\partial \theta} +
+        \cfrac{1}{r} \cos\theta \sin\phi \cfrac{\partial^2 f}{\partial \theta \partial r} -
+        \cfrac{\cos\phi}{r^2\sin\theta} \cfrac{\partial f}{\partial \phi} +
+        \cfrac{\cos\phi}{r\sin\theta} \cfrac{\partial^2 f}{\partial \phi \partial r}
+    \right) +
+    \\ && +
+    \cfrac{1}{r} \cos\theta \sin\phi \left(
+        \cos\theta\sin\phi \cfrac{\partial f}{\partial r} +
+        \sin\theta\sin\phi \cfrac{\partial^2 f}{\partial r \partial \theta} -
+        \cfrac{1}{r} \sin\theta \sin\phi \cfrac{\partial f}{\partial \theta} +
+        \cfrac{1}{r} \cos\theta \sin\phi \cfrac{\partial^2 f}{\partial \theta^2} -
+        \cfrac{\cos\theta\cos\phi}{r\sin^2\theta} \cfrac{\partial f}{\partial \phi} +
+        \cfrac{\cos\phi}{r\sin\theta} \cfrac{\partial^2 f}{\partial \phi \partial \theta}
+    \right) +
+    \\ && +
+    \cfrac{\cos\phi}{r\sin\theta} \left(
+        \sin\theta\cos\phi \cfrac{\partial f}{\partial r} +
+        \sin\theta\sin\phi \cfrac{\partial^2 f}{\partial r \partial \phi} +
+        \cfrac{1}{r} \cos\theta \cos\phi \cfrac{\partial f}{\partial \theta} +
+        \cfrac{1}{r} \cos\theta \sin\phi \cfrac{\partial^2 f}{\partial \theta \partial \phi} -
+        \cfrac{\sin\phi}{r\sin\theta} \cfrac{\partial f}{\partial \phi} +
+        \cfrac{\cos\phi}{r\sin\theta} \cfrac{\partial^2 f}{\partial \phi^2}
+    \right)
+    \\ &=&
+    \sin^2\theta\sin^2\phi \cfrac{\partial^2 f}{\partial r^2} +
+    \cfrac{\cos^2\theta \sin^2\phi}{r^2} \cfrac{\partial^2 f}{\partial \theta^2} +
+    \cfrac{\cos^2\phi}{r^2\sin^2\theta} \cfrac{\partial^2 f}{\partial \phi^2}
+    \\ &&+
+    \cfrac{2\sin\theta\cos\theta \sin^2\phi}{r} \cfrac{\partial^2 f}{\partial r \partial \theta} +
+    \cfrac{2\cos\theta \sin\phi\cos\phi}{r^2\sin\theta} \cfrac{\partial^2 f}{\partial \theta \partial \phi} +
+    \cfrac{2\sin\phi\cos\phi}{r} \cfrac{\partial^2 f}{\partial \phi \partial r}
+    \\ &&+
+    \cfrac{\cos^2\theta\sin^2\phi+\cos^2\phi}{r} \cfrac{\partial f}{\partial r} +
+    \cfrac{\cos\theta\cos^2\phi-2\sin^2\theta\cos\theta\sin^2\phi}{r^2\sin\theta} \cfrac{\partial f}{\partial \theta} -
+    \cfrac{2\sin\phi\cos\phi}{r^2\sin^2\theta} \cfrac{\partial f}{\partial \phi}
+\end{eqnarray}
+$$
+
+最後に $z$ について、
+
+$$
+\begin{eqnarray}
     \cfrac{\partial f}{\partial z}
-\right)
-$$
-
-### 数学的な意味
-
-> **【勾配の数学的意味】**
-> 
-> 関数 $f(x,y,z)$ の勾配 $\nabla f$ は、点 $\boldsymbol{x}=(x,y,z)$ から微小変位 $d\boldsymbol{x}=(dx,dy,dz)$ だけ移動するとき、$f(x,y,z)$ の増加が最も大きい方向を示す。
-
-**【解説】**
-
-点 $\boldsymbol{x}=(x,y,z)$ からの微小変位 $d\boldsymbol{x}=(dx,dy,dz)$ を考える。  
-
-$$
-f(x+dx,y+dy,z+dz)
-=
-f(x,y,z)
-+ \cfrac{\partial f}{\partial x}dx
-+ \cfrac{\partial f}{\partial y}dy
-+ \cfrac{\partial f}{\partial z}dz
-$$
-
-であるから、この変位による $f(x,y,z)$ の値の変化 $df$ は、
-
-$$
-\begin{eqnarray}
-    df &=& f(x+dx,y+dy,z+dz) - f(x,y,z)
+    &=&
+    \cfrac{\partial r}{\partial z} \cfrac{\partial f}{\partial r} +
+    \cfrac{\partial \theta}{\partial z} \cfrac{\partial f}{\partial \theta} +
+    \cfrac{\partial \phi}{\partial z} \cfrac{\partial f}{\partial \phi}
     \\ &=&
-    \cfrac{\partial f}{\partial x}dx
-    + \cfrac{\partial f}{\partial y}dy
-    + \cfrac{\partial f}{\partial z}dz
-\end{eqnarray}
-$$
-
-最後の式は、$f$ の勾配 $\nabla f$ と微小変位 $d\boldsymbol{x}=(dx,dy,dz)$ の内積に等しい：
-
-$$
-df = \nabla f \cdot d\boldsymbol{x}
-$$
-
-微小変位 $d\boldsymbol{x}$ の大きさを固定するとき、$f$ の微小増加 $df$ を最大化するには、右辺の内積を最大化すればよい。  
-すなわち、$d\boldsymbol{x}$ が $\nabla f$ と同じ向きであれば良い。
-
-したがって、スカラー関数 $f(x,y,z)$ の勾配 $\nabla f$ は、微小変位 $d\boldsymbol{x}$ を与えるとき、$f(x,y,z)$ の増加量を最大化する方向を示す。
-
-
-## 発散
-
-### 定義
-
-ベクトル関数 $\boldsymbol{v}(x,y,z)$ の **発散** $\mathrm{div}\,\boldsymbol{v}$ は下式で定義される。
-
-$$
-\mathrm{div}\,\boldsymbol{v} := \nabla \cdot \boldsymbol{v} =
-\cfrac{\partial v_x}{\partial x} +
-\cfrac{\partial v_y}{\partial y} +
-\cfrac{\partial v_z}{\partial z}
-$$
-
-### 数学的な意味
-
-> **【発散の数学的意味】** 
-> 
-> ベクトル場 $\boldsymbol{v}(x,y,z)$ の発散 $\nabla \cdot \boldsymbol{v}$ は、各点における流入・流出（湧き出し・吸い込み）の評価を符号付きスカラーで与える。
-
-**【解説】**
-
-簡単のため、二次元空間で考える：
-
-$$
-\nabla = \left(
-    \cfrac{\partial}{\partial x},
-    \cfrac{\partial}{\partial y}
-\right)
-$$
-
-下図の通り、点 $\boldsymbol{x}$ から見て $xy$ 方向の上下左右にだけ離れた4点を取る。  
-
-![divergence](https://gist.github.com/assets/13412823/62160cf8-3438-4210-a823-d5abe7a52262)
-
-```python
-import numpy as np
-from matplotlib import pyplot as plt
-
-plt.xlabel(r'$x$', fontsize=12)
-plt.ylabel(r'$y$', fontsize=12)
-plt.scatter(0, 0, label=r'$(x,y)$', color='black')
-c = 'red'
-plt.scatter(0.5, 0, color=c)
-plt.arrow(0.5-0.3,0,0.6,0, label=r'$v_x(x+\Delta,y)$', width=0.01, color=c, ec=c)
-c = 'blue'
-plt.scatter(-0.5, 0, color=c)
-plt.arrow(-0.5-0.3,0,0.6,0, label=r'$v_x(x-\Delta,y)$', width=0.01, color=c, ec=c)
-c = 'orange'
-plt.scatter(0, 0.5, color=c)
-plt.arrow(0,0.5-0.3,0,0.6, label=r'$v_y(x,y+\Delta)$', width=0.01, color=c, ec=c)
-c = 'green'
-plt.scatter(0, -0.5, color=c)
-plt.arrow(0,-0.5-0.3,0,0.6, label=r'$v_y(x,y-\Delta)$', width=0.01, color=c, ec=c)
-ax = plt.gca()
-ax.axes.xaxis.set_ticklabels([])
-ax.axes.yaxis.set_ticklabels([])
-plt.legend()
-plt.grid()
-plt.show()
-```
-
-点 $\boldsymbol{x}$ からこの4点に向かって流出するベクトルの大きさの和 $d$ を計算すると、
-
-$$
-d =
-v_x(x+\Delta, y) -
-v_x(x-\Delta, y) +
-v_y(x, y+\Delta) -
-v_y(x, y-\Delta)
-$$
-
-ここで、正負の符号は「点 $\boldsymbol{x}$ から流出する向き」を正として付けている。
-
-$\Delta$ は微小なので、テイラー展開により
-
-$$
-\begin{cases}
-    v_x(x+\Delta, y) &\simeq&
-    v_x(x,y) + \cfrac{\partial v_x}{\partial x}(x,y) \Delta
+    \cos\theta \cfrac{\partial f}{\partial r} -
+    \cfrac{\sin\theta}{r} \cfrac{\partial f}{\partial \theta}
     \\
-    v_x(x-\Delta, y) &\simeq&
-    v_x(x,y) - \cfrac{\partial v_x}{\partial x}(x,y) \Delta
     \\
-    v_y(x, y+\Delta) &\simeq&
-    v_y(x,y) + \cfrac{\partial v_y}{\partial y}(x,y) \Delta
-    \\
-    v_y(x, y-\Delta) &\simeq&
-    v_y(x,y) - \cfrac{\partial v_y}{\partial y}(x,y) \Delta
-\end{cases}
-$$
-
-であるから、
-
-$$
-\begin{eqnarray}
-    d &=&
-    \cfrac{\partial v_x}{\partial x}(x,y) \Delta -
-    \left( - \cfrac{\partial v_x}{\partial x}(x,y) \Delta \right) +
-    \cfrac{\partial v_y}{\partial y}(x,y) \Delta -
-    \left( - \cfrac{\partial v_y}{\partial y}(x,y) \Delta \right)
+    \cfrac{\partial^2 f}{\partial z^2}
+    &=&
+    \cos\theta \cfrac{\partial}{\partial r}
+    \left(\cfrac{\partial f}{\partial z}\right) -
+    \cfrac{\sin\theta}{r} \cfrac{\partial}{\partial \theta}
+    \left(\cfrac{\partial f}{\partial z}\right)
     \\ &=&
-    2 \Delta \left(
-        \cfrac{\partial v_x}{\partial x}(x,y) +
-        \cfrac{\partial v_y}{\partial y}(x,y)
+    \cos\theta
+    \left(
+        \cos\theta \cfrac{\partial^2 f}{\partial r^2} +
+        \cfrac{\sin\theta}{r^2} \cfrac{\partial f}{\partial \theta} -
+        \cfrac{\sin\theta}{r} \cfrac{\partial f}{\partial \theta \partial r}
+    \right) -
+    \cfrac{\sin\theta}{r}
+    \left(
+        -\sin\theta \cfrac{\partial f}{\partial r} +
+        \cos\theta \cfrac{\partial^2 f}{\partial r \partial \theta} -
+        \cfrac{\cos\theta}{r} \cfrac{\partial f}{\partial \theta} -
+        \cfrac{\sin\theta}{r} \cfrac{\partial^2 f}{\partial \theta^2}
     \right)
-\end{eqnarray}
-$$
-
-よって、
-
-$$
-d
-\ \propto \ 
-\cfrac{\partial v_x}{\partial x} +
-\cfrac{\partial v_y}{\partial y}
-=
-\nabla \cdot \boldsymbol{v}
-$$
-
-したがって、発散 $\nabla \cdot \boldsymbol{v}$ はベクトル場 $\boldsymbol{v}$ の各点における流入・流出（湧き出し・吸い込み）の評価を符号付きスカラーで与える。
-
-
-## 回転
-
-### 定義
-
-ベクトル関数 $\boldsymbol{v}(x,y,z)$ の **回転** $\mathrm{rot}\,\boldsymbol{v}$ （$\mathrm{curl}\,\boldsymbol{v}$ とも書く）は下式で定義される。
-
-$$
-\mathrm{rot}\,\boldsymbol{v} := \nabla \times \boldsymbol{v}
-=
-\left(
-    {\frac {\partial v_{z}}{\partial y}} -
-    {\frac {\partial v_{y}}{\partial z}},\ \ 
-    {\frac {\partial v_{x}}{\partial z}} -
-    {\frac {\partial v_{z}}{\partial x}},\ \ 
-    {\frac {\partial v_{y}}{\partial x}} -
-    {\frac {\partial v_{x}}{\partial y}}
-\right)
-$$
-
-
-### 数学的な意味
-
-> **【回転の数学的意味】** 
-> 
-> ベクトル場 $\boldsymbol{v}(x,y,z)$ の回転 $\nabla \times \boldsymbol{v}$ は、各点のまわりの（単位面積あたりの）物理的な回転の度合いを表す。
-
-**【解説】**
-
-点 $\boldsymbol{x} = (x,y,z)$ の周りのベクトル場について、$\boldsymbol{x}$ を通って $z$ 軸に平行な回転軸周りのトルク $t_z$ を考える。
-
-下図の通り、点 $\boldsymbol{x}$ から見て $xy$ 方向の上下左右に微小距離 $\Delta$ だけ離れた4点について、回転方向（左回りを正とする）のベクトルのトルクの和を取る。
-
-※ 点 $\boldsymbol{x}$ まわりの点 $\boldsymbol{x'}$ のベクトル場 $\boldsymbol{v}(\boldsymbol{x'})$ の **トルク** は、「点 $\boldsymbol{x}$ から見た $\boldsymbol{x'}$ の位置ベクトル $\boldsymbol{x'}-\boldsymbol{x}$」と「ベクトル場 $\boldsymbol{v}(\boldsymbol{x'})$」の外積 $(\boldsymbol{x'}-\boldsymbol{x}) \times \boldsymbol{v}(\boldsymbol{x'})$ で定義される。
-
-![rotation](https://gist.github.com/assets/13412823/b9537088-eebf-4db7-a0f4-91db3747d9e1)
-
-```python
-import numpy as np
-from matplotlib import pyplot as plt
-
-plt.xlabel(r'$x$', fontsize=12)
-plt.ylabel(r'$y$', fontsize=12)
-plt.scatter(0, 0, label=r'$(x,y,z)$', color='black')
-c = 'red'
-plt.scatter(1, 0, color=c)
-plt.arrow(1,-0.2,0,0.4, label=r'$v_y(x+\Delta,y,z)$', width=0.01, color=c, ec=c)
-c = 'blue'
-plt.scatter(-1, 0, color=c)
-plt.arrow(-1,-0.2,0,0.4, label=r'$v_y(x-\Delta,y,z)$', width=0.01, color=c, ec=c)
-c = 'orange'
-plt.scatter(0, 1, color=c)
-plt.arrow(-0.2,1,0.4,0, label=r'$v_x(x,y+\Delta,z)$', width=0.01, color=c, ec=c)
-c = 'green'
-plt.scatter(0, -1, color=c)
-plt.arrow(-0.2,-1,0.4,0, label=r'$v_x(x,y-\Delta,z)$', width=0.01, color=c, ec=c)
-ax = plt.gca()
-ax.axes.xaxis.set_ticklabels([])
-ax.axes.yaxis.set_ticklabels([])
-plt.legend()
-plt.grid()
-plt.show()
-```
-
-図よりベクトル場の $\boldsymbol{x}$ 周りのトルク $t_z$ は（左回りを正とすれば）
-
-$$
-t_z =
-\Delta \cdot v_x(x, y-\Delta, z) -
-\Delta \cdot v_x(x, y+\Delta, z) +
-\Delta \cdot v_y(x+\Delta, y, z) -
-\Delta \cdot v_y(x-\Delta, y, z)
-$$
-
-$\Delta$ は微小なので、テイラー展開により
-
-$$
-\begin{cases}
-    v_x(x, y-\Delta, z) &\simeq&
-    v_x(x,y,z) - \cfrac{\partial v_x}{\partial y}(x,y,z) \Delta
-    \\
-    v_x(x, y+\Delta, z) &\simeq&
-    v_x(x,y,z) + \cfrac{\partial v_x}{\partial y}(x,y,z) \Delta
-    \\
-    v_y(x+\Delta, y, z) &\simeq&
-    v_y(x,y,z) + \cfrac{\partial v_y}{\partial x}(x,y,z) \Delta
-    \\
-    v_y(x-\Delta, y, z) &\simeq&
-    v_y(x,y,z) - \cfrac{\partial v_y}{\partial x}(x,y,z) \Delta
-\end{cases}
-$$
-
-であるから、
-
-$$
-\begin{eqnarray}
-    t_z &=&
-    \left(- \cfrac{\partial v_x}{\partial y}(x,y,z) \Delta^2 \right)
-    - \cfrac{\partial v_x}{\partial y}(x,y,z) \Delta^2
-    + \cfrac{\partial v_y}{\partial x}(x,y,z) \Delta^2
-    - \left(- \cfrac{\partial v_y}{\partial x}(x,y,z) \Delta^2 \right)
     \\ &=&
-    2 \Delta^2 \left(
-        \cfrac{\partial v_y}{\partial x}(x,y,z) -
-        \cfrac{\partial v_x}{\partial y}(x,y,z)
-    \right)
-\end{eqnarray}
-$$
-
-同様に
-
-- $t_x$：点 $\boldsymbol{x}$ を通り $x$ 軸に平行な回転軸周りの回転度合い
-- $t_y$：点 $\boldsymbol{x}$ を通り $y$ 軸に平行な回転軸周りの回転度合い
-
-についても計算できて、
-
-$$
-\begin{eqnarray}
-    t_x &=& 2 \Delta^2 \left(
-        \cfrac{\partial v_z}{\partial y}(x,y,z) -
-        \cfrac{\partial v_y}{\partial z}(x,y,z)
-    \right)
-    \\
-    t_y &=& 2 \Delta^2 \left(
-        \cfrac{\partial v_x}{\partial z}(x,y,z) -
-        \cfrac{\partial v_z}{\partial x}(x,y,z)
-    \right)
+    \cos^2\theta \cfrac{\partial^2 f}{\partial r^2} +
+    \cfrac{\sin^2\theta}{r^2} \cfrac{\partial^2 f}{\partial \theta^2} -
+    \cfrac{2\sin\theta\cos\theta}{r} \cfrac{\partial f}{\partial r \partial \theta} +
+    \cfrac{\sin^2\theta}{r} \cfrac{\partial f}{\partial r} +
+    \cfrac{2\sin\theta\cos\theta}{r^2} \cfrac{\partial f}{\partial \theta}
 \end{eqnarray}
 $$
 
 以上により、
 
 $$
-(t_x, t_y, t_z)
-\ \propto \ 
-\left(
-    {\frac {\partial v_{z}}{\partial y}} -
-    {\frac {\partial v_{y}}{\partial z}},\ \ 
-    {\frac {\partial v_{x}}{\partial z}} -
-    {\frac {\partial v_{z}}{\partial x}},\ \ 
-    {\frac {\partial v_{y}}{\partial x}} -
-    {\frac {\partial v_{x}}{\partial y}}
-\right) = \nabla \times \boldsymbol{v}
+\begin{eqnarray}
+    \Delta f
+    &=&
+    \cfrac{\partial^2 f}{\partial x^2} +
+    \cfrac{\partial^2 f}{\partial y^2} +
+    \cfrac{\partial^2 f}{\partial z^2}
+    \\ &=&
+    \cfrac{\partial^2 f}{\partial r^2} +
+    \cfrac{1}{r^2} \cfrac{\partial^2 f}{\partial \theta^2} +
+    \cfrac{1}{r^2\sin^2\theta} \cfrac{\partial^2 f}{\partial \phi^2} +
+    \cfrac{2}{r} \cfrac{\partial f}{\partial r} +
+    \cfrac{\cos\theta}{r^2\sin\theta} \cfrac{\partial f}{\partial \theta}
+    \\ &=&
+    \cfrac{1}{r^2} \cfrac{\partial}{\partial r}
+    \left( r^2 \cfrac{\partial f}{\partial r} \right) +
+    \cfrac{1}{r^2 \sin\theta} \cfrac{\partial}{\partial \theta}
+    \left( \sin\theta \cfrac{\partial f}{\partial \theta} \right) +
+    \cfrac{1}{r^2\sin^2\theta} \cfrac{\partial^2 f}{\partial \phi^2}
+\end{eqnarray}
 $$
 
-したがって、回転 $\nabla \times \boldsymbol{v}$ はベクトル場 $\boldsymbol{v}$ の各点 $\boldsymbol{x}$ 周りの回転度合いを表す。
+
+# 勾配・発散・回転
+
+[勾配・発散・回転](gradient-divergence-rotation.md)を参照。

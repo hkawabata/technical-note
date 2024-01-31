@@ -17,7 +17,7 @@ $$
 
 を **ポアソン方程式** という。
 
-ベクトル演算子 $\nabla$ を以下の式で定義すると、
+ベクトル微分演算子ナブラ $\nabla$ を以下の式で定義すると、
 
 $$
 \nabla := \left( \cfrac{\partial}{\partial x}, \cfrac{\partial}{\partial y}, \cfrac{\partial}{\partial z} \right)
