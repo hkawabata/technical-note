@@ -388,6 +388,9 @@
                 <a href="https://hkawabata.github.io/technical-note/note/Algorithm/graph/scc">強連結成分（SCC）</a>
               </li>
               <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/graph/node2vec">node2vec</a>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Algorithm/graph/dijkstra-algorithm">ダイクストラ法</a>
               </li>
             </ul>
@@ -663,7 +666,13 @@
                 <span class="pagetree-accordion">▼</span>
                 <ul class="pagetree-hidden">
                   <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/vector-calculus/triple-product">三重積</a>
+                  </li>
+                  <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/vector-calculus/nabla">ナブラ演算子</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/vector-calculus/gradient-divergence-rotation">勾配・発散・回転</a>
                   </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/vector-calculus/stokes-theorem">ストークスの定理</a>
