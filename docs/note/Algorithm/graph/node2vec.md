@@ -187,6 +187,9 @@ word2vec 部分は gensim ライブラリを使う。
 
 {% gist 4b6d26c20b014782573a81dec04a069c ~example1.py %}
 
+| 幅優先 | 深さ優先 |
+| :-- | :-- |
+| ![ex1-bfs](https://gist.github.com/assets/13412823/e002f397-9478-4dd7-ab83-2fd1a277a415) | ![ex1-dfs](https://gist.github.com/assets/13412823/91acf187-dbc5-415d-aa90-1a9a8e8fa159) |
 
 - 幅優先
     - グラフ上で近いノードとの類似度が高い
@@ -195,12 +198,16 @@ word2vec 部分は gensim ライブラリを使う。
     - C から見ると、距離的に近い A, B との類似度も高い
 - いずれも遠方で構造も似ていないノードは類似度が低い
 
+
 ## 例2
 
 ![node2vec2](https://gist.github.com/assets/13412823/0d7cc3be-af6e-4049-ba71-2b6053155878)
 
 {% gist 4b6d26c20b014782573a81dec04a069c ~example2.py %}
 
+| 幅優先 | 深さ優先 |
+| :-- | :-- |
+| ![ex2-bfs](https://gist.github.com/assets/13412823/d7ae811b-2c62-4fe1-9619-a96cc840599e) | ![ex2-dfs](https://gist.github.com/assets/13412823/0a865187-ef93-4d14-b216-83ad9db2049d) |
 
 A から見て、
 - 幅優先
