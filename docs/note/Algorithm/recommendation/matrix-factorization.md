@@ -166,12 +166,13 @@ $$
 ランダムな値で初期化した $U, V$ を勾配降下法などを用いて最適化すれば、$(4)$ 式により、null 値が推定値で埋まった評価値行列 $\hat{R}$ が得られる。
 
 
-> **【NOTE】特異値分解 (Singular Value Decomposition, SVD) との比較**
-> 
-> レコメンドシステムにおける次元圧縮に特異値分解を利用しても性能は良化しない（むしろ悪くなることもある）。
-> レコメンドにおいて次元削減の対象となるのは評価値行列だが、評価値行列には null 値が含まれる。null を0で補完することもできるが、この場合の0は一般には「評価値が0」ではなく「まだ評価していない」ことを表す。
-> したがって、この0という情報をそのまま数値通りに使って（つまり、低評価をつけたという解釈をして）次元削減を行うと、実態とは異なる最適化が行われてしまう。
-> 一方で、Matrix Factorization は値があるところのみで最適化していくので、レコメンドにはこちらの方が有効。
+## 特異値分解 (SVD) との比較
+
+行列の次元圧縮の手法として特異値分解 (Singular Value Decomposition, SVD) も有名だが、レコメンドシステムに特異値分解を利用しても性能は良化しない（むしろ悪くなることもある）。
+
+レコメンドにおいて次元削減の対象となるのは評価値行列だが、評価値行列には null 値が含まれる。null を0で補完することもできるが、この場合の0は一般には「評価値が0」ではなく「まだ評価していない」ことを表す。  
+したがって、この0という情報をそのまま数値通りに使って（つまり、低評価をつけたという解釈をして）次元削減を行うと、実態とは異なる最適化が行われてしまう。  
+一方、Matrix Factorization は値があるところのみで最適化していくので、レコメンドにはこちらの方が有効。
 
 
 ## 過学習の防止
@@ -191,11 +192,29 @@ $$
 
 {% gist d987349fcbef6b652d5c66acbc1f405f ~test1.py %}
 
-![mf](https://gist.github.com/assets/13412823/6053d6de-1bc3-4eff-ba8f-03e9f130f7c2)
+![mf1](https://gist.github.com/assets/13412823/02bcc859-123c-4e0a-9bc8-6ee7f9a58e27)
 
 
 ## 一部を評価用テストデータに利用
 
 {% gist d987349fcbef6b652d5c66acbc1f405f ~test2.py %}
 
-![mf](https://gist.github.com/assets/13412823/61f01f91-3b9d-4ed9-881e-43bdbab912bf)
+![mf2](https://gist.github.com/assets/13412823/16ea3c53-682c-41df-84dc-567ca0d5e996)
+
+テストデータも学習データも損失関数が減少しているので、うまく過学習が抑えられていそう。
+
+
+## MovieLens データセットで検証
+
+https://grouplens.org/datasets/movielens/ の ml-latest-small.zip (size: 1 MB) を使って検証。
+
+{% gist 71dcf4b2f891c3c2a36bdf234b677d4e dataset-movielenz-small.py %}
+
+```python
+model = MatrixFactorization(R)
+model.fit(k=10, lamb=0.00001, eta=5e-1, T=10000, eps=1e-5, r_test=0.2)
+model.draw_loss()
+
+```
+
+![mf3](https://gist.github.com/assets/13412823/0bc6b9a2-edca-494c-8063-21bb0e99a213)
