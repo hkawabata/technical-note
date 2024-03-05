@@ -330,6 +330,18 @@
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
           <li>
+            <span>recommendation</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/recommendation/matrix-factorization">行列分解</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/recommendation/factorization-machine">Factorization Machine</a>
+              </li>
+            </ul>
+          </li>
+          <li>
             <a href="https://hkawabata.github.io/technical-note/note/Algorithm/linear_programming">線形計画法</a>
           </li>
           <li>
