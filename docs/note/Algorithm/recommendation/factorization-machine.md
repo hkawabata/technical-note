@@ -166,9 +166,9 @@ Factorization Machine では、この $W_{ij}$を特徴量ごとの $k < n$ 次�
 ## 強み1：計算量の節約
 
 - $W_{ij}$ の変数は $n^2$ 個
-- $\boldsymbol{f}_1,\cdots,\boldsymbol{f}_n$ の変数は $nk$ 個
+- $\boldsymbol{f}_1,\cdots,\boldsymbol{f}_n$ の変数は全部で $nk$ 個
 
-なので、$k \lt n$ よりパラメータ数を小さく抑えることができる。
+なので、$k \ll n$ と取ればパラメータ数をかなり小さく抑えることができる。
 
 
 ## 強み2：疎なデータへの耐性
@@ -181,50 +181,132 @@ Factorization Machine では、この $W_{ij}$を特徴量ごとの $k < n$ 次�
 同じことは $\boldsymbol{f}_j$ にも言えるので、他の特徴量を用いて学習した $\boldsymbol{f}_i, \boldsymbol{f}_j$ を用いて、間接的に $x_i, x_j$ の相互作用を求めることができる。
 
 
-# 実装 (ToDo)
+# 実装（途中）
+
+性能が出ないのでバグやチューニング不足があるかも。
 
 ```python
 import numpy as np
 from matplotlib import pyplot as plt
 import time
 
+
 class FactorizationMachine:
     def __init__(self):
         pass
+    
+    def fit(self, X, Y, k, lamb=0.1, eta=1e-4, T=10000, eps=1e-6, r_test=0):
+        self.n, self.d = X.shape
+        self.k, self.lamb, self.eta = k, lamb, eta
+        self.n_test = int(self.n * r_test)
+        self.n_learn = self.n - self.n_test
+        idx = np.array(range(self.n))
+        np.random.shuffle(idx)
+        self.idx_learn, self.idx_test = idx[:self.n_learn], idx[self.n_learn:]
+        self.X, self.X_test = X[self.idx_learn], X[self.idx_test]
+        self.Y, self.Y_test = Y[self.idx_learn], Y[self.idx_test]
+        self.w0 = np.random.rand()
+        self.w = np.random.rand(self.d)
+        self.F = np.random.rand(self.d, k)
+        #self.w0 = np.random.normal(0, 1)
+        #self.w = np.random.normal(0, 1, self.d)
+        #self.F = np.random.normal(0, 1, (self.d, k))
+        self.__tune_initial_params_scale()
+        self.loss = []
+        self.loss_test = []
+        self.loss_regular = []
+        self.__set_baseline()
+        self.__update_Y_pred()
+        self.__update_Err()
+        self.__update_loss()
+        time_start = time.time()
+        for t in range(T):
+            if t % (T//100) == 0:
+                progress = t / (T//100)
+                print('{}/{} ({}%) : {} s, loss = {}'.format(t, T, progress, int(time.time()-time_start), self.loss[-1]))
+            self.__update()
+            if np.abs(self.loss[-1]-self.loss[-2]) < eps:
+                break
+        self.loss = np.array(self.loss)
+        self.loss_test = np.array(self.loss_test)
+        self.loss_regular = np.array(self.loss_regular)
+    
+    def __tune_initial_params_scale(self):
+        tmp = self.X.dot(self.F)
+        y_pred_tmp = self.w0 + (self.w * self.X).sum(axis=1) + tmp.sum(axis=1)**2 - (tmp**2).sum(axis=1)
+        scale = np.abs(self.Y).mean() / np.abs(y_pred_tmp).mean()
+        self.w0 *= scale
+        self.w *= scale
+        self.F *= np.sqrt(scale)
+    
+    def __set_baseline(self):
+        y_base = self.Y.mean()
+        Err_base = y_base - self.Y
+        self.loss_base = (Err_base**2).mean()
+    
+    def __update(self):
+        #grad_w0 = self.Err.sum() + self.lamb * self.w0
+        #grad_w = (self.Err * self.X.T).sum(axis=1) + self.lamb * self.w
+        grad_w0 = self.Err.mean() + self.lamb * self.w0
+        grad_w = (self.Err * self.X.T).mean(axis=1) + self.lamb * self.w
+        xf = self.X.dot(self.F)
+        xxf = np.full((self.n_learn, self.d, self.k), np.nan)
+        for i in range(len(xf)):
+            xxf[i] = np.matrix(self.X[i]).T.dot(np.matrix(xf[i]))
+        #grad_F = xxf.sum(axis=0) + self.lamb * self.F
+        grad_F = xxf.mean(axis=0) + self.lamb * self.F
+        self.w0 -= self.eta * grad_w0
+        self.w -= self.eta * grad_w
+        self.F -= self.eta * grad_F
+        self.__update_Y_pred()
+        self.__update_Err()
+        self.__update_loss()
+    
+    def __update_Y_pred(self):
+        tmp = self.X.dot(self.F)
+        self.Y_pred = self.w0 + (self.w * self.X).sum(axis=1) + tmp.sum(axis=1)**2 - (tmp**2).sum(axis=1)
+        tmp = self.X_test.dot(self.F)
+        self.Y_pred_test = self.w0 + (self.w * self.X_test).sum(axis=1) + tmp.sum(axis=1)**2 - (tmp**2).sum(axis=1)
+    
+    def __update_Err(self):
+        self.Err = self.Y_pred - self.Y
+        self.Err_test = self.Y_pred_test - self.Y_test
+    
+    def __update_loss(self):
+        l_regular = self.lamb * (self.w0**2 + (self.w**2).sum() + (self.F**2).sum())
+        self.loss_regular.append(l_regular)
+        #l = (self.Err**2).sum() + l_regular
+        l = (self.Err**2).mean() + l_regular
+        self.loss.append(l)
+        #l_test = (self.Err_test**2).sum() + l_regular
+        l_test = (self.Err_test**2).mean() + l_regular
+        self.loss_test.append(l_test)
+    
+    def draw_loss(self):
+        plt.plot(self.loss, color='tab:blue', label='total (learn)')
+        plt.plot(self.loss-self.loss_regular, color='tab:blue', linestyle='dashed', label='error (learn)')
+        plt.plot([self.loss_base]*len(self.loss), color='tab:green', linestyle='dashed', label='error (baseline)')
+        if self.n_test > 0:
+            plt.plot(self.loss_test, color='tab:orange', label='total (test)')
+            plt.plot(self.loss_test-self.loss_regular, color='tab:orange', linestyle='dashed', label='error (learn)')
+        plt.plot(self.loss_regular, color='black', linestyle='dashed', label='regularization')
+        plt.xlabel('Epoch', fontsize=12)
+        plt.ylabel('Loss', fontsize=12)
+        plt.grid()
+        plt.legend()
+        plt.show()
 
 
+model_fm = FactorizationMachine()
+#model.fit(X_fm, Y_fm, k=10, lamb=0.1, eta=1e-4, T=100, eps=1e-6, r_test=0.5)
+model_fm.fit(X_fm, y_fm, k=20, lamb=0.1, eta=1e-1, T=100, eps=1e-2, r_test=0.5)
 
-df_movies = pd.read_csv('ml-latest-small/movies.csv', header=0)
-df_rating = pd.read_csv('ml-latest-small/ratings.csv', header=0)
-
-idx2genre = []
-genre2idx = {}
-mid2genres = {}
-for _, row in df_movies.iterrows():
-    mid = int(row['movieId'])
-    gs = row['genres']
-    mid2genres[mid] = []
-    for g in gs.split('|'):
-        if g not in genre2idx:
-            genre2idx[g] = len(idx2genre)
-            idx2genre.append(g)
-        mid2genres[mid].append(g)
-
-n_genre = len(idx2genre)
+model_fm = FactorizationMachine()
+model_fm.fit(X_fm, y_fm, k=20, lamb=0.01, eta=1e0, T=1000, eps=1e-3, r_test=0.5)
+model_fm.draw_loss()
 
 
-# MatrixFactorization に渡す入力と正解
-X_fm = np.full((len(df_rating), n_user+n_movie+n_genre), 0, dtype=float)
-Y_fm = np.full(len(df_rating), 0, dtype=float)
-for i, row in df_rating.iterrows():
-    idx_u = uid2idx[int(row['userId'])]
-    idx_m = mid2idx[int(row['movieId'])]
-    X_fm[i, idx_u] = 1
-    offset = n_user
-    X_fm[i, offset+idx_m] = 1
-    offset += n_movie
-    for g in mid2genres[int(row['movieId'])]:
-        idx_g = genre2idx[g]
-        X_fm[i, offset+idx_g] = 1
-    Y_fm[i] = row['rating']
+model_fm = FactorizationMachine()
+model_fm.fit(X_fm, y_fm, k=32, lamb=0.01, eta=1e0, T=1000, eps=5e-4, r_test=0.1)
+model_fm.draw_loss()
 ```

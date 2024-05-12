@@ -131,10 +131,10 @@ $$
     \sum_{j=1}^n V_{x,j} \left( \mathrm{putZero}(\hat{R} - R; r_{i,j} = null) \right)_{y,j} +
     \lambda U_{x,y}
     \\ &=&
-    \left( V \left( \mathrm{putZero}(\hat{R} - R; r_{i,j} = null) \right)^T \right)_{x,y} +
+    \left\{ V \left( \mathrm{putZero}(\hat{R} - R; r_{i,j} = null) \right)^T \right\}_{x,y} +
     \lambda U_{x,y}
     \\ &=&
-    \left( V \left( \mathrm{putZero}(\hat{R} - R; r_{i,j} = null) \right)^T + \lambda U \right)_{x,y}
+    \left\{ V \left( \mathrm{putZero}(\hat{R} - R; r_{i,j} = null) \right)^T + \lambda U \right\}_{x,y}
     \tag{7}
     \\
     \\
@@ -152,10 +152,10 @@ $$
     \sum_{j=1}^n U_{x,i} \left( \mathrm{putZero}(\hat{R} - R; r_{i,j} = null) \right)_{i,y} +
     \lambda V_{x,y}
     \\ &=&
-    \left( U \left( \mathrm{putZero}(\hat{R} - R; r_{i,j} = null) \right) \right)_{x,y} +
+    \left\{ U \left( \mathrm{putZero}(\hat{R} - R; r_{i,j} = null) \right) \right\}_{x,y} +
     \lambda V_{x,y}
     \\ &=&
-    \left( U \left( \mathrm{putZero}(\hat{R} - R; r_{i,j} = null) \right) + \lambda V \right)_{x,y}
+    \left\{ U \left( \mathrm{putZero}(\hat{R} - R; r_{i,j} = null) \right) + \lambda V \right\}_{x,y}
     \tag{8}
 \end{eqnarray}
 $$
@@ -192,14 +192,16 @@ $$
 
 {% gist d987349fcbef6b652d5c66acbc1f405f ~test1.py %}
 
-![mf1](https://gist.github.com/assets/13412823/02bcc859-123c-4e0a-9bc8-6ee7f9a58e27)
+![mf1](https://gist.github.com/assets/13412823/5e95352f-bb90-44ef-8ea3-371348c1914b)
+
 
 
 ## 一部を評価用テストデータに利用
 
 {% gist d987349fcbef6b652d5c66acbc1f405f ~test2.py %}
 
-![mf2](https://gist.github.com/assets/13412823/16ea3c53-682c-41df-84dc-567ca0d5e996)
+![mf2](https://gist.github.com/assets/13412823/11e2ae5f-a89d-4412-9df5-506b239e1638)
+
 
 テストデータも学習データも損失関数が減少しているので、うまく過学習が抑えられていそう。
 
@@ -211,10 +213,17 @@ https://grouplens.org/datasets/movielens/ の ml-latest-small.zip (size: 1 MB) 
 {% gist 71dcf4b2f891c3c2a36bdf234b677d4e dataset-movielenz-small.py %}
 
 ```python
-model = MatrixFactorization(R)
-model.fit(k=10, lamb=0.00001, eta=5e-1, T=10000, eps=1e-5, r_test=0.2)
-model.draw_loss()
+mm = MovieLenzManager('ml-latest-small', th_user=30, th_item=30)
+R = mm.get_eval_matrix()
+X_fm, y_fm = mm.get_Xy_fm()
 
+model_mf = MatrixFactorization(R)
+model_mf.fit(k=16, lamb=0.2, eta=1.0, T=100000, eps=1e-5, r_test=0.1)
+model_mf.draw_loss()
 ```
 
-![mf3](https://gist.github.com/assets/13412823/0bc6b9a2-edca-494c-8063-21bb0e99a213)
+![mf-movielenz](https://gist.github.com/assets/13412823/e5d3d96f-c477-4426-90a4-e067c9be5144)
+
+
+baseline = 学習データの予測値を全て、既知の評価値の平均値で埋めた時の結果。  
+学習曲線がこれよりも下にあるので、平均値で埋めるよりはマシなレコメンド、と言えそう。
