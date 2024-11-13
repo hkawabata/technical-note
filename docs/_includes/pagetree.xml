@@ -71,6 +71,15 @@
               </li>
             </ul>
           </li>
+          <li>
+            <span>geolocation</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/DataMining/geolocation/geojson">GeoJSON</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </li>
       <li>
@@ -180,6 +189,12 @@
                   </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/matplotlib-venn">matplotlib-venn</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/geopandas">geopandas.md</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/Untitled">Untitled.md</a>
                   </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/statsmodels">statsmodels</a>
@@ -613,6 +628,15 @@
             </ul>
           </li>
           <li>
+            <span>graph</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/graph/laplacian-matrix">ラプラシアン行列</a>
+              </li>
+            </ul>
+          </li>
+          <li>
             <span>formula</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
@@ -672,6 +696,9 @@
                     <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/complex-analysis/singularity">特異点</a>
                   </li>
                 </ul>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Math/calculus/fourier-transform">フーリエ変換</a>
               </li>
               <li>
                 <span>vector-calculus</span>
@@ -960,6 +987,15 @@
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/ML/clustering-agglomerative">凝集型クラスタリング</a>
           </li>
+          <li>
+            <span>reinforcement-learning</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/reinforcement-learning/epsilon-greedy">ε-greedy アルゴリズム</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </li>
       <li>
@@ -1001,6 +1037,9 @@
         <ul class="pagetree-hidden">
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/Technical-Writing">テクニカルライティング</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Reading-Notes/Jinji-Pro-Hyoka-Kijun">人事の超プロが明かす評価基準</a>
           </li>
           <li>
             <span>software-design</span>

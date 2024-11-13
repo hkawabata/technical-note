@@ -5,17 +5,51 @@ title-en: Motion of Mass Point
 
 # 基本的な定理・法則
 
-$$
-\boldsymbol{F}(t) = m \boldsymbol{a}(t)
-$$
+## 座標・速度・加速度の関係
+
+時刻 $t$ において
+- 質点の座標を $\boldsymbol{x}(t)$
+- 質点の速度を $\boldsymbol{v}(t)$
+- 質点の加速度を $\boldsymbol{a}(t)$
+
+とすると、
 
 $$
-\boldsymbol{v}(t) = \boldsymbol{v}(0) + \int_0^t \boldsymbol{a}(t') dt'
+\begin{eqnarray}
+    \boldsymbol{v}(t) &=& \cfrac{d\boldsymbol{x}(t)}{dt} \\
+    \boldsymbol{a}(t) &=& \cfrac{d\boldsymbol{v}(t)}{dt} = \cfrac{d^2\boldsymbol{x}(t)}{dt^2}
+\end{eqnarray}
 $$
 
+これらの式を積分すると
+
 $$
-\boldsymbol{x}(t) = \boldsymbol{x}(0) + \int_0^t \boldsymbol{v}(t') dt'
+\begin{eqnarray}
+    \boldsymbol{x}(t) = \boldsymbol{x}(0) + \int_0^t \boldsymbol{v}(t') dt'
+    \\
+    \boldsymbol{v}(t) = \boldsymbol{v}(0) + \int_0^t \boldsymbol{a}(t') dt'
+\end{eqnarray}
 $$
+
+数値計算のため、微小な時間ステップ $\Delta t$ 刻みの漸化式で書くと、
+
+$$
+\begin{eqnarray}
+    x(t+\Delta t) &=& x(t) + v(t) \Delta t
+    \\
+    v(t+\Delta t) &=& v(t) + a(t) \Delta t
+\end{eqnarray}
+$$
+
+
+## 運動方程式
+
+質点の質量を $m$、時刻 $t$ に質点にかかる力を $\boldsymbol{F}(t)$ とすると、
+
+$$
+m \boldsymbol{a}(t) = \boldsymbol{F}(t)
+$$
+
 
 # シミュレーション
 
@@ -27,7 +61,7 @@ $$
 \begin{eqnarray}
 	& m \boldsymbol{a} &=& m \boldsymbol{g}
 	\\ \Longleftrightarrow \ &
-	\boldsymbol{a} &=& \begin{pmatrix}0 \\ -g\end{pmatrix}
+	\boldsymbol{a} &=&\ \ \begin{pmatrix}0 \\ -g\end{pmatrix}
 \end{eqnarray}
 $$
 
@@ -128,7 +162,6 @@ $$
 
 
 
-
 ## 3連星の重力運動（三体問題）
 
 3つの天体の重力相互作用を考える。
@@ -206,3 +239,6 @@ v3 = (-M1 * v1 - M2 * v2) / M3
 ```
 
 ![velocity1percent](https://gist.github.com/user-attachments/assets/d46c7467-ee68-454b-a4c3-9748368154cf)
+
+
+
