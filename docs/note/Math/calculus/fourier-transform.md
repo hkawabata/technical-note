@@ -110,12 +110,12 @@ $$
 
 ## 計算例
 
-> 【例1】$n$ を任意の整数として、
+> 【例1】$k$ を任意の整数として、
 > 
 > $$
 f(x) = \begin{cases}
-    1\qquad &(2n \lt x \le 2n+1) \\
-    -1\qquad &(2n-1 \lt x \le 2n)
+    1\qquad &(2k \lt x \le 2k+1) \\
+    -1\qquad &(2k-1 \lt x \le 2k)
 \end{cases}
 $$
 
@@ -168,27 +168,136 @@ $$
 \end{eqnarray}
 $$
 
-```python
-import matplotlib.pyplot as plt
-import numpy as np
+![Figure_1](https://gist.github.com/user-attachments/assets/7f6aa347-5843-4258-a44e-5cdf358635a8)
 
-x = np.linspace(-3, 3, 1000)
-y = np.where(x//1 % 2, -1, 1)
-y2 = np.zeros(x.shape)
-plt.plot(x, y, color='black', label='$f(x)$')
-for n in range(1, 12+1):
-    if n % 2 == 1:
-        y2 += 4 * np.sin(n*np.pi*x) / n / np.pi
-    if n % 3 == 0:
-        plt.plot(x, y2, linewidth=1, label=r'sum($n \leq {}$)'.format(n))
+cf. [描画に使ったプログラム](https://gist.github.com/hkawabata/b1a6a3d742ca510da7f7ccd625ae09c3#file-fourier-series-ex1-py)
 
-plt.xlabel('$x$', fontsize=15)
-plt.ylabel('$f(x)$', fontsize=15)
-plt.legend()
-plt.grid()
-plt.show()
-```
 
+> 【例2】$m$ を任意の整数として、
+> 
+> $$
+f(x) = \begin{cases}
+    -x+2m\pi \qquad & \left( (2m-1)\pi \lt x \le 2m\pi \right) \\
+    x-2m\pi \qquad & \left( 2m\pi \lt x \le (2m+1)\pi \right)
+\end{cases}
+$$
+
+周期 $T=2\pi$ の周期関数であるから、$n\ne 0$ について
+
+$$
+\begin{eqnarray}
+    a_n &=& \cfrac{1}{\pi} \int_{-\pi}^\pi f(x) \cos nx \ dx
+    \\ &=&
+    \cfrac{1}{\pi} \left(
+        \int_{-\pi}^0 (-x) \cos nx \ dx +
+        \int_0^\pi x \cos nx \ dx
+    \right)
+    \\ &=&
+    \cfrac{1}{\pi} \left(
+        \int_{\pi}^0 u \cos (-nu) \ (-du) +
+        \int_0^\pi x \cos nx \ dx
+    \right) \quad (u:=-x)
+    \\ &=&
+    \cfrac{1}{\pi} \left(
+        \int_0^{\pi} u \cos nu \ du +
+        \int_0^\pi x \cos nx \ dx
+    \right)
+    \\ &=&
+    \cfrac{2}{\pi} \int_0^\pi x \cos nx \ dx
+    \\ &=&
+    \cfrac{2}{\pi}
+    \left[
+        \cfrac{x}{n} \sin nx +
+        \cfrac{1}{n^2} \cos nx
+    \right]_0^\pi
+    \\ &=&
+    \cfrac{2}{\pi}
+    \left\{
+        \left(
+            \cfrac{\pi}{n} \sin n\pi +
+            \cfrac{1}{n^2} \cos n\pi
+        \right) -
+        \left(
+            0 \sin 0 +
+            \cfrac{1}{n^2} \cos 0
+        \right)
+    \right\}
+    \\ &=&
+    \cfrac{2}{n^2\pi} \{ (-1)^n-1 \}
+    \\
+    \\
+    b_n &=& \cfrac{1}{\pi} \int_{-\pi}^\pi f(x) \sin nx \ dx
+    \\ &=&
+    \cfrac{1}{\pi} \left(
+        \int_{-\pi}^0 (-x) \sin nx \ dx +
+        \int_0^\pi x \sin nx \ dx
+    \right)
+    \\ &=&
+    \cfrac{1}{\pi} \left(
+        \int_{\pi}^0 u \sin (-nu) \ (-du) +
+        \int_0^\pi x \sin nx \ dx
+    \right) \quad (u:=-x)
+    \\ &=&
+    \cfrac{1}{\pi} \left(
+        - \int_0^{\pi} u \sin nu \ du +
+        \int_0^\pi x \sin nx \ dx
+    \right)
+    \\ &=& 0
+\end{eqnarray}
+$$
+
+途中、以下の部分積分の結果を用いた。
+
+$$
+\begin{eqnarray}
+    \int x\cos nx \ dx &=&
+    \cfrac{x}{n} \sin nx - \cfrac{1}{n} \int \sin nx\ dx
+    \\ &=&
+    \cfrac{x}{n} \sin nx + \cfrac{1}{n^2} \cos nx + C
+\end{eqnarray}
+$$
+
+$n=0$ については
+
+$$
+\begin{eqnarray}
+    a_0 &=& \cfrac{1}{\pi} \int_{-\pi}^\pi f(x) dx
+    \\ &=&
+    \cfrac{1}{\pi} \left(
+        \int_{-\pi}^0 (-x)\ dx + \int_0^\pi x\ dx
+    \right)
+    \\ &=&
+    \cfrac{1}{\pi} \left(
+        - \left[ \cfrac{x^2}{2} \right]_{-\pi}^0 +
+        \left[ \cfrac{x^2}{2} \right]_0^\pi
+    \right)
+    \\ &=&
+    \cfrac{1}{\pi} \left( \cfrac{\pi^2}{2} + \cfrac{\pi^2}{2} \right)
+    \\ &=& \pi
+\end{eqnarray}
+$$
+
+以上により
+
+$$
+\begin{eqnarray}
+    f(x) &=&
+    \cfrac{\pi}{2} +
+    \sum_{n=1}^\infty \cfrac{2}{n^2\pi} \{ (-1)^n-1 \} \cos nx
+    \\ &=&
+    \cfrac{\pi}{2} -
+    \cfrac{4}{\pi} \sum_{k=1}^\infty \cfrac{1}{(2k-1)^2} \cos(2k-1)x
+    \\ &=&
+    \cfrac{\pi}{2} -
+    \cfrac{4}{\pi} \left(
+        \cos x + \cfrac{1}{9} \cos 3x  + \cfrac{1}{25} \cos 5x + \cdots
+    \right)
+\end{eqnarray}
+$$
+
+![Figure_2](https://gist.github.com/user-attachments/assets/04f4a07d-7f90-4bc9-942f-95791d68ed17)
+
+cf. [描画に使ったプログラム](https://gist.github.com/hkawabata/b1a6a3d742ca510da7f7ccd625ae09c3#file-fourier-series-ex2-py)
 
 
 # フーリエ変換
@@ -383,6 +492,8 @@ f(x) = \begin{cases}
     -1\qquad &(1 \lt x \le 2)
 \end{cases}
 $$
+>
+> ![Figure_f1](https://gist.github.com/user-attachments/assets/ebfdba5a-3e0d-454f-98a3-19152ff88c42)
 
 $$
 \begin{eqnarray}
@@ -445,44 +556,9 @@ $$
 \end{eqnarray}
 $$
 
-| $f(x)$                                                                                             | $F(\omega)$                                                                                        |
-| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| ![Figure_f1](https://gist.github.com/user-attachments/assets/ebfdba5a-3e0d-454f-98a3-19152ff88c42) | ![Figure_g1](https://gist.github.com/user-attachments/assets/65478171-d1ef-4796-9120-02b2b59bbed6) |
+![Figure_g1](https://gist.github.com/user-attachments/assets/65478171-d1ef-4796-9120-02b2b59bbed6)
 
-```python
-import matplotlib.pyplot as plt
-import numpy as np
-
-x = np.linspace(-5, 5, 1000)
-y = np.zeros(x.shape)
-for i in range(len(x)):
-    if 0 <= x[i] < 1:
-        y[i] = 1
-    elif 1 <= x[i] < 2:
-        y[i] = -1
-
-d_omega = np.pi * 0.01
-omega = np.linspace(d_omega, d_omega*800, 1000)
-re = (2*np.sin(omega)-np.sin(2*omega)) / omega
-im = (2*np.cos(omega)-np.cos(2*omega)-1) / omega
-ps = 4 * (1-np.cos(omega))**2 / omega**2
-theta = np.where(re != 0, np.atan(im / re), np.asin(im))
-
-plt.xlabel('$x$', fontsize=15)
-plt.ylabel('$f(x)$', fontsize=15)
-plt.plot(x, y)
-plt.grid()
-plt.show()
-
-plt.xlabel(r'$\omega$', fontsize=15)
-plt.plot(omega, re, label=r'Re $F(\omega)$')
-plt.plot(omega, im, label=r'Im $F(\omega)$')
-plt.plot(omega, ps, label=r'Power Spectrum $|F(\omega)|^2$')
-plt.plot(omega, theta, label=r'$\theta(\omega)$')
-plt.grid()
-plt.legend()
-plt.show()
-```
+cf. [描画に使ったプログラム](https://gist.github.com/hkawabata/b1a6a3d742ca510da7f7ccd625ae09c3#file-fourier-transform-ex1-py)
 
 
 > 【例1.1】（例1を平行移動したもの）
@@ -493,6 +569,8 @@ f(x) = \begin{cases}
     -1\qquad &(0 \lt x \le 1)
 \end{cases}
 $$
+>
+> ![Figure_f1-1](https://gist.github.com/user-attachments/assets/4fba3304-a059-4e4e-aa8e-fa6b9b6a8bc8)
 
 $$
 \begin{eqnarray}
@@ -533,52 +611,177 @@ $$
 
 より $\theta(\omega) = \pi/2$
 
-| $f(x)$ | $F(\omega)$ |
-| -- | -- |
-| ![Figure_f1-1](https://gist.github.com/user-attachments/assets/4fba3304-a059-4e4e-aa8e-fa6b9b6a8bc8) | ![Figure_g1-1](https://gist.github.com/user-attachments/assets/dc57c8b9-f797-4a36-b820-7e1fa573ee11) |
+$\sin \theta(\omega)$ の計算では、$\mathrm{Im}\ F(\omega) = \cfrac{2}{\omega} (1-\cos\omega) \ge 0$ を用いた。
 
-```python
-import matplotlib.pyplot as plt
-import numpy as np
+![Figure_g1-1](https://gist.github.com/user-attachments/assets/dc57c8b9-f797-4a36-b820-7e1fa573ee11)
 
-x = np.linspace(-5, 5, 1000)
-y = np.zeros(x.shape)
-for i in range(len(x)):
-    if -1 <= x[i] < 0:
-        y[i] = 1
-    elif 0 <= x[i] < 1:
-        y[i] = -1
-
-d_omega = np.pi * 0.01
-omega = np.linspace(d_omega, d_omega*800, 1000)
-re = np.zeros(omega.shape)
-im = 2*(1-np.cos(omega)) / omega
-ps = 4 * (1-np.cos(omega))**2 / omega**2
-theta = np.full(omega.shape, np.pi/2)
-
-plt.xlabel('$x$', fontsize=15)
-plt.ylabel('$f(x)$', fontsize=15)
-plt.plot(x, y)
-plt.grid()
-plt.show()
-
-plt.xlabel(r'$\omega$', fontsize=15)
-plt.plot(omega, re, label=r'Re $F(\omega)$')
-plt.plot(omega, im, label=r'Im $F(\omega)$')
-plt.plot(omega, ps, label=r'Power Spectrum $|F(\omega)|^2$')
-plt.plot(omega, theta, label=r'$\theta(\omega)$')
-plt.grid()
-plt.legend()
-plt.show()
-```
+cf. [描画に使ったプログラム](https://gist.github.com/hkawabata/b1a6a3d742ca510da7f7ccd625ae09c3#file-fourier-transform-ex1-1-py)
 
 
+> 【例2】
+> 
+> $$
+f(x) = \begin{cases}
+    -x-\pi \qquad & \left( -\pi \le x \le -\cfrac{\pi}{2} \right) \\
+    x \qquad & \left( -\cfrac{\pi}{2} \lt x \le \cfrac{\pi}{2} \right) \\
+    -x+\pi \qquad & \left( \cfrac{\pi}{2} \lt x \le \pi \right)
+\end{cases}
+$$
+>
+> ![Figure_f2](https://gist.github.com/user-attachments/assets/07357f9c-18be-41c9-a7be-86f492fe1b3f)
 
-> 【例2】ガウス関数
+$$
+\begin{eqnarray}
+    F(\omega) &=& \int_{-\infty}^\infty f(x) e^{-i\omega x}\ dx
+    \\ &=&
+    \int_{-\pi}^{-\pi/2} (-x-\pi) e^{-i\omega x}\ dx +
+    \int_{-\pi/2}^{\pi/2} x e^{-i\omega x}\ dx +
+    \int_{\pi/2}^{\pi} (-x+\pi) e^{-i\omega x}\ dx
+\end{eqnarray}
+$$
+
+ここで
+
+$$
+\begin{eqnarray}
+    \int e^{-i\omega x}\ dx
+    &=&
+    -\cfrac{1}{i\omega}e^{-i\omega x} + C
+    \\ &=&
+    \cfrac{i}{\omega}e^{-i\omega x} + C
+    \\
+    \int x e^{-i\omega x}\ dx
+    &=&
+    \int x \cdot \cfrac{d}{dx} \left( \cfrac{i}{\omega}e^{-i\omega x} \right) dx
+    \\ &=&
+    x \cdot \cfrac{i}{\omega}e^{-i\omega x} -
+    \int \cfrac{dx}{dx} \cdot \cfrac{i}{\omega} e^{-i\omega x}\ dx
+    \\ &=&
+    x \cdot \cfrac{i}{\omega}e^{-i\omega x} -
+    \cfrac{i}{\omega} \cdot \int e^{-i\omega x}\ dx
+    \\ &=&
+    x \cdot \cfrac{i}{\omega}e^{-i\omega x} -
+    \cfrac{i}{\omega} \cdot \cfrac{i}{\omega}e^{-i\omega x} + C
+    \\ &=&
+    \left( i\cfrac{x}{\omega} + \cfrac{1}{\omega^2} \right)
+    e^{-i\omega x} + C
+\end{eqnarray}
+$$
+
+であるから、
+
+$$
+\begin{eqnarray}
+    F(\omega)
+    &=&
+    \int_{-\pi}^{-\pi/2} (-x-\pi) e^{-i\omega x}\ dx +
+    \int_{-\pi/2}^{\pi/2} x e^{-i\omega x}\ dx +
+    \int_{\pi/2}^{\pi} (-x+\pi) e^{-i\omega x}\ dx
+    \\　&=&
+    \left[
+        \cfrac{1}{\omega^2} (-i\omega x - 1 - i\omega\pi) e^{-i\omega x}
+    \right]_{-\pi}^{-\pi/2} +
+    \left[
+        \cfrac{1}{\omega^2} (i\omega x + 1) e^{-i\omega x}
+    \right]_{-\pi/2}^{\pi/2} +
+    \left[
+        \cfrac{1}{\omega^2} (-i\omega x - 1 + i\omega\pi) e^{-i\omega x}
+    \right]_{\pi/2}^\pi
+    \\　&=&
+    \cfrac{1}{\omega^2} \left\{
+        \left( -i\cfrac{\pi\omega}{2}-1 \right) e^{i\omega\pi/2} -
+        \left( -1 \right) e^{i\omega\pi} +
+        \left( i\cfrac{\pi\omega}{2}+1 \right) e^{-i\omega\pi/2} -
+        \left( -i\cfrac{\pi\omega}{2}+1 \right) e^{i\omega\pi/2} +
+        \left( -1 \right) e^{-i\omega\pi} -
+        \left( i\cfrac{\pi\omega}{2}-1 \right) e^{-i\omega\pi/2}
+    \right\}
+    \\　&=&
+    \cfrac{1}{\omega^2} \left(
+        e^{i\omega\pi} - 2e^{i\omega\pi/2} + 2e^{-i\omega\pi/2} - e^{-i\omega\pi}
+    \right)
+    \\　&=&
+    \cfrac{1}{\omega^2} \left\{
+        \left(e^{i\omega\pi} - e^{-i\omega\pi}\right) - 2 \left(e^{i\omega\pi/2} - 2e^{-i\omega\pi/2} \right)
+    \right\}
+    \\　&=&
+    \cfrac{i}{\omega^2} \left(
+        \sin \omega\pi - 2\sin\cfrac{\omega\pi}{2}
+    \right)
+\end{eqnarray}
+$$
+
+パワースペクトルは
+
+$$
+\vert F(\omega) \vert^2
+=
+\cfrac{1}{\omega^4} \left(
+    \sin \omega\pi - 2\sin\cfrac{\omega\pi}{2}
+\right)^2
+$$
+
+位相 $\theta(\omega)$ は
+
+$$
+\begin{eqnarray}
+    \cos\theta(\omega) &=& \cfrac{\mathrm{Re}\ F(\omega)}{\vert F(\omega) \vert} = 0 \\
+    \sin\theta(\omega) &=& \cfrac{\mathrm{Im}\ F(\omega)}{\vert F(\omega) \vert} = \begin{cases}
+        1 \qquad &\mathrm{if}\quad \mathrm{Im}\ F(\omega) \ge 0 \\
+        -1 \qquad &\mathrm{if}\quad \mathrm{Im}\ F(\omega) \lt 0
+    \end{cases}
+\end{eqnarray}
+$$
+
+ここで $\mathrm{Im}\ F(\omega)$ の符号について考える。
+
+$$
+\begin{eqnarray}
+    \mathrm{Im}\ F(\omega) &=&
+    \cfrac{1}{\omega^2} \left(
+        \sin \omega\pi - 2\sin\cfrac{\omega\pi}{2}
+    \right)
+    \\ &=&
+    \cfrac{1}{\omega^2} \left(
+        2\sin\cfrac{\omega\pi}{2}\cos\cfrac{\omega\pi}{2} - 2\sin\cfrac{\omega\pi}{2}
+    \right)
+    \\ &=&
+    \cfrac{2}{\omega^2} \sin\cfrac{\omega\pi}{2} \left(
+        \cos\cfrac{\omega\pi}{2} - 1
+    \right)
+\end{eqnarray}
+$$
+
+$\cos\cfrac{\omega\pi}{2} - 1 \le 0$ なので、$\mathrm{Im}\ F(\omega)$ の符号は $\sin\cfrac{\omega\pi}{2}$ の符号の逆となる。
+
+以上により、$k$ を任意の0以上の整数として
+
+$$
+\begin{eqnarray}
+    &\sin\theta(\omega) = \begin{cases}
+        1 \qquad &\mathrm{if}\quad 4k+2 \lt \omega \le 4k+4 \\
+        -1 \qquad &\mathrm{if}\quad 4k \lt \omega \le 4k+2
+    \end{cases} \\
+    \Longrightarrow\quad&
+    \theta(\omega) = \begin{cases}
+        \cfrac{\pi}{2} \qquad &\mathrm{if}\quad 4k+2 \lt \omega \le 4k+4 \\
+        -\cfrac{\pi}{2} \qquad &\mathrm{if}\quad 4k \lt \omega \le 4k+2
+    \end{cases}
+\end{eqnarray}
+$$
+
+![Figure_g2](https://gist.github.com/user-attachments/assets/7ba764c8-48ad-43ed-b816-37b740664acd)
+
+cf. [描画に使ったプログラム](https://gist.github.com/hkawabata/b1a6a3d742ca510da7f7ccd625ae09c3#file-fourier-transform-ex2-py)
+
+
+> 【例3】ガウス関数
 > 
 > $$
 f(x) = e^{-x^2}
 $$
+>
+> ![Figure_f3](https://gist.github.com/user-attachments/assets/4ff8901e-867d-4703-8807-c9ccd14cc5d6)
 
 $$
 \begin{eqnarray}
@@ -617,7 +820,7 @@ $$
 F(\omega) = F(0) e^{-\omega^2/2} = e^{-\omega^2/2} \int_{-\infty}^\infty e^{-x^2}\ dx
 $$
 
-この式の積分の部分はガウス関数の積分であるから、積分公式
+この式の積分の部分はガウス積分であるから、公式
 
 $$
 \int_{-\infty}^\infty e^{-x^2/2\sigma^2} dx = \sqrt{2\pi} \sigma
@@ -648,36 +851,8 @@ $$
 
 より $\theta(\omega) = 0$
 
-| $f(x)$ | $F(\omega)$ |
-| -- | -- |
-| ![Figure_f2](https://gist.github.com/user-attachments/assets/4ff8901e-867d-4703-8807-c9ccd14cc5d6) | ![Figure_g2](https://gist.github.com/user-attachments/assets/91263af4-e20d-4707-b6dc-767b9743479a) |
+![Figure_g3](https://gist.github.com/user-attachments/assets/96098200-9f6c-4152-9d35-019818439788)
 
-```python
-import matplotlib.pyplot as plt
-import numpy as np
+cf. [描画に使ったプログラム](https://gist.github.com/hkawabata/b1a6a3d742ca510da7f7ccd625ae09c3#file-fourier-transform-ex3-py)
 
-x = np.linspace(-5, 5, 1000)
-y = np.exp(-x*x)
 
-d_omega = np.pi * 0.01
-omega = np.linspace(d_omega, d_omega*800, 1000)
-re = np.sqrt(np.pi) * np.exp(-omega*omega/2)
-im = np.zeros(omega.shape)
-ps = np.pi * np.exp(-omega*omega)
-theta = np.full(omega.shape, np.pi/2)
-
-plt.xlabel('$x$', fontsize=15)
-plt.ylabel('$f(x)$', fontsize=15)
-plt.plot(x, y)
-plt.grid()
-plt.show()
-
-plt.xlabel(r'$\omega$', fontsize=15)
-plt.plot(omega, re, label=r'Re $F(\omega)$')
-plt.plot(omega, im, label=r'Im $F(\omega)$')
-plt.plot(omega, ps, label=r'Power Spectrum $|F(\omega)|^2$')
-plt.plot(omega, theta, label=r'$\theta(\omega)$')
-plt.grid()
-plt.legend()
-plt.show()
-```
