@@ -10,7 +10,7 @@ title-en: Fourier transform
 
 $$
 f(x+T) = f(x)
-\tag{1}
+\tag{1.1}
 $$
 
 このとき、$f(x)$ は以下ように三角関数の無限級数に展開できる：
@@ -22,18 +22,21 @@ f(x)
 \left(
     a_n \cos \cfrac{2n\pi x}{T} + b_n \sin \cfrac{2n\pi x}{T}
 \right)
-\tag{2}
+\tag{1.2}
 $$
 
-これを $f(x)$ の **フーリエ級数** という。係数 $a_n, b_n$ は
+これを $f(x)$ の **フーリエ級数** という。  
+これは、**周期関数 $f(x)$ が、（定数 $a_0/2$ を除いて）波長 $T, \cfrac{T}{2}, \cfrac{T}{3}, \cfrac{T}{4}, \cdots$ の正弦波（sin, cos）の重ね合わせで表されることを意味する。**
+
+係数 $a_n, b_n$ は
 
 $$
 \begin{eqnarray}
     a_n &=& \cfrac{2}{T} \int_0^T f(x) \cos \cfrac{2n\pi x}{T} dx
-    \tag{3}
+    \tag{1.3}
     \\
     b_n &=& \cfrac{2}{T} \int_0^T f(x) \sin \cfrac{2n\pi x}{T} dx
-    \tag{4}
+    \tag{1.4}
 \end{eqnarray}
 $$
 
@@ -44,7 +47,7 @@ $$
 
 フーリエ級数展開の係数 $a_n, b_n$ を導出する。
 
-$(2)$ の両辺に $\cos \cfrac{2k\pi x}{T}\ (k = 1,2,3,\cdots)$ をかけて $0\le x \le T$ の区間で積分すると、
+$(1.2)$ の両辺に $\cos \cfrac{2k\pi x}{T}\ (k = 1,2,3,\cdots)$ をかけて $0\le x \le T$ の区間で積分すると、
 
 $$
 \int_0^T f(x) \cos \cfrac{2k\pi x}{T} dx
@@ -83,14 +86,14 @@ $$
 
 $$
 a_k = \cfrac{2}{T} \int_0^T f(x) \cos \cfrac{2k\pi x}{T} dx
-\tag{3}
+\tag{1.3}
 $$
 
-次に $(2)$ の両辺に $\sin \cfrac{2k\pi x}{T}\ (k = 1,2,3,\cdots)$ をかけて $0\le x \le T$ の区間で積分すると、同様に計算して
+次に $(1.2)$ の両辺に $\sin \cfrac{2k\pi x}{T}\ (k = 1,2,3,\cdots)$ をかけて $0\le x \le T$ の区間で積分すると、同様に計算して
 
 $$
 b_k = \cfrac{2}{T} \int_0^T f(x) \sin \cfrac{2k\pi x}{T} dx
-\tag{4}
+\tag{1.4}
 $$
 
 最後に $(2)$ の両辺を $0\le x \le T$ の区間で積分すると、
@@ -105,7 +108,71 @@ $$
 a_0 = \cfrac{2}{T} \int_0^T f(x) dx
 $$
 
-この式は $(3)$ に $k=0$ を代入したものと一致するので、$(3)$ は $k=0$ の場合にも拡張できる。
+この式は $(1.3)$ に $k=0$ を代入したものと一致するので、$(1.3)$ は $k=0$ の場合にも拡張できる。
+
+## 振幅・位相・パワースペクトル
+
+フーリエ級数 $(1.2)$ において、波長 $T/n$ の正弦波について三角関数の合成を行うと、
+
+$$
+a_n \cos \cfrac{2n\pi x}{T} + b_n \sin \cfrac{2n\pi x}{T}
+=
+A_n \sin \left( \cfrac{2n\pi x}{T} + \theta_n \right)
+$$
+
+ここで $A_n, \theta_n$ は以下を満たす。
+
+$$
+\begin{eqnarray}
+    A_n &=& \sqrt{a_n^2 + b_n^2}
+    \tag{1.5}
+    \\
+    \cos \theta_n &=& \cfrac{a_n}{\sqrt{a_n^2 + b_n^2}},\
+    \sin \theta_n = \cfrac{b_n}{\sqrt{a_n^2 + b_n^2}}
+    \tag{1.6}
+\end{eqnarray}
+$$
+
+よって $(1.2)$ は
+
+$$
+f(x)
+=
+\cfrac{a_0}{2} + \sum_{n=1}^\infty A_n \sin \left( \cfrac{2n\pi x}{T} + \theta_n \right)
+$$
+
+とも書ける。この式から明らかなように、$A_n, \theta_n$ は $f(x)$ を構成する正弦波のうち、波長 $T/n$ のものの **振幅**、**位相** を表す。
+
+自然数 $n$ に対応して波長が異なる正弦波について振幅と位相を並べた **振幅スペクトル**、**位相スペクトル** を作成すれば、波長ごとの成分の強度や位相のズレを比較できる。
+
+また、波のエネルギーは振幅の二乗 $A_n^2 = a_n^2 + b_n^2$ に比例するので、これを **パワースペクトル** と呼んで分析に用いることもある。
+
+## Appendix: Gibbs 現象
+
+現実問題として、正弦波を無限回足して $f(x)$ を計算することはできないので、実用上は第 $M\ (\gg 1)$ 項までのフーリエ級数の和で近似することになる：
+
+$$
+f(x) \sim \cfrac{a_0}{2} + \sum_{n=1}^M
+\left(
+    a_n \cos \cfrac{2n\pi x}{T} + b_n \sin \cfrac{2n\pi x}{T}
+\right)
+$$
+
+$f(x)$ が不連続関数である場合、いくら $M$ を大きくしても、不連続点において高周波の正弦波の部分和が大きく振動する。その結果、実際の関数の値よりも大きな/小さな値を取ってしまう **Gibbs 現象** が観測される。
+
+以下に、例を示す。$k$ を任意の整数として、不連続関数
+
+$$
+f(x) = \begin{cases}
+    1\qquad &(2k \lt x \le 2k+1) \\
+    -1\qquad &(2k-1 \lt x \le 2k)
+\end{cases}
+$$
+
+をフーリエ級数展開して途中までの部分和のグラフを描くと以下のようになる。  
+高周波の成分まで和をとっても、不連続点において最大値 $1$, 最小値 $-1$ を超えてしまうことが分かる。
+
+![Gibbs](https://gist.github.com/user-attachments/assets/a2bbcc32-2ec2-4edf-bcef-6073e0cd1051)
 
 
 ## 計算例
@@ -167,6 +234,8 @@ $$
     \right)
 \end{eqnarray}
 $$
+
+無限級数の和を途中まで取ると、だんだん正しい形に近づいていくことが分かる：
 
 ![Figure_1](https://gist.github.com/user-attachments/assets/7f6aa347-5843-4258-a44e-5cdf358635a8)
 
@@ -295,6 +364,8 @@ $$
 \end{eqnarray}
 $$
 
+無限級数の和を途中まで取ると、だんだん正しい形に近づいていくことが分かる：
+
 ![Figure_2](https://gist.github.com/user-attachments/assets/04f4a07d-7f90-4bc9-942f-95791d68ed17)
 
 cf. [描画に使ったプログラム](https://gist.github.com/hkawabata/b1a6a3d742ca510da7f7ccd625ae09c3#file-fourier-series-ex2-py)
@@ -316,60 +387,27 @@ $$
 
 $$
 F(\omega) = \int_{-\infty}^\infty f(x) e^{-i\omega x}\ dx
-\tag{5}
+\tag{2.1}
 $$
 
 を $f(x)$ の **フーリエ変換** という。また、
 
 $$
 f(x) = \cfrac{1}{2\pi} \int_{-\infty}^\infty F(\omega) e^{i\omega x}\ d\omega
-\tag{6}
+\tag{2.2}
 $$
 
 により $F(\omega)$ から $f(x)$ を求めることもでき、これを **逆フーリエ変換** という。
 
-
-## パワースペクトルと位相
-
-一般にフーリエ変換 $F(\omega)$ は複素数の値を取る：
-
-$$
-F(\omega) = \mathrm{Re}\ F(\omega) + i\ \mathrm{Im}\ F(\omega)
-$$
-
-この複素数の絶対値の二乗
-
-$$
-\vert F(\omega) \vert^2 = (\mathrm{Re}\ F(\omega))^2 + (\mathrm{Im}\ F(\omega))^2
-\tag{7}
-$$
-
-を **パワースペクトル** と呼ぶ。
-
-また、複素数 $F(\omega)$ の **位相** を $\theta(\omega)$ とすると、
-
-$$
-F(\omega) = \vert F(\omega) \vert e^{i\theta(\omega)}
-$$
-
-すなわち
-
-$$
-\begin{cases}
-    \mathrm{Re}\ F(\omega) &=& \vert F(\omega) \vert \cos\theta(\omega) \\
-    \mathrm{Im}\ F(\omega) &=& \vert F(\omega) \vert \sin\theta(\omega)
-\end{cases}
-\tag{8}
-$$
-
-が成り立つ（複素数の一般的な性質）。
+フーリエ変換 $(2.1)$ は、フーリエ級数展開 $(1.2)$ の周期を無限大に拡張、かつ正弦波の波長（周波数）を連続値に拡張したものになっている。  
+つまり、**任意の絶対積分可能な関数 $f(x)$ が、あらゆる周波数 $\omega$ の正弦波（sin, cos）の重ね合わせで表されることを意味する。**
 
 
 ## 式の導出
 
 任意の関数 $f(x)$ は、周期 $T=\infty$ の周期関数と解釈できる。
 
-$f(x),\ \cos \cfrac{2n\pi x}{T},\ \sin \cfrac{2n\pi x}{T}$ がそれぞれ周期 $T$ の周期関数であるとき、積分区間 $\int_0^T$ を $\int_{-T/2}^{T/2}$ としても（1周期分の区間の積分なので）値は変わらず、$T=2L$ とおけば、$(2),(3),(4)$ は以下のように書き換えられる：
+$f(x),\ \cos \cfrac{2n\pi x}{T},\ \sin \cfrac{2n\pi x}{T}$ がそれぞれ周期 $T$ の周期関数であるとき、積分区間 $\int_0^T$ を $\int_{-T/2}^{T/2}$ としても（1周期分の区間の積分なので）値は変わらず、$T=2L$ とおけば、$(1.2),(1.3),(1.4)$ は以下のように書き換えられる：
 
 $$
 \begin{eqnarray}
@@ -377,13 +415,13 @@ $$
     \left(
         a_n \cos \cfrac{n\pi x}{L} + b_n \sin \cfrac{n\pi x}{L}
     \right)
-    \tag{2'}
+    \tag{1.2'}
     \\
     a_n &=& \cfrac{1}{L} \int_{-L}^L f(x) \cos \cfrac{n\pi x}{L} dx
-    \tag{3'}
+    \tag{1.3'}
     \\
     b_n &=& \cfrac{1}{L} \int_{-L}^L f(x) \sin \cfrac{n\pi x}{L} dx
-    \tag{4'}
+    \tag{1.4'}
 \end{eqnarray}
 $$
 
@@ -469,17 +507,73 @@ $$
 
 $$
 F(\omega) := \int_{-\infty}^\infty f(x) e^{-i\omega x}\ dx
-\tag{5}
+\tag{2.1}
 $$
 
 と置けば（※ ここでは積分変数を $u \to x$ と書き換えている）
 
 $$
 f(x) = \cfrac{1}{2\pi} \int_{-\infty}^\infty F(\omega) e^{i\omega x}\ d\omega
-\tag{6}
+\tag{2.2}
 $$
 
-となり、フーリエ変換、逆フーリエ変換の式を得る。
+となり、フーリエ変換 $(2.1)$、逆フーリエ変換 $(2.2)$ を得る。
+
+
+## 振幅・位相・パワースペクトル
+
+オイラーの公式より
+
+$$
+e^{i\omega x} = \cos \omega x + i \sin \omega x
+$$
+
+であるから、逆フーリエ変換の式 $(2.2)$ の被積分関数 $F(\omega) e^{i\omega x}$ は、元の関数 $f(x)$ を構成する正弦波のうち、周波数 $\omega$ に対応する成分を表す。
+
+$$
+\vert e^{i\omega x} \vert = \cos^2 \omega x + \sin^2 \omega x = 1 \\
+$$
+
+なので、係数 $F(\omega)$（= 元の関数のフーリエ変換）は正弦波の振幅に相当する。
+
+$F(\omega)$ の値は一般に複素数：
+
+$$
+F(\omega) = \mathrm{Re}\ F(\omega) + i\ \mathrm{Im}\ F(\omega)
+$$
+
+**振幅スペクトル** $A(\omega)$ はこの絶対値を取れば得られる：
+
+$$
+A(\omega) = \vert F(\omega) \vert = \sqrt{
+    (\mathrm{Re}\ F(\omega))^2 + (\mathrm{Im}\ F(\omega))^2
+} \tag{2.3}
+$$
+
+フーリエ級数展開のときと同様に、振幅を二乗すれば **パワースペクトル** を得る：
+
+$$
+\vert F(\omega) \vert^2 = A(\omega)^2 = (\mathrm{Re}\ F(\omega))^2 + (\mathrm{Im}\ F(\omega))^2
+\tag{2.4}
+$$
+
+また、正弦波の **位相スペクトル** は複素数 $F(\omega)$ の位相 $\theta(\omega)$ に一致し、
+
+$$
+F(\omega) = \vert F(\omega) \vert e^{i\theta(\omega)}
+$$
+
+すなわち
+
+$$
+\begin{cases}
+    \mathrm{Re}\ F(\omega) &=& \vert F(\omega) \vert \cos\theta(\omega) \\
+    \mathrm{Im}\ F(\omega) &=& \vert F(\omega) \vert \sin\theta(\omega)
+\end{cases}
+\tag{2.5}
+$$
+
+が成り立つ。
 
 
 ## 計算例
@@ -609,7 +703,7 @@ $$
 \end{eqnarray}
 $$
 
-より $\theta(\omega) = \pi/2$
+より $\theta(\omega) = \pi/2$ となり、例1とは位相だけが異なることが分かる。
 
 $\sin \theta(\omega)$ の計算では、$\mathrm{Im}\ F(\omega) = \cfrac{2}{\omega} (1-\cos\omega) \ge 0$ を用いた。
 
