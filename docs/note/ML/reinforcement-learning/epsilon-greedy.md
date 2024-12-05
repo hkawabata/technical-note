@@ -88,7 +88,6 @@ total reward : 6406
 
 ## total regret の増加が鈍化することを確認
 
-
 {% gist 3294454bfd0c3f0930a253e7a8b63471 ~exp-total-regret.py %}
 
 ![eps-greedy-regret](https://gist.github.com/assets/13412823/2a863e66-e582-471b-b45b-151ac2071959)

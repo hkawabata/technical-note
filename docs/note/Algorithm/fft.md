@@ -6,6 +6,8 @@ title: 高速フーリエ変換（FFT）
 
 ## フーリエ変換
 
+詳細は [フーリエ変換](../Math/calculus/fourier-transform.md) を参照。
+
 周期関数に限らず、任意の関数 $f(t)$ は、正弦波（$A \sin{\omega t}$ や $A \cos{\omega t}$。$A$, $\omega$ は定数）の和で表現できる（数学的な証明はここでは行わない）。  
 $t$ を時間 [s] とすれば
 - $\omega$ は波の角周波数 [rad/s]（周波数 $f$ [Hz] との関係は $\omega = 2\pi f$）
@@ -25,19 +27,6 @@ $t$ を時間 [s] とすれば
 > 
 > $$f(t) = \displaystyle \cfrac{1}{2\pi} \int_{-\infty}^{\infty} F(\omega) e^{i\omega t} \,d\omega \tag{2}$$
 
-> **【NOTE】逆変換の式の係数**
->
-> フーリエ逆変換 $(2)$ の係数 $1/2\pi$ は、計算上の辻褄合わせ。  
-> この係数なしで積分を行うと、$f(t)$ を変換した後に逆変換したとき、元の関数 $f(t)$ ではなく $2\pi f(t)$ になってしまうので、$1/2\pi$ をかけて元に戻るようにしてある。  
-> つまり、変換の係数と逆変換の係数の積が $1/2\pi$ になっていれば何でも良く、書籍によっては以下のように定義されている：
-> 
-> $$
-\begin{eqnarray}
-    F(\omega) &=& \cfrac{1}{\sqrt{2\pi}} \displaystyle \int_{-\infty}^{\infty} f(t) e^{-i\omega t} \,dt
-    \\
-    f(t) &=& \cfrac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} F(\omega) e^{i\omega t} \,d\omega
-\end{eqnarray}
-$$
 
 **【例】**
 

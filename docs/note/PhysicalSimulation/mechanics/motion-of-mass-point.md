@@ -241,4 +241,16 @@ v3 = (-M1 * v1 - M2 * v2) / M3
 ![velocity1percent](https://gist.github.com/user-attachments/assets/d46c7467-ee68-454b-a4c3-9748368154cf)
 
 
+## Swing-by
 
+```python
+M = 1e20
+m = 1.0
+
+x_M = np.array([0, 0])
+x_m = np.array([-100.0, 80.0])
+v_M = np.array([0, 1.0])
+v_m = np.array([10.0, 10.0])
+
+
+```

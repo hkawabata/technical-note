@@ -29,6 +29,59 @@ $$
 
 # 正規分布の性質
 
+## 分布の形状と標準偏差
+
+> **【定例】** $N(\mu,\sigma^2)$ の正規分布に従う確率変数 $x$ において、
+> - $x=\mu$ はグラフの最大値を取る
+> - $x = \mu \pm \sigma$ はグラフの変曲点となる
+
+**【証明】**
+
+確率変数 $X$ が正規分布 $N(\mu, \sigma^2)$ に従うとすると、その確率密度関数は
+
+$$
+f(x) = \cfrac{1}{\sqrt{2\pi}\sigma} \exp{\left( - \cfrac{(x-\mu)^2}{2\sigma^2} \right)}
+$$
+
+1階微分、2階微分を求めると
+
+$$
+\begin{eqnarray}
+    f'(x)
+    &=&
+    \cfrac{1}{\sqrt{2\pi}\sigma}
+    \left( - \cfrac{x-\mu}{\sigma^2} \right)
+    \exp{\left( - \cfrac{(x-\mu)^2}{2\sigma^2} \right)}
+    \\
+    f''(x) &=&
+    \cfrac{1}{\sqrt{2\pi}\sigma}
+    \left\{ \cfrac{-1}{\sigma^2} \exp{\left( - \cfrac{(x-\mu)^2}{2\sigma^2} \right)} +
+    \left( - \cfrac{x-\mu}{\sigma^2} \right)^2
+    \exp{\left( - \cfrac{(x-\mu)^2}{2\sigma^2} \right)}
+    \right\}
+    \\ &=&
+    \cfrac{1}{\sqrt{2\pi}\sigma}
+    \cfrac{(x-\mu)^2-\sigma^2}{\sigma^4}
+    \exp{\left( - \cfrac{(x-\mu)^2}{2\sigma^2} \right)}
+    \\ &=&
+    \cfrac{1}{\sqrt{2\pi}\sigma}
+    \cfrac{\left\{x-(\mu+\sigma)\right\} \left\{x-(\mu-\sigma)\right\}}{\sigma^4}
+    \exp{\left( - \cfrac{(x-\mu)^2}{2\sigma^2} \right)}
+\end{eqnarray}
+$$
+
+したがって $f'(x),f''(x)$ の符号を調べて増減表を書くと
+
+| $x$      | $-\infty$ | $\cdots$ | $\mu-\sigma$ | $\cdots$ | $\mu$                 | $\cdots$ | $\mu+\sigma$ | $\cdots$ | $\infty$ |
+| :------- | --------- | -------- | :----------- | -------- | --------------------- | -------- | ------------ | -------- | -------- |
+| $f'(x)$  | $0$       | $+$      | $+$          | $+$      | $0$                   | $-$      | $-$          | $-$      | $0$      |
+| $f''(x)$ | $0$       | $+$      | $0$          | $-$      | $-$                   | $-$      | $0$          | $+$      | $0$      |
+| $f(x)$   | $0$       |          |              |          | $1/\sqrt{2\pi}\sigma$ |          |              |          | $0$      |
+
+増減表より $f(x)$ は $x \lt \mu$ で単調増加、$\mu \lt x$ で単調減少なので、$x=\mu$ で最大値を取る。  
+また、$x=\mu \pm \sigma$ の前後で $f''(x)$ の符号が変わるため、$x=\mu \pm \sigma$ は変曲点となる。
+
+
 ## 中心極限定理
 
 推定や検定で利用する、統計学上非常に重要な定理。  
