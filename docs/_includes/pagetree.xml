@@ -992,7 +992,7 @@
                 <a href="https://hkawabata.github.io/technical-note/note/ML/reinforcement-learning/epsilon-greedy">ε-greedy アルゴリズム</a>
               </li>
               <li>
-                <a href="https://hkawabata.github.io/technical-note/note/ML/reinforcement-learning/temporal-difference">TD 法</a>
+                <a href="https://hkawabata.github.io/technical-note/note/ML/reinforcement-learning/temporal-difference">TD 法・Monte Carlo 法</a>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/ML/reinforcement-learning/policy-iteration">方策反復法</a>
