@@ -148,6 +148,8 @@ $$
 
 # 実装
 
+迷路を走破して報酬を得る例。
+
 {% gist 75c0f582b9d50c1944c664916ca6bf00 ~settings.py %}
 
 {% gist 75c0f582b9d50c1944c664916ca6bf00 ~policy-iteration-maze.py %}

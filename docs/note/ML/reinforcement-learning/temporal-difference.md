@@ -100,3 +100,28 @@ $$
     &=& 1
 \end{eqnarray}
 $$
+
+
+# アルゴリズム・実装
+
+{% gist 101d40f048a0db28c0b01945cbb40e01 ~settings.py %}
+
+
+## TD 法
+
+{% gist 101d40f048a0db28c0b01945cbb40e01 ~agent.py %}
+
+{% gist 101d40f048a0db28c0b01945cbb40e01 ~agent-td.py %}
+
+![td](https://gist.github.com/user-attachments/assets/8edb08df-d781-4bc2-813a-77bf3d7b0960)
+
+
+## Monte Carlo 法
+
+{% gist 101d40f048a0db28c0b01945cbb40e01 ~agent-monte-carlo.py %}
+
+![monte-carlo](https://gist.github.com/user-attachments/assets/d082a336-b415-41d1-b82e-ed0eb9f41af4)
+
+
+## TD (λ) 法
+
