@@ -19,7 +19,7 @@ $$
 \end{eqnarray}
 $$
 
-ここで $a,b$ は定数、$\varepsilon_t, \zeta_t$ は[ホワイトノイズ](white-noise.md)。
+ここで $a,b$ は定数（単位根過程のため定常過程ではない。すなわち $a,b\ne 0$）、$\varepsilon_t, \zeta_t$ は[ホワイトノイズ](white-noise.md)。
 
 この漸化式を過去にさかのぼっていくと、
 $$

@@ -5,7 +5,7 @@ title-en: GARCH model
 
 # 概要
 
-[ARCH モデル](arch-model.md)を一般化した以下のモデルを **GARCH モデル** (= Generalized ARCH) と呼び、$\mathrm{GARCH}(p,q)$ で表す。
+時系列データ $r_t$ について、[ARCH モデル](arch-model.md)を一般化した以下のモデルを **GARCH モデル** (= Generalized ARCH) と呼び、$\mathrm{GARCH}(p,q)$ で表す。
 
 $$
 \begin{eqnarray}

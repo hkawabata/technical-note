@@ -7,7 +7,7 @@ title-en: ARCH model
 
 ## ARCH モデル
 
-以下を満たす時系列データモデルを **ARCH モデル** と呼び、$\mathrm{ARCH}(p)$ で表す。  
+時系列データ $r_t$ について、以下を満たすモデルを **ARCH モデル** と呼び、$\mathrm{ARCH}(p)$ で表す。  
 = AutoRegressive Conditional Heteroscedasticity
 
 $$

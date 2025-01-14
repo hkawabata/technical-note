@@ -51,7 +51,7 @@ $$
 V(s_t) \gets V(s_t) + \alpha \left\{ r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \gamma^3 r_{t+4} + \cdots + \gamma^{n-1} r_{t+n} + \gamma^n V(s_{t+n}) - V(s_t) \right\}
 $$
 
-により価値評価 $V(s)$ を更新する手法を **Multistep Learning** という。  
+により価値評価 $V(s)$ を更新する手法を **Multistep Learning** という。
 
 
 ## Monte Carlo 法
@@ -125,3 +125,4 @@ $$
 
 ## TD (λ) 法
 
+（ToDo）
