@@ -119,14 +119,12 @@ if st.checkbox('My Checkbox'):
 
 opt_radio = st.radio(
     'My Radio Button', 
-    ['A', 'B', 'C'],
-    default='B'
+    ['A', 'B', 'C']
 )
 
 opt_select = st.selectbox(
     'My Select Box', 
-    ['A', 'B', 'C'],
-    default='B'
+    ['A', 'B', 'C']
 )
 
 opt_multiselect = st.multiselect(
@@ -176,31 +174,30 @@ st.pyplot(fig)
 ![スクリーンショット 2025-01-14 15 16 54](https://gist.github.com/user-attachments/assets/78be530f-35b9-4e2c-bccb-c9025011d0b3)
 
 
-## データの保持
-
-streamlit はボタンを押したときなどのタイミングで全てのデータがリセットされるため、通常の変数の値は保持されない。  
-→ 例えば「ボタンを押すたびにカウンタを1大きくする」といったことができない。
-
-これを解決するには `session_state` の機能を使う：
+## 地図
 
 ```python
-import streamlit as st
-
-# 変数の定義（ボタンが押された回数）
-count = 0
-if 'count' not in st.session_state:
-    st.session_state.count = 0
-
-# ボタンを表示し、クリックされた回数を表示する
-if st.button('クリックしてください'):
-    count += 1
-    st.session_state.count += 1
-
-st.write(f'クリック回数: {count}（通常の変数）')
-st.write(f'クリック回数: {st.session_state.count}（session_state）')
+# 緯度経度のフィールド名は lat, lon でも可
+points = [
+    {'latitude': 35.689521, 'longitude': 139.691704},  # 東京都
+    {'latitude': 34.686316, 'longitude': 135.519711}   # 大阪府
+]
+st.map(points)
 ```
 
-![スクリーンショット 2025-01-14 15 25 10](https://gist.github.com/user-attachments/assets/b889c80e-f9f5-47f7-9dd2-50380537bf29)
+![スクリーンショット 2025-01-16 10 28 16](https://gist.github.com/user-attachments/assets/35be4807-49e4-445b-abcd-271a3589331a)
+
+
+## Latex 数式
+
+```python
+st.latex(r'''
+    \sum_{k=0}^{n-1} a r^k =
+    a \left(\frac{1-r^{n}}{1-r}\right)
+''')
+```
+
+![スクリーンショット 2025-01-24 19 14 29](https://gist.github.com/user-attachments/assets/000f959b-32d7-4f07-95ca-07e49d5adf43)
 
 
 ## コンテナ
@@ -238,6 +235,17 @@ if col3.button('ボタン'):
 ```
 
 ![スクリーンショット 2025-01-14 22 22 23](https://gist.github.com/user-attachments/assets/4df3c7a6-777b-4020-9ed5-fda311086f35)
+
+
+## 水平区切り線
+
+```python
+st.write('AAAAA')
+st.divider()
+st.write('BBBBB')
+```
+
+![スクリーンショット 2025-01-24 19 14 36](https://gist.github.com/user-attachments/assets/8d62104e-81d9-41b9-b7ae-8e04f5ea5856)
 
 
 ## サイドバー
@@ -304,3 +312,125 @@ if btn.button('submit'):
     widget_out.write(num)
     btn.empty()
 ```
+
+
+# TIPS
+
+## ページ全体の設定
+
+`streamlit.set_page_config` を使えば、
+- ブラウザタブに表示されるページタイトル
+- ファビコン
+- 画面の表示領域の幅
+- サイドバーの開閉の初期状態
+
+などを設定できる。
+
+```python
+import streamlit as st
+
+st.set_page_config(
+    page_title='My Sample Page',
+    page_icon='📕',
+    layout='wide',
+    initial_sidebar_state='expanded',
+    menu_items={
+        'Get Help': 'https://hkawabata.github.io/technical-note/note/Language/Python/Library/streamlit',
+        'About': 'https://streamlit.io/',
+        'Report a bug': 'http://example.com'
+    }
+)
+```
+
+
+## データの保持
+
+streamlit はボタンを押したときなどのタイミングで全てのデータがリセットされるため、通常の変数の値は保持されない。  
+→ 例えば「ボタンを押すたびにカウンタを1大きくする」といったことができない。
+
+これを解決するには `session_state` の機能を使う：
+
+```python
+import streamlit as st
+
+# 変数の定義（ボタンが押された回数）
+count = 0
+if 'count' not in st.session_state:
+    st.session_state.count = 0
+
+# ボタンを表示し、クリックされた回数を表示する
+if st.button('クリックしてください'):
+    count += 1
+    st.session_state.count += 1
+
+st.write(f'クリック回数: {count}（通常の変数）')
+st.write(f'クリック回数: {st.session_state.count}（session_state）')
+```
+
+![スクリーンショット 2025-01-14 15 25 10](https://gist.github.com/user-attachments/assets/b889c80e-f9f5-47f7-9dd2-50380537bf29)
+
+
+## キャッシュ
+
+```python
+import streamlit as st
+import time
+import datetime
+
+@st.cache_resource
+def get_result_of_heavy_process(arg):
+    # 時間がかかる処理
+    time.sleep(1)
+    return arg * 10
+
+def try_once(arg):
+    t = datetime.datetime.now()
+    r = get_result_of_heavy_process(arg)
+    print(f'result = {r}, ', datetime.datetime.now() - t)
+
+try_once(4)
+try_once(4)
+try_once(7)
+```
+
+```
+result = 40,  0:00:01.006119
+result = 40,  0:00:00.000730  # キャッシュが効いてすぐに結果が返る
+result = 70,  0:00:01.007979  # 初めての引数で関数を呼び出したので3秒かかる
+```
+
+次に `ttl`（キャッシュの有効時間）を設定してみる：
+
+```python
+@st.cache_resource(ttl='5s')   # 5秒でキャッシュが切れる設定
+def get_result_of_heavy_process(arg):
+    # 時間がかかる処理
+    time.sleep(1)
+    return arg * 10
+
+def try_once(arg):
+    t = datetime.datetime.now()
+    r = get_result_of_heavy_process(arg)
+    print(f'result = {r}, ', datetime.datetime.now() - t)
+
+try_once(4)
+try_once(4)
+time.sleep(6)
+try_once(4)
+time.sleep(3)
+try_once(4)
+time.sleep(3)
+try_once(4)
+```
+
+```
+result = 40,  0:00:01.009000
+result = 40,  0:00:00.002509  # キャッシュが効いてすぐに結果が返る
+result = 40,  0:00:01.007050  # 有効期限切れで再処理
+result = 40,  0:00:00.000667  # まだ有効期限内なのですぐ結果が返る
+result = 40,  0:00:01.006122  # 有効期限切れで再処理
+```
+
+→ キャッシュされた値への再アクセスがあっても、キャッシュの残り時間はリセットされない模様
+
+他にも `st.cache_resource(max_entries=n)` とすると、キャッシュする件数を `n` 件に制限できる（これを超えると古いものから削除）
