@@ -8,6 +8,8 @@ title-en: TD-Learning, Monte Carlo Method
 
 # 理論（考え方）
 
+強化学習全般の前提知識については[強化学習概観](reinforcement-learning-overview.md)を参照。
+
 ## TD 法
 
 ある時点において、各状態 $s$ の価値評価の見積もりを $V(s)$ とする。$V(s)$ は状態 $s$ から行動したときに得られる報酬の期待値（の見積もり）を表す。
