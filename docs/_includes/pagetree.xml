@@ -55,6 +55,9 @@
                 </ul>
               </li>
               <li>
+                <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/dtw">DTW</a>
+              </li>
+              <li>
                 <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/spurious-regression">見せかけの回帰</a>
               </li>
               <li>
@@ -62,6 +65,12 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/unit-root-process">単位根過程</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/shape-based-distance">Shape-Based Distance (SBD)</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/piecewise-aggregate-approximation">Piecewise Aggregate Approximation (PAA)</a>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/DataMining/time-series/stationary-process">定常過程</a>
@@ -124,6 +133,9 @@
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/Management/planned-happenstance-theory">計画的偶発性理論</a>
+          </li>
+          <li>
+            <a href="https://hkawabata.github.io/technical-note/note/Management/leadership">リーダーシップ</a>
           </li>
           <li>
             <a href="https://hkawabata.github.io/technical-note/note/Management/retrospective">振り返り</a>
@@ -201,6 +213,9 @@
                   </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/matplotlib">matplotlib</a>
+                  </li>
+                  <li>
+                    <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/streamlit">streamlit.md</a>
                   </li>
                   <li>
                     <a href="https://hkawabata.github.io/technical-note/note/Language/Python/Library/fabric">Fabric</a>
@@ -417,6 +432,9 @@
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Algorithm/graph/dijkstra-algorithm">ダイクストラ法</a>
               </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/graph/bellman–ford-algorithm">ベルマンフォード法</a>
+              </li>
             </ul>
           </li>
           <li>
@@ -446,6 +464,15 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Algorithm/differential-equation/euler-method">オイラー法</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <span>information-retrieval</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/information-retrieval/inverted-index">転置インデックス</a>
               </li>
             </ul>
           </li>
