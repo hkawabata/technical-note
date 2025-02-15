@@ -5,7 +5,10 @@ title: ダイクストラ法
 
 # 問題定義
 
-エッジが重みを持つグラフ構造において、ある頂点から別の頂点への最短経路を求めたい。
+エッジが重みを持つグラフ構造において、ある頂点から別の頂点への最短経路を求めたい。  
+ただし、**各エッジの重みは0以上（通ることでコストが下がる経路は存在しない）** とする。
+
+※ 負の重みを持つ場合、グラフが有向グラフであれば[ベルマンフォード法](bellman–ford-algorithm.md)を適用できる。
 
 # アルゴリズム
 
@@ -79,14 +82,14 @@ n_last_fix = 'A'  # updated
 
 ## 【2】最後に確定したノードの隣接ノードの情報を更新
 
-最短経路が未確定のノードのうち、`n_last_fix` の隣接ノード `n` それぞれについて、以下のルールで `shortest_weight`, `shortest_path` を更新する
-- $d_\mathrm{old}$：現時点でわかっているそのノードまでの最短距離 `shortest_weight[n]`
+最短経路が未確定のノードのうち、`n_last_fix` の隣接ノード `n_next` それぞれについて、以下のルールで `shortest_weight`, `shortest_path` を更新する
+- $d_\mathrm{old}$：現時点でわかっているスタートからそのノードまでの最短距離 `shortest_weight[n_next]`
 - $d_\mathrm{new}$：以下の2つの和
     - 確定済みの `n_last_fix` までの最短距離`shortest_weight[n_last_fix]`
-    - `n_last_fix` から `n` までの距離
-- $d_\mathrm{old} \lt d_\mathrm{old}$ なら最短距離・最短経路を更新：
-    - `shortest_weight[n] = d_new` 
-    - `shortest_path[n] = shortest_path[n_last_fix] + n` 
+    - `n_last_fix` から `n_next` までの距離
+- $d_\mathrm{new} \lt d_\mathrm{old}$ なら最短距離・最短経路を更新：
+    - `shortest_weight[n_next] = d_new` 
+    - `shortest_path[n_next] = shortest_path[n_last_fix] + n_next` 
 
 ```python
 shortest_weight = {
@@ -276,6 +279,8 @@ from C to F: weight=2, path=['C', 'F']
 
 ツリー状である時
 
+<img width="400" alt="Graph02" src="https://user-images.githubusercontent.com/13412823/271907032-d193e110-022e-4d2a-9f8b-846418f4904d.png">
+
 ```python
 graph = {
     # from, to, weight
@@ -289,8 +294,6 @@ graph = {
 }
 show_graph(graph)
 ```
-
-<img width="400" alt="Graph02" src="https://user-images.githubusercontent.com/13412823/271907032-d193e110-022e-4d2a-9f8b-846418f4904d.png">
 
 ```python
 >>> dijkstra(graph, 'A')
@@ -316,6 +319,8 @@ from E to H: weight=17, path=['E', 'B', 'A', 'C', 'H']
 
 グラフが分断されている時
 
+<img width="500" alt="Graph03" src="https://user-images.githubusercontent.com/13412823/271907037-e169680f-6767-4df7-8102-4601f64e9f8c.png">
+
 ```python
 graph = {
     # from, to, weight
@@ -329,8 +334,6 @@ graph = {
 }
 show_graph(graph)
 ```
-
-<img width="500" alt="Graph03" src="https://user-images.githubusercontent.com/13412823/271907037-e169680f-6767-4df7-8102-4601f64e9f8c.png">
 
 ```python
 >>> dijkstra(graph, 'A')
