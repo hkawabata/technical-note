@@ -251,9 +251,13 @@ n_last_fix = 'E'  # updated
 ![図8](https://user-images.githubusercontent.com/13412823/272174887-d189076c-bc26-45e4-b1c2-6ea9fab3e8a8.png)
 
 
-# 実装
+# 実装・動作確認
+
+## 実装
 
 {% gist 0ad400c415ed0b29812559d24f5e5082 20231004_dijkstra.py %}
+
+## 動作確認
 
 前述の「処理の流れ」で扱ったグラフのとき：
 
@@ -354,3 +358,88 @@ from E to E: weight=0, path=['E']
 from E to F: weight=4, path=['E', 'F']
 from E to G: weight=5, path=['E', 'F', 'G']
 ```
+
+
+# 計算量
+
+- 1回のループで最短経路が1つ確定するので、ノード数を $V$ とすると、このループを $V$ 回繰り返す必要があるため、その計算量は $O(V)$
+- また、1つの最短経路が確定すると、そのノードから接続された隣接ノードまでの距離を更新する必要があり、隣接ノードは最大で $V-1$ 個あるため、この計算量も $O(V)$
+
+以上により、ダイクストラ法の計算量は $O(V^2)$ となる。
+
+※ 優先度付きキューを利用する改良版だと、$O((E+V) \log V)$（$E$ はエッジ数）に削減できるらしい（要調査）
+
+```python
+import itertools
+import datetime
+import random
+import numpy as np
+from matplotlib import pyplot as plt
+
+def gen_graph(n_node, n_edge):
+    nodes = np.arange(n_node)
+    pairs = np.array(list(itertools.combinations(nodes, 2)))
+    idx = np.random.choice(range(len(pairs)), n_edge, replace=False)
+    graph = set()
+    for f, t in pairs[idx]:
+        graph.add((f, t, np.random.rand()))
+    return graph
+
+def simulate_various_n_edge(T=10):
+    plt.figure(figsize=(9, 8))
+    plt.subplots_adjust(wspace=0.4, hspace=0.6)
+    ns_node = [100, 400, 1000]
+    for i in range(len(ns_node)):
+        n_node = ns_node[i]
+        ns_edge = [int(n) for n in np.linspace(n_node, n_node*(n_node-1)/4, 10)]
+        dt_mean, dt_std = [], []
+        for n_edge in ns_edge:
+            buff = []
+            for _ in range(T):
+                graph = gen_graph(n_node, n_edge)
+                n_start = random.choice([f for f, _, _ in graph])
+                start = datetime.datetime.now()
+                dijkstra(graph, n_start)
+                buff.append((datetime.datetime.now()-start).total_seconds())
+            dt_mean.append(np.mean(buff))
+            dt_std.append(np.std(buff))
+        plt.subplot(len(ns_node), 1, i+1)
+        plt.title(r'$N_{{node}}={}$'.format(n_node))
+        plt.errorbar(ns_edge, dt_mean, dt_std, color='black')
+        plt.scatter(ns_edge, dt_mean)
+        plt.grid()
+        if i == len(ns_node)//2:
+            plt.ylabel('Time [seconds]')
+        elif i == len(ns_node)-1:
+            plt.xlabel(r'$N_{{edge}}$')
+    plt.show()
+
+def simulate_complete_graph(T=10):
+    ns_node = [int(n) for n in np.linspace(100, 1000, 10)]
+    dt_mean, dt_std = [], []
+    for n_node in ns_node:
+        buff = []
+        for _ in range(T):
+            graph = gen_graph(n_node, int(n_node*(n_node-1)/2))
+            n_start = random.choice([f for f, _, _ in graph])
+            start = datetime.datetime.now()
+            dijkstra(graph, n_start)
+            buff.append((datetime.datetime.now()-start).total_seconds())
+        dt_mean.append(np.mean(buff))
+        dt_std.append(np.std(buff))
+    plt.errorbar(ns_node, dt_mean, dt_std, color='black')
+    plt.scatter(ns_node, dt_mean)
+    plt.xlabel(r'$N_{{node}}$')
+    plt.ylabel('Time [seconds]')
+    plt.grid()
+    plt.show()
+```
+
+ノード数固定でエッジ数を変化させる：
+
+![Figure_2](https://gist.github.com/user-attachments/assets/52090d9d-d963-4c1f-972b-42f8c11a734d)
+
+完全グラフ（全てのノードが全ての他のノードとエッジで接続）のノード数を変化させる：
+
+![Figure_1](https://gist.github.com/user-attachments/assets/69494aeb-2595-4d31-8363-fbf1bfafc44e)
+

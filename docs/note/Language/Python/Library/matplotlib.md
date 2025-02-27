@@ -53,6 +53,23 @@ plt.show()
 ![](https://user-images.githubusercontent.com/13412823/100530912-30e97e80-323b-11eb-9799-9ac22091d71a.png)
 
 
+### エラーバー
+
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+
+N = 100
+x = np.arange(N)*0.02
+y = x ** 2
+yerr = np.random.rand(N)
+plt.errorbar(x, y, yerr)
+plt.show()
+```
+
+![error](https://gist.github.com/user-attachments/assets/67f23e99-90f6-4432-9f7f-50bc21e496cd)
+
+
 ### 散布図
 
 ```python
@@ -349,7 +366,7 @@ linestyles = [
     (0, (3, 1, 1, 1, 1, 1))
 ]
 for style in linestyles:
-    plt.plot(x, y, linestyle=style, label='{}'.format(style))
+    plt.plot(x, y, linestyle=style, label=f'{style}')
     y += 1.0
 plt.legend(ncol=1, bbox_to_anchor=(1.05, 0.93, 0.5, .100))
 plt.show()
@@ -386,7 +403,13 @@ plt.show()
 ### 日本語フォント
 
 デフォルト設定だと日本語フォントは文字化けする。  
-グラフに日本語を表示するには、ttf ファイルを読み込んで使う。
+グラフに日本語を表示するには `japanize_matplotlib` をインストールして使うか、ttf / ttc ファイルを読み込んで使う。
+
+```python
+# pip install japanize-matplotlib
+from matplotlib import pyplot as plt
+import japanize_matplotlib
+```
 
 ```python
 import numpy as np
