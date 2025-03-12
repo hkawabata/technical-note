@@ -348,6 +348,9 @@
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Language/JavaScript/vue.js">Vue.js</a>
               </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/JavaScript/chrome-extension">Chrome拡張</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -428,6 +431,9 @@
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Algorithm/graph/node2vec">node2vec</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Algorithm/graph/floyd-warshall-algorithm">ワーシャルフロイド法</a>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Algorithm/graph/dijkstra-algorithm">ダイクストラ法</a>
