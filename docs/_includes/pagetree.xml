@@ -180,6 +180,15 @@
         <span class="pagetree-accordion">▼</span>
         <ul class="pagetree-hidden">
           <li>
+            <span>HTML-CSS</span>
+            <span class="pagetree-accordion">▼</span>
+            <ul class="pagetree-hidden">
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/HTML-CSS/html-css-reverse-lookup">HTML / CSS 逆引き</a>
+              </li>
+            </ul>
+          </li>
+          <li>
             <span>Python</span>
             <span class="pagetree-accordion">▼</span>
             <ul class="pagetree-hidden">
@@ -341,6 +350,9 @@
             <ul class="pagetree-hidden">
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Language/JavaScript/jquery">jQuery</a>
+              </li>
+              <li>
+                <a href="https://hkawabata.github.io/technical-note/note/Language/JavaScript/js-tutorial">JavaScript の基本文法</a>
               </li>
               <li>
                 <a href="https://hkawabata.github.io/technical-note/note/Language/JavaScript/chart.js">Chart.js</a>
