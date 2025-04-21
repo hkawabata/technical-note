@@ -87,3 +87,43 @@ FROM
   db.my_table
   CROSS JOIN UNNEST(records, records2) AS r
 ```
+
+
+## 集約関数
+
+`GROUP BY` 句でまとめたレコードに対する集約関数。
+
+
+### COUNT
+
+指定したフィールドの件数を集計。`DISTINCT`をつけることで重複を排除して集計。
+
+```sql
+SELECT
+  category,
+  COUNT(record_id),
+  COUNT(DISTINCT record_id)  -- 値の重複を排除して集計する場合
+FROM
+  db.my_table
+GROUP BY
+  category
+```
+
+### ARRAY_AGG
+
+指定したフィールドを配列として取得。
+
+- `ORDER BY` 句でソート済み配列にできる
+- `DISTINCT` で重複を除いて配列にできる
+
+```sql
+SELECT
+  category,
+  COUNT(record_id),
+  COUNT(record_id ORDER BY record_id),  -- ソート済み配列として取得
+  COUNT(DISTINCT record_id ORDER BY record_id)  -- ソート済み重複なし配列として取得
+FROM
+  db.my_table
+GROUP BY
+  category
+```
