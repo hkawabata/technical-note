@@ -15,13 +15,16 @@ MLP = Multi-Layer Perceptron
 
 ![MLP外観](https://user-images.githubusercontent.com/13412823/89358011-adb38400-d6b1-11ea-8964-7147bddc2749.png)
 
-| 層 | 説明 |
-| :-- | :-- |
-| **入力層** | 生の入力データに相当する層 |
-| **出力層** | モデルの最終的な出力に相当する層 |
-| **隠れ層** | 入力層と出力層の間の中間データに相当する層。隠れ層が多く、各層のニューロンが多いほど複雑なモデルを表現できる |
-| **全結合層** | 前層の各出力値に重みをかけ、バイアス項を加えて和を取る層 |
-| **活性化層** | 値に何らかの活性化関数を適用する層 |
+| 処理層      | 説明                                                                                                       |
+| :------- | :------------------------------------------------------------------------------------------------------- |
+| **入力層**  | 生の入力データに相当する層                                                                                            |
+| **出力層**  | モデルの最終的な出力に相当する層                                                                                         |
+| **隠れ層**  | 入力層と出力層の間の中間データに相当する層。<br>出力層から得られる最終出力値と違い、計算途中の中間データであるため直接には値が見えない（= 隠れている）ためこう呼ばれるが、処理の内容（後述）は出力層と同じ |
+| **全結合層** | 前層の各出力値に重みをかけ、バイアス項を加えて和を取る層                                                                             |
+| **活性化層** | 全結合層の出力値に何らかの活性化関数を適用する層                                                                                 |
+
+隠れ層は1つである必要はない。  
+隠れ層が多く、層が持つニューロンが多いほど複雑なモデルを表現できる。
 
 上図では、
 - 隠れ層の数：1つ
@@ -30,30 +33,34 @@ MLP = Multi-Layer Perceptron
   - 隠れ層：4つ
   - 出力層：3つ
 
-各ニューロンは、1つ前の層の全ての出力に重みをかけたもの+バイアス項
+隠れ層・出力層の前半である **全結合層** の各ニューロンでは、1つ前の層の全ての出力に重みをかけたものにバイアス項を加えた
 
 $$
-a_i^{(l)} \equiv \displaystyle \sum_k W_{ik}^{(l)} x_k^{(l)} + b_i^{(l)}
+a_i^{(l)} := \displaystyle \sum_k W_{ik}^{(l)} x_k^{(l)} + b_i^{(l)}
+\tag{1}
 $$
 
-を総入力として、これに活性化関数を適用した値
+を計算する。
+
+後半の **活性化層** では、この $a_i^{(l)}$ を **総入力** として、これにシグモイド関数や ReLU などの活性化関数を適用した値
 
 $$
 x_i^{(l+1)} = \phi^{(l)} \left( a_i^{(l)} \right) = \phi^{(l)} \left( \displaystyle \sum_k W_{ik}^{(l)} x_k^{(l)} + b_i^{(l)} \right)
+\tag{2}
 $$
 
 を出力とする。
 
-MLP においては、コストを最小化する最適な $$W_{ik}, b_i$$ を学習する。
-
 以上の式は、行列・ベクトルを用いて以下のようにも記述できる。
 
 $$
-\boldsymbol{a}^{(l)} \equiv W^{(l)} \boldsymbol{x}^{(l)} + \boldsymbol{b}^{(l)}
+\boldsymbol{a}^{(l)} := W^{(l)} \boldsymbol{x}^{(l)} + \boldsymbol{b}^{(l)}
+\tag{1'}
 $$
 
 $$
 \boldsymbol{x}^{(l+1)} = \phi^{(l)} \left( \boldsymbol{a}^{(l)} \right) = \phi^{(l)} \left( W^{(l)} \boldsymbol{x}^{(l)} + \boldsymbol{b}^{(l)} \right)
+\tag{2'}
 $$
 
 ただし、
@@ -78,11 +85,10 @@ $$
 \boldsymbol{x}^{(l)} = \begin{pmatrix}
 x_1^{(l)} \\
 \vdots \\
+\vdots \\
 x_m^{(l)}  \\
-\end{pmatrix}
-$$
-
-$$
+\end{pmatrix},
+\qquad
 \boldsymbol{x}^{(l+1)} = \begin{pmatrix}
 x_1^{(l+1)} \\
 \vdots \\
@@ -91,87 +97,144 @@ x_t^{(l+1)}  \\
 $$
 
 
-# 手順
+MLP では、以上のように $\boldsymbol{x}^{(l)}$ から $\boldsymbol{x}^{(l+1)}$ を計算する処理を複数回繰り返すことで最終出力
 
-MLP の処理の流れは以下の通り。
+$$
+\boldsymbol{y} := \begin{pmatrix}
+y_1 \\
+\vdots \\
+y_n \\
+\end{pmatrix}
+$$
 
-1. 入力層から出力層へ向かって順次ニューロンの計算を進め、入力 $$\boldsymbol{x}$$ に対して最終層の出力を計算
-2. 最終層の出力を評価し、コスト関数を計算
-3. コスト関数の勾配（誤差）を出力層から入力層へ順次伝播させ、重みを更新
-4. 1〜3繰り返し
+を得る。
 
-## 1. 順伝播による出力計算
-
-1. 各層の重み・バイアスを適当な乱数で初期化
-2. 前述の式を用いて、前層の出力 $$\boldsymbol{x}^{(l)}$$ から次の層の出力 $$\boldsymbol{x}^{(l+1)}$$ を計算する作業を繰り返して最終的な出力を得る
-3. 最終的な出力値に対するコスト関数を計算
+MLP の学習段階では、コスト関数を最小化する（あるいは評価関数を最大化する）最適な $W_{ik}^{(l)}, b_i^{(l)}$ を学習する。
 
 
-## 2. 誤差逆伝播（バックプロパゲーション）による重み更新
+# 学習の流れ
+
+MLP の学習の流れは以下の通り。
+
+- 【0】ランダムな値でパラメータ $W_{ik}^{(l)}, b_i^{(l)}$ を初期化
+- 【1】順伝播による出力・コスト関数計算：入力層から出力層へ向かって順次ニューロンの計算を進め、入力 $\boldsymbol{x}$ に対して最終層の出力 $\boldsymbol{y}$ を得てコスト関数 $J(\boldsymbol{y})$ を計算
+- 【2】コスト関数の **誤差逆伝播** による重み更新：コスト関数の勾配（誤差）を計算して、重みを更新
+- 【3】収束条件を満たすまで1〜2を繰り返す
+
+
+## 1. 順伝播による出力・コスト関数計算
+
+1. 前述の式 $(1) (2)$ を用いて、前層の出力 $\boldsymbol{x}^{(l)}$ から次の層の出力 $\boldsymbol{x}^{(l+1)}$ を計算する作業を繰り返して最終的な出力 $\boldsymbol{y}$ を得る
+2. 最終的な出力値に対するコスト関数 $J(\boldsymbol{y})$ を計算
+
+
+## 2. コスト関数の誤差逆伝播（バックプロパゲーション）による重み更新
+
+勾配降下法により各パラメータ $W_{ik}^{(l)}, b_i^{(l)}$ を改善するため、コスト関数 $J$ のこれらのパラメータによる偏微分
+
+$$
+\cfrac{\partial J}{\partial W_{ij}}, \quad \cfrac{\partial J}{\partial b_{i}}
+$$
+
+を計算したい。
+
 
 ### 基礎理論
 
-ネットワークを構成する層の1つ（第 $$l+1$$ 層）について考える。
+ネットワークを構成する層の1つ（全結合層でも活性化層でも何でも OK）に注目して考える。  
+この層について、
+- $\boldsymbol{x}_\mathrm{in}$：この層への入力（= 前層からの出力）
+- $\boldsymbol{x}_\mathrm{out}$：この層からの出力
+- $\boldsymbol{p}$：入力 $\boldsymbol{x}_\mathrm{in}$ から出力 $\boldsymbol{x}_\mathrm{out}$ を計算するためのこの層内のパラメータ
+- $\boldsymbol{q}$：この層より後の層に含まれる全てのパラメータの集合
 
-説明の一般化のため、層の出力 $$\boldsymbol{x}^{(l+1)} = \left(x_1^{(l+1)}, \cdots, x_t^{(l+1)}\right)$$ を計算するために必要な
+とする。
 
-- 1つ前の層の出力
-- 重み・バイアス等のパラメータ
+> **【NOTE】**
+> 
+> 例えば、$l$ 番目の全結合層であれば
+> - $\boldsymbol{x}_\mathrm{in} = (x_1^{(l)}, x_2^{(l)}, \cdots)$
+> - $\boldsymbol{x}_\mathrm{out} = (x_1^{(l+1)}, x_2^{(l+1)}, \cdots)$
+> - $\boldsymbol{p} = (W^{(l)}, \boldsymbol{b}^{(l)})$
+> - $\boldsymbol{q} = (W^{(l+1)}, W^{(l+2)}, \cdots, \boldsymbol{b}^{(l+1)}, \boldsymbol{b}^{(l+2)}, \cdots)$
 
-を全てひっくるめて $$\boldsymbol{v}$$ で表す：
-
-$$\boldsymbol{v} = (v_1, \cdots, v_n) \equiv \left(\boldsymbol{x}^{(l)}, W^{(l)}, \boldsymbol{b}^{(l)}, \cdots\right)$$
-
-$$\boldsymbol{x}^{(l+1)}$$ は $$\boldsymbol{v}$$ から計算されるので、$$\boldsymbol{x}^{(l+1)}$$ は $$\boldsymbol{v}$$ のみの関数として表現できる：
-
-$$\boldsymbol{x}^{(l+1)} = \boldsymbol{x}^{(l+1)}(v_1, \cdots, v_n)$$
-
-よって、コスト関数 $$J$$ の勾配の $$\boldsymbol{v}$$ 成分（= $$J$$ の $$\boldsymbol{v}$$ 微分）は、$$J$$ の $$\boldsymbol{x}^{(l+1)}$$ 微分で記述できる。
+$\boldsymbol{p}$ の成分 $p_1, p_2, \cdots$（= 学習により最適化したいパラメータ）によるコスト関数 $J$ の偏微分
 
 $$
-\cfrac{\partial J}{\partial v_i}
-= \cfrac{\partial J\left( x_1^{(l+1)}(\boldsymbol{v}),\cdots,x_t^{(l+1)}(\boldsymbol{v}) \right)}{\partial v_i}
-= \displaystyle \sum_k \cfrac{\partial J}{\partial x_k^{(l+1)}} \cfrac{\partial x_k^{(l+1)}}{\partial v_i}
+\cfrac{\partial J}{\partial p_i}
 $$
 
-ここで、
-- $$\cfrac{\partial x_k^{(l+1)}}{\partial v_i}$$ はこの層で行う処理から解析的に計算できる
-- $$\cfrac{\partial J}{\partial x_k^{(l+1)}}$$ は1つ後ろの層の入力による微分
+を考えたい。
 
-なので、**1つ後ろの層の微分が分かれば前の層の微分が全て計算できる**。  
+出力 $\boldsymbol{x}_\mathrm{out}$ は入力 $\boldsymbol{x}_\mathrm{in}$ と層内パラメータ $\boldsymbol{p}$ から計算されるので、これらを独立変数とする関数とみなせる：
 
-また、コスト関数 $$J$$ は最終層（出力層）の出力値のみを使って計算される関数であるから、**最終層の変数による $$J$$ の微分は計算で求められる**。
+$$
+\boldsymbol{x}_\mathrm{out} =
+\boldsymbol{x}_\mathrm{out} (\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})
+$$
 
-したがって、**出力層から入力層に向かって再帰的に勾配を計算していき、全ての層の微分を求めることができる（誤差逆伝播法）**。
+また、コスト関数 $J$ の計算には最終出力 $\boldsymbol{y}$ を使うが、これは $\boldsymbol{x}_\mathrm{out}$ とこれより後の層のパラメータ $\boldsymbol{q}$ から計算できる。したがって、$J$ はこれらを独立変数とする関数とみなせる：
+
+$$
+J = J (\boldsymbol{x}_\mathrm{out}, \boldsymbol{q})
+= J (\boldsymbol{x}_\mathrm{out}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p}), \boldsymbol{q})
+$$
+
+$\boldsymbol{x}_\mathrm{in}, \boldsymbol{p}, \boldsymbol{q}$ はそれぞれ独立であるから、偏微分の性質より
+
+$$
+\cfrac{\partial J}{\partial p_i} =
+\displaystyle \sum_k
+\cfrac{\partial J}{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}
+\cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial p_i}
+\tag{3}
+$$
+
+$$
+\cfrac{\partial J}{\partial x_{\mathrm{in},i}} =
+\displaystyle \sum_k
+\cfrac{\partial J}{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}
+\cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial x_{\mathrm{in},i}}
+\tag{4}
+$$
+
+$(3),(4)$ それぞれの後半の偏微分 $\cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial p_i}$ と $\cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial x_{\mathrm{in},i}}$  は、この層で行う処理の定義（$\boldsymbol{x}_\mathrm{out}$ の計算式）から解析的に計算できる。
+
+一方、前半の偏微分 $\cfrac{\partial J}{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}$ は直接計算できないが、これは1つ後ろの層に注目して考えたときの入力による微分 $\cfrac{\partial J}{\partial x_{\mathrm{in},k}}$ に一致する。  
+したがって、**1つ後ろの層の微分が分かれば前の層の微分が全て計算できる**。  
+
+また、コスト関数 $J$ は最終層（出力層）の出力値 $\boldsymbol{y}$ のみで定義・計算される関数であるから、**最終層の変数による $J$ の微分は解析的な計算で求められる**。
+
+したがって、**出力層の微分から出発して入力層に向かって再帰的に微分（誤差）を計算していき、全ての層の微分を求めることができる（誤差逆伝播法）**。
 
 
-### 各層におけるコスト関数の勾配
+### （具体例で計算）各層におけるコスト関数の勾配
 
 #### 全結合層
 
 ##### 入力変数
 
-| 変数 | 説明 |
-| :-- | :-- |
-| $$\boldsymbol{x}$$ | 前層の出力 |
-| $$W$$ | $$\boldsymbol{x}$$ に付加する重み |
-| $$\boldsymbol{b}$$ | バイアス項 |
+| 変数               | 説明                       |
+| :--------------- | :----------------------- |
+| $\boldsymbol{x}$ | 前層の出力                    |
+| $W$              | $\boldsymbol{x}$ に付加する重み |
+| $\boldsymbol{b}$ | バイアス項                    |
 
 ##### 出力変数
 
 $$
-z_i = \displaystyle \sum_k W_{ik} x_k + b_i
+z_i := \displaystyle \sum_k W_{ik} x_k + b_i
 $$
 
 $$
-\boldsymbol{z} = W \boldsymbol{x} + \boldsymbol{b}
+\boldsymbol{z} := W \boldsymbol{x} + \boldsymbol{b}
 $$
 
 ##### 勾配の導出
 
 $$
-\cfrac{\partial z_i}{\partial x_j} = W_{ij},
-\cfrac{\partial z_i}{\partial b_i} = 1,
+\cfrac{\partial z_i}{\partial x_j} = W_{ij},\quad
+\cfrac{\partial z_i}{\partial b_i} = 1,\quad
 \cfrac{\partial z_i}{\partial W_{jk}} = \begin{cases}
 x_k & \rm{\quad if \quad} i = j \\
 0 & \rm{\quad if \quad} i \neq j
@@ -205,9 +268,9 @@ $$
 
 ##### 入力変数
 
-| 変数 | 説明 |
-| :-- | :-- |
-| $$\boldsymbol{x}$$ | 前層の出力 |
+| 変数               | 説明    |
+| :--------------- | :---- |
+| $\boldsymbol{x}$ | 前層の出力 |
 
 ##### 出力変数
 
@@ -227,9 +290,9 @@ $$
 
 ##### 入力変数
 
-| 変数 | 説明 |
-| :-- | :-- |
-| $$\boldsymbol{x}$$ | 前層の出力 |
+| 変数               | 説明    |
+| :--------------- | :---- |
+| $\boldsymbol{x}$ | 前層の出力 |
 
 ##### 出力変数
 
@@ -240,41 +303,44 @@ $$
 ##### 勾配の導出
 
 $$
-\cfrac{\partial J}{\partial x_i} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial x_i}
-= \displaystyle \sum_k \cfrac{\partial J}{\partial z_k}
-\cfrac{
-    \frac{\partial e^{x_k}}{\partial x_i} \sum_l e^{x_l}
-    - \frac{\partial \left(\sum_l e^{x_l}\right)}{\partial x_i} e^{x_k}
-}
-{ \left(\sum_l e^{x_l}\right)^2 }
-= \displaystyle \sum_k \cfrac{\partial J}{\partial z_k}
-\cfrac{
+\begin{eqnarray}
+    \cfrac{\partial J}{\partial x_i}
+    &=&
+    \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial x_i}
+    \\ &=&
+    \displaystyle \sum_k \cfrac{\partial J}{\partial z_k}
+    \cfrac{\frac{\partial e^{x_k}}{\partial x_i} \sum_l e^{x_l}
+    - \frac{\partial \left(\sum_l e^{x_l}\right)}{\partial x_i} e^{x_k}}
+    { \left(\sum_l e^{x_l}\right)^2 }
+    \\ &=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_k}
+    \cfrac{
     \delta_{ki} e^{x_i} \sum_l e^{x_l}
     - e^{x_i} e^{x_k}
-}
-{ \left(\sum_l e^{x_l}\right)^2 }
-= \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \left(
-\delta_{ki} z_i - z_i z_k
-\right)
-= z_i \left( \cfrac{\partial J}{\partial z_i} - \sum_k \cfrac{\partial J}{\partial z_k} z_k \right)
+    }
+    { \left(\sum_l e^{x_l}\right)^2 }
+    \\ &=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \left(\delta_{ki} z_i - z_i z_k\right)
+    \\ &=& z_i \left( \cfrac{\partial J}{\partial z_i} - \sum_k \cfrac{\partial J}{\partial z_k} z_k \right)
+\end{eqnarray}
 $$
+
+ただし、$\delta_{ki}$ はクロネッカーのデルタ（$k=i$ のときのみ1、他は0）を表す。
 
 
 ### コスト関数計算（分類問題において対数尤度を用いる場合）
 
 #### 入力変数
 
-| 変数 | 説明 |
-| :-- | :-- |
+| 変数                           | 説明                                                                     |
+| :--------------------------- | :--------------------------------------------------------------------- |
 | $\hat{\boldsymbol{y}}^{(k)}$ | 前層の出力のうち、ミニバッチの $k$ 番目のサンプル。<br>ソフトマックス層などで計算された、サンプルが各ラベルへ所属する確率のベクトル |
-| $\boldsymbol{y}^{(k)}$ | ミニバッチの $k$ 番目のサンプルの正解クラスラベルを表す確率のベクトル。正解クラスに対応する成分のみ1、他成分は0 |
+| $\boldsymbol{y}^{(k)}$       | ミニバッチの $k$ 番目のサンプルの正解クラスラベルを表す確率のベクトル。正解クラスに対応する成分のみ1、他成分は0            |
 
 #### 出力変数
 
-出力はコスト関数 $$J$$。
+出力はコスト関数 $J$。
 
 ロジスティック回帰と同様に、与えられた教師データが実現する尤度（対数尤度）を最大化する場合を考える。  
-このとき、コスト関数 $$J$$ は対数尤度にマイナスをかけたものとなる：
+このとき、コスト関数 $J$ は対数尤度にマイナスをかけたものとなる：
 
 $$
 J =
@@ -311,7 +377,7 @@ $$
 
 によりパラメータを更新する。
 
-$$\eta$$ は学習率。
+$\eta$ は学習率。
 
 また、L2 正則化を行う場合は正則化項の微分
 
@@ -389,9 +455,9 @@ $$
 
 > **【NOTE】活性化関数には非線形関数を使う**
 >
-> 隠れ層が1つであるような MLP を考え、活性化関数 $$\phi$$ が線形関数であるとする。
+> 隠れ層が1つであるような MLP を考え、仮に活性化関数 $\phi$ が線形関数であるとする。
 >
-> $$\phi(z) = cz + b \ (c, b = const.)$$
+> $$\phi(z) := cz + b \ (c, b = const.)$$
 >
 > 隠れ層の出力値は、
 >
@@ -408,8 +474,8 @@ a_j^{(2)}
 &=& c^2 \displaystyle \sum_k \sum_i W_{ik}^{(1)} W_{ji}^{(2)} x_k + b\left( 1 + c \sum_i W_{ji}^{(2)} \right)
 \end{eqnarray}$$
 >
-> これは結局、入力層を一度線形変換したものに過ぎない。  
-> つまり隠れ層なしでも同じ計算を実現でき、**層を深くすることによる恩恵がない**。
+> これは結局 $x_i$ の一次式であり、入力値を一度線形変換したものに過ぎない。  
+> つまり隠れ層なしでも同じ計算を実現でき、**層を深くすることによる恩恵が得られない**。
 
 
 # 効率を高める工夫
@@ -420,20 +486,20 @@ a_j^{(2)}
 
 ### 入力変数
 
-| 変数 | 説明 |
-| :-- | :-- |
-| $$\boldsymbol{x}^{(k)}$$ | 前層の出力のうち、ミニバッチの $$k$$ 番目のサンプル |
-| $$\boldsymbol{\gamma}$$ | $$\boldsymbol{x}^{(k)}$$ と同じ次元の調整用変数（重み） |
-| $$\boldsymbol{\beta}$$ | $$\boldsymbol{x}^{(k)}$$ と同じ次元の調整用変数（バイアス） |
-| $$N$$ | ミニバッチのサイズ（サンプル数）→ 定数 |
+| 変数                     | 説明                                       |
+| :--------------------- | :--------------------------------------- |
+| $\boldsymbol{x}^{(k)}$ | 前層の出力のうち、ミニバッチの $k$ 番目のサンプル              |
+| $\boldsymbol{\gamma}$  | $\boldsymbol{x}^{(k)}$ と同じ次元の調整用変数（重み）   |
+| $\boldsymbol{\beta}$   | $\boldsymbol{x}^{(k)}$ と同じ次元の調整用変数（バイアス） |
+| $N$                    | ミニバッチのサイズ（サンプル数）→ 定数                     |
 
 ### 中間変数
 
-| 変数 | 説明 |
-| :-- | :-- |
-| $$\boldsymbol{\mu}$$ | $$\boldsymbol{x}$$ のミニバッチ内平均 |
-| $$\boldsymbol{\sigma}$$ | $$\boldsymbol{x}$$ のミニバッチ内標準偏差 |
-| $$\hat{\boldsymbol{x}}^{(k)}$$ | $$\boldsymbol{x}^{(k)}$$ をミニバッチ内で標準化したもの |
+| 変数                           | 説明                                     |
+| :--------------------------- | :------------------------------------- |
+| $\boldsymbol{\mu}$           | $\boldsymbol{x}$ のミニバッチ内平均             |
+| $\boldsymbol{\sigma}$        | $\boldsymbol{x}$ のミニバッチ内標準偏差           |
+| $\hat{\boldsymbol{x}}^{(k)}$ | $\boldsymbol{x}^{(k)}$ をミニバッチ内で標準化したもの |
 
 $$
 \boldsymbol{\mu} \equiv \cfrac{1}{N} \displaystyle \sum_k \boldsymbol{x}^{(k)}
@@ -453,7 +519,7 @@ $$
 \boldsymbol{z}^{(k)} = \boldsymbol{\gamma} \odot \hat{\boldsymbol{x}}^{(k)} + \boldsymbol{\beta}
 $$
 
-$$\odot$$ は同じ成分同士の積を取る演算（アダマール積）
+$\odot$ は同じ成分同士の積を取る演算（アダマール積）を表す。
 
 
 ### 勾配の導出
