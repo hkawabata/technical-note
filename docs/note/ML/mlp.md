@@ -173,12 +173,18 @@ $$
 \boldsymbol{x}_\mathrm{out} (\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})
 $$
 
+**（（（ToDo: 説明画像）））**
+
+
 また、コスト関数 $J$ の計算には最終出力 $\boldsymbol{y}$ を使うが、これは $\boldsymbol{x}_\mathrm{out}$ とこれより後の層のパラメータ $\boldsymbol{q}$ から計算できる。したがって、$J$ はこれらを独立変数とする関数とみなせる：
 
 $$
 J = J (\boldsymbol{x}_\mathrm{out}, \boldsymbol{q})
 = J (\boldsymbol{x}_\mathrm{out}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p}), \boldsymbol{q})
 $$
+
+**（（（ToDo: 説明画像）））**
+
 
 $\boldsymbol{x}_\mathrm{in}, \boldsymbol{p}, \boldsymbol{q}$ はそれぞれ独立であるから、偏微分の性質より
 
@@ -451,7 +457,7 @@ $$
 \end{eqnarray}
 $$
 
-全ての $$j$$ で和を取ると1になることから、分類問題における各ラベルへの所属確率として、出力層の活性化関数に使うことが多い。
+全ての $j$ で和を取ると1になることから、分類問題における各ラベルへの所属確率として、出力層の活性化関数に使うことが多い。
 
 > **【NOTE】活性化関数には非線形関数を使う**
 >
@@ -482,7 +488,7 @@ a_j^{(2)}
 
 ## Batch Normalization
 
-ミニバッチ学習において、活性化関数の適用前にミニバッチ内で正規化（標準化）の処理を挟むことで、重みが大きくなりすぎて過学習が起こるのを防ぐ。
+ミニバッチ学習（各ステップで、学習データ全てではなく一部をランダムに抽出したものを使う）において、活性化関数の適用前にミニバッチ内で正規化（標準化）の処理を挟むことで、重みが大きくなりすぎて過学習が起こるのを防ぐ。
 
 ### 入力変数
 
@@ -502,16 +508,20 @@ a_j^{(2)}
 | $\hat{\boldsymbol{x}}^{(k)}$ | $\boldsymbol{x}^{(k)}$ をミニバッチ内で標準化したもの |
 
 $$
-\boldsymbol{\mu} \equiv \cfrac{1}{N} \displaystyle \sum_k \boldsymbol{x}^{(k)}
+\boldsymbol{\mu} := \cfrac{1}{N} \displaystyle \sum_k \boldsymbol{x}^{(k)}
 $$
 
 $$
-\boldsymbol{\sigma}^2 \equiv \cfrac{1}{N} \displaystyle \sum_k \left( \boldsymbol{x}^{(k)} - \boldsymbol{\mu} \right)^2
+\boldsymbol{\sigma}^2 := \cfrac{1}{N} \displaystyle \sum_k \left( \boldsymbol{x}^{(k)} - \boldsymbol{\mu} \right)^2
 $$
 
 $$
-\hat{\boldsymbol{x}}^{(k)} \equiv \cfrac{\boldsymbol{x}^{(k)} - \boldsymbol{\mu}}{\sqrt{\boldsymbol{\sigma}^2 + \varepsilon}}
+\hat{\boldsymbol{x}}^{(k)} := \cfrac{\boldsymbol{x}^{(k)} - \boldsymbol{\mu}}{\sqrt{\boldsymbol{\sigma}^2 + \varepsilon}}
 $$
+
+※ ベクトルの2乗は各成分を2乗している（アダマール積）  
+※ $\varepsilon$ は $10^{-14}$ などゼロ除算を防ぐための非常に小さい正の数
+
 
 ### 出力変数
 
@@ -581,6 +591,16 @@ N \cfrac{\partial J}{\partial \boldsymbol{z}^{(j)}} -
 \right) \right\}_i \\
 \end{eqnarray}
 $$
+
+
+## Dropout
+
+全結合層の重みについて、過学習を防ぐための手法の1つ。
+- 学習時：各学習ステップごとに層内のニューロンを一定割合（$0 \lt r_\mathrm{drop} \lt 1$）でランダムに選択し、このステップでは、そのニューロンの情報を後ろの層に伝達させない。誤差逆伝播の際にも、無効化したニューロンの重みは更新しない
+- モデル利用時：全てのニューロンを利用して計算を行うが、全結合層の結果に $1-r_\mathrm{drop}$ を掛け算してから活性化層へ渡す（訓練時と同じスケールにする）
+
+
+**（（（ToDo: 説明画像）））**
 
 
 # 実装・動作確認
