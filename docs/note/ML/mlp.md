@@ -204,7 +204,7 @@ $$
 \tag{4}
 $$
 
-$(3),(4)$ それぞれの後半の偏微分 $\cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial p_i}$ と $\cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial x_{\mathrm{in},i}}$  は、この層で行う処理の定義（$\boldsymbol{x}_\mathrm{out}$ の計算式）から解析的に計算できる。
+それぞれの式の後半の偏微分 $$\cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial p_i},\ \cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial x_{\mathrm{in},i}}$$  は、この層で行う処理の定義（$$\boldsymbol{x}_\mathrm{out}$$ の計算式）から解析的に計算できる。
 
 一方、前半の偏微分 $$\cfrac{\partial J}{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}$$ は直接計算できないが、これは1つ後ろの層に注目して考えたときの入力による微分 $$\cfrac{\partial J}{\partial x_{\mathrm{in},k}}$$ に一致する。  
 したがって、**1つ後ろの層の微分が分かれば前の層の微分が全て計算できる**。  
@@ -334,7 +334,9 @@ $$
 ただし、$\delta_{ki}$ はクロネッカーのデルタ（$k=i$ のときのみ1、他は0）を表す。
 
 
-### コスト関数計算（分類問題において対数尤度を用いる場合）
+### 最終出力に対するコスト関数の勾配
+
+分類問題において対数尤度を用いる場合を想定して、最終出力 $\boldsymbol{y}$ についてのコスト関数の勾配を計算する。
 
 #### 入力変数
 
