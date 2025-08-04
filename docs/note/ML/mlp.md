@@ -166,7 +166,7 @@ $$
 
 を考えたい。
 
-出力 $\boldsymbol{x}_\mathrm{out}$ は入力 $\boldsymbol{x}_\mathrm{in}$ と層内パラメータ $\boldsymbol{p}$ から計算されるので、これらを独立変数とする関数とみなせる：
+出力 $$\boldsymbol{x}_\mathrm{out}$$ は入力 $$\boldsymbol{x}_\mathrm{in}$$ と層内パラメータ $$\boldsymbol{p}$$ から計算されるので、これらを独立変数とする関数とみなせる：
 
 $$
 \boldsymbol{x}_\mathrm{out} =
