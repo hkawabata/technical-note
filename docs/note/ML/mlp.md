@@ -206,7 +206,7 @@ $$
 
 $(3),(4)$ それぞれの後半の偏微分 $\cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial p_i}$ と $\cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial x_{\mathrm{in},i}}$  は、この層で行う処理の定義（$\boldsymbol{x}_\mathrm{out}$ の計算式）から解析的に計算できる。
 
-一方、前半の偏微分 $\cfrac{\partial J}{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}$ は直接計算できないが、これは1つ後ろの層に注目して考えたときの入力による微分 $\cfrac{\partial J}{\partial x_{\mathrm{in},k}}$ に一致する。  
+一方、前半の偏微分 $$\cfrac{\partial J}{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}$$ は直接計算できないが、これは1つ後ろの層に注目して考えたときの入力による微分 $$\cfrac{\partial J}{\partial x_{\mathrm{in},k}}$$ に一致する。  
 したがって、**1つ後ろの層の微分が分かれば前の層の微分が全て計算できる**。  
 
 また、コスト関数 $J$ は最終層（出力層）の出力値 $\boldsymbol{y}$ のみで定義・計算される関数であるから、**最終層の変数による $J$ の微分は解析的な計算で求められる**。
@@ -215,6 +215,8 @@ $(3),(4)$ それぞれの後半の偏微分 $\cfrac{\partial x_{\mathrm{out},k}(
 
 
 ### （具体例で計算）各層におけるコスト関数の勾配
+
+各層のパラメータについて、コスト関数の勾配を計算する。
 
 #### 全結合層
 
