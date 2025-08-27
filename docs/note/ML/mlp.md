@@ -137,7 +137,7 @@ MLP の学習の流れは以下の通り。
 
 ## 2. コスト関数の誤差逆伝播（バックプロパゲーション）による重み更新
 
-勾配降下法により各パラメータ $W_{ik}^{(l)}, b_i^{(l)}$ を改善するため、コスト関数 $J$ のこれらのパラメータによる偏微分
+勾配降下法により各パラメータ $W_{ik}^{(l)}, b_i^{(l)}$ を改善するため、これらのパラメータによるコスト関数 $J$ の偏微分
 
 $$
 \cfrac{\partial J}{\partial W_{ij}}, \quad \cfrac{\partial J}{\partial b_{i}}
@@ -211,7 +211,12 @@ $$
 \tag{4}
 $$
 
-それぞれの式の後半の偏微分 $$\cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial p_i},\ \cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial x_{\mathrm{in},i}}$$  は、この層で行う処理の定義（$$\boldsymbol{x}_\mathrm{out}$$ の計算式）から解析的に計算できる。
+それぞれの式の後半の偏微分
+
+$$
+\cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial p_i},\ \ \cfrac{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}{\partial x_{\mathrm{in},i}}
+$$ 
+は、この層で行う処理の定義（$\boldsymbol{x}_\mathrm{out}$ の計算式）から解析的に計算できる。
 
 一方、前半の偏微分 $$\cfrac{\partial J}{\partial x_{\mathrm{out},k}(\boldsymbol{x}_\mathrm{in}, \boldsymbol{p})}$$ は直接計算できないが、これは1つ後ろの層に注目して考えたときの入力による微分 $$\cfrac{\partial J}{\partial x_{\mathrm{in},k}}$$ に一致する。  
 したがって、**1つ後ろの層の微分が分かれば前の層の微分が全て計算できる**。  
@@ -259,23 +264,22 @@ $$
 より、
 
 $$
-\cfrac{\partial J}{\partial x_i} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial x_i}
-= \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} W_{ki}
-= \displaystyle \sum_k W_{ik}^T \cfrac{\partial J}{\partial z_k}
-= \left( W^T \cfrac{\partial J}{\partial \boldsymbol{z}} \right)_i
-$$
-
-$$
-\cfrac{\partial J}{\partial W_{ij}} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial W_{ij}}
-= \cfrac{\partial J}{\partial z_i} \cfrac{\partial z_i}{\partial W_{ij}}
-= \cfrac{\partial J}{\partial z_i} x_j
-= \left( \cfrac{\partial J}{\partial \boldsymbol{z}} \boldsymbol{x}^T \right)_{ij}
-$$
-
-$$
-\cfrac{\partial J}{\partial b_i} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial b_i}
-= \cfrac{\partial J}{\partial z_i} \cfrac{\partial z_i}{\partial b_i}
-= \cfrac{\partial J}{\partial z_i}
+\begin{eqnarray}
+    \cfrac{\partial J}{\partial x_i} &=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial x_i}
+    = \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} W_{ki}
+    = \displaystyle \sum_k W_{ik}^T \cfrac{\partial J}{\partial z_k}
+    = \left( W^T \cfrac{\partial J}{\partial \boldsymbol{z}} \right)_i
+    \\
+    \cfrac{\partial J}{\partial W_{ij}} &=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial W_{ij}}
+    = \cfrac{\partial J}{\partial z_i} \cfrac{\partial z_i}{\partial W_{ij}}
+    = \cfrac{\partial J}{\partial z_i} x_j
+    = \left( \cfrac{\partial J}{\partial \boldsymbol{z}} \boldsymbol{x}^T \right)_{ij}
+    \\
+    \cfrac{\partial J}{\partial b_i} &=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial b_i}
+    = \cfrac{\partial J}{\partial z_i} \cfrac{\partial z_i}{\partial b_i}
+    = \cfrac{\partial J}{\partial z_i}
+    = \left( \cfrac{\partial J}{\partial \boldsymbol{z}} \right)_i
+\end{eqnarray}
 $$
 
 
@@ -299,6 +303,8 @@ $$
 \cfrac{\partial J}{\partial x_i} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial z_k}{\partial x_i}
 = \displaystyle \sum_k \cfrac{\partial J}{\partial z_k} \cfrac{\partial \phi \left( \boldsymbol{x} \right)_k}{\partial x_i}
 $$
+
+主な活性化関数 $\phi$ とその微分 $\partial \phi / \partial x_i$ については後述。
 
 
 #### SoftMax 層
@@ -406,69 +412,78 @@ $$
 をコスト関数の勾配に加える。
 
 
-# 活性化関数
+# 主な活性化関数
 
 ![活性化関数](https://user-images.githubusercontent.com/13412823/82826101-6fe2f400-9ee7-11ea-8282-7940a05b8c8d.png)
 
 ## シグモイド関数（ロジスティック関数）
 
 $$
-\phi(z_j) = \cfrac{1}{1 + e^{-z_j}}
+\phi(x_j) := \cfrac{1}{1 + e^{-x_j}}
 $$
 
 $$
-\cfrac{\partial \phi(z_j)}{\partial z_j}
-= \cfrac{e^{-z_j}}{(1 + e^{-z_j})^2}
-= \phi(z_j)\left(1-\phi(z_j)\right)
+\cfrac{\partial \phi(x_j)}{\partial x_i} =
+\begin{cases}
+    \cfrac{e^{-x_j}}{(1 + e^{-x_j})^2}
+    = \phi(x_j)\left(1-\phi(x_j)\right)
+    \quad &(i = j)
+    \\ \\
+    0 \quad &(i\ne j)
+\end{cases}
 $$
 
 ## 双曲線正接関数（ハイパボリックタンジェント）
 
 $$
-\phi(z_j) = \tanh(z_j) = \cfrac{e^{z_j} - e^{-z_j}}{e^{z_j} + e^{-z_j}}
+\phi(z_j) := \tanh(z_j) = \cfrac{e^{z_j} - e^{-z_j}}{e^{z_j} + e^{-z_j}}
 $$
 
 $$
-\cfrac{\partial \phi(z_j)}{\partial z_j} = \cfrac{1}{\cosh^2 (z_j)} = \cfrac{4}{\left(e^{z_j} + e^{-z_j}\right)^2}
+\cfrac{\partial \phi(x_j)}{\partial x_i} =
+\begin{cases}
+    \cfrac{1}{\cosh^2 (z_j)} = \cfrac{4}{\left(e^{z_j} + e^{-z_j}\right)^2}
+    \quad &(i = j)
+    \\ \\
+    0 \quad &(i\ne j)
+\end{cases}
 $$
 
 ## ReLU 関数（Rectified Linear Unit）
 
 $$
-\phi(z_j) = \begin{cases}
-0 & (z_j \le 0) \\
-z_j & (z_j \gt 0)
+\phi(x_j) := \begin{cases}
+0 & (x_j \le 0) \\
+x_j & (x_j \gt 0)
 \end{cases}
 $$
 
 $$
-\cfrac{\partial \phi(z_j)}{\partial z_j} = \begin{cases}
-0 & (z_j \le 0) \\
-1 & (z_j \gt 0)
+\cfrac{\partial \phi(x_j)}{\partial x_i} = \begin{cases}
+0 & (\mathrm{}x_j \le 0 \ \ \mathrm{or}\ \ i\ne j) \\
+1 & (x_j \gt 0 \ \ \mathrm{and}\ \ i=j)
 \end{cases}
 $$
 
-## ソフトマックス関数
+## SoftMax 関数
 
 $$
 \phi(z_j) = \cfrac{e^{z_j}}{\displaystyle \sum_k e^{z_k}}
 $$
 
 $$
-\begin{eqnarray}
-\cfrac{\partial \phi(z_i)}{\partial z_j}
-&=& \begin{cases}
-\cfrac{e^{z_j} \sum_k e^{z_k} - (e^{z_j})^2}{\left(\sum_k e^{z_k}\right)^2} & (i = j) \\
-- \cfrac{e^{z_j} e^{z_i}}{\left(\sum_k e^{z_k}\right)^2} & (i \neq j)
-\end{cases} \\
-&=& \begin{cases}
-\phi(z_j) \left( 1 - \phi(z_j) \right) & (i = j) \\
-- \phi(z_i) \phi(z_j) & (i \neq j)
-\end{cases} \\
-\end{eqnarray}
+\cfrac{\partial \phi(z_i)}{\partial z_j} = \begin{cases}
+    \cfrac{e^{z_j} \sum_k e^{z_k} - (e^{z_j})^2}{\left(\sum_k e^{z_k}\right)^2}
+    &=& \phi(z_j) \left( 1 - \phi(z_j) \right)
+    &\quad (i = j) \\ \\
+    - \cfrac{e^{z_j} e^{z_i}}{\left(\sum_k e^{z_k}\right)^2}
+    &=& - \phi(z_i) \phi(z_j)
+    &\quad (i \neq j)
+\end{cases}
 $$
 
 全ての $j$ で和を取ると1になることから、分類問題における各ラベルへの所属確率として、出力層の活性化関数に使うことが多い。
+
 
 > **【NOTE】活性化関数には非線形関数を使う**
 >
@@ -619,19 +634,16 @@ $$
 ## Dropout
 
 全結合層の重みについて、過学習を防ぐための手法の1つ。
-- 学習時：各学習ステップごとに層内のニューロンを一定割合（$0 \lt r_\mathrm{drop} \lt 1$）でランダムに選択し、このステップでは、そのニューロンの情報を後ろの層に伝達させない。誤差逆伝播の際にも、無効化したニューロンの重みは更新しない
-- 推論時：全てのニューロンを利用して計算を行うが、全結合層の結果に $1-r_\mathrm{drop}$ を掛け算してから活性化層へ渡す（訓練時と同じスケールにする）
+- 学習時：各学習ステップごとに隠れ層内のニューロンを一定割合（$0 \lt r_\mathrm{drop} \lt 1$）でランダムに選択し、このステップでは、そのニューロンの情報を後ろの層に伝達させない。誤差逆伝播の際にも、無効化したニューロンの重みは更新しない
+- 推論時：全てのニューロンを利用して計算を行うが、隠れ層の結果に $1-r_\mathrm{drop}$ を掛け算してから次の隠れ層・出力層へ渡す（**学習時と同じスケールにする**）
 
-
-**（（（ToDo: 説明画像）））**
+![mlp_dropout](../../image/mlp_dropout.png)
 
 
 # 実装・動作確認
 
-多層パーセプトロンによる多クラス分類器を作ってみる。
-
-- Batch Normalization を適用
-- 最適化手法として、単純な勾配効果法ではなく Adam を利用
+多層パーセプトロンによる多クラス分類器を作ってみる。  
+勾配爆発・勾配消失の防止のため、Batch Normalization を適用する。
 
 ## コード
 
@@ -645,13 +657,181 @@ $$
 
 ## 動作確認
 
-{% gist f78d08d8c85fb47af24a48d687125ecc ~fit-mlp-classifier.py %}
+{% gist f78d08d8c85fb47af24a48d687125ecc ~generate_classification_data.py %}
 
-![MLP 分類器](https://user-images.githubusercontent.com/13412823/90081374-2d8fbd00-dd48-11ea-92ec-22e15cba3a72.png)
+{% gist f78d08d8c85fb47af24a48d687125ecc ~draw_decision_boundary.py %}
+
+```python
+N_train = 600
+N_test = 300
+
+X, Y = generate_classification_data(N_train + N_test)
+X_train, Y_train = X[:N_train], Y[:N_train]
+X_test, Y_test = X[N_train:], Y[N_train:]
+
+model = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=20, n_hidden_layer=2, dropout=0, activation_func=ReLU)
+model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=1)
+
+plt.figure(figsize=(16, 4))
+plt.subplots_adjust(wspace=0.2, hspace=0.4)
+plt.subplot(1, 3, 1)
+draw_decision_boundary(model, X, Y)
+plt.subplot(1, 3, 2)
+model.plot_precision()
+plt.subplot(1, 3, 3)
+model.plot_loss()
+```
+
+![mlp_sample](../../image/mlp_sample.png)
 
 
-## デバッグ
+# 実験・研究
 
-### Gradient Checking
+## 隠れ層の深さの比較
 
-{% gist f78d08d8c85fb47af24a48d687125ecc ~debug-gradient-check.py %}
+- **隠れ層の数（深さ）：0, 1, 2, 3**
+- 隠れ層のニューロン数：20
+- 活性化関数：ReLU
+- Dropout：0（なし）
+
+の条件下で隠れ層の深さを変えて結果を見てみる。
+
+```python
+ns_hidden_layer = [0, 1, 2, 3]
+n = len(ns_hidden_layer)
+plt.figure(figsize=(16, 4*n))
+plt.subplots_adjust(wspace=0.2, hspace=0.4)
+for i in range(n):
+    n_hidden_layer = ns_hidden_layer[i]
+    model = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=20, n_hidden_layer=n_hidden_layer, dropout=0, activation_func=ReLU)
+    model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=1)
+    plt.subplot(n, 3, n_hidden_layer*3+1)
+    draw_decision_boundary(model, X, Y, title='{} hidden layers'.format(n_hidden_layer))
+    plt.subplot(n, 3, n_hidden_layer*3+2)
+    model.plot_precision()
+    plt.subplot(n, 3, n_hidden_layer*3+3)
+    model.plot_loss()
+```
+
+![mlp_study_num-layers](../../image/mlp_study_num-layers.png)
+
+→ 隠れ層が増えるほど、複雑な境界に対応できる様子がわかる。
+
+
+## 隠れ層のニューロン数の比較
+
+- 隠れ層の数（深さ）：2
+- **隠れ層のニューロン数：2, 4, 8, 16**
+- 活性化関数：ReLU
+- Dropout：0（なし）
+
+の条件下で、隠れ層が持つニューロン数を変えて結果を見てみる。
+
+```python
+n_hidden_node= [2, 4, 8, 16]
+n = len(n_hidden_node)
+plt.figure(figsize=(16, 4*n))
+plt.subplots_adjust(wspace=0.2, hspace=0.4)
+for i in range(n):
+    nh = n_hidden_node[i]
+    model = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=nh, n_hidden_layer=2, dropout=0, activation_func=ReLU)
+    model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=1)
+    plt.subplot(n, 3, i*3+1)
+    draw_decision_boundary(model, X, Y, title='{} nodes in each layer'.format(nh))
+    plt.subplot(n, 3, i*3+2)
+    model.plot_precision()
+    plt.subplot(n, 3, i*3+3)
+    model.plot_loss()
+```
+
+![mlp_study_num-hidden-nodes](../../image/mlp_study_num-hidden-nodes.png)
+
+
+## 活性化関数の比較
+
+- 隠れ層の数（深さ）：2
+- 隠れ層のニューロン数：20
+- **活性化関数：Sigmoid, Hyperbolic Tangent, ReLU**
+- Dropout：0（なし）
+
+の条件下で、活性化関数を変えて結果を見てみる。
+
+```python
+activation_funcs = [Sigmoid, HyperbolicTangent, ReLU]
+n = len(activation_funcs)
+plt.figure(figsize=(16, 4*len(activation_funcs)))
+plt.subplots_adjust(wspace=0.2, hspace=0.4)
+for i in range(n):
+    F = activation_funcs[i]
+    model = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=20, n_hidden_layer=2, dropout=0, activation_func=F)
+    model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=1)
+    plt.subplot(n, 3, i*3+1)
+    draw_decision_boundary(model, X, Y, title='Activation Func = {}'.format(F.__name__))
+    plt.subplot(n, 3, i*3+2)
+    model.plot_precision()
+    plt.subplot(n, 3, i*3+3)
+    model.plot_loss()
+```
+
+![mlp_study_activation-func](../../image/mlp_study_activation-func.png)
+
+## Dropout と過学習抑制
+
+- 隠れ層の数（深さ）：2
+- 隠れ層のニューロン数：20
+- 活性化関数：ReLU
+- **Dropout：0（なし）, 0.5**
+
+の条件下で、Dropout の利用の有無を変えて結果を見てみる。
+
+```python
+dropout = [0, 0.5]
+n = len(dropout)
+plt.figure(figsize=(16, 4*n))
+plt.subplots_adjust(wspace=0.2, hspace=0.4)
+for i in range(n):
+    do = dropout[i]
+    model = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=20, n_hidden_layer=2, dropout=do, activation_func=ReLU)
+    model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=1)
+    plt.subplot(n, 3, i*3+1)
+    draw_decision_boundary(model, X, Y, title='Dropout = {}'.format(do))
+    plt.subplot(n, 3, i*3+2)
+    model.plot_precision()
+    plt.subplot(n, 3, i*3+3)
+    model.plot_loss()
+```
+
+![mlp_study_dropout](../../image/mlp_study_dropout.png)
+
+明確な差が見えないので、いろいろな dropout の値で何度も学習して、学習データとテストデータのコスト関数の差を計算してみる：
+
+```python
+dropout = [0, 0.1, 0.2, 0.3, 0.4, 0.5]
+n = len(dropout)
+loss_diff_mean = []
+loss_diff_std = []
+for i in range(n):
+    do = dropout[i]
+    loss_train, loss_test = [], []
+    loss_diff = []
+    for _ in range(500):
+        model = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=20, n_hidden_layer=2, dropout=do, activation_func=ReLU)
+        model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=100)
+        loss_train.append(model.loss_train[-1])
+        loss_test.append(model.loss_test[-1])
+        loss_diff.append(model.loss_test[-1] - model.loss_train[-1])
+    loss_diff_mean.append(np.mean(loss_diff))
+    loss_diff_std.append(np.std(loss_diff))
+
+plt.errorbar(dropout, loss_diff_mean, loss_diff_std, capsize=3, fmt='.', markersize=10, ecolor="black", elinewidth=0.5, markeredgecolor="black", color="w")
+plt.plot(dropout, loss_diff_mean)
+plt.xlabel('Dropout', size=13)
+plt.ylabel(r'$Loss_{test} - Loss_{train}$', size=13)
+plt.grid()
+```
+
+![mlp_study_dropout-lossdiff](../../image/mlp_study_dropout-lossdiff.png)
+
+エラーバーは $\pm 1\sigma$ の範囲（$\sigma$：標準偏差）。
+
+→ $\pm 1\sigma$ に含まれる範囲ではあるが、Dropout するノードの割合を増やすほど、学習データとテストデータのコスト関数の値の差が小さくなっていそう。
