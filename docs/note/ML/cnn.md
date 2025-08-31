@@ -71,7 +71,7 @@ CNN を用いることで、これらの情報を失わずニューラルネッ�
 
 ![cnn_conv2d-filter-pattern](../../image/cnn_conv2d-filter-pattern.png)
 
-実際の学習の過程では、フィルタの値も学習対象のパラメータであり、「どのようなパターンを抽出すれば良い特徴量となるか？」を学習していく。
+このフィルタの値も CNN の学習対象のパラメータであり、「どのようなパターンを抽出すれば良い特徴量となるか？」を学習していく。
 
 
 ## パディング (Padding)
@@ -337,7 +337,132 @@ $$
 
 # 実装・動作確認
 
-**（ToDo）**
+MNIST の手書き文字データセットを使い、CNN の学習を行う。
 
-（メモ）MNIST の手書き文字データセットを使い、MLP vs CNN で性能比較
+## コード
 
+各層のクラス：
+
+{% gist f78d08d8c85fb47af24a48d687125ecc nn-layers-simple.py %}
+
+{% gist f78d08d8c85fb47af24a48d687125ecc nn-layers-cnn.py %}
+
+分類器本体：
+
+{% gist f78d08d8c85fb47af24a48d687125ecc nn-classifier-cnn.py %}
+
+## 動作確認
+
+データの準備：
+
+```python
+# MNIST データセットの読み込み・整形
+from sklearn.datasets import fetch_openml
+mnist = fetch_openml(name='mnist_784', version=1)
+X = mnist.data.to_numpy()
+X = X.reshape(X.shape[0], 1, 28, 28)
+Y = np.zeros((X.shape[0], 10))
+label_num = [int(l) for l in mnist.target]
+for i in range(len(label_num)):
+    Y[i][label_num[i]] = 1.0
+
+# 訓練データとテストデータに分割
+X_test, Y_test = X[:1000], Y[:1000]
+X_train, Y_train = X[1000:10000], Y[1000:10000]
+```
+
+学習・結果の確認：
+
+```python
+# CNN モデルを学習
+model_cnn = CNNClassifier(X_train, Y_train, X_test, Y_test,
+                      n_conv_node=4, n_conv_layer=2, n_hidden_node=20, n_hidden_layer=1,
+                      dropout=0, activation_func=ReLU)
+model_cnn.train(epoch=10000, mini_batch=10, eta=0.1, log_interval=10)
+
+# 学習曲線を描画
+plt.figure(figsize=(9, 4))
+plt.subplots_adjust(wspace=0.2, hspace=0.4)
+plt.subplot(1, 2, 1)
+model_cnn.plot_precision()
+plt.subplot(1, 2, 2)
+model_cnn.plot_loss()
+plt.show()
+```
+
+![cnn_learning-curve](../../image/cnn_learning-curve.png)
+
+→ 非常に高い精度で手書き文字を分類できていることがわかる。
+
+
+# 実験・研究
+
+## 多層パーセプトロン（MLP）との比較
+
+- CNN
+    - 畳み込み層・プーリング層：2層
+    - MLP 隠れ層（全結合 + 活性化）：1層
+- 多層パーセプトロン（MLP）
+    - MLP 隠れ層（全結合 + 活性化）：3層
+
+以下のコードで MLP のモデルを学習し、前述の CNN モデルと比較。
+
+```python
+# MLP 用に MNIST データを読み込む（2次元行列ではなく1次元ベクトルとして使う）
+X = mnist.data.to_numpy()
+Y = np.zeros((X.shape[0], 10))
+label_num = [int(l) for l in mnist.target]
+for i in range(len(label_num)):
+    Y[i][label_num[i]] = 1.0
+
+# 訓練データとテストデータに分割
+X_test, Y_test = X[:1000], Y[:1000]
+X_train, Y_train = X[1000:10000], Y[1000:10000]
+
+# MLP モデルを学習
+model_mlp = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=20, n_hidden_layer=3, dropout=0, activation_func=ReLU)
+model_mlp.train(epoch=50000, mini_batch=10, eta=0.1, log_interval=100)
+
+# MLP モデルの学習曲線を描画
+plt.figure(figsize=(9, 4))
+plt.subplots_adjust(wspace=0.2, hspace=0.4)
+plt.subplot(1, 2, 1)
+model_mlp.plot_precision()
+plt.subplot(1, 2, 2)
+model_mlp.plot_loss()
+plt.show()
+```
+
+![cnn_study_compare-with-mlp](../../image/cnn_study_compare-with-mlp.png)
+
+→ MLP に比べ、CNN の方が高い精度が出ている
+
+## 畳み込み層のフィルタの可視化
+
+畳み込み層のフィルタの大きさを $3\times 3,\ 5\times 5,\ 7\times 7$ と変えて MNIST データで学習し、畳み込み層がどのようなパターンを抽出しているか見てみる。
+
+```python
+model_cnn.show_filters()
+```
+
+$3\times 3$ のとき：
+
+1層目、2層目の順に示す。
+
+![cnn_filter-visualization-33-1](../../image/cnn_filter-visualization-33-1.png)
+
+![cnn_filter-visualization-33-2](../../image/cnn_filter-visualization-33-2.png)
+
+
+$5\times 5$ のとき：
+
+![cnn_filter-visualization-55-1](../../image/cnn_filter-visualization-55-1.png)
+
+![cnn_filter-visualization-55-2](../../image/cnn_filter-visualization-55-2.png)
+
+
+$7\times 7$ のとき：
+
+![cnn_filter-visualization-77-1](../../image/cnn_filter-visualization-77-1.png)
+
+![cnn_filter-visualization-77-2](../../image/cnn_filter-visualization-77-2.png)

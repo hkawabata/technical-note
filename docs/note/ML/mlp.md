@@ -546,16 +546,15 @@ a_j^{(2)}
 | $\hat{\boldsymbol{x}}^{(k)}$ | $\boldsymbol{x}^{(k)}$ をミニバッチ内で標準化したもの |
 
 $$
-\boldsymbol{\mu} := \cfrac{1}{N} \displaystyle \sum_k \boldsymbol{x}^{(k)}
+\begin{eqnarray}
+    \boldsymbol{\mu} &:=& \cfrac{1}{N} \displaystyle \sum_k \boldsymbol{x}^{(k)}
+    \\
+    \boldsymbol{\sigma}^2 &:=& \cfrac{1}{N} \displaystyle \sum_k \left( \boldsymbol{x}^{(k)} - \boldsymbol{\mu} \right)^2
+    \\
+    \hat{\boldsymbol{x}}^{(k)} &:=& \cfrac{\boldsymbol{x}^{(k)} - \boldsymbol{\mu}}{\sqrt{\boldsymbol{\sigma}^2 + \varepsilon}}
+\end{eqnarray}
 $$
 
-$$
-\boldsymbol{\sigma}^2 := \cfrac{1}{N} \displaystyle \sum_k \left( \boldsymbol{x}^{(k)} - \boldsymbol{\mu} \right)^2
-$$
-
-$$
-\hat{\boldsymbol{x}}^{(k)} := \cfrac{\boldsymbol{x}^{(k)} - \boldsymbol{\mu}}{\sqrt{\boldsymbol{\sigma}^2 + \varepsilon}}
-$$
 
 ※ ベクトルの2乗は各成分を2乗している（アダマール積）  
 ※ $\varepsilon$ は $10^{-14}$ などゼロ除算を防ぐための非常に小さい正の数
@@ -583,17 +582,13 @@ $$
 より、
 
 $$
-\cfrac{\partial J}{\partial \gamma_i} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \cfrac{\partial z_i^{(k)}}{\partial \gamma_i}
-= \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \hat{x}_i^{(k)}
-$$
-
-$$
-\cfrac{\partial J}{\partial \beta_i} = \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \cfrac{\partial z_i^{(k)}}{\partial \beta_i}
-= \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}}
-$$
-
-$$
 \begin{eqnarray}
+\cfrac{\partial J}{\partial \gamma_i} &=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \cfrac{\partial z_i^{(k)}}{\partial \gamma_i}
+= \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \hat{x}_i^{(k)}
+\\ \\
+\cfrac{\partial J}{\partial \beta_i} &=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \cfrac{\partial z_i^{(k)}}{\partial \beta_i}
+= \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}}
+\\ \\
 \cfrac{\partial J}{\partial x_i^{(j)}} &=& \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \cfrac{\partial z_i^{(k)}}{\partial x_i^{(j)}}
 = \displaystyle \sum_k \cfrac{\partial J}{\partial z_i^{(k)}} \cfrac{\partial z_i^{(k)} \left( x_i, \mu_i(x_i), \sigma_i^2(x_i) \right) }{\partial x_i^{(j)}}
 \\
