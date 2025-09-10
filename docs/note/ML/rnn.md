@@ -184,9 +184,17 @@ $$
 
 ## Layer Normalization
 
-[多層パーセプトロン（MLP）](mlp.md)において、**各特徴量ごとにミニバッチ間で** 平均・標準偏差を計算してデータを標準化する Batch Normalization という技術について言及した。
+[多層パーセプトロン（MLP）](mlp.md)では、**同じ特徴量ごとにミニバッチ間で** 平均・標準偏差を計算してデータを標準化する Batch Normalization について記述した。
 
-**Layer Normalization** では、**特徴量間で** 平均・標準偏差を計算してデータを標準化する。
+RNN や Transformer では、勾配爆発・勾配消失の緩和手法として、**Layer Normalization** がよく利用される。  
+この手法では、**特徴量間で** 平均・標準偏差を計算してデータを標準化する。
+すなわち、バッチ内の他のサンプルに依存せず、個別のサンプル内で標準化を行う。
+
+![rnn_layer-normalization](../../image/rnn_layer-normalization.png)
+
+Batch Normalization (BN) も Layer Normalization (LN) も値の範囲を一定に抑えて学習を安定させるための手法だが、時系列データは系列ごとに長さが異なることも多く、BN でバッチ間の統計を安定して取ることが難しい。
+そのため、時系列データを扱う RNN においては Layer Normalization が適する。
+
 
 ### 入力変数
 
@@ -340,15 +348,6 @@ $$
 
 # 実装・動作確認
 
-MNIST の手書き数字画像データ（$28\times 28$ ピクセル）を読み込み、
-- 各時刻の入力の特徴量が28個（28次元ベクトル）
-- 時系列長が28
-
-の時系列データと見て、many to one の分類問題を解いてみる。
-
-![rnn_mnist-as-time-sequence](../../image/rnn_mnist-as-time-sequence.png)
-
-
 ## コード
 
 各層のクラス：
@@ -364,7 +363,165 @@ MNIST の手書き数字画像データ（$28\times 28$ ピクセル）を読み
 
 ## 動作確認
 
+### 手作りデータセット1：周波数の異なる1次元サイン波
+
+$$
+\begin{eqnarray}
+    \mathrm{label\ 1}:\quad x(t) &=& \sin{f_1(t+t_\mathrm{random})} + noise
+    \\ \\
+    \mathrm{label\ 2}:\quad x(t) &=& \sin{f_2(t+t_\mathrm{random})} + noise
+    \\ \\
+    \mathrm{label\ 3}:\quad x(t) &=& \sin{f_3(t+t_\mathrm{random})} + noise
+\end{eqnarray}
+$$
+
+の3種類の周波数 $f_1, f_2, f_3$ によってラベルが異なる1次元サイン波を様々な位相（$t_\mathrm{random}$）で生成して、RNN モデルで分類してみる。
+
+学習データ生成：
+
 ```python
+N = 1200
+N = N//3*3
+N_train = int(N * 0.8)
+N_test = N - N_train
+T = 64
+f1, f2, f3 = 1.0, 1.5, 2.0
+
+t = np.arange(T) / T * 2*np.pi
+X, Y = [], []
+for _ in range(N//3):
+    X.append(np.sin(f1*(t+np.random.rand()*np.pi*2)) + np.random.normal(0, 0.5, T))
+    X.append(np.sin(f2*(t+np.random.rand()*np.pi*2)) + np.random.normal(0, 0.5, T))
+    X.append(np.sin(f3*(t+np.random.rand()*np.pi*2)) + np.random.normal(0, 0.5, T))
+    Y.append([1.0, 0, 0])
+    Y.append([0, 1.0, 0])
+    Y.append([0, 0, 1.0])
+
+X, Y = np.array(X).reshape(N, T, 1), np.array(Y)
+X_train, Y_train = X[:N_train], Y[:N_train]
+X_test, Y_test = X[N_train:], Y[N_train:]
+```
+
+![rnn_custom-data](../../image/rnn_custom-data.png)
+
+モデル初期化・学習：
+
+```python
+model_rnn = RNNClassifier(X_train, Y_train, X_test, Y_test,
+    n_hidden_node_rnn=10, n_hidden_node=20, n_hidden_layer=1,
+    activation_func_rnn=RNNReLU)
+model_rnn.train(epoch=10000, mini_batch=10, eta=0.0001, log_interval=100)
+
+# 学習曲線を描画
+plt.figure(figsize=(9, 4))
+plt.subplots_adjust(wspace=0.2, hspace=0.4)
+plt.subplot(1, 2, 1)
+model_rnn.plot_precision()
+plt.subplot(1, 2, 2)
+model_rnn.plot_loss()
+plt.show()
+```
+
+![rnn_custom-data_learning-curve](../../image/rnn_custom-data_learning-curve.png)
+
+→ ほぼ100%の精度で分類できている
+
+
+### 手作りデータセット2：位相差のある2次元のサイン波
+
+$$
+\begin{eqnarray}
+    \mathrm{label\ 1}:\quad \begin{cases}
+        x_1(t) &=& \sin{(t+t_\mathrm{random})} + noise \\
+        x_2(t) &=& \sin{(t+t_\mathrm{random}+\theta_1)} + noise \\
+    \end{cases}
+    \\ \\
+    \mathrm{label\ 2}:\quad \begin{cases}
+        x_1(t) &=& \sin{(t+t_\mathrm{random})} + noise \\
+        x_2(t) &=& \sin{(t+t_\mathrm{random}+\theta_2)} + noise \\
+    \end{cases}
+    \\ \\
+    \mathrm{label\ 3}:\quad \begin{cases}
+        x_1(t) &=& \sin{(t+t_\mathrm{random})} + noise \\
+        x_2(t) &=& \sin{(t+t_\mathrm{random}+\theta_3)} + noise \\
+    \end{cases}
+\end{eqnarray}
+$$
+
+のように、2つのサイン波からなる2次元の時系列データを生成する。  
+2つの波の位相差 $\theta_1, \theta_2, \theta_3$ だけを変えて、分類できるか試してみる。
+
+学習データ生成：
+
+```python
+N = 1200
+N = N//3*3
+N_train = int(N * 0.8)
+N_test = N - N_train
+T = 64
+theta1, theta2, theta3 = 0, np.pi, np.pi*0.5
+
+t = np.arange(T) / T * 2*np.pi
+X, Y = [], []
+for _ in range(N//3):
+    t_offset = np.random.rand() * np.pi*2
+    X.append(np.array([np.sin(t+t_offset) + np.random.normal(0, 0.5, T), np.sin(t+t_offset+theta1) + np.random.normal(0, 0.5, T)]).T)
+    t_offset = np.random.rand() * np.pi*2
+    X.append(np.array([np.sin(t+t_offset) + np.random.normal(0, 0.5, T), np.sin(t+t_offset+theta2) + np.random.normal(0, 0.5, T)]).T)
+    t_offset = np.random.rand() * np.pi*2
+    X.append(np.array([np.sin(t+t_offset) + np.random.normal(0, 0.5, T), np.sin(t+t_offset+theta3) + np.random.normal(0, 0.5, T)]).T)
+    Y.append([1.0, 0, 0])
+    Y.append([0, 1.0, 0])
+    Y.append([0, 0, 1.0])
+
+X, Y = np.array(X), np.array(Y)
+X_train, Y_train = X[:N_train], Y[:N_train]
+X_test, Y_test = X[N_train:], Y[N_train:]
+```
+
+![rnn_custom-data2](../../image/rnn_custom-data2.png)
+
+モデル初期化・学習：
+
+```python
+model_rnn = RNNClassifier(X_train, Y_train, X_test, Y_test,
+    n_hidden_node_rnn=10, n_hidden_node=20, n_hidden_layer=1,
+    activation_func_rnn=RNNReLU)
+model_rnn.train(epoch=5000, mini_batch=10, eta=0.0001, log_interval=50)
+
+# 学習曲線を描画
+plt.figure(figsize=(9, 4))
+plt.subplots_adjust(wspace=0.2, hspace=0.4)
+plt.subplot(1, 2, 1)
+model_rnn.plot_precision()
+plt.subplot(1, 2, 2)
+model_rnn.plot_loss()
+plt.show()
+```
+
+![rnn_custom-data2_learning-curve](../../image/rnn_custom-data2_learning-curve.png)
+
+→ ほぼ100%の精度で分類できている上、1次元のサインカーブで周波数を変えた前の実験よりもすばやく収束
+
+
+
+### MNIST 手書き数字画像
+
+MNIST の手書き数字画像データ（$28\times 28$ ピクセル）を読み込み、
+- 各時刻の入力の特徴量が28個（28次元ベクトル）
+- 時系列長が28
+
+の時系列データと見なして、many to one の分類問題を解いてみる。
+
+![rnn_mnist-as-time-sequence](../../image/rnn_mnist-as-time-sequence.png)
+
+学習データ生成：
+
+```python
+import numpy as np
+from sklearn.datasets import fetch_openml
+
+mnist = fetch_openml(name='mnist_784', version=1)
 X = mnist.data.to_numpy()
 X = X.reshape(X.shape[0], 28, 28)
 Y = np.zeros((X.shape[0], 10))
@@ -377,12 +534,14 @@ X_test, Y_test = X[:1000], Y[:1000]
 X_train, Y_train = X[1000:10000], Y[1000:10000]
 ```
 
+モデル初期化・学習：
+
 ```python
 model_rnn = RNNClassifier(X_train, Y_train, X_test, Y_test,
     n_hidden_node_rnn=10, n_hidden_node=20, n_hidden_layer=2,
     activation_func_rnn=RNNReLU)
 
-model_rnn.train(epoch=100000, mini_batch=10, eta=0.002, log_interval=100)
+model_rnn.train(epoch=100000, mini_batch=10, eta=0.002, log_interval=1000)
 
 # 学習曲線を描画
 plt.figure(figsize=(9, 4))
@@ -398,4 +557,6 @@ plt.show()
 
 → 最後の隠れ状態 $h_{28}$ だけを入力とした many to one のシンプルな RNN でも、80%以上の精度で手書き数字を分類できている。
 
-
+（メモ）
+- このデータセットの場合、各時系列のベクトルは多くの値がゼロ、特に $t=1$ 付近や $t=28$ 付近ではすべての値がゼロであることが多く、どんな重みに掛け算してもゼロになるので学習がやりにくいかも
+- Layer Normalization の導入についても、すべてがゼロのベクトルは標準化ができない（平均も標準偏差もゼロ）ため難しそう

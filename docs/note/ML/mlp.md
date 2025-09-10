@@ -664,7 +664,7 @@ X, Y = generate_classification_data(N_train + N_test)
 X_train, Y_train = X[:N_train], Y[:N_train]
 X_test, Y_test = X[N_train:], Y[N_train:]
 
-model = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=20, n_hidden_layer=2, dropout=0, activation_func=ReLU)
+model = MLPClassifier(X_train, Y_train, X_test, Y_test, H=20, L=2, dropout=0, activation_func=ReLU)
 model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=1)
 
 plt.figure(figsize=(16, 4))
@@ -829,4 +829,4 @@ plt.grid()
 
 エラーバーは $\pm 1\sigma$ の範囲（$\sigma$：標準偏差）。
 
-→ $\pm 1\sigma$ に含まれる範囲ではあるが、Dropout するノードの割合を増やすほど、学習データとテストデータのコスト関数の値の差が小さくなっていそう。
+→ $\pm 1\sigma$ の範囲にやや重複があるが、Dropout するノードの割合を増やすほど、学習データとテストデータのコスト関数の値の差が小さくなっていそう。
