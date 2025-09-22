@@ -20,7 +20,6 @@ LSTM = Long Short-Term Memory
 - $\sigma$ はシグモイド関数、$\tanh$ はハイパボリックタンジェント関数による活性化を表す
 - 掛け算、足し算はそれぞれベクトルの成分ごとの計算を意味する
 
-
 | ベクトル                       | 説明                                                                                                         |
 | :------------------------- | :--------------------------------------------------------------------------------------------------------- |
 | $\boldsymbol{x}_t$         | 前の層からの時刻 $t$ の入力                                                                                           |
@@ -36,6 +35,19 @@ LSTM = Long Short-Term Memory
 | **Forget Gate** | 前時刻の記憶セルから情報を忘れさせる機構                  |
 | **Input Gate**  | 記憶セルに新しい時刻の情報をインプットする機構               |
 | **Output Gate** | 記憶セルから LSTM 層の出力（兼、次時刻に渡す隠れ状態）を生成する機構 |
+
+シンプルな RNN では下図のように、長期的な記憶を保持するために隠れ状態 $\boldsymbol{h}_t$ を利用していた。この方法では、誤差の逆伝播において、時間ステップごとに活性化関数 $\phi_R$ を通ることになる。  
+RNN で用いられる一般的な活性化関数であるハイパボリックタンジェント関数を使うと、活性化関数の微分の値域が $0 \lt \partial \phi_R(z) / \partial z \le 1$ となるため、勾配は時間ステップを遡るたびに小さくなっていってしまう（→ 勾配消失）。
+
+一方、LSTM の長期記憶 $\boldsymbol{c}_t$ のフロー（上図の緑矢印）に注目すると、時間ステップを進めても、ベクトルの成分同士の積と和の計算しか登場しないことが分かる。したがって、（長期的に重要な情報に関しては）勾配が消失しにくいことが期待できる。
+
+（参考）シンプルな RNN：
+
+![rnn_overview_many2many](../../image/rnn_overview_many2many.png)
+
+（参考）活性化関数とその微分の値域：
+
+![活性化関数](https://user-images.githubusercontent.com/13412823/82826101-6fe2f400-9ee7-11ea-8282-7940a05b8c8d.png)
 
 
 # LSTM 層の処理
@@ -131,20 +143,51 @@ $$
 
 ## コード
 
-各層のクラス：
+### MLP と共通のクラス
 
-{% gist f78d08d8c85fb47af24a48d687125ecc nn-layers-simple.py %}
+全結合層：
 
-{% gist f78d08d8c85fb47af24a48d687125ecc nn-layers-rnn.py %}
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-affine.py %}
 
-{% gist f78d08d8c85fb47af24a48d687125ecc nn-layers-lstm.py %}
+活性化関数：
 
-分類器本体：
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-activation.py %}
 
-{% gist f78d08d8c85fb47af24a48d687125ecc nn-classifier-lstm.py %}
+SoftMax 関数：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-softmax.py %}
+
+Batch Normalization：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-batchnorm.py %}
+
+Dropout：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-dropout.py %}
+
+
+### LSTM 独自のクラス
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-lstm.py %}
+
+
+### 時系列データの分類器
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d model-lstm-classifier.py %}
+
 
 
 ## 動作確認
+
+### 時系列ラベリング：MNIST 手書き数字画像
+
+[RNN](rnn.md) の動作確認と同様に、MNIST の手書き数字画像データ（$28\times 28$ ピクセル）を読み込み、
+- 各時刻の入力の特徴量が28個（28次元ベクトル）
+- 時系列長が28
+
+の時系列データと見なして、many to one の分類問題を解く。
+
+![rnn_mnist-as-time-sequence](../../image/rnn_mnist-as-time-sequence.png)
 
 学習データ生成：
 

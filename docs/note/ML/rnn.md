@@ -350,15 +350,37 @@ $$
 
 ## コード
 
-各層のクラス：
+### MLP と共通のクラス
 
-{% gist f78d08d8c85fb47af24a48d687125ecc nn-layers-simple.py %}
+全結合層：
 
-{% gist f78d08d8c85fb47af24a48d687125ecc nn-layers-rnn.py %}
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-affine.py %}
 
-分類器本体：
+活性化関数：
 
-{% gist f78d08d8c85fb47af24a48d687125ecc nn-classifier-rnn.py %}
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-activation.py %}
+
+SoftMax 関数：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-softmax.py %}
+
+Batch Normalization：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-batchnorm.py %}
+
+Dropout：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-dropout.py %}
+
+
+### RNN 独自のクラス
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-rnn.py %}
+
+
+### 時系列データの分類器
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d model-rnn-classifier.py %}
 
 
 ## 動作確認

@@ -642,13 +642,33 @@ $$
 
 ## コード
 
-各層のクラス：
+### 各層のクラス
 
-{% gist f78d08d8c85fb47af24a48d687125ecc nn-layers-simple.py %}
+全結合層：
 
-分類器本体：
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-affine.py %}
 
-{% gist f78d08d8c85fb47af24a48d687125ecc nn-classifier-simple.py %}
+活性化関数：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-activation.py %}
+
+SoftMax 関数：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-softmax.py %}
+
+Batch Normalization：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-batchnorm.py %}
+
+Dropout：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-dropout.py %}
+
+
+### 分類器本体
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d model-mlp-classifier.py %}
+
 
 ## 動作確認
 
@@ -680,7 +700,7 @@ model.plot_loss()
 ![mlp_sample](../../image/mlp_sample.png)
 
 
-# 実験・研究
+# 実験・調査
 
 ## 隠れ層の深さの比較
 
@@ -829,4 +849,4 @@ plt.grid()
 
 エラーバーは $\pm 1\sigma$ の範囲（$\sigma$：標準偏差）。
 
-→ $\pm 1\sigma$ の範囲にやや重複があるが、Dropout するノードの割合を増やすほど、学習データとテストデータのコスト関数の値の差が小さくなっていそう。
+→ 分散がそれなりに大きいが、Dropout するノードの割合を増やすほど、学習データとテストデータのコスト関数の値の差が小さくなっていそう。
