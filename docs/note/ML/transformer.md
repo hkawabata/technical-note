@@ -30,7 +30,7 @@ title: Transformer
 | **Masked Self-Attention**              | Decoder 側（図の右側）の "Masked Multi-Head Attention"。<br>**未来（そこより先の位置）の情報をマスクして参照しないようにした Self-Attention**                                          |
 | **Cross-Attention**                    | Decoder 側（図の右側）の "Multi-Head Attention"。<br>**Encoder 側で計算した系列全ての要素と、Decoder 側の要素との関連性を計算し、Decoder 側の要素のベクトル表現を更新**                            |
 | **Feed Forward**                       | 全結合層・活性化層で構成されるシンプルな MLP                                                                                                                       |
-| **Add & Norm**                         | ・Add = Residual Connection, 残差接続<br>・Norm = Layer Normalization（[RNN](rnn.md) を参照）                                                             |
+| **Add & Norm**                         | ・Add = Residual Connection, 残差接続（[MLP](mlp.md) を参照）<br>・Norm = Layer Normalization（[RNN](rnn.md) を参照）                                          |
 
 
 
@@ -39,15 +39,111 @@ title: Transformer
 
 ## Self-Attention, Cross-Attention
 
+Transformer の中核技術。
 
 ![transformer_attention](../../image/transformer_attention.png)
+
+
+### Key と Value
+
+**情報を取り出す対象のデータから生成するデータベース（Key-Value store）のようなイメージ**。
+- **Key：情報を引くための索引**
+- **Value：Key を元に引き当てて、実際に取り出す情報**
+
+Key はあくまで検索インデックスのようなものであり、実際に取り出す情報 Value とは分けて扱う。  
+そのため、**Key, Value のデータの形式（特徴量次元）は異なっていて良い**。
+
+一般にはいずれもベクトルの形式で表現されるので、以後、Key, Value それぞれの特徴量次元を $d_K, d_V$ で表す。
+
+具体的な計算は、単純に重み行列 $W_K, W_V$ を元データにかければ良く、元データの時系列長を $T_X$ とすれば、各時刻のデータからそれぞれ Key, Value のベクトルが作られるので、Key $K$ は $T_X \times d_K$ 行列、Value $V$ は $T_X \times d_V$ 行列となる。
+
+$$
+K = X W_K,\quad V = X W_V
+$$
+
+ここで $X$ は Key, Value を計算するための元データであり、元データの特徴量次元を $N_X$ とすれば、重み $W_K,W_V$ はそれぞれ $N_X \times d_K,\ N_X \times d_V$ 行列。
+
+
+### Query
+
+**Query = Key, Value からなるデータベースから欲しい情報を引くための検索クエリのようなイメージ**。
+
+Value を引くための重みとして Query と Key の内積を取る、という使い方をするので、**Query の特徴量次元は Key の次元 $d_K$ と一致している必要がある**。
+
+Key, Value と同様に、Query を生成するための元データ $Y$ の特徴量次元を $N_Y$、系列長を $T_Y$ とすれば、重みとなる $N_Y \times d_K$ 行列 $W_Q$ を用いて、
+
+$$
+Q = Y W_Q\quad [T_Y \times d_K]
+$$
+
+と計算される。
+
+### 層の出力の計算
+
+Query 行列 $Q\ [T_Y \times d_K]$ と Key 行列 $K\ [T_X \times d_K]$ の転置をかけた
+
+$$
+QK^T\quad [T_Y \times T_X]
+$$
+
+は、Query 側の各時系列 $1, \cdots, T_Y$ と Key 側の各時系列 $1,\cdots,T_X$ の全ての組み合わせの類似度（関連性の高さ）を表す行列になる。
+
+この類似度を SoftMax で確率に変換し、これで重み付けして Value $V\ [T_X \times d_V]$ の和を取ることで
+
+Query と Key の内積を取り、その大きさで重み付けして Value の和を取ることで 、Attention 層の出力が計算できる：
+
+$$
+SoftMax(QK^T) V\quad [T_Y \times d_V]
+$$
+
+Key, Value を作る元データ $X$ と Query を作る元データ $Y$ が同じである場合を **Self-Attention** と呼び、異なる場合を **Cross-Attention** と呼ぶ。
 
 
 ## Masked Self-Attention
 
 ![transformer_masked-self-attention](../../image/transformer_masked-self-attention.png)
 
+Encoder のデータは、学習時でも推論時でも系列全てが与えられることが多い。  
+一方で、Decoder の一般的な推論では出力トークンを1単語ずつ順に予測していく処理の流れになるため、**「今推論しようとしている時刻よりも先の未来」が見えるのは現実的ではない**。
 
+そのため上図のように、絶対値が非常に大きな負の数を右上三角部分に持つマスク行列 $M$ を導入する。
+
+$$
+M = \begin{pmatrix}
+0 & -\infty & \cdots & -\infty \\
+0 & 0 & \ddots & \vdots \\
+0 & 0 & 0 & -\infty \\
+0 & 0 & 0 & 0
+\end{pmatrix}
+$$
+
+これを $QK^T$ に加算して $QK^T+M$ の SoftMax を取ることで、未来時刻データとの関連度が（ほぼ）ゼロになるように調整する。
+
+
+## Positional Encoding
+
+Transformer では、各トークンどうしの相互関係は計算するが、トークンの前後関係、時系列的なと遠さといった位置情報が失われる。
+
+そこで、同じ単語であっても位置（時刻）が違えば値が異なるように、以下の Positional Encoding
+
+$$
+\begin{eqnarray}
+    PE(pos, 2i) &=& \sin\left( \cfrac{pos}{10000^{2i/d_{model}}} \right)
+    \\
+    PE(pos, 2i+1) &=& \cos\left( \cfrac{pos}{10000^{2i/d_{model}}} \right)
+\end{eqnarray}
+$$
+
+を元ベクトルに加える処理を行う。
+
+$$
+x_{pos,i} \leftarrow x_{pos,i} + PE(pos, 2i \ \mathrm{or}\ 2i+1)
+$$
+
+各変数の定義は以下の通り：
+- $pos$：系列内のトークンの出現位置（時刻 $t$）
+- $2i,\ 2i+1$：特徴量次元のインデックス（何番目の特徴量か）
+- $d_{model}$：入力トークンベクトルの特徴量次元
 
 
 # 実装・動作確認
