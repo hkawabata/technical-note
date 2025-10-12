@@ -355,6 +355,10 @@ SoftMax 関数：
 
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-softmax.py %}
 
+損失関数（Cross-Entropy Loss）：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d loss-cross_entropy.py %}
+
 Batch Normalization：
 
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-batchnorm.py %}
@@ -378,18 +382,14 @@ Dropout：
 
 データの準備：
 
+{% gist 4cb2cf166087d3be06ea3aa232dca45d datagen-util.py %}
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d datagen-mnist.py %}
+
 ```python
 # MNIST データセットの読み込み・整形
 from sklearn.datasets import fetch_openml
-mnist = fetch_openml(name='mnist_784', version=1)
-X = mnist.data.to_numpy()
-X = X.reshape(X.shape[0], 1, 28, 28)
-Y = np.zeros((X.shape[0], 10))
-label_num = [int(l) for l in mnist.target]
-for i in range(len(label_num)):
-    Y[i][label_num[i]] = 1.0
-
-# 訓練データとテストデータに分割
+X, Y = MnistClassificationData().cnn(10000)
 X_test, Y_test = X[:1000], Y[:1000]
 X_train, Y_train = X[1000:10000], Y[1000:10000]
 ```
@@ -397,17 +397,17 @@ X_train, Y_train = X[1000:10000], Y[1000:10000]
 学習・結果の確認：
 
 ```python
-# CNN モデルを学習
+# モデルを学習
 model_cnn = CNNClassifier(X_train, Y_train, X_test, Y_test,
-                      n_conv_node=4, n_conv_layer=2, n_hidden_node=20, n_hidden_layer=1,
-                      dropout=0, activation_func=ReLU)
-model_cnn.train(epoch=10000, mini_batch=10, eta=0.1, log_interval=10)
+    N_filter=4, L_conv=2, H=20, L_mlp=1,
+    dropout=0, activation_func=ReLU)
+model_cnn.train(epoch=5, mini_batch=10, eta=0.1, log_interval=1)
 
 # 学習曲線を描画
 plt.figure(figsize=(9, 4))
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
 plt.subplot(1, 2, 1)
-model_cnn.plot_precision()
+model_cnn.plot_accuracy()
 plt.subplot(1, 2, 2)
 model_cnn.plot_loss()
 plt.show()
@@ -430,35 +430,39 @@ plt.show()
 
 以下のコードで MLP のモデルを学習し、前述の CNN モデルと比較。
 
+{% gist 4cb2cf166087d3be06ea3aa232dca45d model-mlp-classifier.py %}
+
 ```python
 # MLP 用に MNIST データを読み込む（2次元行列ではなく1次元ベクトルとして使う）
-X = mnist.data.to_numpy()
-Y = np.zeros((X.shape[0], 10))
-label_num = [int(l) for l in mnist.target]
-for i in range(len(label_num)):
-    Y[i][label_num[i]] = 1.0
-
-# 訓練データとテストデータに分割
+X, Y = MnistClassificationData().mlp(10000)
 X_test, Y_test = X[:1000], Y[:1000]
 X_train, Y_train = X[1000:10000], Y[1000:10000]
 
-# MLP モデルを学習
-model_mlp = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=20, n_hidden_layer=3, dropout=0, activation_func=ReLU)
-model_mlp.train(epoch=50000, mini_batch=10, eta=0.1, log_interval=100)
+# MLP モデル初期化・学習
+model_mlp = MLPClassifier(X_train, Y_train, X_test, Y_test,
+    H=20, L=3, dropout=0, activation_func=ReLU)
+model_mlp.train(epoch=5, mini_batch=10, eta=0.1, log_interval=1)
 
-# MLP モデルの学習曲線を描画
-plt.figure(figsize=(9, 4))
+# MLP と CNN の学習曲線を描画して比較
+plt.figure(figsize=(9, 8))
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
-plt.subplot(1, 2, 1)
-model_mlp.plot_precision()
-plt.subplot(1, 2, 2)
+plt.subplot(2, 2, 1)
+plt.ylabel('MLP', fontsize=14)
+model_mlp.plot_accuracy()
+plt.subplot(2, 2, 2)
 model_mlp.plot_loss()
+plt.subplot(2, 2, 3)
+plt.ylabel('CNN', fontsize=14)
+model_cnn.plot_accuracy()
+plt.subplot(2, 2, 4)
+model_cnn.plot_loss()
 plt.show()
 ```
 
 ![cnn_study_compare-with-mlp](../../image/cnn_study_compare-with-mlp.png)
 
-→ MLP に比べ、CNN の方が高い精度が出ている
+→ MLP に比べ、CNN の方が精度が高く、過学習の度合いも小さい
+
 
 ## 畳み込み層のフィルタの可視化
 

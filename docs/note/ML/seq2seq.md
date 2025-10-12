@@ -34,6 +34,7 @@ seq2seq = sequence to sequence
 **（ToDo：詳細の解説）**
 
 
+
 # 実装・動作確認
 
 ## コード
@@ -52,6 +53,10 @@ SoftMax 関数：
 
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-softmax.py %}
 
+損失関数（Cross-Entropy Loss）：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d loss-cross_entropy.py %}
+
 Batch Normalization：
 
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-batchnorm.py %}
@@ -63,6 +68,12 @@ Dropout：
 
 ### seq2seq 独自のレイヤクラス
 
+Embedding：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-seq2seq-embedding.py %}
+
+エンコーダ・デコーダ：
+
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-seq2seq.py %}
 
 
@@ -72,6 +83,11 @@ Dropout：
 
 
 ## 動作確認
+
+トイデータ生成のコード：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d datagen-seq2seq.py %}
+
 
 ### 足し算の計算
 
@@ -88,17 +104,17 @@ Dropout：
 データ生成〜モデル学習：
 
 ```python
-import numpy as np
-
-formula = FormulaString()
+# 訓練データ・テストデータ生成
 N_train, N_test = 5000, 500
-
-X, Y = formula.addition_fixed_digit(N_train + N_test)
-#X, Y = formula.addition_unfixed_digit(N_train + N_test)
+X, Y = Seq2SeqData().addition_formula(N_train + N_test)
 X_train, Y_train = X[:N_train], Y[:N_train]
 X_test, Y_test = X[N_train:], Y[N_train:]
+
+# モデル初期化・学習
 model = Seq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64)
-model.train(epoch=5000, mini_batch=100, eta=0.005, log_interval=100)
+model.train(epoch=400, mini_batch=100, eta=0.5, log_interval=10)
+model_r = Seq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64, is_input_reversed=True)
+model_r.train(epoch=400, mini_batch=100, eta=0.5, log_interval=10)
 
 # 学習曲線を描画
 plt.figure(figsize=(13, 4))
@@ -113,61 +129,63 @@ model.plot_loss()
 plt.show()
 ```
 
-桁数固定（`formula.addition_fixed_digit`, 3桁+2桁 = 3桁）：
+![seq2seq_add_reverse](../../image/seq2seq_add_reverse.png)
 
-![seq2seq_add_fixed-digit](../../image/seq2seq_add_fixed-digit.png)
+- 入力文字列の左右反転を適用すると、学習速度も最終的な正解率も向上
+- トークンレベルの正解率（図の中央のカラム）を見ると、1文字目 → 2文字目 → 3文字目の順に正解率が高くなっていく
 
-桁数変動（`formula.addition_unfixed_digit`, 1-3桁+1-2桁 = 1-4桁, 空白文字 padding）：
 
-![seq2seq_add_unfixed-digit](../../image/seq2seq_add_unfixed-digit.png)
+### 文字列の rotate
+
+- 入力：`'1234567'`
+- 出力：`'6712345'`
+
+のように、元の系列から決まったトークン数分だけ末尾から先頭に持ってきたものを正解として推論してみる。
+
+```python
+# 訓練データ・テストデータ生成
+N_train, N_test = 5000, 500
+X, Y = Seq2SeqData().rotate(N_train + N_test, L=5, shift=2)
+X_train, Y_train = X[:N_train], Y[:N_train]
+X_test, Y_test = X[N_train:], Y[N_train:]
+# データを見てみる
+for i in range(10):
+    print(X[i], Y[i])
+
+# モデル初期化・学習
+model = Seq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64)
+model.train(epoch=100, mini_batch=100, eta=0.5, log_interval=4)
+model_r = Seq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64, is_input_reversed=True)
+model_r.train(epoch=100, mini_batch=100, eta=0.5, log_interval=4)
+
+# 学習曲線を描画
+...
+```
+
+```
+[0 7 7 0 0] [0 0 0 7 7]
+[3 2 9 2 9] [2 9 3 2 9]
+[6 1 4 9 4] [9 4 6 1 4]
+[7 1 7 0 3] [0 3 7 1 7]
+[4 1 2 9 9] [9 9 4 1 2]
+[3 8 9 7 5] [7 5 3 8 9]
+[0 8 0 4 2] [4 2 0 8 0]
+[0 4 4 1 5] [1 5 0 4 4]
+[8 8 0 0 1] [0 1 8 8 0]
+[8 1 1 8 8] [8 8 8 1 1]
+```
+
+![seq2seq_rotate](../../image/seq2seq_rotate.png)
+
+- 足し算よりも簡単なためか、比較的少ないステップ数で収束
+- 足し算と異なり、rotate に関しては reversed を適用しても学習速度は改善しなかった
 
 
 # 実験・調査
 
-## Reverse（入力文字列の反転）による性能向上
-
-ex. `'123+45 '` → `' 54+321'`
-
-```python
-formula = FormulaString()
-N_train, N_test = 5000, 500
-
-X, Y = formula.addition_unfixed_digit(N_train + N_test)
-X_train, Y_train = X[:N_train], Y[:N_train]
-X_test, Y_test = X[N_train:], Y[N_train:]
-model = Seq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64)
-model.train(epoch=5000, mini_batch=100, eta=0.005, log_interval=100)
-model_r = Seq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64, is_input_reversed=True)
-model_r.train(epoch=5000, mini_batch=100, eta=0.005, log_interval=100)
-
-# 学習曲線を描画
-plt.figure(figsize=(13, 8))
-plt.subplots_adjust(wspace=0.2, hspace=0.4)
-plt.subplot(2, 3, 1)
-plt.ylabel('Simple', fontsize=20)
-model.plot_precision_all()
-plt.subplot(2, 3, 2)
-model.plot_precision_char()
-plt.subplot(2, 3, 3)
-model.plot_loss()
-plt.subplot(2, 3, 4)
-plt.ylabel('Input Reversed', fontsize=20)
-model_r.plot_precision_all()
-plt.subplot(2, 3, 5)
-model_r.plot_precision_char()
-plt.subplot(2, 3, 6)
-model_r.plot_loss()
-plt.show()
-```
-
-![seq2seq_add_reverse](../../image/seq2seq_add_reverse.png)
-
-→ 入力文字列の左右反転により、性能が向上した
-
-
 ## 文字の embedding 結果の確認
 
-文字がどのようなベクトルに embedding されたかの確認のため、文字どうしの cos 類似度をチェックしてみる：
+前述の足し算の例において、トークン（文字）がどのようなベクトルに embedding されたかの確認のため、文字ベクトルどうしの cos 類似度をチェックしてみる：
 
 ```python
 word_vec = model_r.encoder.embed.W

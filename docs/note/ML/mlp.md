@@ -510,11 +510,13 @@ a_j^{(2)}
 > つまり隠れ層なしでも同じ計算を実現でき、**層を深くすることによる恩恵が得られない**。
 
 
-# 効率を高める工夫
+# 改善のための手法
 
 ## Batch Normalization
 
 ミニバッチ学習（各ステップで、学習データ全てではなく一部をランダムに抽出したものを使う）において、活性化関数の適用前にミニバッチ内で正規化（標準化）の処理を行う層を挟むことで、重みが大きくなりすぎて過学習が起こるのを防ぐ。
+
+![mlp_batchnorm](../../image/mlp_batchnorm.png)
 
 - 学習時：全結合層の出力を各特徴量ごとに標準化した後、パラメータでスケール & シフトしてから活性化層に渡す（後述）
 - 推論時：学習中にミニバッチごとに平均と標準偏差の移動平均を更新していき、それを適用して標準化する
@@ -635,6 +637,37 @@ $$
 ![mlp_dropout](../../image/mlp_dropout.png)
 
 
+## Skip Connection (Residual Connection)
+
+**スキップ接続（残差接続）**。ResNet (2015) で提案された手法。  
+
+この論文は [CNN](cnn.md) での検証だが、単純な多層パーセプトロンや [RNN](rnn.md) などいろいろなニューラルネットワークに適用できる。
+
+ニューラルネットワークの層が深くなっていくと、勾配消失の問題に直面する。  
+これを回避するため、下図のようにネットワークを迂回する形で浅い層の値をそのまま伝える経路を取り、深い層の出力に加算する。
+
+$$
+\boldsymbol{x}^{(k+n)} \leftarrow
+\boldsymbol{x}^{(k+n)} + \boldsymbol{x}^{(k)}
+$$
+
+層を通過することでデータの次元が変わる場合は、行列による線形変換（CNN でチャンネル数が変わる場合は $1\times 1$ の畳み込み層）で次元を揃えてから加算する方法が主流：
+
+$$
+\boldsymbol{x}^{(k+n)} \leftarrow
+\boldsymbol{x}^{(k+n)} + W \boldsymbol{x}^{(k)}
+$$
+
+
+![mlp_skip-connection](../../image/mlp_skip-connection.png)
+
+- メリット：
+    - 迂回路を逆伝播する誤差も隠れ層を回避するため、（回避した層による）勾配消失の影響を受けない
+    - 回避された隠れ層の部分の学習がうまくいかなくても、元の情報が次へ伝わるため、「壊れにくい」構造になる
+- デメリット：
+    - 多用しすぎると情報が過剰に伝達され、層を深くするメリットが薄れる場合も
+
+
 # 実装・動作確認
 
 多層パーセプトロンによる多クラス分類器を作ってみる。  
@@ -656,6 +689,10 @@ SoftMax 関数：
 
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-softmax.py %}
 
+損失関数（Cross-Entropy Loss）：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d loss-cross_entropy.py %}
+
 Batch Normalization：
 
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-batchnorm.py %}
@@ -672,27 +709,35 @@ Dropout：
 
 ## 動作確認
 
-{% gist f78d08d8c85fb47af24a48d687125ecc ~generate_classification_data.py %}
+データ生成：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d datagen-util.py %}
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d datagen-mlp-classfier.py %}
+
+結果の描画：
 
 {% gist f78d08d8c85fb47af24a48d687125ecc ~draw_decision_boundary.py %}
 
 ```python
+# データ作成
 N_train = 600
 N_test = 300
-
-X, Y = generate_classification_data(N_train + N_test)
+X, Y = ClassificationToyData().circles(N_train + N_test)
 X_train, Y_train = X[:N_train], Y[:N_train]
 X_test, Y_test = X[N_train:], Y[N_train:]
 
+# モデル初期化・学習
 model = MLPClassifier(X_train, Y_train, X_test, Y_test, H=20, L=2, dropout=0, activation_func=ReLU)
-model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=1)
+model.train(epoch=20, mini_batch=20, eta=0.01, log_interval=1)
 
+# 結果の描画
 plt.figure(figsize=(16, 4))
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
 plt.subplot(1, 3, 1)
 draw_decision_boundary(model, X, Y)
 plt.subplot(1, 3, 2)
-model.plot_precision()
+model.plot_accuracy()
 plt.subplot(1, 3, 3)
 model.plot_loss()
 ```
@@ -712,25 +757,25 @@ model.plot_loss()
 の条件下で隠れ層の深さを変えて結果を見てみる。
 
 ```python
-ns_hidden_layer = [0, 1, 2, 3]
-n = len(ns_hidden_layer)
+Ls = [0, 1, 2, 3]
+n = len(Ls)
 plt.figure(figsize=(16, 4*n))
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
 for i in range(n):
-    n_hidden_layer = ns_hidden_layer[i]
-    model = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=20, n_hidden_layer=n_hidden_layer, dropout=0, activation_func=ReLU)
-    model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=1)
-    plt.subplot(n, 3, n_hidden_layer*3+1)
-    draw_decision_boundary(model, X, Y, title='{} hidden layers'.format(n_hidden_layer))
-    plt.subplot(n, 3, n_hidden_layer*3+2)
+    L = Ls[i]
+    model = MLPClassifier(X_train, Y_train, X_test, Y_test, H=20, L=L, dropout=0, activation_func=ReLU)
+    model.train(epoch=20, mini_batch=20, eta=0.01, log_interval=1)
+    plt.subplot(n, 3, i*3+1)
+    draw_decision_boundary(model, X, Y, title='{} hidden layers'.format(L))
+    plt.subplot(n, 3, i*3+2)
     model.plot_precision()
-    plt.subplot(n, 3, n_hidden_layer*3+3)
+    plt.subplot(n, 3, i*3+3)
     model.plot_loss()
 ```
 
 ![mlp_study_num-layers](../../image/mlp_study_num-layers.png)
 
-→ 隠れ層が増えるほど、複雑な境界に対応できる様子がわかる。
+→ 隠れ層が増えるほど、複雑な境界に対応できる様子がわかる。ただ、今回試したようなシンプルなトイデータでは、2〜4層で大きな差は見られない。
 
 
 ## 隠れ層のニューロン数の比較
@@ -743,16 +788,16 @@ for i in range(n):
 の条件下で、隠れ層が持つニューロン数を変えて結果を見てみる。
 
 ```python
-n_hidden_node= [2, 4, 8, 16]
-n = len(n_hidden_node)
+Hs = [2, 4, 8, 16]
+n = len(Hs)
 plt.figure(figsize=(16, 4*n))
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
 for i in range(n):
-    nh = n_hidden_node[i]
-    model = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=nh, n_hidden_layer=2, dropout=0, activation_func=ReLU)
-    model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=1)
+    H = Hs[i]
+    model = MLPClassifier(X_train, Y_train, X_test, Y_test, H=H, L=2, dropout=0, activation_func=ReLU)
+    model.train(epoch=20, mini_batch=20, eta=0.01, log_interval=1)
     plt.subplot(n, 3, i*3+1)
-    draw_decision_boundary(model, X, Y, title='{} nodes in each layer'.format(nh))
+    draw_decision_boundary(model, X, Y, title='{} nodes in each layer'.format(H))
     plt.subplot(n, 3, i*3+2)
     model.plot_precision()
     plt.subplot(n, 3, i*3+3)
@@ -766,7 +811,7 @@ for i in range(n):
 
 - 隠れ層の数（深さ）：2
 - 隠れ層のニューロン数：20
-- **活性化関数：Sigmoid, Hyperbolic Tangent, ReLU**
+- **活性化関数：Sigmoid / Hyperbolic Tangent / ReLU**
 - Dropout：0（なし）
 
 の条件下で、活性化関数を変えて結果を見てみる。
@@ -778,8 +823,8 @@ plt.figure(figsize=(16, 4*len(activation_funcs)))
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
 for i in range(n):
     F = activation_funcs[i]
-    model = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=20, n_hidden_layer=2, dropout=0, activation_func=F)
-    model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=1)
+    model = MLPClassifier(X_train, Y_train, X_test, Y_test, H=20, L=2, dropout=0, activation_func=F)
+    model.train(epoch=20, mini_batch=20, eta=0.01, log_interval=1)
     plt.subplot(n, 3, i*3+1)
     draw_decision_boundary(model, X, Y, title='Activation Func = {}'.format(F.__name__))
     plt.subplot(n, 3, i*3+2)
@@ -790,24 +835,25 @@ for i in range(n):
 
 ![mlp_study_activation-func](../../image/mlp_study_activation-func.png)
 
+
 ## Dropout と過学習抑制
 
 - 隠れ層の数（深さ）：2
 - 隠れ層のニューロン数：20
 - 活性化関数：ReLU
-- **Dropout：0（なし）, 0.5**
+- **Dropout：0（なし）, 0.1, 0.2, 0.3, 0.4, 0.5**
 
 の条件下で、Dropout の利用の有無を変えて結果を見てみる。
 
 ```python
-dropout = [0, 0.5]
+dropout = [0, 0.1, 0.2, 0.3, 0.4, 0.5]
 n = len(dropout)
 plt.figure(figsize=(16, 4*n))
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
 for i in range(n):
     do = dropout[i]
-    model = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=20, n_hidden_layer=2, dropout=do, activation_func=ReLU)
-    model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=1)
+    model = MLPClassifier(X_train, Y_train, X_test, Y_test, H=20, L=2, dropout=do, activation_func=ReLU)
+    model.train(epoch=40, mini_batch=20, eta=0.01, log_interval=1)
     plt.subplot(n, 3, i*3+1)
     draw_decision_boundary(model, X, Y, title='Dropout = {}'.format(do))
     plt.subplot(n, 3, i*3+2)
@@ -818,35 +864,80 @@ for i in range(n):
 
 ![mlp_study_dropout](../../image/mlp_study_dropout.png)
 
-明確な差が見えないので、いろいろな dropout の値で何度も学習して、学習データとテストデータのコスト関数の差を計算してみる：
+→ 1度だけの学習では、dropout の有無で有意な差があるかイマイチ分からない...
+
+次に、いろいろな dropout の値で繰り返し学習して、学習データとテストデータのコスト関数の差を計算してみる：
 
 ```python
+# 繰り返し学習
+T = 100
 dropout = [0, 0.1, 0.2, 0.3, 0.4, 0.5]
 n = len(dropout)
-loss_diff_mean = []
-loss_diff_std = []
+loss_train = np.zeros((n, T))
+loss_test = np.zeros((n, T))
+p_train = np.zeros((n, T))
+p_test = np.zeros((n, T))
 for i in range(n):
     do = dropout[i]
-    loss_train, loss_test = [], []
-    loss_diff = []
-    for _ in range(500):
-        model = MLPClassifier(X_train, Y_train, X_test, Y_test, n_hidden_node=20, n_hidden_layer=2, dropout=do, activation_func=ReLU)
-        model.train(epoch=200, mini_batch=20, eta=0.05, log_interval=100)
-        loss_train.append(model.loss_train[-1])
-        loss_test.append(model.loss_test[-1])
-        loss_diff.append(model.loss_test[-1] - model.loss_train[-1])
-    loss_diff_mean.append(np.mean(loss_diff))
-    loss_diff_std.append(np.std(loss_diff))
+    for t in tqdm(range(T)):
+        model = MLPClassifier(X_train, Y_train, X_test, Y_test, H=20, L=2, dropout=do, activation_func=ReLU)
+        model.train(epoch=100, mini_batch=20, eta=0.01, log_interval=10, progress_bar=False)
+        loss_train[i,t] = model.loss_train[-1]
+        loss_test[i,t] = model.loss_test[-1]
+        p_train[i,t] = model.precision_train[-1]
+        p_test[i,t] = model.precision_test[-1]
 
-plt.errorbar(dropout, loss_diff_mean, loss_diff_std, capsize=3, fmt='.', markersize=10, ecolor="black", elinewidth=0.5, markeredgecolor="black", color="w")
-plt.plot(dropout, loss_diff_mean)
+
+loss_diff = loss_test - loss_train
+p_diff = p_train - p_test
+
+
+# 結果の描画
+plt.figure(figsize=(10, 8))
+plt.subplots_adjust(wspace=0.4, hspace=0.2)
+
+plt.subplot(2, 2, 1)
+plt.errorbar(dropout, p_train.mean(axis=1), p_train.std(axis=1), capsize=3, fmt='.', markersize=10, ecolor="black", elinewidth=0.5, markeredgecolor="black", color="w")
+plt.plot(dropout, p_train.mean(axis=1), label='train')
+plt.errorbar(dropout, p_test.mean(axis=1), p_test.std(axis=1), capsize=3, fmt='.', markersize=10, ecolor="black", elinewidth=0.5, markeredgecolor="black", color="w")
+plt.plot(dropout, p_test.mean(axis=1), label='test')
 plt.xlabel('Dropout', size=13)
-plt.ylabel(r'$Loss_{test} - Loss_{train}$', size=13)
+plt.ylabel(r'$Precision$', size=13)
+plt.legend()
+plt.grid()
+
+plt.subplot(2, 2, 2)
+plt.errorbar(dropout, p_diff.mean(axis=1), p_diff.std(axis=1), capsize=3, fmt='.', markersize=10, ecolor="black", elinewidth=0.5, markeredgecolor="black", color="w")
+plt.plot(dropout, p_diff.mean(axis=1))
+plt.xlabel('Dropout', size=13)
+plt.ylabel(r'$Precision_{train} - Precision_{test}$', size=13)
+plt.grid()
+
+plt.subplot(2, 2, 3)
+plt.errorbar(dropout, loss_train.mean(axis=1), loss_train.std(axis=1), capsize=3, fmt='.', markersize=10, ecolor="black", elinewidth=0.5, markeredgecolor="black", color="w")
+plt.plot(dropout, loss_train.mean(axis=1), label='train')
+plt.errorbar(dropout, loss_test.mean(axis=1), loss_test.std(axis=1), capsize=3, fmt='.', markersize=10, ecolor="black", elinewidth=0.5, markeredgecolor="black", color="w")
+plt.plot(dropout, loss_test.mean(axis=1), label='test')
+plt.xlabel('Dropout', size=13)
+plt.ylabel(r'$Loss$', size=13)
+plt.legend()
+plt.grid()
+
+plt.subplot(2, 2, 4)
+plt.errorbar(dropout, loss_diff.mean(axis=1), loss_diff.std(axis=1), capsize=3, fmt='.', markersize=10, ecolor="black", elinewidth=0.5, markeredgecolor="black", color="w")
+plt.plot(dropout, loss_diff.mean(axis=1))
+plt.xlabel('Dropout', size=13)
+plt.ylabel(r'$(Loss_{test} - Loss_{train}) / Loss_{train}$', size=13)
 plt.grid()
 ```
 
 ![mlp_study_dropout-lossdiff](../../image/mlp_study_dropout-lossdiff.png)
 
-エラーバーは $\pm 1\sigma$ の範囲（$\sigma$：標準偏差）。
+> 【注】
+> 
+> - エラーバーの長さはそれぞれ、$\sigma$ を標準偏差として $\pm 1\sigma$ の範囲
+> - Dropout による情報落ちで損失関数自体が大きくなるため、損失関数の差分 $Loss_\mathrm{test}-Loss_\mathrm{train}$ を $Loss_\mathrm{train}$ で割ってスケールを揃え、過学習抑制の効果が見えやすいようにしている
 
-→ 分散がそれなりに大きいが、Dropout するノードの割合を増やすほど、学習データとテストデータのコスト関数の値の差が小さくなっていそう。
+- Dropout を大きくするにつれて、train と test の損失関数の差分は有意に減少（右下図）
+    - 分類精度の差分も小さくなっているように見える（右上図）が、分散も大きいので有意差とは言いにくいかも
+- しかし情報が欠落する分、損失関数自体の値は大きくなり（左下図）、分類精度も低下（左上図）

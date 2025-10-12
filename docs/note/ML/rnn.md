@@ -128,7 +128,7 @@ $$
 
 ここで、$\delta_{ik}$ はクロネッカーのデルタ（$i=k$ のときのみ1、それ以外は0）。
 
-ゆえに、コスト関数 $J$ の勾配は
+ゆえに、RNN 層のパラメータに関するコスト関数 $J$ の勾配は
 
 $$
 \begin{eqnarray}
@@ -180,7 +180,7 @@ $$
 $$
 
 
-# 効率を高める工夫
+# 改善のための手法
 
 ## Layer Normalization
 
@@ -344,6 +344,30 @@ $$
 $$
 
 
+## 勾配クリッピング
+
+RNN のような深いネットワークにおいて勾配爆発を防止する非常に有効な手法として、**勾配クリッピング** がある。
+
+あるニューラルネットワークモデルを構成するの全ての層の学習パラメータの集合を $\boldsymbol{\theta}$ とする。コスト関数 $J$ の $\boldsymbol{\theta}$ による勾配ベクトル
+
+$$
+\boldsymbol{g} := \cfrac{\partial J}{\partial \boldsymbol{\theta}}
+$$
+
+に対して、そのノルム
+
+$$
+\vert\vert \boldsymbol{g} \vert\vert =  \sqrt{
+    \sum_k \left( \cfrac{\partial J}{\partial \theta_k} \right)^2
+}
+$$
+
+が閾値 $threshold$ を超えているとき、全ての勾配に $threshold\ /\ \vert\vert \boldsymbol{g} \vert\vert$ をかけて、勾配ベクトルの大きさが大きくなりすぎないように調整する：
+
+$$
+\boldsymbol{g} \leftarrow
+\cfrac{threshold}{\vert\vert \boldsymbol{g} \vert\vert}\ \boldsymbol{g}
+$$
 
 
 # 実装・動作確認
@@ -364,6 +388,10 @@ SoftMax 関数：
 
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-softmax.py %}
 
+損失関数（Cross-Entropy Loss）：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d loss-cross_entropy.py %}
+
 Batch Normalization：
 
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-batchnorm.py %}
@@ -374,6 +402,8 @@ Dropout：
 
 
 ### RNN 独自のクラス
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-rnn-layernorm.py %}
 
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-rnn.py %}
 
@@ -401,25 +431,16 @@ $$
 
 学習データ生成：
 
+{% gist 4cb2cf166087d3be06ea3aa232dca45d datagen-rnn-classfier.py %}
+
 ```python
 N = 1200
-N = N//3*3
 N_train = int(N * 0.8)
 N_test = N - N_train
+#T = 16
 T = 64
-f1, f2, f3 = 1.0, 1.5, 2.0
 
-t = np.arange(T) / T * 2*np.pi
-X, Y = [], []
-for _ in range(N//3):
-    X.append(np.sin(f1*(t+np.random.rand()*np.pi*2)) + np.random.normal(0, 0.5, T))
-    X.append(np.sin(f2*(t+np.random.rand()*np.pi*2)) + np.random.normal(0, 0.5, T))
-    X.append(np.sin(f3*(t+np.random.rand()*np.pi*2)) + np.random.normal(0, 0.5, T))
-    Y.append([1.0, 0, 0])
-    Y.append([0, 1.0, 0])
-    Y.append([0, 0, 1.0])
-
-X, Y = np.array(X).reshape(N, T, 1), np.array(Y)
+X, Y = RNNClassificationToyData().sin_multi_frequency(N, T)
 X_train, Y_train = X[:N_train], Y[:N_train]
 X_test, Y_test = X[N_train:], Y[N_train:]
 ```
@@ -430,15 +451,15 @@ X_test, Y_test = X[N_train:], Y[N_train:]
 
 ```python
 model_rnn = RNNClassifier(X_train, Y_train, X_test, Y_test,
-    n_hidden_node_rnn=10, n_hidden_node=20, n_hidden_layer=1,
-    activation_func_rnn=RNNReLU)
-model_rnn.train(epoch=10000, mini_batch=10, eta=0.0001, log_interval=100)
+    H_rnn=10, L_rnn=1, H_mlp=20, L_mlp=1,
+    activation_func_rnn=HyperbolicTangent)
+model_rnn.train(epoch=10000, mini_batch=80, eta=0.0005, log_interval=100)
 
 # 学習曲線を描画
 plt.figure(figsize=(9, 4))
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
 plt.subplot(1, 2, 1)
-model_rnn.plot_precision()
+model_rnn.plot_accuracy()
 plt.subplot(1, 2, 2)
 model_rnn.plot_loss()
 plt.show()
@@ -477,26 +498,12 @@ $$
 
 ```python
 N = 1200
-N = N//3*3
 N_train = int(N * 0.8)
 N_test = N - N_train
+#T = 16
 T = 64
-theta1, theta2, theta3 = 0, np.pi, np.pi*0.5
 
-t = np.arange(T) / T * 2*np.pi
-X, Y = [], []
-for _ in range(N//3):
-    t_offset = np.random.rand() * np.pi*2
-    X.append(np.array([np.sin(t+t_offset) + np.random.normal(0, 0.5, T), np.sin(t+t_offset+theta1) + np.random.normal(0, 0.5, T)]).T)
-    t_offset = np.random.rand() * np.pi*2
-    X.append(np.array([np.sin(t+t_offset) + np.random.normal(0, 0.5, T), np.sin(t+t_offset+theta2) + np.random.normal(0, 0.5, T)]).T)
-    t_offset = np.random.rand() * np.pi*2
-    X.append(np.array([np.sin(t+t_offset) + np.random.normal(0, 0.5, T), np.sin(t+t_offset+theta3) + np.random.normal(0, 0.5, T)]).T)
-    Y.append([1.0, 0, 0])
-    Y.append([0, 1.0, 0])
-    Y.append([0, 0, 1.0])
-
-X, Y = np.array(X), np.array(Y)
+X, Y = RNNClassificationToyData().sin_2d_multi_phase_diff(N, T)
 X_train, Y_train = X[:N_train], Y[:N_train]
 X_test, Y_test = X[N_train:], Y[N_train:]
 ```
@@ -507,15 +514,15 @@ X_test, Y_test = X[N_train:], Y[N_train:]
 
 ```python
 model_rnn = RNNClassifier(X_train, Y_train, X_test, Y_test,
-    n_hidden_node_rnn=10, n_hidden_node=20, n_hidden_layer=1,
-    activation_func_rnn=RNNReLU)
-model_rnn.train(epoch=5000, mini_batch=10, eta=0.0001, log_interval=50)
+    H_rnn=10, L_rnn=1, H_mlp=20, L_mlp=1,
+    activation_func_rnn=HyperbolicTangent)
+model_rnn.train(epoch=5000, mini_batch=80, eta=0.0005, log_interval=100)
 
 # 学習曲線を描画
 plt.figure(figsize=(9, 4))
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
 plt.subplot(1, 2, 1)
-model_rnn.plot_precision()
+model_rnn.plot_accuracy()
 plt.subplot(1, 2, 2)
 model_rnn.plot_loss()
 plt.show()
@@ -523,7 +530,7 @@ plt.show()
 
 ![rnn_custom-data2_learning-curve](../../image/rnn_custom-data2_learning-curve.png)
 
-→ ほぼ100%の精度で分類できている上、1次元のサインカーブで周波数を変えた前の実験よりもすばやく収束
+→ こちらもほぼ100%の精度で分類できている
 
 
 
@@ -539,19 +546,11 @@ MNIST の手書き数字画像データ（$28\times 28$ ピクセル）を読み
 
 学習データ生成：
 
+{% gist 4cb2cf166087d3be06ea3aa232dca45d datagen-mnist.py %}
+
 ```python
-import numpy as np
-from sklearn.datasets import fetch_openml
-
-mnist = fetch_openml(name='mnist_784', version=1)
-X = mnist.data.to_numpy()
-X = X.reshape(X.shape[0], 28, 28)
-Y = np.zeros((X.shape[0], 10))
-label_num = [int(l) for l in mnist.target]
-for i in range(len(label_num)):
-    Y[i][label_num[i]] = 1.0
-
-# 訓練データとテストデータに分割
+# 訓練データとテストデータを生成
+X, Y = MnistClassificationData().rnn(10000)
 X_test, Y_test = X[:1000], Y[:1000]
 X_train, Y_train = X[1000:10000], Y[1000:10000]
 ```
@@ -559,11 +558,10 @@ X_train, Y_train = X[1000:10000], Y[1000:10000]
 モデル初期化・学習：
 
 ```python
+# モデル初期化・学習
 model_rnn = RNNClassifier(X_train, Y_train, X_test, Y_test,
-    n_hidden_node_rnn=10, n_hidden_node=20, n_hidden_layer=2,
-    activation_func_rnn=RNNReLU)
-
-model_rnn.train(epoch=100000, mini_batch=10, eta=0.002, log_interval=1000)
+    H_rnn=10, L_rnn=1, H_mlp=20, L_mlp=1, activation_func_rnn=ReLU)
+model_rnn.train(epoch=1000, mini_batch=10, eta=0.001, log_interval=5)
 
 # 学習曲線を描画
 plt.figure(figsize=(9, 4))
@@ -579,6 +577,42 @@ plt.show()
 
 → 最後の隠れ状態 $h_{28}$ だけを入力とした many to one のシンプルな RNN でも、80%以上の精度で手書き数字を分類できている。
 
-（メモ）
-- このデータセットの場合、各時系列のベクトルは多くの値がゼロ、特に $t=1$ 付近や $t=28$ 付近ではすべての値がゼロであることが多く、どんな重みに掛け算してもゼロになるので学習がやりにくいかも
-- Layer Normalization の導入についても、すべてがゼロのベクトルは標準化ができない（平均も標準偏差もゼロ）ため難しそう
+> **【NOTE】**
+> 
+> - このデータセットの場合、各時系列のベクトルは多くの値がゼロ、特に $t=1$ 付近や $t=28$ 付近ではすべての値がゼロであることが多く、どんな重みに掛け算してもゼロになるので学習がやりにくいかも
+> - Layer Normalization の導入についても、$t=0$ や $t=28$ 近く（余白）はすべてがゼロのベクトルとなり、標準化ができない（平均も標準偏差もゼロ）ため難しそう
+
+
+他のハイパーパラメータはそのままで、RNN 層を2層に増やしてみる（`L_rnn=2`）：
+
+![rnn_mnist_2layers_learning-curve](../../image/rnn_mnist_2layers_learning-curve.png)
+
+→ モデルの表現力が上がり、Precision が向上。
+
+
+# 実験・調査
+
+## 勾配クリッピングの有無
+
+前述の手作りデータセット2（位相差の異なる2次元サイン波）について、勾配クリッピングを外して比較してみる。
+
+```python
+model_rnn = RNNClassifier(X_train, Y_train, X_test, Y_test,
+    H_rnn=10, L_rnn=1, H_mlp=20, L_mlp=1, activation_func_rnn=HyperbolicTangent)
+model_rnn.train(epoch=5000, mini_batch=80, eta=0.0005, log_interval=100)
+```
+
+![rnn_custom-data2_learning-curve](../../image/rnn_custom-data2_learning-curve.png)
+
+勾配クリッピングを外す：
+
+```python
+model_rnn = RNNClassifier(X_train, Y_train, X_test, Y_test,
+    H_rnn=10, L_rnn=1, H_mlp=20, L_mlp=1, activation_func_rnn=HyperbolicTangent)
+model_rnn.train(epoch=5000, mini_batch=80, eta=0.0001, log_interval=100)
+```
+
+![rnn_custom-data2_learning-curve_noclip](../../image/rnn_custom-data2_learning-curve_noclip.png)
+
+学習率 $\eta = 0.0005$ では大きすぎて学習が安定せず、$\eta = 0.0001$ で比較的安定するようになった。  
+それでもまだ不安定な箇所が見られ、勾配クリッピングの有効性が確認できた。

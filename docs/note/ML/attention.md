@@ -9,9 +9,10 @@ title: Attention
 与えられた情報の一部分に注意を向け、強弱の重みを付けて取り扱うことができる。
 
 - [CNN](cnn.md) や [RNN](rnn.md) に Attention を導入
-- Transformer のような完全に Attention ベースのモデルを構築
+- [Transformer](transformer.md) (Vaswani et al. 2017) のような完全に Attention ベースのモデルを構築
 
 といった利用方法がある。
+
 
 # 概観
 
@@ -78,6 +79,12 @@ $$
 
 ## コード
 
+Embedding：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d layer-seq2seq-embedding.py %}
+
+Attention 関連の層とそれを適用したデコーダ：
+
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-attention.py %}
 
 一般の Decoder の代わりに、ここで定義した `AttentionDecoder` を使うように seq2seq モデルを書き換える。
@@ -85,10 +92,57 @@ $$
 https://gist.github.com/hkawabata/4cb2cf166087d3be06ea3aa232dca45d#file-model-seq2seq-py
 
 ```python
-class Seq2Seq:
+class AttentionSeq2Seq:
     def __init__(self, ...):
         ...
         #self.decoder = Decoder(embed, H_rnn, self.T_out)
         self.decoder = AttentionDecoder(embed, H_rnn, self.T_out)
         ...
+    def forward(self, ...):
+        ...
+        #xxx = self.decoder.forward(xs_dec, h, c, is_train)
+        xxx = self.decoder.forward(xs_dec, h, c, hs, is_train)
+        ...
 ```
+
+モデルクラス全体：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d model-attention-seq2seq.py %}
+
+## 動作確認
+
+```python
+N_train, N_test = 5000, 500
+X, Y = Seq2SeqData().addition_formula(N_train + N_test)
+X_train, Y_train = X[:N_train], Y[:N_train]
+X_test, Y_test = X[N_train:], Y[N_train:]
+```
+
+```python
+# モデル初期化・学習
+model = AttentionSeq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64)
+model.train(epoch=1000, mini_batch=100, eta=0.2, log_interval=10)
+model_r = AttentionSeq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64, is_input_reversed=True)
+model_r.train(epoch=1000, mini_batch=100, eta=0.2, log_interval=10)
+
+# 学習曲線を描画
+plt.figure(figsize=(13, 8))
+plt.subplots_adjust(wspace=0.2, hspace=0.4)
+plt.subplot(2, 3, 1)
+plt.ylabel('Baseline', fontsize=20)
+model.plot_accuracy_seq_level()
+plt.subplot(2, 3, 2)
+model.plot_accuracy_token_level()
+plt.subplot(2, 3, 3)
+model.plot_loss()
+plt.subplot(2, 3, 4)
+plt.ylabel('Input Reversed', fontsize=20)
+model_r.plot_accuracy_seq_level()
+plt.subplot(2, 3, 5)
+model_r.plot_accuracy_token_level()
+plt.subplot(2, 3, 6)
+model_r.plot_loss()
+plt.show()
+```
+
+![attention_learning-curve](../../image/attention_learning-curve.png)

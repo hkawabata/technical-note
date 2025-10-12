@@ -157,6 +157,10 @@ SoftMax 関数：
 
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-softmax.py %}
 
+損失関数（Cross-Entropy Loss）：
+
+{% gist 4cb2cf166087d3be06ea3aa232dca45d loss-cross_entropy.py %}
+
 Batch Normalization：
 
 {% gist 4cb2cf166087d3be06ea3aa232dca45d layer-mlp-batchnorm.py %}
@@ -191,19 +195,11 @@ Dropout：
 
 学習データ生成：
 
+{% gist 4cb2cf166087d3be06ea3aa232dca45d datagen-mnist.py %}
+
 ```python
-import numpy as np
-from sklearn.datasets import fetch_openml
-
-mnist = fetch_openml(name='mnist_784', version=1)
-X = mnist.data.to_numpy()
-X = X.reshape(X.shape[0], 28, 28)
-Y = np.zeros((X.shape[0], 10))
-label_num = [int(l) for l in mnist.target]
-for i in range(len(label_num)):
-    Y[i][label_num[i]] = 1.0
-
-# 訓練データとテストデータに分割
+# MNIST データ読み込み
+X, Y = MnistClassificationData().rnn(10000)
 X_test, Y_test = X[:1000], Y[:1000]
 X_train, Y_train = X[1000:10000], Y[1000:10000]
 ```
@@ -211,19 +207,24 @@ X_train, Y_train = X[1000:10000], Y[1000:10000]
 モデル初期化・学習：
 
 ```python
+# モデル学習
 model_lstm = LSTMClassifier(X_train, Y_train, X_test, Y_test,
-    n_hidden_node_rnn=10, n_hidden_node=20, n_hidden_layer=1)
-
-model_lstm.train(epoch=1000000, mini_batch=10, eta=0.002, log_interval=10000)
+    H_rnn=10, L_rnn=1, H_mlp=20, L_mlp=1)
+model_lstm.train(epoch=1000, mini_batch=10, eta=0.001, log_interval=5)
 
 # 学習曲線を描画
 plt.figure(figsize=(9, 4))
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
 plt.subplot(1, 2, 1)
-model_lstm.plot_precision()
+model_lstm.plot_accuracy()
 plt.subplot(1, 2, 2)
 model_lstm.plot_loss()
 plt.show()
 ```
 
 ![lstm_mnist_learning-curve](../../image/lstm_mnist_learning-curve.png)
+
+他のハイパーパラメータはそのままで、LSTM 層を2層に増やしてみる（`L_rnn=2`）：
+
+![lstm_mnist_2layers_learning-curve](../../image/lstm_mnist_2layers_learning-curve.png)
+
