@@ -50,6 +50,8 @@ Transformer の中核技術。
 - **Key：情報を引くための索引**
 - **Value：Key を元に引き当てて、実際に取り出す情報**
 
+を時刻（位置）ごとに作成する。
+
 Key はあくまで検索インデックスのようなものであり、実際に取り出す情報 Value とは分けて扱う。  
 そのため、**Key, Value のデータの形式（特徴量次元）は異なっていて良い**。
 
@@ -66,7 +68,8 @@ $$
 
 ### Query
 
-**Query = Key, Value からなるデータベースから欲しい情報を引くための検索クエリのようなイメージ**。
+**Query = Key, Value からなるデータベースから欲しい情報を引くための検索クエリのようなイメージ**。  
+時刻（位置）ごとに作成する。
 
 Value を引くための重みとして Query と Key の内積を取る、という使い方をするので、**Query の特徴量次元は Key の次元 $d_K$ と一致している必要がある**。
 
@@ -90,10 +93,16 @@ $$
 
 この類似度を SoftMax で確率に変換し、これで重み付けして Value $V\ [T_X \times d_V]$ の和を取ることで
 
-Query と Key の内積を取り、その大きさで重み付けして Value の和を取ることで 、Attention 層の出力が計算できる：
+Query と Key の内積を取り、その大きさで重み付けして Value の和を取ることで 、Attention 層の出力 $Z$ が計算できる：
 
 $$
-SoftMax(QK^T) V\quad [T_Y \times d_V]
+Z = SoftMax(QK^T) V\quad [T_Y \times d_V]
+$$
+
+実際の計算では、 が大きくなりすぎると勾配消失の懸念が出てくるため、安定化のためのスケール調整 $1/\sqrt{d_k}$ をかけてから SoftMax を計算することが多い：
+
+$$
+Z = SoftMax \left(\cfrac{QK^T}{\sqrt{d_k}}\right) V\quad [T_Y \times d_V]
 $$
 
 Key, Value を作る元データ $X$ と Query を作る元データ $Y$ が同じである場合を **Self-Attention** と呼び、異なる場合を **Cross-Attention** と呼ぶ。
@@ -146,7 +155,56 @@ $$
 - $d_{model}$：入力トークンベクトルの特徴量次元
 
 
+# Multi-head Attention
+
+前述の Self-Attention, Cross-Attention において、複数の Attention 機構を並列で計算し、最後に結果を1つに統合して最終的な Attention 層の出力を得る手法。
+
+## 計算手順
+
+以下に具体的な手順と計算式を示す。
+
+1. $d$ 次元の $Q, K, V$ に対して、$d \times (d/h)$ 次元配列 $W_Q^{(i)},W_K^{(i)},W_V^{(i)}\ (i=1,\cdots,h)$ をかけることで $d \to d/h$ 次元の $Q^{(i)}, K^{(i)}, V^{(i)}$ に射影（線形次元削減）
+2. $h$ 個の Attention 機構をそれぞれの $Q^{(i)}, K^{(i)}, V^{(i)}$ に適用して、出力群 $Z^{(i)}$ を計算
+3. $Z^{(i)}$ を横に連結（concat）して元の次元と同じ $T\times d$ 次元の最終出力 $Z$ を得る
+
+$$
+\begin{eqnarray}
+    Q^{(i)} &=& QW_Q^{(i)},\quad K^{(i)} = KW_K^{(i)},\quad V^{(i)} = VW_V^{(i)},\quad
+    \\ \\
+    Z^{(i)} &=& SoftMax \left(\cfrac{Q^{(i)}K^{(i)T}}{\sqrt{d/h}}\right) V^{(i)}
+    \quad [T \times (d/h)]
+    \\ \\
+    Z &=& Concat(Z^{(1)}, Z^{(2)}, \cdots, Z^{(h)})
+    \quad [T \times d]
+\end{eqnarray}
+$$
+
+## Multi-head Attention の利点
+
+### 利点1：多様な関連性の学習
+
+1つの Attention head では、入力系列内の **1種類の依存関係（関連性）** しか学習しづらいという特徴がある。  
+たとえば自然言語の場合：
+
+- Head 1：主語と動詞の関係
+- Head 2：形容詞と名詞の関係
+- Head 3：文脈的な照応（「彼」が誰を指すか）
+- Head 4：時制や文末の情報
+
+といったように、複数の head（= Attention 機構）を用いれば、**文の意味を多面的に捉えることができる**。
+
+$Q, K, V$ の次元削減の際に head ごとに異なる線形変換 $W^{(i)}$ を行うので、それぞれ異なる射影空間（特徴空間）に変換してから Attention を取る形となり、多様な関連性を学習できる。
+
+
+### 利点2：GPU 実装による高速化
+
+計算を並列化しやすくなるので、**GPU 実装による高速化の恩恵も受けることができる**。
+
+
+
 # 実装・動作確認
+
+ここでは単純化のため、Mult-head Attention を除く Transformer seq2seq モデルを実装する。
 
 ## コード
 
