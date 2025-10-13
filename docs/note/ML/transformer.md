@@ -91,15 +91,13 @@ $$
 
 は、Query 側の各時系列 $1, \cdots, T_Y$ と Key 側の各時系列 $1,\cdots,T_X$ の全ての組み合わせの類似度（関連性の高さ）を表す行列になる。
 
-この類似度を SoftMax で確率に変換し、これで重み付けして Value $V\ [T_X \times d_V]$ の和を取ることで
-
-Query と Key の内積を取り、その大きさで重み付けして Value の和を取ることで 、Attention 層の出力 $Z$ が計算できる：
+この類似度を SoftMax で確率に変換し、これで重み付けして Value 行列 $V\ [T_X \times d_V]$ の和を取ることで、Attention 層の出力 $Z$ が計算できる：
 
 $$
 Z = SoftMax(QK^T) V\quad [T_Y \times d_V]
 $$
 
-実際の計算では、 が大きくなりすぎると勾配消失の懸念が出てくるため、安定化のためのスケール調整 $1/\sqrt{d_k}$ をかけてから SoftMax を計算することが多い：
+実際の計算では、$QK^T$ が大きくなりすぎると勾配消失の懸念が出てくるため、安定化のためのスケール調整 $1/\sqrt{d_k}$ をかけてから SoftMax を計算することが多い：
 
 $$
 Z = SoftMax \left(\cfrac{QK^T}{\sqrt{d_k}}\right) V\quad [T_Y \times d_V]
@@ -163,21 +161,29 @@ $$
 
 以下に具体的な手順と計算式を示す。
 
-1. $d$ 次元の $Q, K, V$ に対して、$d \times (d/h)$ 次元配列 $W_Q^{(i)},W_K^{(i)},W_V^{(i)}\ (i=1,\cdots,h)$ をかけることで $d \to d/h$ 次元の $Q^{(i)}, K^{(i)}, V^{(i)}$ に射影（線形次元削減）
+1. 特徴量次元 $N$ の入力 $X$ に対して、$h$ 個の $N \times (d_K/h)$ 次元配列 $W_Q^{(i)},W_K^{(i)}\ (i=1,\cdots,h)$ と $N \times (d_V/h)$ 次元配列 $W_V^{(i)}$ をかけることで $N \to d_K/h, d_V/h$ 次元の $Q^{(i)}, K^{(i)}, V^{(i)}$ に射影（線形変換と同時に次元削減）
 2. $h$ 個の Attention 機構をそれぞれの $Q^{(i)}, K^{(i)}, V^{(i)}$ に適用して、出力群 $Z^{(i)}$ を計算
-3. $Z^{(i)}$ を横に連結（concat）して元の次元と同じ $T\times d$ 次元の最終出力 $Z$ を得る
+3. $Z^{(1)},\cdots,Z^{(h)}$ を横に連結（concat）して、$T_Y\times d_V$ 次元の最終出力 $Z$ を得る
 
 $$
 \begin{eqnarray}
-    Q^{(i)} &=& QW_Q^{(i)},\quad K^{(i)} = KW_K^{(i)},\quad V^{(i)} = VW_V^{(i)},\quad
+    &
+    \begin{cases}
+        Q^{(i)} = XW_Q^{(i)} \quad &[T_Y \times (d_K/h)] \\
+        K^{(i)} = XW_K^{(i)} \quad &[T_X \times (d_K/h)] \\
+        V^{(i)} = XW_V^{(i)} \quad &[T_X \times (d_V/h)]
+    \end{cases}
     \\ \\
-    Z^{(i)} &=& SoftMax \left(\cfrac{Q^{(i)}K^{(i)T}}{\sqrt{d/h}}\right) V^{(i)}
-    \quad [T \times (d/h)]
+    &
+    Z^{(i)} = SoftMax \left(\cfrac{Q^{(i)}K^{(i)T}}{\sqrt{d/h}}\right) V^{(i)}
+    \quad [T_Y \times (d_V/h)]
     \\ \\
-    Z &=& Concat(Z^{(1)}, Z^{(2)}, \cdots, Z^{(h)})
-    \quad [T \times d]
+    &
+    Z = Concat\left(Z^{(1)}, Z^{(2)}, \cdots, Z^{(h)}\right)
+    \quad [T_Y \times d_V]
 \end{eqnarray}
 $$
+
 
 ## Multi-head Attention の利点
 
@@ -203,8 +209,6 @@ $Q, K, V$ の次元削減の際に head ごとに異なる線形変換 $W^{(i)}$
 
 
 # 実装・動作確認
-
-ここでは単純化のため、Mult-head Attention を除く Transformer seq2seq モデルを実装する。
 
 ## コード
 
@@ -301,3 +305,16 @@ plt.show()
 ```
 
 ![transformer_learning-curve_addition](../../image/transformer_learning-curve_addition.png)
+
+正解率が低いので Multi-head Attention を適用してみる（`n_head=4`）：
+
+```python
+model = TransformerSeq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=32, H_qk=32, H_ff=32, n_head=4, is_input_reversed=False)
+model.train(epoch=1000, mini_batch=100, eta=0.2, log_interval=20)
+model_r = TransformerSeq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=32, H_qk=32, H_ff=32, n_head=4, is_input_reversed=True)
+model_r.train(epoch=1000, mini_batch=100, eta=0.2, log_interval=20)
+```
+
+![transformer_learning-curve_addition_multihead](../../image/transformer_learning-curve_addition_multihead.png)
+
+→ 大幅に正解率が上昇し、学習速度も向上。
