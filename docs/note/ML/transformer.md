@@ -5,11 +5,11 @@ title: Transformer
 
 発表：**Vaswani et al., "Attention Is All You Need," 2017**
 
-文章から文章を推論する [seq2seq](seq2seq.md) の問題を解く Encoder-Decoder モデルの1つ。
+入力系列データから出力系列データを推論する [seq2seq](seq2seq.md) の問題を解く Encoder-Decoder モデルの1つ。
 
 それまでの [RNN](rnn.md) や [LSTM](lstm.md) による seq2seq では、
-1. ある時刻の隠れ状態 $\boldsymbol{h}_t,\boldsymbol{c}_t$ を計算
-2. それを使って次の時刻の隠れ状態 $\boldsymbol{h}_{t+1}, \boldsymbol{c}_{t+1}$を計算
+1. ある時刻（位置）$t$ の隠れ状態 $\boldsymbol{h}_t,\boldsymbol{c}_t$ を計算
+2. それを使って次の時刻 $t+1$ の隠れ状態 $\boldsymbol{h}_{t+1}, \boldsymbol{c}_{t+1}$を計算
 3. 1,2を系列の長さの分だけ繰り返す
 
 といった処理が必要になり、この部分は直列にしか計算ができないため計算コストが大きい。
@@ -39,7 +39,7 @@ title: Transformer
 
 ## Self-Attention, Cross-Attention
 
-Transformer の中核技術。
+Transformer の中核技術。順に解説する。
 
 ![transformer_attention](../../image/transformer_attention.png)
 
@@ -50,7 +50,7 @@ Transformer の中核技術。
 - **Key：情報を引くための索引**
 - **Value：Key を元に引き当てて、実際に取り出す情報**
 
-を時刻（位置）ごとに作成する。
+それぞれ、時刻（位置）ごとに作成する。
 
 Key はあくまで検索インデックスのようなものであり、実際に取り出す情報 Value とは分けて扱う。  
 そのため、**Key, Value のデータの形式（特徴量次元）は異なっていて良い**。
@@ -71,7 +71,7 @@ $$
 **Query = Key, Value からなるデータベースから欲しい情報を引くための検索クエリのようなイメージ**。  
 時刻（位置）ごとに作成する。
 
-Value を引くための重みとして Query と Key の内積を取る、という使い方をするので、**Query の特徴量次元は Key の次元 $d_K$ と一致している必要がある**。
+Value を引くための重みとして Query と Key の内積（≒ コサイン類似度）を取る、という使い方をするので、**Query の特徴量次元は Key の次元 $d_K$ と一致している必要がある**。
 
 Key, Value と同様に、Query を生成するための元データ $Y$ の特徴量次元を $N_Y$、系列長を $T_Y$ とすれば、重みとなる $N_Y \times d_K$ 行列 $W_Q$ を用いて、
 
@@ -80,6 +80,7 @@ Q = Y W_Q\quad [T_Y \times d_K]
 $$
 
 と計算される。
+
 
 ### 層の出力の計算
 
@@ -94,10 +95,13 @@ $$
 この類似度を SoftMax で確率に変換し、これで重み付けして Value 行列 $V\ [T_X \times d_V]$ の和を取ることで、Attention 層の出力 $Z$ が計算できる：
 
 $$
-Z = SoftMax(QK^T) V\quad [T_Y \times d_V]
+Z = SoftMax\left(QK^T\right) V\quad [T_Y \times d_V]
 $$
 
-実際の計算では、$QK^T$ が大きくなりすぎると勾配消失の懸念が出てくるため、安定化のためのスケール調整 $1/\sqrt{d_k}$ をかけてから SoftMax を計算することが多い：
+この処理は、Query との類似度によって Value の重み付け平均を取る操作に等しい。  
+すなわち、**Value が持つ情報のうち Query に関連する部分に注目（= Attention）して抽出している**。
+
+実際の計算では、$QK^T$ が大きくなりすぎると勾配消失の懸念が出てくるため、安定化のためのスケール調整 $1/\sqrt{d_k}$ をかけてから SoftMax を計算するのが一般的：
 
 $$
 Z = SoftMax \left(\cfrac{QK^T}{\sqrt{d_k}}\right) V\quad [T_Y \times d_V]
@@ -125,6 +129,10 @@ M = \begin{pmatrix}
 $$
 
 これを $QK^T$ に加算して $QK^T+M$ の SoftMax を取ることで、未来時刻データとの関連度が（ほぼ）ゼロになるように調整する。
+
+$$
+Z_\rm{masked} = SoftMax \left(\cfrac{QK^T}{\sqrt{d_k}}+M\right) V\quad [T_Y \times d_V]
+$$
 
 
 ## Positional Encoding
@@ -155,7 +163,10 @@ $$
 
 # Multi-head Attention
 
-前述の Self-Attention, Cross-Attention において、複数の Attention 機構を並列で計算し、最後に結果を1つに統合して最終的な Attention 層の出力を得る手法。
+前述の Self-Attention, Cross-Attention において、d
+ss複数の小さな Attention 機構（= head）を並列で計算し、最後に結果を1つに統合して最終的な Attention 層の出力とする手法。
+
+![transformer_multihead-attention](../../image/transformer_multihead-attention.png)
 
 ## 計算手順
 
@@ -175,7 +186,7 @@ $$
     \end{cases}
     \\ \\
     &
-    Z^{(i)} = SoftMax \left(\cfrac{Q^{(i)}K^{(i)T}}{\sqrt{d/h}}\right) V^{(i)}
+    Z^{(i)} = SoftMax \left(\cfrac{Q^{(i)}K^{(i)T}}{\sqrt{d_K/h}}\right) V^{(i)}
     \quad [T_Y \times (d_V/h)]
     \\ \\
     &
@@ -206,6 +217,19 @@ $Q, K, V$ の次元削減の際に head ごとに異なる線形変換 $W^{(i)}$
 
 計算を並列化しやすくなるので、**GPU 実装による高速化の恩恵も受けることができる**。
 
+> **【NOTE】Multi-head と Single-head の計算量**
+> 
+> 以下の通り、Multi-head と Single-head の計算量のオーダーは同等。
+> 
+> Single-head：
+>    - $Q, K, V$ の計算：（添字省略）$T\times N$ 行列と $N\times d$ 行列の積なので、$O(TNd)$
+>    - 内積 $QK^T$：$T_Y \times d_K$ 行列と $d_K\times T_X$ 行列の積なので、$O(T_X T_Y d_K)$
+>    - 重み付き和 $SoftMax(\cdots) V$：$T_Y \times T_X$ 行列と $T_X\times d_V$ 行列の積なので、$O(T_X T_Y d_V)$
+>
+> Multi-head：
+>    - $Q^{(i)}, K^{(i)}, V^{(i)}$ の計算：（添字省略）$T\times N$ 行列と $N\times (d/h)$ 行列の積を $h$ 回計算するので、$O(TNd/h)\cdot h = O(TNd)$
+>    - 内積 $Q^{(i)}K^{(i)T}$：$T_Y \times (d_K/h)$ 行列と $(d_K/h)\times T_X$ 行列の積を $h$ 回計算するので、$O(T_X T_Y d_K/h)\cdot h = O(T_X T_Y d_K)$
+>    - 重み付き和 $SoftMax(\cdots) V^{(i)}$：$T_Y \times T_X$ 行列と $T_X\times (d_V/h)$ 行列の積を $h$ 回計算するので、$O(T_X T_Y d_V/h)\cdot h = O(T_X T_Y d_V)$
 
 
 # 実装・動作確認
@@ -242,11 +266,12 @@ N_train, N_test = 5000, 500
 X, Y = Seq2SeqData().addition_formula(N_train + N_test)
 X_train, Y_train = X[:N_train], Y[:N_train]
 X_test, Y_test = X[N_train:], Y[N_train:]
+V = max([X.max(), Y.max()])
 
 # モデル初期化・学習
-model = TransformerSeq2Seq(X_train, X_train, X_test, X_test, formula.V, H_embed=32, H_qk=32, H_ff=32, is_input_reversed=False)
+model = TransformerSeq2Seq(X_train, X_train, X_test, X_test, V, H_embed=32, H_qk=32, H_ff=32, is_input_reversed=False)
 model.train(epoch=100, mini_batch=100, eta=0.02, log_interval=1)
-model_r = TransformerSeq2Seq(X_train, X_train, X_test, X_test, formula.V, H_embed=32, H_qk=32, H_ff=32, is_input_reversed=True)
+model_r = TransformerSeq2Seq(X_train, X_train, X_test, X_test, V, H_embed=32, H_qk=32, H_ff=32, is_input_reversed=True)
 model_r.train(epoch=100, mini_batch=100, eta=0.02, log_interval=1)
 
 # 学習曲線を描画
@@ -317,4 +342,4 @@ model_r.train(epoch=1000, mini_batch=100, eta=0.2, log_interval=20)
 
 ![transformer_learning-curve_addition_multihead](../../image/transformer_learning-curve_addition_multihead.png)
 
-→ 大幅に正解率が上昇し、学習速度も向上。
+→ 大幅に正解率が上昇し、収束までのエポック数も小さくなった

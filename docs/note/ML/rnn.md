@@ -440,7 +440,7 @@ N_test = N - N_train
 #T = 16
 T = 64
 
-X, Y = RNNClassificationToyData().sin_multi_frequency(N, T)
+X, Y, t = RNNClassificationToyData().sin_multi_frequency(N, T)
 X_train, Y_train = X[:N_train], Y[:N_train]
 X_test, Y_test = X[N_train:], Y[N_train:]
 ```
@@ -503,7 +503,7 @@ N_test = N - N_train
 #T = 16
 T = 64
 
-X, Y = RNNClassificationToyData().sin_2d_multi_phase_diff(N, T)
+X, Y, t = RNNClassificationToyData().sin_2d_multi_phase_diff(N, T)
 X_train, Y_train = X[:N_train], Y[:N_train]
 X_test, Y_test = X[N_train:], Y[N_train:]
 ```

@@ -113,16 +113,17 @@ class AttentionSeq2Seq:
 
 ```python
 N_train, N_test = 5000, 500
-X, Y = Seq2SeqData().addition_formula(N_train + N_test)
+X, Y, i2w = Seq2SeqData().addition_formula(N_train + N_test)
 X_train, Y_train = X[:N_train], Y[:N_train]
 X_test, Y_test = X[N_train:], Y[N_train:]
+V = max([X.max(), Y.max()])
 ```
 
 ```python
 # モデル初期化・学習
-model = AttentionSeq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64)
+model = AttentionSeq2Seq(X_train, Y_train, X_test, Y_test, V, H_embed=64, H_rnn=64)
 model.train(epoch=1000, mini_batch=100, eta=0.2, log_interval=10)
-model_r = AttentionSeq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64, is_input_reversed=True)
+model_r = AttentionSeq2Seq(X_train, Y_train, X_test, Y_test, V, H_embed=64, H_rnn=64, is_input_reversed=True)
 model_r.train(epoch=1000, mini_batch=100, eta=0.2, log_interval=10)
 
 # 学習曲線を描画

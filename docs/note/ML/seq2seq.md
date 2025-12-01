@@ -106,28 +106,54 @@ Embedding：
 ```python
 # 訓練データ・テストデータ生成
 N_train, N_test = 5000, 500
-X, Y = Seq2SeqData().addition_formula(N_train + N_test)
+X, Y, i2w = Seq2SeqData().addition_formula(N_train + N_test)
 X_train, Y_train = X[:N_train], Y[:N_train]
 X_test, Y_test = X[N_train:], Y[N_train:]
+V = max([X.max(), Y.max()])
+# データを見てみる
+for i in range(10):
+    print(X[i], Y[i])
 
 # モデル初期化・学習
-model = Seq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64)
+model = Seq2Seq(X_train, Y_train, X_test, Y_test, V, H_embed=64, H_rnn=64)
 model.train(epoch=400, mini_batch=100, eta=0.5, log_interval=10)
-model_r = Seq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64, is_input_reversed=True)
+model_r = Seq2Seq(X_train, Y_train, X_test, Y_test, V, H_embed=64, H_rnn=64, is_input_reversed=True)
 model_r.train(epoch=400, mini_batch=100, eta=0.5, log_interval=10)
 
 # 学習曲線を描画
-plt.figure(figsize=(13, 4))
+plt.figure(figsize=(13, 8))
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
-plt.subplot(1, 3, 1)
-plt.ylabel('Simple', fontsize=20)
-model.plot_precision_all()
-plt.subplot(1, 3, 2)
-model.plot_precision_char()
-plt.subplot(1, 3, 3)
+plt.subplot(2, 3, 1)
+plt.ylabel('Baseline', fontsize=20)
+model.plot_accuracy_seq_level()
+plt.subplot(2, 3, 2)
+model.plot_accuracy_token_level()
+plt.subplot(2, 3, 3)
 model.plot_loss()
+plt.subplot(2, 3, 4)
+plt.ylabel('Input Reversed', fontsize=20)
+model_r.plot_accuracy_seq_level()
+plt.subplot(2, 3, 5)
+model_r.plot_accuracy_token_level()
+plt.subplot(2, 3, 6)
+model_r.plot_loss()
 plt.show()
 ```
+
+```
+[ 3  2  8 10  7 11] [3 3 5]
+[ 3  1  1 10  8  1] [3 9 2]
+[ 2  4  3 10  3  0] [2 7 3]
+[ 8  0  8 10  2  6] [8 3 4]
+[ 7  9  3 10  8 11] [8 0 1]
+[ 9  1 10  4  6 11] [1 3 7]
+[ 3  1  7 10  9  8] [4 1 5]
+[ 8  8  8 10  5  3] [9 4 1]
+[ 3  3  7 10  1  2] [3 4 9]
+[ 3 10  3  3 11 11] [ 3  6 11]
+```
+
+※ 単語 ID 0-9はそのままの数字、10は `+`、11は padding のための空白文字
 
 ![seq2seq_add_reverse](../../image/seq2seq_add_reverse.png)
 
@@ -145,17 +171,18 @@ plt.show()
 ```python
 # 訓練データ・テストデータ生成
 N_train, N_test = 5000, 500
-X, Y = Seq2SeqData().rotate(N_train + N_test, L=5, shift=2)
+X, Y, i2w = Seq2SeqData().rotate(N_train + N_test, L=5, shift=2)
 X_train, Y_train = X[:N_train], Y[:N_train]
 X_test, Y_test = X[N_train:], Y[N_train:]
+V = max([X.max(), Y.max()])
 # データを見てみる
 for i in range(10):
     print(X[i], Y[i])
 
 # モデル初期化・学習
-model = Seq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64)
+model = Seq2Seq(X_train, Y_train, X_test, Y_test, V, H_embed=64, H_rnn=64)
 model.train(epoch=100, mini_batch=100, eta=0.5, log_interval=4)
-model_r = Seq2Seq(X_train, Y_train, X_test, Y_test, formula.V, H_embed=64, H_rnn=64, is_input_reversed=True)
+model_r = Seq2Seq(X_train, Y_train, X_test, Y_test, V, H_embed=64, H_rnn=64, is_input_reversed=True)
 model_r.train(epoch=100, mini_batch=100, eta=0.5, log_interval=4)
 
 # 学習曲線を描画
@@ -191,39 +218,39 @@ model_r.train(epoch=100, mini_batch=100, eta=0.5, log_interval=4)
 word_vec = model_r.encoder.embed.W
 V, _ = word_vec.shape
 cos_similarity = []
-for i in range(V):
-    for j in range(i+1, V):
+for i in range(V-1):
+    for j in range(i+1, V-1):
         w1, w2 = word_vec[i], word_vec[j]
         cos = (w1*w2).sum() / np.sqrt((w1*w1).sum()) / np.sqrt((w2*w2).sum())
-        cos_similarity.append((cos, formula.i2c[i], formula.i2c[j]))
+        cos_similarity.append((cos, i2w[i], i2w[j]))
 for cos, c1, c2 in sorted(cos_similarity, reverse=True):
     print(f'{c1},{c2}: {cos}')
 ```
 
 ```python
-0,1: 0.5433349395406125
-8,9: 0.4385361366405015
-6,7: 0.3997485765993889
-1,2: 0.35611951788781293
-3,4: 0.321399207056158
-2,3: 0.3043434566415254
-7,8: 0.2919007835311846
-0,2: 0.2753794931435943
-4,5: 0.20550983640696036
-5,6: 0.20261078065508356
+8,9: 0.5444375891821347
+0,1: 0.5114910746255095
+7,8: 0.4238942555290037
+4,5: 0.41602047058043
+3,4: 0.392179027727425
+6,7: 0.3862680249954375
+2,3: 0.31775828854700555
+5,6: 0.3109764029901652
+1,2: 0.28778594604735025
+0,2: 0.28150223379338474
 
 ...
 
-4,8: -0.12962096739296886
-4,7: -0.130371761502911
-6, : -0.13094358765168462
-3,9: -0.14519820790525137
-8, : -0.1582066403658733
-3,7: -0.1715591386658222
-3,+: -0.17168790983358764
-0,6: -0.1754850652123799
-1,8: -0.19272078519358443
-7,+: -0.1974169972079686
+2,6: -0.1406832150304707
+1,5: -0.16132640188990446
+4,8: -0.16214929803808256
+5,+: -0.1682050220119657
+4,+: -0.1839194092891655
+3,+: -0.18546283749860396
+2,7: -0.23109918354423292
+2,+: -0.2362617162650796
+8,+: -0.23636300552705897
+9,+: -0.2626294160680159
 ```
 
 - embedding の類似度が高い上位10件は 0,1 や 5,6 のような差が1（= 値が近い）のペアで占められている  
